@@ -1,0 +1,18 @@
+.icone-sign {    
+    margin-right: 5px;
+    vertical-align: middle;
+    color: #20a8d8;
+}
+.imagem-logon {
+  width: 100%;
+  max-height: 400px;
+  
+}
+.card-logon {
+  margin: 0 auto;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f7f7f7;
+}

@@ -1,0 +1,23 @@
+.content-form {  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.switch-ativo {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;   
+  margin-top: 8px; 
+}
+
+.breadcrumb-item a {
+  color:#f86c6b;
+}
+
+.app-footer a {
+  color:#fff;
+}
+
+.aside-menu .nav-tabs .nav-link.active {
+  color:#f86c6b;
+}

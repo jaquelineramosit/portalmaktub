@@ -1,0 +1,61 @@
+.register-container {
+    
+    max-width: 1250px;
+    height: 100vh;
+    margin: 0 auto;
+    color: black;
+    font-weight: bold;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.register-container .content {
+    width: 150%;
+    padding: 50px;
+    background: #f0f0f5;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+      
+}
+
+.register-container .content section {
+    width: 100%;
+    max-width: 400px;
+}
+
+.register-container .content section h1 { 
+    line-height: 100px;
+}
+
+.register-container .content form .input-group {
+    display: flex;    
+}
+
+.register-container .content form .input-group input + input {
+    margin-left: 8px;
+}
+
+.button-register{
+    width: 25%;
+    height: 44px;
+    margin-top: 16px;
+text-align: center;
+
+    transition: filter 0.2s;
+    margin-left: 420px;
+   
+}
+    
+.button-register:hover{
+    filter: brightness(90%);
+  
+}
+
+
+    
+.button-cancel:hover{
+    filter: brightness(90%);
+}
+

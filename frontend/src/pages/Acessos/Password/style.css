@@ -1,0 +1,81 @@
+.password-container {
+    
+   
+    height: 90vh;
+    margin: 0 auto;
+    color: black;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.password-container .content {
+
+    padding: 50px;
+    background: #f0f0f5;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    max-width: 700px;
+    margin-top: 100px;
+    margin: 0 auto;
+    color: black;
+    font-weight: bold;
+    align-items: center;
+    justify-content: center;
+    
+}
+
+.button-password{
+    width: 30%;
+    height: 44px;
+    margin-top: 16px;
+
+
+
+    transition: filter 0.2s;
+    margin-left: 180px;
+   
+}
+
+.password-container .content section h2 { 
+    line-height: 50px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.password-container .content section p { 
+    line-height: 50px;
+    margin-left: 10px;
+    font-weight: normal;
+    font-size: 18px;
+}
+
+.password-container .content form { 
+    margin-left: 20px;
+   
+}
+.back-linkp{
+
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+    color:#41414d ;
+    font-size: 14px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: opacity 0.2s;
+    
+    }
+    
+    .back-link svg{
+        margin-right: 8px;
+    }
+    .back-link:hover{
+        opacity: 0.8;
+    }
+
+    .password-container .p{
+
+        margin-top: 100px;
+    }
