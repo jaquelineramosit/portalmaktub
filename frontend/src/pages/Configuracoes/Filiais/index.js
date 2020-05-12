@@ -5,8 +5,11 @@ import { AppSwitch } from '@coreui/react'
 import '../../../global.css';
 import api from '../../../../src/services/api';
 
-export default function Clientes() {
-    const [nomecliente, setNomecliente] = useState('');
+export default function Filiais() {
+    const [bandeiraid, setBandeiraid] = useState('');
+    const [clienteid, setClienteid] = useState('');
+    const [ced, setCed] = useState('');
+    const [nomefilial, setNomefilial] = useState('');
     const [nomeresponsavel, setNomeresponsavel] = useState('');
     const [razaosocial, setRazaosocial] = useState('');
     const [cnpj, setCnpj] = useState('');
@@ -18,19 +21,26 @@ export default function Clientes() {
     const [cidade, setCidade] = useState('');
     const [estado, setEstado] = useState('');
     const [telefonefixo, setTelefonefixo] = useState('');
-    const [telefonecelular, setTelefonecelular] = useState('');
     const [telefoneresponsavel, setTelefoneresponsavel] = useState('');
-    const [parceiroid, setParceiroid] = useState('');
+    const [horarioiniciosemana, setHorarioiniciosemana] = useState('');
+    const [horariofimsemana, setHorariofimsemana] = useState('');
+    const [horarioiniciosabado, setHorarioiniciosabado] = useState('');
+    const [horariofimsabado, setHorariofimsabado] = useState('');
+    const [horarioiniciodomingo, setHorarioiniciodomingo] = useState('');
+    const [horariofimdomingo, setHorariofimdomingo] = useState('');
     const [ativo, setAtivo] = useState("true");
     const usuarioId = localStorage.getItem('userId');
 
 
 
-    async function handleClientes(e) {
+    async function handleFiliais(e) {
         e.preventDefault();
 
         const data = {
-            nomecliente,
+            bandeiraid,
+            clienteid,
+            ced,
+            nomefilial,
             razaosocial,
             cnpj,
             logradouro,
@@ -41,17 +51,21 @@ export default function Clientes() {
             cidade,
             estado,
             telefonefixo,
-            telefonecelular,
             telefoneresponsavel,
-            parceiroid,
             nomeresponsavel,
+            horarioiniciosemana,
+            horariofimsemana,
+            horarioiniciosabado,
+            horariofimsabado,
+            horarioiniciodomingo,
+            horariofimdomingo,
             ativo
         };
 
         try {
-            const response = await api.post('clientes', data, {
+            const response = await api.post('filiais', data, {
                 headers: {
-                    Authorization: usuarioId,
+                    Authorization: 1,
                 }
             });
             alert(`Feito o cadastro com sucesso`);
@@ -64,21 +78,21 @@ export default function Clientes() {
 
     return (
         <div className="animated fadeIn">
-            <Form onSubmit={handleClientes}>
+            <Form onSubmit={handleFiliais}>
                 <Row>
                     <Col xs="12" md="12">
                         <Card>
                             <CardHeader>
-                                <strong>Clientes</strong>
+                                <strong>Filiais</strong>
                                 <small> novo</small>
                             </CardHeader>
                             <CardBody>
                                 <FormGroup row>
                                     <Col md="4">
-                                        <Label htmlFor="Nomecliente">Nome Cliente</Label>
-                                        <Input type="text" required id="txtNomecliente" placeholder="Digite o nome do Cliente"
-                                            value={nomecliente}
-                                            onChange={e => setNomecliente(e.target.value)} />
+                                        <Label htmlFor="Nomecliente">Nome Filial</Label>
+                                        <Input type="text" required id="txtNomefilial" placeholder="Digite o nome da Filial"
+                                            value={nomefilial}
+                                            onChange={e => setNomefilial(e.target.value)} />
                                     </Col>
                                     <Col md="3">
                                         <Label htmlFor="Bairro">Nome Responsável</Label>
@@ -92,6 +106,17 @@ export default function Clientes() {
                                         <Input type="text" required id="txtRazaosocial" placeholder="Digite o nome do Cliente"
                                             value={razaosocial}
                                             onChange={e => setRazaosocial(e.target.value)} />
+                                    </Col>
+                                    <Col md="2">
+                                        <Label htmlFor="CEP">CEP</Label>
+                                        <InputGroup>
+                                            <Input id="txtCEP" size="16" required type="text" placeholder="00000-000"
+                                                value={cep}
+                                                onChange={e => setCep(e.target.value)} />
+                                            <InputGroupAddon addonType="append">
+                                                <Button type="button" color="secondary fa fa-truck"></Button>
+                                            </InputGroupAddon>
+                                        </InputGroup>
                                     </Col>
                                 </FormGroup>
                                 <FormGroup row>
@@ -111,31 +136,15 @@ export default function Clientes() {
                                             onChange={e => setBairro(e.target.value)}
                                         />
                                     </Col>
-                                    <Col md="2">
-                                        <Label htmlFor="CEP">CEP</Label>
-                                        <InputGroup>
-                                            <Input id="txtCEP" size="16" required type="text" placeholder="00000-000"
-                                                value={cep}
-                                                onChange={e => setCep(e.target.value)} />
-                                            <InputGroupAddon addonType="append">
-                                                <Button type="button" color="secondary fa fa-truck"></Button>
-                                            </InputGroupAddon>
-                                        </InputGroup>
+                                    <Col md="3">
+                                        <Label htmlFor="Cidade">Cidade</Label>
+                                        <Input type="text" required id="txtBairro" placeholder="Digite a Cidade"
+                                            value={cidade}
+                                            onChange={e => setCidade(e.target.value)} />
                                     </Col>
+
                                 </FormGroup>
                                 <FormGroup row>
-                                    <Col md="3">
-                                        <Label htmlFor="Tipopessoa">Parceiro</Label>
-                                        <Input required type="select" name="select" id="txtParceiroid"
-                                            value={parceiroid}
-                                            onChange={e => setParceiroid(e.target.value)}
-                                        >
-                                            <option value={undefined}>Selecione...</option>
-                                            <option value={1}>Parceiro1</option>
-                                            <option value={2}>Parceiro2</option>
-
-                                        </Input>
-                                    </Col>
                                     <Col md="2">
                                         <Label htmlFor="Numero">Número</Label>
                                         <Input type="text" required id="txtNumero" placeholder="Digite apenas Números"
@@ -147,14 +156,6 @@ export default function Clientes() {
                                         <Input type="text" id="txtComplemento" placeholder="Digite o Complemento"
                                             value={complemento}
                                             onChange={e => setComplemento(e.target.value)} />
-                                    </Col>
-                                </FormGroup>
-                                <FormGroup row>
-                                    <Col md="3">
-                                        <Label htmlFor="Cidade">Cidade</Label>
-                                        <Input type="text" required id="txtBairro" placeholder="Digite a Cidade"
-                                            value={cidade}
-                                            onChange={e => setCidade(e.target.value)} />
                                     </Col>
                                     <Col md="2">
                                         <Label htmlFor="Cnpj">CNPJ</Label>
@@ -178,25 +179,27 @@ export default function Clientes() {
                                             <option value="5">Santa Catarina</option>
                                         </Input>
                                     </Col>
+
                                 </FormGroup>
                                 <FormGroup row>
+                                    <Col md="3">
+                                        <Label htmlFor="Tipopessoa">Cliente</Label>
+                                        <Input required type="select" name="select" id="txtClienteid"
+                                            value={clienteid}
+                                            onChange={e => setClienteid(e.target.value)}
+                                        >
+                                            <option value={undefined}>Selecione...</option>
+                                            <option value={1}>Cliente1</option>
+                                            <option value={2}>Cliente2</option>
+
+                                        </Input>
+                                    </Col>
                                     <Col md="2">
                                         <Label htmlFor="Telefone">Telefone Fixo</Label>
                                         <InputGroup>
                                             <Input type="text" id="txtTelefoneFixo" placeholder="(11) 9999-9999"
                                                 value={telefonefixo}
                                                 onChange={e => setTelefonefixo(e.target.value)} />
-                                            <InputGroupAddon addonType="append">
-                                                <Button type="button" color="secondary icon-phone"></Button>
-                                            </InputGroupAddon>
-                                        </InputGroup>
-                                    </Col>
-                                    <Col md="2">
-                                        <Label htmlFor="Telefone">Telefone Celular</Label>
-                                        <InputGroup>
-                                            <Input type="text" id="txtTelefoneCelular" placeholder="(11) 9999-9999"
-                                                value={telefonecelular}
-                                                onChange={e => setTelefonecelular(e.target.value)} />
                                             <InputGroupAddon addonType="append">
                                                 <Button type="button" color="secondary icon-phone"></Button>
                                             </InputGroupAddon>
@@ -213,12 +216,70 @@ export default function Clientes() {
                                             </InputGroupAddon>
                                         </InputGroup>
                                     </Col>
+                                </FormGroup>
+                                <FormGroup row>
+                                    <Col md="3">
+                                        <Label htmlFor="Tipopessoa">Bandeira</Label>
+                                        <Input required type="select" name="select" id="txtBandeira"
+                                            value={bandeiraid}
+                                            onChange={e => setBandeiraid(e.target.value)}
+                                        >
+                                            <option value={undefined}>Selecione...</option>
+                                            <option value={1}>Bandeira1</option>
+                                            <option value={2}>Bandeira2</option>
+
+                                        </Input>
+                                    </Col>
                                     <Col md="2">
+                                        <Label htmlFor="Cidade">Ced</Label>
+                                        <Input type="text" required id="txtCed"
+                                            value={ced}
+                                            onChange={e => setCed(e.target.value)} />
+                                    </Col>
+                                    <Col md="3">
                                         <Label check className="form-check-label" htmlFor="ativo1">Ativo</Label>
                                         <AppSwitch id="rdAtivo" className={'switch-ativo'} label color={'success'} defaultChecked size={'sm'}
                                             value={ativo}
                                             onChange={e => setAtivo(e.target.value)}
                                         />
+                                    </Col>
+                                </FormGroup>
+                                <FormGroup row>
+                                    <Col md="2">
+                                        <Label htmlFor="Cidade">Horario Início da semana</Label>
+                                        <Input type="time" required id="txtHorarioiniciosemana"
+                                            value={horarioiniciosemana}
+                                            onChange={e => setHorarioiniciosemana(e.target.value)} />
+                                    </Col>
+                                    <Col md="2">
+                                        <Label htmlFor="Cidade">Horario Fim da semana</Label>
+                                        <Input type="time" required id="txtHorariofimsemana"
+                                            value={horariofimsemana}
+                                            onChange={e => setHorariofimsemana(e.target.value)} />
+                                    </Col>
+                                    <Col md="2">
+                                        <Label htmlFor="Cidade">Horario Início do Sábado</Label>
+                                        <Input type="time" required id="txtHorarioiniciosabado"
+                                            value={horarioiniciosabado}
+                                            onChange={e => setHorarioiniciosabado(e.target.value)} />
+                                    </Col>
+                                    <Col md="2">
+                                        <Label htmlFor="Cidade">Horario Fim do Sábado</Label>
+                                        <Input type="time" required id="txtHorariofimsabado"
+                                            value={horariofimsabado}
+                                            onChange={e => setHorariofimsabado(e.target.value)} />
+                                    </Col>
+                                    <Col md="2">
+                                        <Label htmlFor="Cidade">Horario Início do Domingo</Label>
+                                        <Input type="time" required id="horarioiniciodomingo"
+                                            value={horarioiniciodomingo}
+                                            onChange={e => setHorarioiniciodomingo(e.target.value)} />
+                                    </Col>
+                                    <Col md="2">
+                                        <Label htmlFor="Cidade">Horario Fim do Domingo</Label>
+                                        <Input type="time" required id="txtHorariofimdomgingo"
+                                            value={horariofimdomingo}
+                                            onChange={e => setHorariofimdomingo(e.target.value)} />
                                     </Col>
                                 </FormGroup>
                             </CardBody>

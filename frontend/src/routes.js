@@ -15,14 +15,10 @@ const PermissaoAcesso = React.lazy(() => import('./pages/Acessos/PermissaoAcesso
 const Register = React.lazy(() => import('./pages/Acessos/Register'));
 const Usuario = React.lazy(() => import('./pages/Acessos/Usuario'));
 
-// Atividades 
-const Anotacoes = React.lazy(() => import('./pages/Atividades/Anotacoes'));
-const Atividades = React.lazy(() => import('./pages/Atividades/Atividades'));
-const Oportunidades = React.lazy(() => import('./pages/Atividades/Oportunidades'));
 
 // Configurações
-const Cargos = React.lazy(() => import('./pages/Configuracoes/Cargos'));
 const Clientes = React.lazy(() => import('./pages/Configuracoes/Clientes'));
+const Filiais = React.lazy(() => import('./pages/Configuracoes/Filiais'));
 const Contatos = React.lazy(() => import('./pages/Configuracoes/Contatos'));
 const Departamentos = React.lazy(() => import('./pages/Configuracoes/Departamentos'));
 const Distribuidores = React.lazy(() => import('./pages/Configuracoes/Distribuidores'));
@@ -57,14 +53,10 @@ const routes = [
   { path: '/register', name: 'Register', component: Register },
   { path: '/usuarios', name: 'Usuários', component: Usuario },
 
-  //Atividades
-  { path: '/anotacoes', name: 'Anotações', component: Anotacoes },
-  { path: '/atividades', name: 'Atividades', component: Atividades },
-  { path: '/oportunidades', name: 'Oportunidades', component: Oportunidades },
 
 
   //Configuração
-  { path: '/cargos', name: 'Cargos', component: Cargos },
+  { path: '/filiais', name: 'Filiais', component: Filiais },
   { path: '/clientes', name: 'Clientes', component: Clientes },
   { path: '/contatos', name: 'Contatos', component: Contatos },
   { path: '/departamentos', name: 'Departamentos', component: Departamentos },

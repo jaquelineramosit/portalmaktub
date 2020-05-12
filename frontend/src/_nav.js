@@ -48,12 +48,12 @@ export default {
       children: [
         {
           name: 'Clientes',
-          url: '/contatos',
+          url: '/clientes',
           icon: 'fa fa-handshake-o',
         },
         {
           name: 'Filiais',
-          url: '/tipos-contato',
+          url: '/filiais',
           icon: 'fa fa-handshake-o',
         },
         {
