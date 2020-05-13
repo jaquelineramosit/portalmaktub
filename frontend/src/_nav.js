@@ -161,7 +161,18 @@ export default {
           icon: 'fa fa-check-square-o',
         },         
       ],
-    },    
+    },
+    {
+      name: 'Oportunidades',      
+      icon: 'fa fa-lock',
+      children: [
+        {
+          name: 'Oportunidades',
+          url: '/ordem-servico',
+          icon: 'fa fa-user-circle',
+        },
+      ]  
+    },
     {
       name: 'Acessos',      
       icon: 'fa fa-lock',

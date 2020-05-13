@@ -33,7 +33,7 @@ const Pipes = React.lazy(() => import('./pages/Configuracoes/Pipes'));
 const Produtos = React.lazy(() => import('./pages/Configuracoes/Produtos'));
 const SegmentosMercado = React.lazy(() => import('./pages/Configuracoes/SegmentosMercado'));
 const TiposAtividade = React.lazy(() => import('./pages/Configuracoes/TiposAtividade'));
-const TiposContato = React.lazy(() => import('./pages/Configuracoes/TiposContato'));
+const OrdemServic = React.lazy(() => import('./pages/OrdemServico/Cadastro'));
 
 
 const routes = [
@@ -72,7 +72,13 @@ const routes = [
   { path: '/produtos', name: 'Produtos', component: Produtos },
   { path: '/segmentos-mercado', name: 'Segmentos de Mercado', component: SegmentosMercado },
   { path: '/tipos-atividade', name: 'Tipos de Atividade', component: TiposAtividade },
-  { path: '/tipos-contato', name: 'Tipos de Contato', component: TiposContato },
+  
+
+
+  //Ordem de serviço
+
+  { path: '/ordem-servico', name: 'Ordem de Serviço', component: OrdemServic },
+  
 ];
 
 export default routes;
