@@ -83,7 +83,7 @@ export default function Oportunidades() {
                             <CardBody>
                                 <FormGroup row>
                                     <Col md="3">
-                                        <Label htmlFor="numeroos">Numero da OS</Label>
+                                        <Label htmlFor="numeros">Numero da OS</Label>
                                         <Input type="text" required id="txtNumeroOs" placeholder="Numero OS"
                                             value={numeroos}
                                             onChange={e => setNumeroOs(e.target.value)} />
@@ -91,7 +91,7 @@ export default function Oportunidades() {
                                 </FormGroup>
                                 <FormGroup row>
                                     <Col md="3">
-                                        <Label hmlFor="datasohlicitacao">Data da Solicitação</Label>
+                                        <Label htmlFor="datasolicitacao">Data da Solicitação</Label>
                                         <Input type="date" required id="txtDataSolicitacao"
                                             value={datasolicitacao}
                                             onChange={e => setDataSolicitacao(e.target.value)}

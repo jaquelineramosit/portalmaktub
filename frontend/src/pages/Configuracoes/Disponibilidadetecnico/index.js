@@ -48,7 +48,7 @@ export default function Disponibilidadetecnico() {
                                 <FormGroup row>
                                 <Col md="2">
                                         <Label htmlFor="disponibilidadeId">Disponibilidade</Label>
-                                        <Input type="select" required name="select" id="cboDisponibilidadeId"
+                                        <Input type="select" required name="select" id="cboDisponibilidadeId" multiple = {false}
                                             value={disponibilidadeId}
                                             onChange={e => setDisponibilidadeId(e.target.value)}>
                                             <option value={undefined}>Selecione...</option>
@@ -57,8 +57,8 @@ export default function Disponibilidadetecnico() {
                                         </Input>
                                     </Col>
                                     <Col md="2">
-                                        <Label htmlFor="UF">Técnico</Label>
-                                        <Input type="select" required name="select" id="cboTecnicoId"
+                                        <Label htmlFor="tecnicoId">Técnico</Label>
+                                        <Input type="select" required name="select" id="cboTecnicoId" multiple = {false}
                                             value={tecnicoId}
                                             onChange={e => setTecnicoId(e.target.value)}>
                                             <option value={undefined}>Selecione...</option>

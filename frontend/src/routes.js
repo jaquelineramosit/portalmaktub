@@ -37,7 +37,14 @@ const Statusadiantamento = React.lazy(() => import('./pages/Configuracoes/Status
 const Statusatendimento = React.lazy(() => import('./pages/Configuracoes/Statusatendimento'));
 const Statuscobranca = React.lazy(() => import('./pages/Configuracoes/Statuscobranca'));
 const Statuspagamento = React.lazy(() => import('./pages/Configuracoes/Statuspagamento'));
+
+
+// Ordem de serviços
 const OrdemServico = React.lazy(() => import('./pages/OrdemServico/Cadastro'));
+const Movimentacaoos = React.lazy(() => import('./pages/OrdemServico/Movimentacaoos'));
+const Adiantamentoos = React.lazy(() => import('./pages/OrdemServico/Adiantamentoos'));
+
+
 
 
 const routes = [
@@ -88,6 +95,8 @@ const routes = [
   //Ordem de serviço
 
   { path: '/ordem-servico', name: 'Ordem de Serviço', component: OrdemServico },
+  { path: '/movimentacao-os', name: 'Movimentacao de OS', component: Movimentacaoos },
+  { path: '/adiantamento-os', name: 'Adiantamento de OS', component: Adiantamentoos },
   
 ];
 
