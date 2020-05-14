@@ -184,7 +184,7 @@ export default {
         },
         {
           name: 'Perfil de Acesso',
-          url: '/perfil-acesso',
+          url: '/perfis-acesso',
           icon: 'fa fa-id-card',
         },
         {
@@ -209,7 +209,7 @@ export default {
         },
         {
           name: 'Funções',
-          url: '/funcoes',
+          url: '/funcao',
           icon: 'fa fa-code',
         },
       ],

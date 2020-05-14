@@ -2,7 +2,7 @@ const connection = require('../../database/connection');
 const getDate = require('../../utils/getDate');
 module.exports = {
     async getAll (request, response) {
-        const acessopagina = await connection('acessopagina').select('*');
+        const acessopagina = await connection('permissaoacesso').select('*');
     
         return response.json(acessopagina);
     },
@@ -10,7 +10,7 @@ module.exports = {
     async getById (request, response) {
         const  { id }  = request.params;
 
-        const acessopagina = await connection('acessopagina')
+        const acessopagina = await connection('permissaoacesso')
             .where('id', id)
             .select()
             .first();
@@ -22,14 +22,14 @@ module.exports = {
         const  usuarioId  = request.headers.authorization;        
         const  dataUltModif = getDate();
 
-        const {perfilacessoId, moduloId, paginaId, perfil, descricao, ativo } = request.body;
+        const {perfilacessoid, moduloid, paginaid, subpaginaid, funcaoid, ativo } = request.body;
         
-        const [id] = await connection('acessopagina').insert({    
-                perfilacessoId,
-                moduloId,
-                paginaId,
-                perfil,
-                descricao, 
+        const [id] = await connection('permissaoacesso').insert({    
+                perfilacessoid,
+                moduloid,
+                paginaid,
+                subpaginaid,
+                funcaoid,
                 ativo,
                 dataUltModif,
                 usuarioId
@@ -43,13 +43,12 @@ module.exports = {
             const  usuarioId  = request.headers.authorization;            
             const  dataUltModif = getDate();
 
-            const {perfilacessoId, moduloId, paginaId, perfil, descricao, ativo } = request.body;
+            const {perfilacessoId, moduloId, paginaId, descricao, ativo } = request.body;
     
             await connection('acessopagina').where('id', id).update({                
                 perfilacessoId,
                 moduloId,
                 paginaId,
-                perfil,
                 descricao, 
                 ativo,
                 dataUltModif,

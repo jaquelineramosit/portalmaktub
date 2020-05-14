@@ -14,6 +14,7 @@ const Password = React.lazy(() => import('./pages/Acessos/Password'));
 const PerfilAcesso = React.lazy(() => import('./pages/Acessos/PerfilAcesso'));
 const PermissaoAcesso = React.lazy(() => import('./pages/Acessos/PermissaoAcesso'));
 const Register = React.lazy(() => import('./pages/Acessos/Register'));
+const Funcao = React.lazy(() => import('./pages/Acessos/Funcao'));
 const Usuario = React.lazy(() => import('./pages/Acessos/Usuario'));
 
 
@@ -50,9 +51,10 @@ const routes = [
   { path: '/modulos', name: 'Módulos', component: Modulo },
   { path: '/paginas', name: 'Páginas', component: Pagina },
   { path: '/sub-paginas', name: 'Sub Páginas', component: SubPagina },   
-  { path: '/perfis-acesso', name: 'Perfis de Acesso', component: PerfilAcesso },
+  { path: '/perfis-acesso', name: 'Perfil de Acesso', component: PerfilAcesso },
   { path: '/permissao-acesso', name: 'Permissão deAcesso', component: PermissaoAcesso },
   { path: '/register', name: 'Register', component: Register },
+  { path: '/funcao', name: 'Função', component: Funcao },
   { path: '/usuarios', name: 'Usuários', component: Usuario },
 
 

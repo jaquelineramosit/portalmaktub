@@ -25,7 +25,7 @@ export default function Pagina() {
         try {
             const response = await api.post('/sub-paginas', data, {
                 headers: {
-                    Authorization: 1,
+                    Authorization: usuarioId,
                 }
             });
             alert(`Feito o cadastro com sucesso`);
