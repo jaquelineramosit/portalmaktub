@@ -9,9 +9,12 @@ const Dashboardv3 = React.lazy(() => import('./pages/Dashboards/Dashboardv3/inde
 const Logon = React.lazy(() => import('./pages/Acessos/Logon'));
 const Modulo = React.lazy(() => import('./pages/Acessos/Modulo'));
 const Pagina = React.lazy(() => import('./pages/Acessos/Pagina'));
+const SubPagina = React.lazy(() => import('./pages/Acessos/SubPagina'));
+const Password = React.lazy(() => import('./pages/Acessos/Password'));
 const PerfilAcesso = React.lazy(() => import('./pages/Acessos/PerfilAcesso'));
 const PermissaoAcesso = React.lazy(() => import('./pages/Acessos/PermissaoAcesso'));
 const Register = React.lazy(() => import('./pages/Acessos/Register'));
+const Funcao = React.lazy(() => import('./pages/Acessos/Funcao'));
 const Usuario = React.lazy(() => import('./pages/Acessos/Usuario'));
 
 
@@ -34,6 +37,7 @@ const Statusadiantamento = React.lazy(() => import('./pages/Configuracoes/Status
 const Statusatendimento = React.lazy(() => import('./pages/Configuracoes/Statusatendimento'));
 const Statuscobranca = React.lazy(() => import('./pages/Configuracoes/Statuscobranca'));
 const Statuspagamento = React.lazy(() => import('./pages/Configuracoes/Statuspagamento'));
+const OrdemServico = React.lazy(() => import('./pages/OrdemServico/Cadastro'));
 
 
 const routes = [
@@ -47,10 +51,12 @@ const routes = [
   // Acessos
   { path: '/logon', name: 'Logon', component: Logon },
   { path: '/modulos', name: 'Módulos', component: Modulo },
-  { path: '/paginas', name: 'Páginas', component: Pagina },  
-  { path: '/perfis-acesso', name: 'Perfis de Acesso', component: PerfilAcesso },
+  { path: '/paginas', name: 'Páginas', component: Pagina },
+  { path: '/sub-paginas', name: 'Sub Páginas', component: SubPagina },   
+  { path: '/perfis-acesso', name: 'Perfil de Acesso', component: PerfilAcesso },
   { path: '/permissao-acesso', name: 'Permissão deAcesso', component: PermissaoAcesso },
   { path: '/register', name: 'Register', component: Register },
+  { path: '/funcao', name: 'Função', component: Funcao },
   { path: '/usuarios', name: 'Usuários', component: Usuario },
 
 
@@ -74,6 +80,15 @@ const routes = [
   { path: '/status-atendimento', name: 'Status de atendimento', component: Statusatendimento },
   { path: '/status-cobranca', name: 'Status de Cobranca', component: Statuscobranca },
   { path: '/status-pagamento', name: 'Status de pagamento', component: Statuspagamento },
+  
+  
+
+
+
+  //Ordem de serviço
+
+  { path: '/ordem-servico', name: 'Ordem de Serviço', component: OrdemServico },
+  
 ];
 
 export default routes;

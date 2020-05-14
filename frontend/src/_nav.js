@@ -161,7 +161,18 @@ export default {
           icon: 'fa fa-check-square-o',
         },         
       ],
-    },    
+    },
+    {
+      name: 'Ordem de Serviço',      
+      icon: 'fa fa-lock',
+      children: [
+        {
+          name: 'Ordem de Serviço',
+          url: '/ordem-servico',
+          icon: 'fa fa-user-circle',
+        },
+      ]  
+    },
     {
       name: 'Acessos',      
       icon: 'fa fa-lock',
@@ -173,7 +184,7 @@ export default {
         },
         {
           name: 'Perfil de Acesso',
-          url: '/perfil-acesso',
+          url: '/perfis-acesso',
           icon: 'fa fa-id-card',
         },
         {
@@ -193,12 +204,12 @@ export default {
         },
         {
           name: 'Sub Páginas',
-          url: '/paginas',
+          url: '/sub-paginas',
           icon: 'fa fa-window-restore',
         },
         {
           name: 'Funções',
-          url: '/funcoes',
+          url: '/funcao',
           icon: 'fa fa-code',
         },
       ],

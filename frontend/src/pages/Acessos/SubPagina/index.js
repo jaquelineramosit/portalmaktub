@@ -1,31 +1,29 @@
 import React, { useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
 import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, InputGroup, InputGroupAddon, CardFooter, Form, FormFeedback } from 'reactstrap';
 import { AppSwitch } from '@coreui/react'
 import '../../../global.css';
 import api from '../../../../src/services/api';
 
 export default function Pagina() {
-    const [moduloId, setModuloId] = useState('');
-    const [nomePagina, setnomePagina] = useState('');
+    const [paginaid, setPaginaId] = useState('');
+    const [nomesubpagina, setNomeSubPagina] = useState('');
     const [descricao, setDescricao] = useState('');    
     const [ativo, setAtivo] = useState(true);
     const usuarioId = localStorage.getItem('userId');    
-    //const history = useHistory();
 
-    async function handlePagina(e) {
+    async function handleSubPagina(e) {
         e.preventDefault();
         
         const data = {
-            moduloId,
-            nomePagina,
+            paginaid,
+            nomesubpagina,
             descricao, 
-            ativo,         
+            ativo,       
         };
         
 
         try {
-            const response = await api.post('/paginas', data, {
+            const response = await api.post('/sub-paginas', data, {
                 headers: {
                     Authorization: usuarioId,
                 }
@@ -40,21 +38,21 @@ export default function Pagina() {
     }
     return (        
         <div className="animated fadeIn">
-            <Form onSubmit={handlePagina}>
+            <Form onSubmit={handleSubPagina}>
                 <Row>                              
                     <Col xs="12" md="12">
                         <Card>
                             <CardHeader>
-                                <strong>Página</strong>
+                                <strong>Sub Página</strong>
                                 <small> nova</small>
                             </CardHeader>
                             <CardBody>
                                 <FormGroup row>
                                     <Col md="4">
-                                        <Label htmlFor="moduloId">Qual o Módulo</Label>
-                                        <Input type="select" required id="cboModuloId"
-                                        value={moduloId}
-                                        onChange={ e => setModuloId(e.target.value)} >
+                                        <Label htmlFor="paginaId">Qual a Página?</Label>
+                                        <Input type="select" required id="cboPaginaId"
+                                        value={paginaid}
+                                        onChange={ e => setPaginaId(e.target.value)} >
 
                                             <option value={undefined}>Selecione...</option>
                                             <option value={1}>Domingo</option>
@@ -67,10 +65,10 @@ export default function Pagina() {
                                         </Input>                                      
                                     </Col>
                                     <Col md="4">
-                                        <Label htmlFor="nomePagina">Nome da Página</Label>
-                                        <Input type="text" id="txtNomePagina" multiple placeholder="Digite o nome da Página"
-                                        value={nomePagina}
-                                        onChange={ e => setnomePagina(e.target.value)}
+                                        <Label htmlFor="nomeSubPagina">Nome da Su Página</Label>
+                                        <Input type="text" id="txtNomeSubPagina" multiple placeholder="Digite o nome da Sub Página"
+                                        value={nomesubpagina}
+                                        onChange={ e => setNomeSubPagina(e.target.value)}
                                         />
                                     </Col> 
                                 </FormGroup> 
