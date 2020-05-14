@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
-import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, InputGroup, InputGroupAddon, CardFooter, Form} from 'reactstrap';
+import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, InputGroup, InputGroupAddon, CardFooter, Form, FormFeedback } from 'reactstrap';
 import { AppSwitch } from '@coreui/react'
 import '../../../global.css';
 import api from '../../../../src/services/api';
 
-export default function Clientes() {
-    const [nomecliente, setNomecliente] = useState('');
-    const [nomeresponsavel, setNomeresponsavel] = useState('');
-    const [razaosocial, setRazaosocial] = useState('');
-    const [cnpj, setCnpj] = useState('');
+export default function Tecnico() {
+    const [nometecnico, setNometecnico] = useState('');
+    const [tipotecnicoid, setTipotecnicoid] = useState('');
+    const [rg, setRg] = useState('');
+    const [cpf, setCpf] = useState('');  
     const [logradouro, setLogradouro] = useState('');
     const [numero, setNumero] = useState('');
     const [complemento, setComplemento] = useState('');
@@ -18,20 +18,19 @@ export default function Clientes() {
     const [estado, setEstado] = useState('');
     const [telefonefixo, setTelefonefixo] = useState('');
     const [telefonecelular, setTelefonecelular] = useState('');
-    const [telefoneresponsavel, setTelefoneresponsavel] = useState('');
-    const [parceiroid, setParceiroid] = useState('');
     const [ativo, setAtivo] = useState("true");
     const usuarioId = localStorage.getItem('userId');
 
 
 
-    async function handleClientes(e) {
+    async function handleTecnico(e) {
         e.preventDefault();
 
         const data = {
-            nomecliente,
-            razaosocial,
-            cnpj,
+            tipotecnicoid, 
+            nometecnico,
+            rg,
+            cpf,
             logradouro,
             numero,
             complemento,
@@ -40,15 +39,12 @@ export default function Clientes() {
             cidade,
             estado,
             telefonefixo,
-            telefonecelular,
-            telefoneresponsavel,
-            parceiroid,
-            nomeresponsavel,
+            telefonecelular,        
             ativo
         };
 
         try {
-            const response = await api.post('clientes', data, {
+            const response = await api.post('tecnico', data, {
                 headers: {
                     Authorization: usuarioId,
                 }
@@ -63,34 +59,34 @@ export default function Clientes() {
 
     return (
         <div className="animated fadeIn">
-            <Form onSubmit={handleClientes}>
+            <Form onSubmit={handleTecnico}>
                 <Row>
                     <Col xs="12" md="12">
                         <Card>
                             <CardHeader>
-                                <strong>Clientes</strong>
+                                <strong>Técnico</strong>
                                 <small> novo</small>
                             </CardHeader>
                             <CardBody>
                                 <FormGroup row>
                                     <Col md="4">
-                                        <Label htmlFor="nomecliente">Nome Cliente</Label>
-                                        <Input type="text" required id="txtNomecliente" placeholder="Digite o nome do Cliente"
-                                            value={nomecliente}
-                                            onChange={e => setNomecliente(e.target.value)} />
+                                        <Label htmlFor="nometecnico">Nome Cliente</Label>
+                                        <Input type="text" required id="txtNometecnico" placeholder="Digite o nome do Técnico"
+                                            value={nometecnico}
+                                            onChange={e => setNometecnico(e.target.value)} />
                                     </Col>
                                     <Col md="3">
-                                        <Label htmlFor="bairro">Nome Responsável</Label>
-                                        <Input type="text" required id="txtBairro" placeholder="Digite o Nome do responsável"
-                                            value={nomeresponsavel}
-                                            onChange={e => setNomeresponsavel(e.target.value)}
+                                        <Label htmlFor="rg">RG</Label>
+                                        <Input type="text" required id="txtRg" placeholder="Digite o RG do Técnico"
+                                            value={rg}
+                                            onChange={e => setRg(e.target.value)}
                                         />
                                     </Col>
                                     <Col md="3">
-                                        <Label htmlFor="razaosocial">Razão Social</Label>
-                                        <Input type="text" required id="txtRazaosocial" placeholder="Digite o nome do Cliente"
-                                            value={razaosocial}
-                                            onChange={e => setRazaosocial(e.target.value)} />
+                                        <Label htmlFor="cpf">CPF</Label>
+                                        <Input type="text" required id="txtCpf" placeholder="Digite o CPF do Técnico"
+                                            value={cpf}
+                                            onChange={e => setCpf(e.target.value)} />
                                     </Col>
                                 </FormGroup>
                                 <FormGroup row>
@@ -123,18 +119,6 @@ export default function Clientes() {
                                     </Col>
                                 </FormGroup>
                                 <FormGroup row>
-                                    <Col md="3">
-                                        <Label htmlFor="parceiroid">Parceiro</Label>
-                                        <Input required type="select" name="select" id="cboParceiroid"
-                                            value={parceiroid}
-                                            onChange={e => setParceiroid(e.target.value)}
-                                        >
-                                            <option value={undefined}>Selecione...</option>
-                                            <option value={1}>Parceiro1</option>
-                                            <option value={2}>Parceiro2</option>
-
-                                        </Input>
-                                    </Col>
                                     <Col md="2">
                                         <Label htmlFor="numero">Número</Label>
                                         <Input type="text" required id="txtNumero" placeholder="Digite apenas Números"
@@ -147,26 +131,17 @@ export default function Clientes() {
                                             value={complemento}
                                             onChange={e => setComplemento(e.target.value)} />
                                     </Col>
-                                </FormGroup>
-                                <FormGroup row>
-                                    <Col md="3">
+                              
+                                <Col md="3">
                                         <Label htmlFor="cidade">Cidade</Label>
                                         <Input type="text" required id="txtCidade" placeholder="Digite a Cidade"
                                             value={cidade}
                                             onChange={e => setCidade(e.target.value)} />
                                     </Col>
-                                    <Col md="2">
-                                        <Label htmlFor="cnpj">CNPJ</Label>
-                                        <InputGroup>
-                                            <Input type="text" required id="txtCnpj"
-                                                placeholder="Digite a CNPJ"
-                                                value={cnpj}
-                                                onChange={e => setCnpj(e.target.value)} />
-                                        </InputGroup>
-                                    </Col>
+                                    
                                     <Col md="2">
                                         <Label htmlFor="estado">UF</Label>
-                                        <Input type="select" required name="select" id="cboEstado"
+                                        <Input type="select" required name="select" id="cboEstado" multiple={false}
                                             value={estado}
                                             onChange={e => setEstado(e.target.value)}>
                                             <option value={undefined}>Selecione...</option>
@@ -177,7 +152,7 @@ export default function Clientes() {
                                             <option value="5">Santa Catarina</option>
                                         </Input>
                                     </Col>
-                                </FormGroup>
+                                    </FormGroup>                              
                                 <FormGroup row>
                                     <Col md="2">
                                         <Label htmlFor="telefonefixo">Telefone Fixo</Label>
@@ -202,15 +177,14 @@ export default function Clientes() {
                                         </InputGroup>
                                     </Col>
                                     <Col md="2">
-                                        <Label htmlFor="telefoneresponsavel">Telefone Responsável</Label>
-                                        <InputGroup>
-                                            <Input type="text" id="txtTelefoneresponsavel" placeholder="(11) 9999-9999"
-                                                value={telefoneresponsavel}
-                                                onChange={e => setTelefoneresponsavel(e.target.value)} />
-                                            <InputGroupAddon addonType="append">
-                                                <Button type="button" color="secondary icon-phone"></Button>
-                                            </InputGroupAddon>
-                                        </InputGroup>
+                                        <Label htmlFor="tipotecnicoid">Tipo do Técnico</Label>
+                                        <Input type="select" required name="select" id="cbotipotecnicoid"
+                                            value={tipotecnicoid}
+                                            onChange={e => setTipotecnicoid(e.target.value)}>
+                                            <option value={undefined}>Selecione...</option>
+                                            <option value="1">Tipo1</option>   
+                                            <option value="2">Tipo2</option>                                         
+                                        </Input>
                                     </Col>
                                     <Col md="2">
                                         <Label check className="form-check-label" htmlFor="ativo1">Ativo</Label>

@@ -9,7 +9,6 @@ const Dashboardv3 = React.lazy(() => import('./pages/Dashboards/Dashboardv3/inde
 const Logon = React.lazy(() => import('./pages/Acessos/Logon'));
 const Modulo = React.lazy(() => import('./pages/Acessos/Modulo'));
 const Pagina = React.lazy(() => import('./pages/Acessos/Pagina'));
-const Password = React.lazy(() => import('./pages/Acessos/Password'));
 const PerfilAcesso = React.lazy(() => import('./pages/Acessos/PerfilAcesso'));
 const PermissaoAcesso = React.lazy(() => import('./pages/Acessos/PermissaoAcesso'));
 const Register = React.lazy(() => import('./pages/Acessos/Register'));
@@ -19,21 +18,22 @@ const Usuario = React.lazy(() => import('./pages/Acessos/Usuario'));
 // Configurações
 const Clientes = React.lazy(() => import('./pages/Configuracoes/Clientes'));
 const Filiais = React.lazy(() => import('./pages/Configuracoes/Filiais'));
-const Contatos = React.lazy(() => import('./pages/Configuracoes/Contatos'));
-const Departamentos = React.lazy(() => import('./pages/Configuracoes/Departamentos'));
-const Distribuidores = React.lazy(() => import('./pages/Configuracoes/Distribuidores'));
-const ExpectativasFechamento = React.lazy(() => import('./pages/Configuracoes/ExpectativasFechamento'));
-const FasesPipe = React.lazy(() => import('./pages/Configuracoes/FasesPipe'));
-const Marcas = React.lazy(() => import('./pages/Configuracoes/Marcas'));
-const Metas = React.lazy(() => import('./pages/Configuracoes/Metas'));
-const MetasVendedores = React.lazy(() => import('./pages/Configuracoes/MetasVendedores'));
-const MotivosPerda = React.lazy(() => import('./pages/Configuracoes/MotivosPerda'));
-const Paises = React.lazy(() => import('./pages/Configuracoes/Paises'));
-const Pipes = React.lazy(() => import('./pages/Configuracoes/Pipes'));
-const Produtos = React.lazy(() => import('./pages/Configuracoes/Produtos'));
-const SegmentosMercado = React.lazy(() => import('./pages/Configuracoes/SegmentosMercado'));
-const TiposAtividade = React.lazy(() => import('./pages/Configuracoes/TiposAtividade'));
-const TiposContato = React.lazy(() => import('./pages/Configuracoes/TiposContato'));
+const Bandeira = React.lazy(() => import('./pages/Configuracoes/Bandeira'));
+const Parceiros = React.lazy(() => import('./pages/Configuracoes/Parceiros'));
+const Tecnico = React.lazy(() => import('./pages/Configuracoes/Tecnico'));
+const Tipotecnico = React.lazy(() => import('./pages/Configuracoes/Tipotecnico'));
+const Disponibilidade = React.lazy(() => import('./pages/Configuracoes/Disponibilidade'));
+const Disponibilidadetecnico = React.lazy(() => import('./pages/Configuracoes/Disponibilidadetecnico'));
+const Tipoprojeto = React.lazy(() => import('./pages/Configuracoes/Tipoprojeto'));
+const Projetotecnico = React.lazy(() => import('./pages/Configuracoes/Projetotecnico'));
+const Ferramentas = React.lazy(() => import('./pages/Configuracoes/Ferramentas'));
+const Dadosbancarios = React.lazy(() => import('./pages/Configuracoes/Dadosbancarios'));
+const Banco = React.lazy(() => import('./pages/Configuracoes/Banco'));
+const Tipoconta = React.lazy(() => import('./pages/Configuracoes/Tipoconta'));
+const Statusadiantamento = React.lazy(() => import('./pages/Configuracoes/Statusadiantamento'));
+const Statusatendimento = React.lazy(() => import('./pages/Configuracoes/Statusatendimento'));
+const Statuscobranca = React.lazy(() => import('./pages/Configuracoes/Statuscobranca'));
+const Statuspagamento = React.lazy(() => import('./pages/Configuracoes/Statuspagamento'));
 
 
 const routes = [
@@ -58,21 +58,22 @@ const routes = [
   //Configuração
   { path: '/filiais', name: 'Filiais', component: Filiais },
   { path: '/clientes', name: 'Clientes', component: Clientes },
-  { path: '/contatos', name: 'Contatos', component: Contatos },
-  { path: '/departamentos', name: 'Departamentos', component: Departamentos },
-  { path: '/distribuidores', name: 'Distribuidores', component: Distribuidores },
-  { path: '/expectativas-fechamento', name: 'Expectativas de Fechamento', component: ExpectativasFechamento },
-  { path: '/fases-pipe', name: 'Fases do Pipe', component: FasesPipe },
-  { path: '/marcas', name: 'Marcas', component: Marcas },
-  { path: '/metas', name: 'Metas', component: Metas },
-  { path: '/metas-vendedores', name: 'Metas de Vendedores', component: MetasVendedores },
-  { path: '/motivos-perda', name: 'Motivos de Perda', component: MotivosPerda },
-  { path: '/paises', name: 'Países', component: Paises },
-  { path: '/pipes', name: 'Pipes', component: Pipes },
-  { path: '/produtos', name: 'Produtos', component: Produtos },
-  { path: '/segmentos-mercado', name: 'Segmentos de Mercado', component: SegmentosMercado },
-  { path: '/tipos-atividade', name: 'Tipos de Atividade', component: TiposAtividade },
-  { path: '/tipos-contato', name: 'Tipos de Contato', component: TiposContato },
+  { path: '/bandeira', name: 'Bandeira', component: Bandeira },
+  { path: '/parceiros', name: 'Parceiros', component: Parceiros },
+  { path: '/tecnico', name: 'Tecnico', component: Tecnico },
+  { path: '/tipo-tecnico', name: 'Tipo do Tecnico', component: Tipotecnico },
+  { path: '/disponibilidade', name: 'disponibilidade', component: Disponibilidade },
+  { path: '/disponibilidade-tecnico', name: 'Disponibilidade do tecnico', component: Disponibilidadetecnico },
+  { path: '/tipo-projeto', name: 'Tipo de Projeto', component: Tipoprojeto },
+  { path: '/projeto-tecnico', name: 'Projeto X Tecnico', component: Projetotecnico },
+  { path: '/ferramentas', name: 'Ferramentas', component: Ferramentas },
+  { path: '/dados-bancarios', name: 'Dados bancarios', component: Dadosbancarios },
+  { path: '/banco', name: 'Banco', component: Banco },
+  { path: '/tipo-conta', name: 'Tipo de Conta', component: Tipoconta },
+  { path: '/status-adiantamento', name: 'Status de adiantamento', component: Statusadiantamento },
+  { path: '/status-atendimento', name: 'Status de atendimento', component: Statusatendimento },
+  { path: '/status-cobranca', name: 'Status de Cobranca', component: Statuscobranca },
+  { path: '/status-pagamento', name: 'Status de pagamento', component: Statuspagamento },
 ];
 
 export default routes;

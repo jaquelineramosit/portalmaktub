@@ -74,12 +74,12 @@ export default {
       children: [
         {
           name: 'Técnicos',
-          url: '/metas',
+          url: '/tecnico',
           icon: 'icon-support',
         },
         {
           name: 'Tipos de Técnicos',
-          url: '/metas-vendedores',
+          url: '/Tipo-tecnico',
           icon: 'icon-support',
         },
         {
@@ -89,7 +89,7 @@ export default {
         },
         {
           name: 'Dispon. Técnicos',
-          url: '/disponibilidade-tecnicos',
+          url: '/disponibilidade-tecnico',
           icon: 'icon-support',
         },                
       ],
@@ -100,17 +100,17 @@ export default {
       children: [
         {
           name: 'Tipo de Projeto',
-          url: '/metas',
+          url: '/tipo-projeto',
           icon: 'icon-note',
         },
         {
           name: 'Projeto x Técnico',
-          url: '/metas-vendedores',
+          url: '/projeto-tecnico',
           icon: 'icon-note',
         },
         {
           name: 'Ferramentas',
-          url: '/disponibilidade',
+          url: '/ferramentas',
           icon: 'icon-note',
         },                       
       ],
@@ -121,17 +121,17 @@ export default {
       children: [
         {
           name: 'Dados Bancários',
-          url: '/pipes',
+          url: '/dados-bancarios',
           icon: 'fa fa-credit-card-alt',
         },
         {
           name: 'Bancos',
-          url: '/pipes',
+          url: '/banco',
           icon: 'fa fa-credit-card-alt',
         },
         {
           name: 'Tipo de Conta',
-          url: '/fases-pipe',
+          url: '/tipo-conta',
           icon: 'fa fa-credit-card-alt',
         },        
       ],
@@ -142,22 +142,22 @@ export default {
       children: [
         {
         name: 'Status Adiantamento',
-        url: '/produtos',
+        url: '/status-adiantamento',
         icon: 'fa fa-check-square-o',          
         },
         {
           name: 'Status Atendimento',
-          url: '/distribuidores',
+          url: '/status-atendimento',
           icon: 'fa fa-check-square-o',          
         },        
         {
           name: 'Status Cobrança',
-          url: '/marcas',
+          url: '/status-cobranca',
           icon: 'fa fa-check-square-o',
         },
         {
           name: 'Status Pagamento',
-          url: '/marcas',
+          url: '/status-pagamento',
           icon: 'fa fa-check-square-o',
         },         
       ],
