@@ -9,6 +9,7 @@ const Dashboardv3 = React.lazy(() => import('./pages/Dashboards/Dashboardv3/inde
 const Logon = React.lazy(() => import('./pages/Acessos/Logon'));
 const Modulo = React.lazy(() => import('./pages/Acessos/Modulo'));
 const Pagina = React.lazy(() => import('./pages/Acessos/Pagina'));
+const SubPagina = React.lazy(() => import('./pages/Acessos/SubPagina'));
 const Password = React.lazy(() => import('./pages/Acessos/Password'));
 const PerfilAcesso = React.lazy(() => import('./pages/Acessos/PerfilAcesso'));
 const PermissaoAcesso = React.lazy(() => import('./pages/Acessos/PermissaoAcesso'));
@@ -33,7 +34,7 @@ const Pipes = React.lazy(() => import('./pages/Configuracoes/Pipes'));
 const Produtos = React.lazy(() => import('./pages/Configuracoes/Produtos'));
 const SegmentosMercado = React.lazy(() => import('./pages/Configuracoes/SegmentosMercado'));
 const TiposAtividade = React.lazy(() => import('./pages/Configuracoes/TiposAtividade'));
-const OrdemServic = React.lazy(() => import('./pages/OrdemServico/Cadastro'));
+const OrdemServico = React.lazy(() => import('./pages/OrdemServico/Cadastro'));
 
 
 const routes = [
@@ -47,7 +48,8 @@ const routes = [
   // Acessos
   { path: '/logon', name: 'Logon', component: Logon },
   { path: '/modulos', name: 'Módulos', component: Modulo },
-  { path: '/paginas', name: 'Páginas', component: Pagina },  
+  { path: '/paginas', name: 'Páginas', component: Pagina },
+  { path: '/sub-paginas', name: 'Sub Páginas', component: SubPagina },   
   { path: '/perfis-acesso', name: 'Perfis de Acesso', component: PerfilAcesso },
   { path: '/permissao-acesso', name: 'Permissão deAcesso', component: PermissaoAcesso },
   { path: '/register', name: 'Register', component: Register },
@@ -75,9 +77,10 @@ const routes = [
   
 
 
+
   //Ordem de serviço
 
-  { path: '/ordem-servico', name: 'Ordem de Serviço', component: OrdemServic },
+  { path: '/ordem-servico', name: 'Ordem de Serviço', component: OrdemServico },
   
 ];
 

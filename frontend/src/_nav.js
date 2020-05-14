@@ -163,11 +163,11 @@ export default {
       ],
     },
     {
-      name: 'Oportunidades',      
+      name: 'Ordem de Serviço',      
       icon: 'fa fa-lock',
       children: [
         {
-          name: 'Oportunidades',
+          name: 'Ordem de Serviço',
           url: '/ordem-servico',
           icon: 'fa fa-user-circle',
         },
@@ -204,7 +204,7 @@ export default {
         },
         {
           name: 'Sub Páginas',
-          url: '/paginas',
+          url: '/sub-paginas',
           icon: 'fa fa-window-restore',
         },
         {
