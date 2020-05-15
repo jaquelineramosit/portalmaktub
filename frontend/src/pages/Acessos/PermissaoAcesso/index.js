@@ -139,14 +139,14 @@ export default function PerfilAcesso() {
                                             </Col>
                                         </FormGroup>
                                 <FormGroup row>                                     
-                                    <Col md="2">
+                                <Col md="2">
                                         <Label htmlFor="ativo">Ativo</Label>
                                         <AppSwitch id="rdAtivo" className={'switch-ativo'}  label color={'success'} 
                                             defaultChecked 
                                             value={ativo}
                                             onChange={ e => setAtivo(e.target.value)}
                                             size={'sm'} />
-                                    </Col>                                                           
+                                    </Col>                                                                   
                                 </FormGroup>                                                                                         
                             </CardBody>
                             <CardFooter className="text-center">
