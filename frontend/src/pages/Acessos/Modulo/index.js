@@ -7,7 +7,7 @@ import api from '../../../../src/services/api';
 export default function Modulo() {
     const [nomeModulo, setnomeModulo] = useState('');
     const [descricao, setdescricao] = useState('');  
-    const [ativo, setAtivo] = useState(true);
+    const [ativo, setAtivo] = useState('true');
     const usuarioId = localStorage.getItem('userId');    
   
 

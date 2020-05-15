@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
 import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, InputGroup, InputGroupAddon, CardFooter, Form, FormFeedback } from 'reactstrap';
 import { AppSwitch } from '@coreui/react'
 import '../../../global.css';
@@ -91,19 +90,22 @@ export default function Oportunidades() {
                                 </FormGroup>
                                 <FormGroup row>
                                     <Col md="3">
-                                        <Label hmlFor="datasohlicitacao">Data da Solicitação</Label>
+                                        <Label htmlFor="datasohlicitacao">Data da Solicitação</Label>
+                                        <InputGroup>
                                         <Input type="date" required id="txtDataSolicitacao"
                                             value={datasolicitacao}
-                                            onChange={e => setDataSolicitacao(e.target.value)}
-                                        />
+                                            onChange={e => setDataSolicitacao(e.target.value)} />
+                                                    <InputGroupAddon addonType="append">
+                                                        <Button type="button" color= "secondary  fa fa-calendar fa-lg"></Button>
+                                                    </InputGroupAddon>
+                                        </InputGroup>            
                                     </Col>
                                     <Col md="3">
                                             <Label htmlFor="diadasemana">Dia da Semana</Label>
-                                        
+                                            <InputGroup>
                                             <Input required type="select" name="select" id="cobDiaSemana"
                                             value={diadasemana}
                                             onChange={e => setDiadaSemana(e.target.value)} >
-
                                             <option value={undefined}>Selecione...</option>
                                             <option value={1}>Domingo</option>
                                             <option value={2}>Segunda-Feira</option>
@@ -113,29 +115,44 @@ export default function Oportunidades() {
                                             <option value={6}>Sexta-Feira</option>
                                             <option value={7}>Sabado</option>
                                         </Input>
+                                                     <InputGroupAddon addonType="append">
+                                                        <Button type="button" color= "secondary  fa fa-calendar fa-lg"></Button>
+                                                    </InputGroupAddon>
+                                        </InputGroup>
+
                                     </Col>
                                     <Col md="3 ">
                                         <Label htmlFor="dataatendimento">Data atendimento</Label>
-                                        <Input type="date" required id="txtDataAtendimento" 
-                                            value={dataatendimento}
-                                            onChange={e => setDataAtendimento(e.target.value)} />
+                                        <InputGroup>
+                                            <Input type="date" required id="txtDataAtendimento" 
+                                                value={dataatendimento}
+                                                onChange={e => setDataAtendimento(e.target.value)} />
+
+                                                <InputGroupAddon addonType="append">
+                                                    <Button type="button" color= "secondary  fa fa-calendar fa-lg"></Button>
+                                                </InputGroupAddon>
+                                        </InputGroup>
                                     </Col>
                                 </FormGroup>
                                 <FormGroup row>
                                     <Col md="3">
                                         <Label htmlFor="clientefilialid">Filial do Cliente</Label>
-                                        <Input required type="select" name="select" id="cboParceiro"
-                                            value={clientefilialid}
-                                            onChange={e => setClienteFilialId(e.target.value)}
-                                        >
-                                            <option value={undefined}>Selecione...</option>
-                                            <option value={1}>Filial1</option>
-                                            <option value={2}>Filial2</option>
-
-                                        </Input>
+                                        <InputGroup>
+                                            <Input required type="select" name="select" id="cboParceiro"
+                                                value={clientefilialid}
+                                                onChange={e => setClienteFilialId(e.target.value)} >
+                                                <option value={undefined}>Selecione...</option>
+                                                <option value={1}>Filial1</option>
+                                                <option value={2}>Filial2</option>
+                                            </Input>
+                                        <InputGroupAddon addonType="append">
+                                            <Button type="button" color= "secondary  fa fa-building-o"></Button>
+                                        </InputGroupAddon>
+                                        </InputGroup>
                                     </Col>
                                     <Col md="3">
                                         <Label htmlFor="tecnicoid"> Tecinico</Label>
+                                        <InputGroup>
                                         <Input required type="select" name="select" id="cobTecnico"
                                             value={tecnicoid}
                                             onChange={e => setTecnicoId(e.target.value)} >
@@ -143,18 +160,26 @@ export default function Oportunidades() {
                                             <option value={1}>Tecnico1</option>
                                             <option value={2}>Tecnico2</option>
                                         </Input>
+                                        <InputGroupAddon addonType="append">
+                                            <Button type="button" color= "secondary  fa fa-user-md"></Button>
+                                        </InputGroupAddon>
+                                        </InputGroup>
                                     </Col>
                                     <Col md="3">
                                         <Label htmlFor="tiposervicoid">Tipo de Serviço</Label>
+                                        <InputGroup>
                                         <Input required type="select" name="select" id="cboTipoServico"
                                             value={tiposervicoid}
-                                            onChange={e => setTipoServicoId(e.target.value)}
-                                        >
+                                            onChange={e => setTipoServicoId(e.target.value)}>
                                             <option value={undefined}>Selecione...</option>
                                             <option value={1}>Tiposervico1</option>
                                             <option value={2}>Tiposervico2</option>
 
-                                        </Input>
+                                            </Input>
+                                        <InputGroupAddon addonType="append">
+                                            <Button type="button" color= "secondary icon-wrench"></Button>
+                                        </InputGroupAddon>
+                                        </InputGroup>
                                     </Col>
                                 </FormGroup>
                                 <FormGroup row>
@@ -175,14 +200,21 @@ export default function Oportunidades() {
                                                 placeholder="00:00:00"
                                                 value={horaentrada}
                                                 onChange={e => setHoraEntrada(e.target.value)} />
+                                                 <InputGroupAddon addonType="append">
+                                                    <Button type="button" color= "secondary fa fa-clock-o"></Button>
+                                                </InputGroupAddon>
                                         </InputGroup>
                                     </Col>
                                     <Col md="3">
                                         <Label htmlFor="horasaida">Hora de Saida</Label>
+                                        <InputGroup>
                                         <Input type="time" required name="time" id="txtHoraSaida"
                                             value={horasaida}
-                                            onChange={e => setHoraSaida(e.target.value)}>
-                                        </Input>
+                                            onChange={e => setHoraSaida(e.target.value)} />
+                                                <InputGroupAddon addonType="append">
+                                                    <Button type="button" color= "secondary fa fa-clock-o"></Button>
+                                                </InputGroupAddon>   
+                                        </InputGroup>
                                     </Col>
                                     <Col md="3">
                                     <Label htmlFor="qtdehoras">Qtd de Horas</Label>
@@ -190,6 +222,9 @@ export default function Oportunidades() {
                                             <Input type="time" id="txtqtdHoras" placeholder="00:00"
                                                 value={qtdehoras}
                                                 onChange={e => setQtdeHoras(e.target.value)} />
+                                                <InputGroupAddon addonType="append">
+                                                    <Button type="button" color= "secondary fa fa-clock-o"></Button>
+                                                </InputGroupAddon>
                                         </InputGroup>
                                     </Col>
                                 </FormGroup>
@@ -200,6 +235,9 @@ export default function Oportunidades() {
                                             <Input type="number" id="txtTotalPagar" placeholder="00,00"
                                                 value={valorapagar}
                                                 onChange={e => setValorPagar(e.target.value)} />
+                                                 <InputGroupAddon addonType="append">
+                                                    <Button type="button" color= "secondary fa fa-money"></Button>
+                                                </InputGroupAddon>
                                         </InputGroup>
                                     </Col>
                                     <Col md="3">
@@ -208,6 +246,9 @@ export default function Oportunidades() {
                                             <Input type="number" id="txtTotalReceber" placeholder="00,00"
                                                 value={valorareceber}
                                                 onChange={e => setValorReceber(e.target.value)} />
+                                                <InputGroupAddon addonType="append">
+                                                    <Button type="button" color= "secondary fa fa-money"></Button>
+                                                </InputGroupAddon>
                                         </InputGroup>
                                     </Col>
                                     <Col md="3">
@@ -216,6 +257,9 @@ export default function Oportunidades() {
                                             <Input type="time" id="txtHoraExtra" placeholder="00:00"
                                                 value={horaextra}
                                                 onChange={e => setHoraExtra(e.target.value)} />
+                                                <InputGroupAddon addonType="append">
+                                                    <Button type="button" color= "secondary fa fa-clock-o"></Button>
+                                                </InputGroupAddon>
                                         </InputGroup>
                                     </Col>
                                 </FormGroup>
@@ -226,6 +270,9 @@ export default function Oportunidades() {
                                                 <Input type="number" id="txtValorPagar" placeholder="00,00"
                                                     value={totalapagar}
                                                     onChange={e => setTotalPagar(e.target.value)} />
+                                                    <InputGroupAddon addonType="append">
+                                                        <Button type="button" color= "secondary fa fa-money"></Button>
+                                                    </InputGroupAddon>
                                             </InputGroup>
                                         </Col>
                                         <Col md="3">
@@ -234,6 +281,9 @@ export default function Oportunidades() {
                                                 <Input type="number" id="txtValorPagar" placeholder="00,00"
                                                     value={totalareceber}
                                                     onChange={e => setTotalaReceber(e.target.value)} />
+                                                    <InputGroupAddon addonType="append">
+                                                        <Button type="button" color= "secondary fa fa-money"></Button>
+                                                    </InputGroupAddon>
                                             </InputGroup>
                                         </Col>
                                     <Col md="3">
@@ -242,6 +292,9 @@ export default function Oportunidades() {
                                                 <Input type="number" id="txtCrustoAdicional" placeholder="00,00"
                                                     value={custoadicional}
                                                     onChange={e => setCustoAdicional(e.target.value)} />
+                                                    <InputGroupAddon addonType="append">
+                                                        <Button type="button" color= "secondary fa fa-money"></Button>
+                                                    </InputGroupAddon>
                                             </InputGroup>
                                         </Col>
                                 </FormGroup>

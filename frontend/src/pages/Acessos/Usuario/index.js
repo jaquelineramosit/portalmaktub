@@ -25,7 +25,7 @@ export default function Usuario() {
     const [login, setLogin] = useState('');
     const [senhaForm, setSenhaForm] = useState('');
     const [senhaConfirmaForm, setsenhaConfirmaForm] = useState('');
-    const [ativo, setAtivo] = useState("true");
+    const [ativo, setAtivo] = useState('true');
     const [perfilAcessoId, setperfilAcessoId] = useState(true);
     const history = useHistory();
 
@@ -100,7 +100,7 @@ export default function Usuario() {
                                             value={dataNasc}
                                             onChange={ e => setDataNasc(e.target.value)} />
                                             <InputGroupAddon addonType="append">
-                                                <Button type="button" color="secondary icon-calendar"></Button>
+                                                <Button type="button" color="secondary  fa fa-calendar"></Button>
                                             </InputGroupAddon>
                                         </InputGroup>
                                         

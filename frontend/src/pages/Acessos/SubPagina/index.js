@@ -8,7 +8,7 @@ export default function Pagina() {
     const [paginaid, setPaginaId] = useState('');
     const [nomesubpagina, setNomeSubPagina] = useState('');
     const [descricao, setDescricao] = useState('');    
-    const [ativo, setAtivo] = useState(true);
+    const [ativo, setAtivo] = useState('true');
     const usuarioId = localStorage.getItem('userId');    
 
     async function handleSubPagina(e) {

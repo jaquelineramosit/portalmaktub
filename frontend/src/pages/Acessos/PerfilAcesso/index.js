@@ -7,7 +7,7 @@ import api from '../../../../src/services/api';
 export default function PerfilAcesso() {
     const [nomeperfil, setNomeperfil] = useState('');
     const [descricao, setDescricao] = useState('');    
-    const [ativo, setAtivo] = useState(true);
+    const [ativo, setAtivo] = useState('true');
     const usuarioId = localStorage.getItem('userId');    
 
     async function handleSubPagina(e) {
@@ -65,12 +65,11 @@ export default function PerfilAcesso() {
                                 </FormGroup>
                                 <FormGroup row>                                     
                                     <Col md="2">
-                                        <Label htmlFor="DataNasc">Ativo</Label>
-                                        <AppSwitch id="rdAtivo" className={'switch-ativo'}  label color={'success'} 
-                                            defaultChecked 
+                                        <Label htmlFor="ativo">Ativo</Label>
+                                        <Label check className="form-check-label" htmlFor="ativo1">Ativo</Label>
+                                        <AppSwitch id="rdAtivo" className={'switch-ativo'} label color={'success'} defaultChecked size={'sm'}
                                             value={ativo}
-                                            onChange={ e => setAtivo(e.target.value)}
-                                            size={'sm'} />
+                                            onChange={e => setAtivo(e.target.value)} />
                                     </Col>                                                           
                                 </FormGroup>                                                                                         
                             </CardBody>

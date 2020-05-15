@@ -164,12 +164,12 @@ export default {
     },
     {
       name: 'Ordem de Serviço',      
-      icon: 'fa fa-lock',
+      icon: 'icon-wrench',
       children: [
         {
           name: 'Ordem de Serviço',
           url: '/ordem-servico',
-          icon: 'fa fa-user-circle',
+          icon: 'icon-wrench',
         },
       ]  
     },

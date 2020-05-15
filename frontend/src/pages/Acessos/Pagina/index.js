@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
 import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, InputGroup, InputGroupAddon, CardFooter, Form, FormFeedback } from 'reactstrap';
 import { AppSwitch } from '@coreui/react'
 import '../../../global.css';
@@ -9,9 +8,8 @@ export default function Pagina() {
     const [moduloId, setModuloId] = useState('');
     const [nomePagina, setnomePagina] = useState('');
     const [descricao, setDescricao] = useState('');    
-    const [ativo, setAtivo] = useState(true);
+    const [ativo, setAtivo] = useState('true');
     const usuarioId = localStorage.getItem('userId');    
-    //const history = useHistory();
 
     async function handlePagina(e) {
         e.preventDefault();
