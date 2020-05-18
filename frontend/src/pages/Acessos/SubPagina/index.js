@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, InputGroup, InputGroupAddon, CardFooter, Form, FormFeedback } from 'reactstrap';
+import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, CardFooter, Form, } from 'reactstrap';
 import { AppSwitch } from '@coreui/react'
 import '../../../global.css';
 import api from '../../../../src/services/api';
 
-export default function Pagina() {
+export default function SubPagina() {
     const [paginaid, setPaginaId] = useState('');
     const [nomesubpagina, setNomeSubPagina] = useState('');
     const [descricao, setDescricao] = useState('');    
@@ -83,7 +83,7 @@ export default function Pagina() {
                                 </FormGroup>
                                 <FormGroup row>                                     
                                     <Col md="2">
-                                        <Label htmlFor="DataNasc">Ativo</Label>
+                                        <Label htmlFor="Ativo">Ativo</Label>
                                         <AppSwitch id="rdAtivo" className={'switch-ativo'}  label color={'success'} 
                                             defaultChecked 
                                             value={ativo}

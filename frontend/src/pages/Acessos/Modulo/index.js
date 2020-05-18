@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, InputGroup, InputGroupAddon, CardFooter, Form, FormFeedback } from 'reactstrap';
+import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, CardFooter, Form } from 'reactstrap';
 import { AppSwitch } from '@coreui/react'
 import '../../../global.css';
 import api from '../../../../src/services/api';
 
 export default function Modulo() {
-    const [nomeModulo, setnomeModulo] = useState('');
+    const [nomeModulo, setNomeModulo] = useState('');
     const [descricao, setdescricao] = useState('');  
     const [ativo, setAtivo] = useState('true');
     const usuarioId = localStorage.getItem('userId');    
@@ -49,18 +49,18 @@ export default function Modulo() {
                             </CardHeader>
                             <CardBody>
                                 <FormGroup row>
-                                    <Col md="12">
-                                        <Label htmlFor="Nome">Nome Módulo</Label>
+                                    <Col md="4">
+                                        <Label htmlFor="NomeModulo">Nome Módulo</Label>
                                         <Input type="text" required id="txtNomeModulo" placeholder="Digite Nome do Módulo"
                                         value={nomeModulo}
-                                        onChange={ e => setnomeModulo(e.target.value)}
+                                        onChange={ e => setNomeModulo(e.target.value)}
                                         />                                        
                                     </Col>
                                 </FormGroup> 
                                 <FormGroup row> 
-                                    <Col md="12">
+                                    <Col md="8">
                                         <Label htmlFor="Descricao">Descrição</Label>
-                                        <Input type="text" id="txtDescricao" multiple placeholder="Digite a Descrição do Módulo"
+                                        <Input type="textarea" rows="5" id="txtDescricao" multiple placeholder="Digite a Descrição do Módulo"
                                         value={descricao}
                                         onChange={ e => setdescricao(e.target.value)}
                                          />

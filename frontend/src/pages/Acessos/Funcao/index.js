@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, InputGroup, InputGroupAddon, CardFooter, Form, FormFeedback } from 'reactstrap';
+import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, CardFooter, Form, } from 'reactstrap';
 import { AppSwitch } from '@coreui/react'
 import '../../../global.css';
 import api from '../../../../src/services/api';
@@ -50,7 +50,7 @@ export default function Funcao() {
                             </CardHeader>
                             <CardBody>
                                 <FormGroup row>
-                                    <Col md="4">
+                                    <Col md="3">
                                         <Label htmlFor="subPaginaId">Qual a Sub Página?</Label>
                                         <Input type="select" required id="cboSubPaginaId"
                                         value={subPaginaId}
@@ -66,7 +66,7 @@ export default function Funcao() {
                                             <option value={7}>Sabado</option>  
                                         </Input>                                      
                                     </Col>
-                                    <Col md="4">
+                                    <Col md="3">
                                         <Label htmlFor="paginaId">Qual a Página?</Label>
                                         <Input type="select" required id="cboPaginaId"
                                         value={paginaId}
@@ -82,7 +82,7 @@ export default function Funcao() {
                                             <option value={7}>Sabado</option>  
                                         </Input>                                      
                                     </Col>
-                                    <Col md="4">
+                                    <Col md="3">
                                         <Label htmlFor="nomeFuncao">Nome da Função</Label>
                                         <Input type="text" id="txtNomeFuncao" multiple placeholder="Digite o nome da Função"
                                         value={nomefuncao}
@@ -91,9 +91,9 @@ export default function Funcao() {
                                     </Col> 
                                 </FormGroup> 
                                 <FormGroup row>          
-                                    <Col md="10">
+                                    <Col md="9">
                                             <Label htmlFor="descricao">Descrião</Label>
-                                            <Input type="textarea" id="txtDescricao" multiple placeholder="Digite a Descrição"
+                                            <Input type="textarea" rows="5" id="txtDescricao" multiple placeholder="Digite a Descrição"
                                             value={descricao}
                                             onChange={ e => setDescricao(e.target.value)}
                                             />
@@ -101,7 +101,7 @@ export default function Funcao() {
                                 </FormGroup>
                                 <FormGroup row>                                     
                                     <Col md="2">
-                                        <Label htmlFor="DataNasc">Ativo</Label>
+                                        <Label htmlFor="Ativo">Ativo</Label>
                                         <AppSwitch id="rdAtivo" className={'switch-ativo'}  label color={'success'} 
                                             defaultChecked 
                                             value={ativo}

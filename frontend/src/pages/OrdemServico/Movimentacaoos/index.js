@@ -5,10 +5,10 @@ import '../../../global.css';
 import api from '../../../../src/services/api';
 
 export default function Movimentacaoos() {   
-    const [ordemservicoid, setOrdemservicoid] = useState('');
-    const [statusatendimentoid, setStatusatendimentoid] = useState('');
-    const [statuspagamentoid, setStatuspagamentoid] = useState('');
-    const [statuscobrancaid, setStatuscobrancaid] = useState('');
+    const [ordemservicoid, setOrdemServicoId] = useState('');
+    const [statusatendimentoid, setStatusAtendimentoId] = useState('');
+    const [statuspagamentoid, setStatusPagamentoId] = useState('');
+    const [statuscobrancaid, setStatusCobrancaId] = useState('');
     const [observacao, setObservacao] = useState('');
     const [ativo, setAtivo] = useState('true');
     const usuarioId = localStorage.getItem('userId');
@@ -52,31 +52,21 @@ export default function Movimentacaoos() {
                             </CardHeader>
                             <CardBody>
                                 <FormGroup row>
-                                <Col md="2">
-                                        <Label htmlFor="ordemservicoid">Ordem de Serviço</Label>
-                                        <Input type="select" required name="select" id="cboOrdemservicoid" multiple = {false}
+                                    <Col md="4">
+                                        <Label htmlFor="ordemServicoId">Ordem de Serviço</Label>
+                                        <Input type="select" required name="select" id="cboOrdemServicoId" multiple = {false}
                                             value={ordemservicoid}
-                                            onChange={e => setOrdemservicoid(e.target.value)}>
+                                            onChange={e => setOrdemServicoId(e.target.value)}>
                                             <option value={undefined}>Selecione...</option>
                                             <option value="1">OS1</option>
                                             <option value="2">OS2</option>                                          
                                         </Input>
                                     </Col>
-                                    <Col md="2">
-                                        <Label htmlFor="statusatendimentoid">Status Atendimento</Label>
-                                        <Input type="select" required name="select" id="cboStatusatendimentoid" multiple = {false}
+                                    <Col md="4">
+                                        <Label htmlFor="statusAtendimentoId">Status Atendimento</Label>
+                                        <Input type="select" required name="select" id="cboStatusAtendimentoId" multiple = {false}
                                             value={statusatendimentoid}
-                                            onChange={e => setStatusatendimentoid(e.target.value)}>
-                                            <option value={undefined}>Selecione...</option>
-                                            <option value="1">Status1</option>
-                                            <option value="2">Status2</option>                                           
-                                        </Input>
-                                    </Col>
-                                    <Col md="2">
-                                        <Label htmlFor="statuspagamentoid">Status Pagamento</Label>
-                                        <Input type="select" required name="select" id="cboStatuspagamentoid" multiple = {false}
-                                            value={statuspagamentoid}
-                                            onChange={e => setStatuspagamentoid(e.target.value)}>
+                                            onChange={e => setStatusAtendimentoId(e.target.value)}>
                                             <option value={undefined}>Selecione...</option>
                                             <option value="1">Status1</option>
                                             <option value="2">Status2</option>                                           
@@ -84,34 +74,42 @@ export default function Movimentacaoos() {
                                     </Col>
                                     </FormGroup>
                                     <FormGroup row>
-                                    <Col md="2">
-                                        <Label htmlFor="statuscobrancaid">Status Cobrança</Label>
-                                        <Input type="select" required name="select" id="cboStatuscobrancaid" multiple = {false}
+                                    <Col md="4">
+                                        <Label htmlFor="statusCobrancaId">Status Cobrança</Label>
+                                        <Input type="select" required name="select" id="cboStatusCobrancaId" multiple = {false}
                                             value={statuscobrancaid}
-                                            onChange={e => setStatuscobrancaid(e.target.value)}>
+                                            onChange={e => setStatusCobrancaId(e.target.value)}>
                                             <option value={undefined}>Selecione...</option>
                                             <option value="1">Status1</option>
                                             <option value="2">Status2</option>                                           
                                         </Input>
                                     </Col>
-
-                                    <Col md="1">
-                                        <Label check className="form-check-label" htmlFor="ativo1">Ativo</Label>
-                                        <AppSwitch id="rdAtivo" className={'switch-ativo'}  label color={'success'} defaultChecked size={'sm'}
-                                        value={ativo}
-                                        onChange={ e => setAtivo(e.target.value)}
-                                        />                                    
+                                    <Col md="4">
+                                        <Label htmlFor="statusPagamentoId">Status Pagamento</Label>
+                                        <Input type="select" required name="select" id="cboStatuspPagamentoId" multiple = {false}
+                                            value={statuspagamentoid}
+                                            onChange={e => setStatusPagamentoId(e.target.value)}>
+                                            <option value={undefined}>Selecione...</option>
+                                            <option value="1">Status1</option>
+                                            <option value="2">Status2</option>                                           
+                                        </Input>
                                     </Col>                                
                                 </FormGroup>
                                 <FormGroup>
-                                    <Col md="4">
-                                        <Label>Obervação</Label>
-                                        <Input type="textarea" rows="5" 
+                                    <Col md="8">
+                                        <Label>Observação</Label>
+                                        <Input type="textarea" rows="5" placeholder="Digite a obsevação"
                                             value={observacao}
                                             onChange={e => setObservacao(e.target.value)} />
                                     </Col>
                                 </FormGroup>
-                                <FormGroup row>                             
+                                <FormGroup row>
+                                    <Col md="1">
+                                        <Label check className="form-check-label" htmlFor="ativo">Ativo</Label>
+                                        <AppSwitch id="rdAtivo" className={'switch-ativo'}  label color={'success'} defaultChecked size={'sm'}
+                                        value={ativo}
+                                        onChange={ e => setAtivo(e.target.value)} />                                    
+                                    </Col>                             
                                 </FormGroup>                   
                             </CardBody>
                             <CardFooter className="text-center">

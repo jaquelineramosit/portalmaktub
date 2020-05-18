@@ -5,8 +5,8 @@ import '../../../global.css';
 import api from '../../../../src/services/api';
 
 export default function Ferramentas() {   
-    const [codferramenta, setCodferramenta] = useState('');
-    const [descferramenta, setDescferramenta] = useState('');
+    const [codferramenta, setCodFerramenta] = useState('');
+    const [descferramenta, setDescFerramenta] = useState('');
     const [ativo, setAtivo] = useState('true');
     const usuarioId = localStorage.getItem('userId');
 
@@ -47,27 +47,26 @@ export default function Ferramentas() {
                             <CardBody>
                                 <FormGroup row>
                                     <Col md="4">
-                                        <Label htmlFor="codferramenta">Ferramenta</Label>
-                                        <Input type="text" required id="txtCodferramenta" placeholder="Inisira a ferramenta"
+                                        <Label htmlFor="codFerramenta">Ferramenta</Label>
+                                        <Input type="text" required id="txtCodFerramenta" placeholder="Inisira a ferramenta"
                                             value={codferramenta}
-                                            onChange={e => setCodferramenta(e.target.value)} />
-                                    </Col>
-                                    <Col md="1">
-                                        <Label check className="form-check-label" htmlFor="ativo1">Ativo</Label>
-                                        <AppSwitch id="rdAtivo" className={'switch-ativo'}  label color={'success'} defaultChecked size={'sm'}
-                                        value={ativo}
-                                        onChange={ e => setAtivo(e.target.value)}
-                                        />                                    
+                                            onChange={e => setCodFerramenta(e.target.value)} />
                                     </Col>                                
                                 </FormGroup>
-                                <FormGroup row>                             
-                                </FormGroup>                   
-                                <FormGroup row>
-                                    <Col md="4">
+                                <FormGroup row> 
+                                    <Col md="8">
                                         <Label>Descrição</Label>
                                         <Input type="textarea" rows="5"  placeholder="Descreva o Tipo de Técnico inserido" id="txtDescrição"
                                             value={descferramenta}
-                                            onChange={e => setDescferramenta(e.target.value)} />
+                                            onChange={e => setDescFerramenta(e.target.value)} />
+                                    </Col>                            
+                                </FormGroup>                   
+                                <FormGroup row>
+                                    <Col md="1">
+                                        <Label check className="form-check-label" htmlFor="ativo">Ativo</Label>
+                                        <AppSwitch id="rdAtivo" className={'switch-ativo'}  label color={'success'} defaultChecked size={'sm'}
+                                        value={ativo} 
+                                        onChange={e => setAtivo(e.target.value)}/>                                
                                     </Col>
                                 </FormGroup>
                             </CardBody>

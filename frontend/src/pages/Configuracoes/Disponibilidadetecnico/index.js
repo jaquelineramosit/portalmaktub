@@ -4,7 +4,7 @@ import { AppSwitch } from '@coreui/react'
 import '../../../global.css';
 import api from '../../../../src/services/api';
 
-export default function Disponibilidadetecnico() {   
+export default function DisponibilidadeTecnico() {   
     const [disponibilidadeId, setDisponibilidadeId] = useState('');
     const [tecnicoId, setTecnicoId] = useState('');
     const [ativo, setAtivo] = useState('true');
@@ -12,7 +12,7 @@ export default function Disponibilidadetecnico() {
 
 
 
-    async function handleDisponibilidadetecnico(e) {
+    async function handleDisponibilidadeTecnico(e) {
         e.preventDefault();
 
         const data = {
@@ -36,17 +36,17 @@ export default function Disponibilidadetecnico() {
 
     return (
         <div className="animated fadeIn">
-            <Form onSubmit={handleDisponibilidadetecnico}>
+            <Form onSubmit={handleDisponibilidadeTecnico}>
                 <Row>
                     <Col xs="12" md="12">
                         <Card>
                             <CardHeader>
                                 <strong>Disponibilidade do Técnico</strong>
-                                <small> novo</small>
+                                <small> nova</small>
                             </CardHeader>
                             <CardBody>
                                 <FormGroup row>
-                                <Col md="2">
+                                <Col md="4">
                                         <Label htmlFor="disponibilidadeId">Disponibilidade</Label>
                                         <Input type="select" required name="select" id="cboDisponibilidadeId" multiple = {false}
                                             value={disponibilidadeId}
@@ -56,7 +56,7 @@ export default function Disponibilidadetecnico() {
                                             <option value="2">Disponibilidade2</option>                                          
                                         </Input>
                                     </Col>
-                                    <Col md="2">
+                                    <Col md="4">
                                         <Label htmlFor="tecnicoId">Técnico</Label>
                                         <Input type="select" required name="select" id="cboTecnicoId" multiple = {false}
                                             value={tecnicoId}
@@ -66,16 +66,16 @@ export default function Disponibilidadetecnico() {
                                             <option value="2">Técnico2</option>                                           
                                         </Input>
                                     </Col>
+                                </FormGroup>
+                                <FormGroup>    
                                     <Col md="1">
-                                        <Label check className="form-check-label" htmlFor="ativo1">Ativo</Label>
+                                        <Label check className="form-check-label" htmlFor="ativo">Ativo</Label>
                                         <AppSwitch id="rdAtivo" className={'switch-ativo'}  label color={'success'} defaultChecked size={'sm'}
                                         value={ativo}
                                         onChange={ e => setAtivo(e.target.value)}
                                         />                                    
                                     </Col>                                
-                                </FormGroup>
-                                <FormGroup row>                             
-                                </FormGroup>                   
+                                </FormGroup>             
                             </CardBody>
                             <CardFooter className="text-center">
                                 <Button type="submit" size="sm" color="success" className=" mr-3"><i className="fa fa-check"></i> Salvar</Button>

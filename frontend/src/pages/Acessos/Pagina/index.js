@@ -6,7 +6,7 @@ import api from '../../../../src/services/api';
 
 export default function Pagina() {
     const [moduloId, setModuloId] = useState('');
-    const [nomePagina, setnomePagina] = useState('');
+    const [nomePagina, setNomePagina] = useState('');
     const [descricao, setDescricao] = useState('');    
     const [ativo, setAtivo] = useState('true');
     const usuarioId = localStorage.getItem('userId');    
@@ -68,7 +68,7 @@ export default function Pagina() {
                                         <Label htmlFor="nomePagina">Nome da Página</Label>
                                         <Input type="text" id="txtNomePagina" multiple placeholder="Digite o nome da Página"
                                         value={nomePagina}
-                                        onChange={ e => setnomePagina(e.target.value)}
+                                        onChange={ e => setNomePagina(e.target.value)}
                                         />
                                     </Col> 
                                 </FormGroup> 
@@ -83,7 +83,7 @@ export default function Pagina() {
                                 </FormGroup>
                                 <FormGroup row>                                     
                                     <Col md="2">
-                                        <Label htmlFor="DataNasc">Ativo</Label>
+                                        <Label htmlFor="Ativo">Ativo</Label>
                                         <AppSwitch id="rdAtivo" className={'switch-ativo'}  label color={'success'} 
                                             defaultChecked 
                                             value={ativo}

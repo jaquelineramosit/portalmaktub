@@ -4,15 +4,15 @@ import { AppSwitch } from '@coreui/react'
 import '../../../global.css';
 import api from '../../../../src/services/api';
 
-export default function Statuspagamento() {   
+export default function StatusPagamento() {   
     const [status, setStatus] = useState('');
-    const [descstatus, setDescstatus] = useState('');
+    const [descstatus, setDescStatus] = useState('');
     const [ativo, setAtivo] = useState('true');
     const usuarioId = localStorage.getItem('userId');
 
 
 
-    async function handleStatuspagamento(e) {
+    async function handleStatusPagamento(e) {
         e.preventDefault();
 
         const data = {
@@ -23,7 +23,7 @@ export default function Statuspagamento() {
         try {
             const response = await api.post('status-pagamento', data, {
                 headers: {
-                    Authorization: 1,
+                    Authorization: usuarioId,
                 }
             });
             alert(`Feito o cadastro com sucesso`);
@@ -36,7 +36,7 @@ export default function Statuspagamento() {
 
     return (
         <div className="animated fadeIn">
-            <Form onSubmit={handleStatuspagamento}>
+            <Form onSubmit={handleStatusPagamento}>
                 <Row>
                     <Col xs="12" md="12">
                         <Card>
@@ -52,24 +52,24 @@ export default function Statuspagamento() {
                                             value={status}
                                             onChange={e => setStatus(e.target.value)} />
                                     </Col>
-                                    <Col md="1">
-                                        <Label check className="form-check-label" htmlFor="ativo1">Ativo</Label>
-                                        <AppSwitch id="rdAtivo" className={'switch-ativo'}  label color={'success'} defaultChecked size={'sm'}
-                                        value={ativo}
-                                        onChange={ e => setAtivo(e.target.value)}
-                                        />                                    
-                                    </Col>                                
-                                </FormGroup>
-                                <FormGroup row>                             
-                                </FormGroup>                   
+                                </FormGroup>    
                                 <FormGroup row>
-                                    <Col md="4">
+                                    <Col md="8">
                                         <Label>Descrição</Label>
                                         <Input type="textarea" rows="5"  placeholder="Descreva o Status inserido" id="txtDescstatus"
                                             value={descstatus}
-                                            onChange={e => setDescstatus(e.target.value)} />
+                                            onChange={e => setDescStatus(e.target.value)} />
                                     </Col>
                                 </FormGroup>
+                                <FormGroup>
+                                    <Col md="1">
+                                            <Label check className="form-check-label" htmlFor="ativo1">Ativo</Label>
+                                            <AppSwitch id="rdAtivo" className={'switch-ativo'}  label color={'success'} defaultChecked size={'sm'}
+                                            value={ativo}
+                                            onChange={ e => setAtivo(e.target.value)}
+                                            />                                    
+                                        </Col>                                
+                                </FormGroup> 
                             </CardBody>
                             <CardFooter className="text-center">
                                 <Button type="submit" size="sm" color="success" className=" mr-3"><i className="fa fa-check"></i> Salvar</Button>

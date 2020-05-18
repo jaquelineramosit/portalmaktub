@@ -4,15 +4,15 @@ import { AppSwitch } from '@coreui/react'
 import '../../../global.css';
 import api from '../../../../src/services/api';
 
-export default function Projetotecnico() {   
-    const [tecnicoid, setTecnicoid] = useState('');
-    const [tipoprojetoid, setTipoprojetoid] = useState('');
+export default function ProjetoTecnico() {   
+    const [tecnicoid, setTecnicoId] = useState('');
+    const [tipoprojetoid, setTipoProjetoId] = useState('');
     const [ativo, setAtivo] = useState('true');
     const usuarioId = localStorage.getItem('userId');
 
 
 
-    async function handleProjetotecnico(e) {
+    async function handleProjetoTecnico(e) {
         e.preventDefault();
 
         const data = {
@@ -36,7 +36,7 @@ export default function Projetotecnico() {
 
     return (
         <div className="animated fadeIn">
-            <Form onSubmit={handleProjetotecnico}>
+            <Form onSubmit={handleProjetoTecnico}>
                 <Row>
                     <Col xs="12" md="12">
                         <Card>
@@ -46,35 +46,35 @@ export default function Projetotecnico() {
                             </CardHeader>
                             <CardBody>
                                 <FormGroup row>
-                                <Col md="2">
-                                        <Label htmlFor="tecnicoid">Técnico</Label>
-                                        <Input type="select" required name="select" id="cboTécnicoid" multiple={false}
+                                    <Col md="4">
+                                        <Label htmlFor="tecnicoId">Técnico</Label>
+                                        <Input type="select" required name="select" id="cboTécnicoId" multiple={false}
                                             value={tecnicoid}
-                                            onChange={e => setTecnicoid(e.target.value)}>
+                                            onChange={e => setTecnicoId(e.target.value)}>
                                             <option value={undefined}>Selecione...</option>
                                             <option value="1">Técnico1</option>
                                             <option value="2">Técnico2</option>                                          
                                         </Input>
                                     </Col>
-                                    <Col md="2">
-                                        <Label htmlFor="tipoprojetoid">Tipo de Projeto</Label>
-                                        <Input type="select" required name="select" id="cboTipoprojetoid"  multiple={false}
+                                    <Col md="4">
+                                        <Label htmlFor="tipoTrojetoId">Tipo de Projeto</Label>
+                                        <Input type="select" required name="select" id="cboTipoProjetoId"  multiple={false}
                                             value={tipoprojetoid}
-                                            onChange={e => setTipoprojetoid(e.target.value)}>
+                                            onChange={e => setTipoProjetoId(e.target.value)}>
                                             <option value={undefined}>Selecione...</option>
                                             <option value="1">Projeto1</option>
                                             <option value="2">Projeto2</option>                                           
                                         </Input>
                                     </Col>
+                                </FormGroup>
+                                <FormGroup row>    
                                     <Col md="1">
-                                        <Label check className="form-check-label" htmlFor="ativo1">Ativo</Label>
+                                        <Label check className="form-check-label" htmlFor="ativo">Ativo</Label>
                                         <AppSwitch id="rdAtivo" className={'switch-ativo'}  label color={'success'} defaultChecked size={'sm'}
                                         value={ativo}
                                         onChange={ e => setAtivo(e.target.value)}
                                         />                                    
-                                    </Col>                                
-                                </FormGroup>
-                                <FormGroup row>                             
+                                    </Col>                           
                                 </FormGroup>                   
                             </CardBody>
                             <CardFooter className="text-center">

@@ -5,7 +5,7 @@ import '../../../global.css';
 import api from '../../../../src/services/api';
 
 export default function Disponibilidade() {   
-    const [nomedisponibilidade, setNomedisponibilidade] = useState('');
+    const [nomedisponibilidade, setNomeDisponibilidade] = useState('');
     const [descricao, setDescricao] = useState('');
     const [ativo, setAtivo] = useState('true');
     const usuarioId = localStorage.getItem('userId');
@@ -47,29 +47,28 @@ export default function Disponibilidade() {
                             <CardBody>
                                 <FormGroup row>
                                     <Col md="4">
-                                        <Label htmlFor="nomedisponibilidade">Disponibilidade</Label>
+                                        <Label htmlFor="nomeDisponibilidade">Disponibilidade</Label>
                                         <Input type="text" required id="txtDisponibilidade" placeholder="Digite a Disponibilidade"
                                             value={nomedisponibilidade}
-                                            onChange={e => setNomedisponibilidade(e.target.value)} />
-                                    </Col>
-                                    <Col md="1">
-                                        <Label check className="form-check-label" htmlFor="ativo1">Ativo</Label>
-                                        <AppSwitch id="rdAtivo" className={'switch-ativo'}  label color={'success'} defaultChecked size={'sm'}
-                                        value={ativo}
-                                        onChange={ e => setAtivo(e.target.value)}
-                                        />                                    
-                                    </Col>                                
-                                </FormGroup>
-                                <FormGroup row>                             
-                                </FormGroup>                   
+                                            onChange={e => setNomeDisponibilidade(e.target.value)} />
+                                    </Col>                              
+                                </FormGroup>                
                                 <FormGroup row>
-                                    <Col md="4">
+                                    <Col md="8">
                                         <Label>Descrição</Label>
                                         <Input type="textarea" rows="5"  placeholder="Descreva o Tipo de Técnico inserido"
                                             value={descricao}
                                             onChange={e => setDescricao(e.target.value)} />
                                     </Col>
                                 </FormGroup>
+                                <FormGroup>
+                                    <Col md="1">
+                                        <Label check className="form-check-label" htmlFor="ativo1">Ativo</Label>
+                                        <AppSwitch id="rdAtivo" className={'switch-ativo'}  label color={'success'} defaultChecked size={'sm'}
+                                        value={ativo}
+                                        onChange={ e => setAtivo(e.target.value)} />                                    
+                                    </Col>  
+                                </FormGroup>    
                             </CardBody>
                             <CardFooter className="text-center">
                                 <Button type="submit" size="sm" color="success" className=" mr-3"><i className="fa fa-check"></i> Salvar</Button>

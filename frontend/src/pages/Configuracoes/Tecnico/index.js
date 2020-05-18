@@ -5,8 +5,8 @@ import '../../../global.css';
 import api from '../../../../src/services/api';
 
 export default function Tecnico() {
-    const [nometecnico, setNometecnico] = useState('');
-    const [tipotecnicoid, setTipotecnicoid] = useState('');
+    const [nometecnico, setNomeTecnico] = useState('');
+    const [tipotecnicoid, setTipoTecnicoId] = useState('');
     const [rg, setRg] = useState('');
     const [cpf, setCpf] = useState('');  
     const [logradouro, setLogradouro] = useState('');
@@ -16,8 +16,8 @@ export default function Tecnico() {
     const [cep, setCep] = useState('');
     const [cidade, setCidade] = useState('');
     const [estado, setEstado] = useState('');
-    const [telefonefixo, setTelefonefixo] = useState('');
-    const [telefonecelular, setTelefonecelular] = useState('');
+    const [telefonefixo, setTelefoneFixo] = useState('');
+    const [telefonecelular, setTelefoneCelular] = useState('');
     const [ativo, setAtivo] = useState("true");
     const usuarioId = localStorage.getItem('userId');
 
@@ -70,10 +70,10 @@ export default function Tecnico() {
                             <CardBody>
                                 <FormGroup row>
                                     <Col md="4">
-                                        <Label htmlFor="nometecnico">Nome Cliente</Label>
-                                        <Input type="text" required id="txtNometecnico" placeholder="Digite o nome do Técnico"
+                                        <Label htmlFor="nomeTecnico">Nome Técnico</Label>
+                                        <Input type="number" required id="txtNomeTecnico" placeholder="Digite o nome do Técnico"
                                             value={nometecnico}
-                                            onChange={e => setNometecnico(e.target.value)} />
+                                            onChange={e => setNomeTecnico(e.target.value)} />
                                     </Col>
                                     <Col md="3">
                                         <Label htmlFor="rg">RG</Label>
@@ -84,7 +84,7 @@ export default function Tecnico() {
                                     </Col>
                                     <Col md="3">
                                         <Label htmlFor="cpf">CPF</Label>
-                                        <Input type="text" required id="txtCpf" placeholder="Digite o CPF do Técnico"
+                                        <Input type="number" required id="txtCpf" placeholder="Digite o CPF do Técnico"
                                             value={cpf}
                                             onChange={e => setCpf(e.target.value)} />
                                     </Col>
@@ -92,24 +92,21 @@ export default function Tecnico() {
                                 <FormGroup row>
                                     <Col md="4">
                                         <Label htmlFor="logradouro">Logradouro</Label>
-                                        <InputGroup>
                                             <Input type="text" required id="txtLogradouro"
                                                 placeholder="Digite o Logradouro"
                                                 value={logradouro}
                                                 onChange={e => setLogradouro(e.target.value)} />
-                                        </InputGroup>
                                     </Col>
                                     <Col md="3">
                                         <Label htmlFor="bairro">Bairro</Label>
-                                        <Input type="text" required id="txtBairro" placeholder="Digite o Bairro"
-                                            value={bairro}
-                                            onChange={e => setBairro(e.target.value)}
-                                        />
+                                            <Input type="text" required id="txtBairro" placeholder="Digite o Bairro"
+                                                value={bairro}
+                                                onChange={e => setBairro(e.target.value)} />
                                     </Col>
-                                    <Col md="2">
+                                    <Col md="3">
                                         <Label htmlFor="cep">CEP</Label>
                                         <InputGroup>
-                                            <Input id="txtCep" size="16" required type="text" placeholder="00000-000"
+                                            <Input id="txtCep" size="16" required type="number" placeholder="00000-000"
                                                 value={cep}
                                                 onChange={e => setCep(e.target.value)} />
                                             <InputGroupAddon addonType="append">
@@ -119,26 +116,24 @@ export default function Tecnico() {
                                     </Col>
                                 </FormGroup>
                                 <FormGroup row>
-                                    <Col md="2">
+                                    <Col md="3">
                                         <Label htmlFor="numero">Número</Label>
-                                        <Input type="text" required id="txtNumero" placeholder="Digite apenas Números"
+                                        <Input type="number" required id="txtNumero" placeholder="Digite apenas Números"
                                             value={numero}
                                             onChange={e => setNumero(e.target.value)} />
                                     </Col>
-                                    <Col md="2">
+                                    <Col md="3">
                                         <Label htmlFor="complemento">Complemento</Label>
                                         <Input type="text" id="txtComplemento" placeholder="Digite o Complemento"
                                             value={complemento}
                                             onChange={e => setComplemento(e.target.value)} />
                                     </Col>
-                              
-                                <Col md="3">
+                                    <Col md="3">
                                         <Label htmlFor="cidade">Cidade</Label>
                                         <Input type="text" required id="txtCidade" placeholder="Digite a Cidade"
                                             value={cidade}
                                             onChange={e => setCidade(e.target.value)} />
                                     </Col>
-                                    
                                     <Col md="2">
                                         <Label htmlFor="estado">UF</Label>
                                         <Input type="select" required name="select" id="cboEstado" multiple={false}
@@ -154,44 +149,45 @@ export default function Tecnico() {
                                     </Col>
                                     </FormGroup>                              
                                 <FormGroup row>
-                                    <Col md="2">
-                                        <Label htmlFor="telefonefixo">Telefone Fixo</Label>
+                                    <Col md="3">
+                                        <Label htmlFor="telefoneFixo">Telefone Fixo</Label>
                                         <InputGroup>
-                                            <Input type="text" id="txtTelefoneFixo" placeholder="(11) 9999-9999"
+                                            <Input type="number" id="txtTelefoneFixo" placeholder="(11) 9999-9999"
                                                 value={telefonefixo}
-                                                onChange={e => setTelefonefixo(e.target.value)} />
+                                                onChange={e => setTelefoneFixo(e.target.value)} />
                                             <InputGroupAddon addonType="append">
                                                 <Button type="button" color="secondary icon-phone"></Button>
                                             </InputGroupAddon>
                                         </InputGroup>
                                     </Col>
-                                    <Col md="2">
-                                        <Label htmlFor="telefonecelular">Telefone Celular</Label>
+                                    <Col md="3">
+                                        <Label htmlFor="telefoneCelular">Telefone Celular</Label>
                                         <InputGroup>
-                                            <Input type="text" id="txtTelefoneCelular" placeholder="(11) 9999-9999"
+                                            <Input type="number" id="txtTelefoneCelular" placeholder="(11) 9999-9999"
                                                 value={telefonecelular}
-                                                onChange={e => setTelefonecelular(e.target.value)} />
+                                                onChange={e => setTelefoneCelular(e.target.value)} />
                                             <InputGroupAddon addonType="append">
                                                 <Button type="button" color="secondary icon-phone"></Button>
                                             </InputGroupAddon>
                                         </InputGroup>
                                     </Col>
-                                    <Col md="2">
-                                        <Label htmlFor="tipotecnicoid">Tipo do Técnico</Label>
-                                        <Input type="select" required name="select" id="cbotipotecnicoid"
+                                    <Col md="3">
+                                        <Label htmlFor="tipoTecnicoId">Tipo do Técnico</Label>
+                                        <Input type="select" required name="select" id="cboTipoTecnicoId"
                                             value={tipotecnicoid}
-                                            onChange={e => setTipotecnicoid(e.target.value)}>
+                                            onChange={e => setTipoTecnicoId(e.target.value)}>
                                             <option value={undefined}>Selecione...</option>
                                             <option value="1">Tipo1</option>   
                                             <option value="2">Tipo2</option>                                         
                                         </Input>
                                     </Col>
+                                </FormGroup>
+                                <FormGroup row>    
                                     <Col md="2">
-                                        <Label check className="form-check-label" htmlFor="ativo1">Ativo</Label>
+                                        <Label check className="form-check-label" htmlFor="ativo">Ativo</Label>
                                         <AppSwitch id="rdAtivo" className={'switch-ativo'} label color={'success'} defaultChecked size={'sm'}
                                             value={ativo}
-                                            onChange={e => setAtivo(e.target.value)}
-                                        />
+                                            onChange={e => setAtivo(e.target.value)} />
                                     </Col>
                                 </FormGroup>
                             </CardBody>

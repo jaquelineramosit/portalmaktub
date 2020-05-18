@@ -4,21 +4,21 @@ import { AppSwitch } from '@coreui/react'
 import '../../../global.css';
 import api from '../../../../src/services/api';
 
-export default function Dadosbancarios() {
-    const [tecnicoid, setTecnicoid] = useState('');
-    const [bancoid, setBancoid] = useState('');
-    const [tipocontaid, setTipocontaid] = useState('');
+export default function DadosBancarios() {
+    const [tecnicoid, setTecnicoId] = useState('');
+    const [bancoid, setBancoId] = useState('');
+    const [tipocontaid, setTipoContaId] = useState('');
     const [agencia, setAgencia] = useState('');  
     const [conta, setConta] = useState('');
-    const [titularconta, setTitularconta] = useState('');
-    const [doctitular, setDoctitular] = useState('');
-    const [contapadrao, setContapadrao] = useState('');
+    const [titularconta, setTitularConta] = useState('');
+    const [doctitular, setDocTitular] = useState('');
+    const [contapadrao, setContaPadrao] = useState('');
     const [ativo, setAtivo] = useState("true");
     const usuarioId = localStorage.getItem('userId');
 
 
 
-    async function handleDadosbancarios(e) {
+    async function handleDadosBancarios(e) {
         e.preventDefault();
 
         const data = {
@@ -36,7 +36,7 @@ export default function Dadosbancarios() {
         try {
             const response = await api.post('dados-bancarios', data, {
                 headers: {
-                    Authorization: 1,
+                    Authorization: usuarioId,
                 }
             });
             alert(`Feito o cadastro com sucesso`);
@@ -49,21 +49,21 @@ export default function Dadosbancarios() {
 
     return (
         <div className="animated fadeIn">
-            <Form onSubmit={handleDadosbancarios}>
+            <Form onSubmit={handleDadosBancarios}>
                 <Row>
                     <Col xs="12" md="12">
                         <Card>
                             <CardHeader>
-                                <strong>Dados Bancários</strong>
+                                <strong>Conta de Tecnico</strong>
                                 <small> novo</small>
                             </CardHeader>
                             <CardBody>
                                 <FormGroup row>
                                 <Col md="3">
-                                        <Label htmlFor="tecnicoid">Técnico</Label>
-                                        <Input required type="select" name="select" id="cboTecnicoid"
+                                        <Label htmlFor="tecnicoId">Técnico</Label>
+                                        <Input required type="select" name="select" id="cboTecnicoId"
                                             value={tecnicoid}
-                                            onChange={e => setTecnicoid(e.target.value)}
+                                            onChange={e => setTecnicoId(e.target.value)}
                                         >
                                             <option value={undefined}>Selecione...</option>
                                             <option value={1}>Técnico1</option>
@@ -72,10 +72,10 @@ export default function Dadosbancarios() {
                                         </Input>
                                     </Col>
                                     <Col md="3">
-                                        <Label htmlFor="bancoid">Banco</Label>
-                                        <Input required type="select" name="select" id="cboBancoid"
+                                        <Label htmlFor="bancoId">Banco</Label>
+                                        <Input required type="select" name="select" id="cboBancoId"
                                             value={bancoid}
-                                            onChange={e => setBancoid(e.target.value)}
+                                            onChange={e => setBancoId(e.target.value)}
                                         >
                                             <option value={undefined}>Selecione...</option>
                                             <option value={1}>Banco1</option>
@@ -84,10 +84,10 @@ export default function Dadosbancarios() {
                                         </Input>
                                     </Col>
                                     <Col md="3">
-                                        <Label htmlFor="tipocontaid">Tipo de Conta</Label>
-                                        <Input required type="select" name="select" id="cboTipocontaid"
+                                        <Label htmlFor="tipoContaId">Tipo de Conta</Label>
+                                        <Input required type="select" name="select" id="cboTipoContaId"
                                             value={tipocontaid}
-                                            onChange={e => setTipocontaid(e.target.value)}
+                                            onChange={e => setTipoContaId(e.target.value)}
                                         >
                                             <option value={undefined}>Selecione...</option>
                                             <option value={1}>Tipo de Conta1</option>
@@ -97,7 +97,7 @@ export default function Dadosbancarios() {
                                     </Col>
                                 </FormGroup>
                                 <FormGroup row>
-                                    <Col md="2">
+                                    <Col md="3">
                                         <Label htmlFor="agencia">Agência</Label>
                                         <InputGroup>
                                             <Input type="text" required id="txtAgencia"  placeholder="Agência"                                          
@@ -105,7 +105,7 @@ export default function Dadosbancarios() {
                                                 onChange={e => setAgencia(e.target.value)} />
                                         </InputGroup>
                                     </Col>
-                                    <Col md="2">
+                                    <Col md="3">
                                         <Label htmlFor="conta">Conta</Label>
                                         <Input type="text" required id="txtConta" placeholder="Conta"  
                                             value={conta}
@@ -113,33 +113,35 @@ export default function Dadosbancarios() {
                                         />
                                     </Col>
                                     <Col md="3">
-                                        <Label htmlFor="titularconta">Titular da Conta</Label>
+                                        <Label htmlFor="titularConta">Titular da Conta</Label>
                                         <InputGroup>
-                                            <Input id="txtTitularconta" required type="text"  placeholder="Insira o titular da conta"
+                                            <Input id="txtTitularConta" required type="text"  placeholder="Insira o titular da conta"
                                                 value={titularconta}
-                                                onChange={e => setTitularconta(e.target.value)} />                                           
+                                                onChange={e => setTitularConta(e.target.value)} />                                           
                                         </InputGroup>
                                     </Col>
                                     </FormGroup>
                                     <FormGroup row>
                                     <Col md="3">
-                                        <Label htmlFor="doctitular">Documento do Titular</Label>
+                                        <Label htmlFor="docTitular">Documento do Titular</Label>
                                         <InputGroup>
-                                            <Input id="txtDoctitular" required type="text"
+                                            <Input id="txtDocTitular" required type="text"
                                                 value={doctitular}
-                                                onChange={e => setDoctitular(e.target.value)} />                                           
+                                                onChange={e => setDocTitular(e.target.value)} />                                           
                                         </InputGroup>
                                     </Col>
                                     <Col md="3">
-                                        <Label htmlFor="contapadrao">Conta Padrão</Label>
+                                        <Label htmlFor="contaPadrao">Conta Padrão</Label>
                                         <InputGroup>
-                                            <Input id="txtContapadrao" required type="text" 
+                                            <Input id="txtContaPadrao" required type="text" 
                                                 value={contapadrao}
-                                                onChange={e => setContapadrao(e.target.value)} />                                           
+                                                onChange={e => setContaPadrao(e.target.value)} />                                           
                                         </InputGroup>
                                     </Col>
+                                </FormGroup>
+                                <FormGroup>    
                                     <Col md="2">
-                                        <Label check className="form-check-label" htmlFor="ativo1">Ativo</Label>
+                                        <Label check className="form-check-label" htmlFor="ativo">Ativo</Label>
                                         <AppSwitch id="rdAtivo" className={'switch-ativo'} label color={'success'} defaultChecked size={'sm'}
                                             value={ativo}
                                             onChange={e => setAtivo(e.target.value)}

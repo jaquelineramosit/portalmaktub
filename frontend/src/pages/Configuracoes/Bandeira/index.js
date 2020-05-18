@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, CardFooter, Form } from 'reactstrap';
+import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, InputGroup, InputGroupAddon, CardFooter, Form } from 'reactstrap';
 import { AppSwitch } from '@coreui/react'
 import '../../../global.css';
 import api from '../../../services/api';
 
 export default function Bandeiras() {
-    const [nomebandeira, setNomebandeira] = useState('');
+    const [nomebandeira, setNomeBandeira] = useState('');
     const [ativo, setAtivo] = useState('');
     const usuarioId = localStorage.getItem('userId');
 
@@ -40,23 +40,30 @@ export default function Bandeiras() {
                     <Col xs="12" md="12">
                         <Card>
                             <CardHeader>
-                                <strong>Bandeiras</strong>
-                                <small> novo</small>
+                                <strong>Bandeira</strong>
+                                <small> nova</small>
                             </CardHeader>
                             <CardBody>
                                 <FormGroup row>
                                     <Col md="4">
-                                        <Label htmlFor="nomebandeira">Nome da Bandeira</Label>
-                                        <Input type="text" required id="txtNomebandeira" placeholder="Digite o nome da Bandeira"
-                                            value={nomebandeira}
-                                            onChange={e => setNomebandeira(e.target.value)} />
+                                        <Label htmlFor="nomeBandeira">Nome da Bandeira</Label>
+                                        <InputGroup>
+                                            <Input type="text" required id="txtNomeBandeira" placeholder="Digite o nome da Bandeira"
+                                                value={nomebandeira}
+                                                onChange={e => setNomeBandeira(e.target.value)} >
+                                            </Input>
+                                            <InputGroupAddon addonType="append">
+                                                <Button type="button" color= "secondary fa fa-flag"></Button>
+                                            </InputGroupAddon>
+                                        </InputGroup>              
                                     </Col>
+                                </FormGroup>
+                                <FormGroup>    
                                     <Col md="1">
-                                        <Label check className="form-check-label" htmlFor="ativo1">Ativo</Label>
+                                        <Label check className="form-check-label" htmlFor="ativo">Ativo</Label>
                                         <AppSwitch id="rdAtivo" className={'switch-ativo'}  label color={'success'} defaultChecked size={'sm'}
                                         value={ativo}
-                                        onChange={ e => setAtivo(e.target.value)}
-                                        />                                    
+                                        onChange={ e => setAtivo(e.target.value)} />                                  
                                     </Col>     
                                 </FormGroup>                                
                             </CardBody>

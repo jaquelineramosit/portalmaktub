@@ -4,7 +4,7 @@ import { AppSwitch } from '@coreui/react'
 import '../../../global.css';
 import api from '../../../../src/services/api';
 
-export default function PerfilAcesso() {
+export default function PermissaAcesso() {
     const [perfilacessoid, setPerfilAcessoId] = useState('');
     const [moduloid, setModuloId] = useState('');
     const [paginaid, setPaginaId] = useState('');

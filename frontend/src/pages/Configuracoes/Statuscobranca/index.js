@@ -4,15 +4,15 @@ import { AppSwitch } from '@coreui/react'
 import '../../../global.css';
 import api from '../../../../src/services/api';
 
-export default function Statuscobranca() {   
+export default function StatusCobranca() {   
     const [status, setStatus] = useState('');
-    const [descstatus, setDescstatus] = useState('');
+    const [descstatus, setDescStatus] = useState('');
     const [ativo, setAtivo] = useState('true');
     const usuarioId = localStorage.getItem('userId');
 
 
 
-    async function handleStatuscobranca(e) {
+    async function handleStatusCobranca(e) {
         e.preventDefault();
 
         const data = {
@@ -36,7 +36,7 @@ export default function Statuscobranca() {
 
     return (
         <div className="animated fadeIn">
-            <Form onSubmit={handleStatuscobranca}>
+            <Form onSubmit={handleStatusCobranca}>
                 <Row>
                     <Col xs="12" md="12">
                         <Card>
@@ -51,24 +51,24 @@ export default function Statuscobranca() {
                                         <Input type="text" required id="txtStatus" placeholder="Inisira o Status"
                                             value={status}
                                             onChange={e => setStatus(e.target.value)} />
-                                    </Col>
+                                    </Col>                               
+                                </FormGroup>
+                                <FormGroup row>
+                                    <Col md="8">   
+                                        <Label>Descrição</Label>
+                                                <Input type="textarea" rows="5"  placeholder="Descreva o Status inserido" id="txtDescstatus"
+                                                    value={descstatus}
+                                                    onChange={e => setDescStatus(e.target.value)} />
+                                    </Col>                        
+                                </FormGroup>                   
+                                <FormGroup row>
                                     <Col md="1">
-                                        <Label check className="form-check-label" htmlFor="ativo1">Ativo</Label>
+                                        <Label check className="form-check-label" htmlFor="ativo">Ativo</Label>
                                         <AppSwitch id="rdAtivo" className={'switch-ativo'}  label color={'success'} defaultChecked size={'sm'}
                                         value={ativo}
                                         onChange={ e => setAtivo(e.target.value)}
                                         />                                    
-                                    </Col>                                
-                                </FormGroup>
-                                <FormGroup row>                             
-                                </FormGroup>                   
-                                <FormGroup row>
-                                    <Col md="4">
-                                        <Label>Descrição</Label>
-                                        <Input type="textarea" rows="5"  placeholder="Descreva o Status inserido" id="txtDescstatus"
-                                            value={descstatus}
-                                            onChange={e => setDescstatus(e.target.value)} />
-                                    </Col>
+                                    </Col> 
                                 </FormGroup>
                             </CardBody>
                             <CardFooter className="text-center">

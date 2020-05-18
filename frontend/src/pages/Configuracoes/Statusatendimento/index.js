@@ -4,15 +4,15 @@ import { AppSwitch } from '@coreui/react'
 import '../../../global.css';
 import api from '../../../../src/services/api';
 
-export default function Statusatendimento() {   
+export default function StatusAtendimento() {   
     const [status, setStatus] = useState('');
-    const [descstatus, setDescstatus] = useState('');
+    const [descstatus, setDescStatus] = useState('');
     const [ativo, setAtivo] = useState('true');
     const usuarioId = localStorage.getItem('userId');
 
 
 
-    async function handleStatusatendimento(e) {
+    async function handleStatusAtendimento(e) {
         e.preventDefault();
 
         const data = {
@@ -36,7 +36,7 @@ export default function Statusatendimento() {
 
     return (
         <div className="animated fadeIn">
-            <Form onSubmit={handleStatusatendimento}>
+            <Form onSubmit={handleStatusAtendimento}>
                 <Row>
                     <Col xs="12" md="12">
                         <Card>
@@ -51,24 +51,24 @@ export default function Statusatendimento() {
                                         <Input type="text" required id="txtStatus" placeholder="Inisira o Status"
                                             value={status}
                                             onChange={e => setStatus(e.target.value)} />
-                                    </Col>
-                                    <Col md="1">
-                                        <Label check className="form-check-label" htmlFor="ativo1">Ativo</Label>
-                                        <AppSwitch id="rdAtivo" className={'switch-ativo'}  label color={'success'} defaultChecked size={'sm'}
-                                        value={ativo}
-                                        onChange={ e => setAtivo(e.target.value)}
-                                        />                                    
-                                    </Col>                                
+                                    </Col>                               
                                 </FormGroup>
-                                <FormGroup row>                             
+                                <FormGroup row>
+                                    <Col md="8">
+                                            <Label>Descrição</Label>
+                                            <Input type="textarea" rows="5"  placeholder="Descreva o Status inserido" id="txtDescStatus"
+                                                value={descstatus}
+                                                onChange={e => setDescStatus(e.target.value)} />
+                                    </Col>                           
                                 </FormGroup>                   
                                 <FormGroup row>
-                                    <Col md="4">
-                                        <Label>Descrição</Label>
-                                        <Input type="textarea" rows="5"  placeholder="Descreva o Status inserido" id="txtDescstatus"
-                                            value={descstatus}
-                                            onChange={e => setDescstatus(e.target.value)} />
-                                    </Col>
+                                    <Col md="1">
+                                            <Label check className="form-check-label" htmlFor="ativo">Ativo</Label>
+                                            <AppSwitch id="rdAtivo" className={'switch-ativo'}  label color={'success'} defaultChecked size={'sm'}
+                                            value={ativo}
+                                            onChange={ e => setAtivo(e.target.value)}
+                                            />                                    
+                                    </Col> 
                                 </FormGroup>
                             </CardBody>
                             <CardFooter className="text-center">
