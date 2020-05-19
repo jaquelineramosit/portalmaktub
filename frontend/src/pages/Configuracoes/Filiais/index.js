@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, InputGroup, InputGroupAddon, CardFooter, Form } from 'reactstrap';
 import { AppSwitch } from '@coreui/react'
 import '../../../global.css';
@@ -6,7 +6,9 @@ import api from '../../../../src/services/api';
 
 export default function Filiais() {
     const [bandeiraid, setBandeiraId] = useState('');
+    const [bandeiras, setBandeiras] = useState([]);
     const [clienteid, setClienteId] = useState('');
+    const [clientes, setClientes] = useState([]);
     const [ced, setCed] = useState('');
     const [nomefilial, setNomeFilial] = useState('');
     const [nomeresponsavel, setNomeResponsavel] = useState('');
@@ -30,7 +32,17 @@ export default function Filiais() {
     const [ativo, setAtivo] = useState("true");
     const usuarioId = localStorage.getItem('userId');
 
+    useEffect(() => {
+        api.get('clientes').then(response => {            
+            setClientes(response.data);
+        })
+    }, [usuarioId]);   
 
+    useEffect(() => {
+        api.get('bandeira').then(response => {            
+            setBandeiras(response.data);
+        })
+    }, [usuarioId]);   
 
     async function handleFiliais(e) {
         e.preventDefault();
@@ -92,9 +104,10 @@ export default function Filiais() {
                                         <Input required type="select" name="select" id="cboClienteid" multiple={false}
                                             value={clienteid}
                                             onChange={e => setClienteId(e.target.value)} >
-                                            <option value={undefined}>Selecione...</option>
-                                            <option value={1}>Cliente1</option>
-                                            <option value={2}>Cliente2</option>
+                                                <option value={undefined} defaultValue>Selecione...</option>
+                                                {clientes.map(cliente => (                                                
+                                                <option value={cliente.id}>{cliente.nomecliente}</option>
+                                                ))}   
                                         </Input>
                                     </Col>
                                     <Col md="3">
@@ -134,9 +147,10 @@ export default function Filiais() {
                                         <Input required type="select" name="select" id="cboBandeiraId" multiple={false}
                                             value={bandeiraid}
                                             onChange={e => setBandeiraId(e.target.value)}>
-                                            <option value={undefined}>Selecione...</option>
-                                            <option value={1}>Bandeira1</option>
-                                            <option value={2}>Bandeira2</option>
+                                            <option value={undefined} defaultValue>Selecione...</option>
+                                                {bandeiras.map(bandeira=> (                                                
+                                                <option value={bandeira.id}>{bandeira.nomebandeira}</option>
+                                                ))}   
                                         </Input>
                                     </Col>
                                     <Col md="3">
@@ -200,11 +214,32 @@ export default function Filiais() {
                                             value={estado}
                                             onChange={e => setEstado(e.target.value)}>
                                             <option value={undefined}>Selecione...</option>
-                                            <option value="1">São Paulo</option>
-                                            <option value="2">Rio de Janeiro</option>
-                                            <option value="3">Minas Gerais</option>
-                                            <option value="4">Paraná</option>
-                                            <option value="5">Santa Catarina</option>
+                                            <option value="SP">São Paulo</option>
+                                            <option value="RJ">Rio de Janeiro</option>
+                                            <option value="MG">Minas Gerais</option>
+                                            <option value="PR">Paraná</option>
+                                            <option value="AC">Acre</option>
+                                            <option value="Al">Alagoas</option>
+                                            <option value="AP">Amapá</option>
+                                            <option value="AM">Amazonas</option>
+                                            <option value="BH">Bahia</option>
+                                            <option value="CE">Ceará</option>
+                                            <option value="DF">Distrito Federal</option>
+                                            <option value="GO">Goiás</option>
+                                            <option value="DF">Distrito Federal</option>
+                                            <option value="MA">Maranhão</option>
+                                            <option value="MG">Mato Grosso</option>
+                                            <option value="MT">Mato Grosso do Sul</option>
+                                            <option value="PA">Pará</option>
+                                            <option value="PB">Paraíba</option>
+                                            <option value="PE">Pernambuco</option>
+                                            <option value="PI">Piau</option>
+                                            <option value="RN">Rio Grande do Norte</option>
+                                            <option value="RS">Rio Grande do Sul</option>
+                                            <option value="RR">Rondônia</option>
+                                            <option value="SC">Santa Catarina</option>
+                                            <option value="SE">Sergipe</option>
+                                            <option value="TO">Tocantins</option>
                                         </Input>
                                     </Col>
 

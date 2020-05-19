@@ -68,7 +68,7 @@ export default function Modulo() {
                                 </FormGroup>
                                 <FormGroup row>                                     
                                     <Col md="2">
-                                        <Label htmlFor="DataNasc">Ativo</Label>
+                                        <Label htmlFor="ativo">Ativo</Label>
                                         <AppSwitch id="rdAtivo" className={'switch-ativo'}  label color={'success'} 
                                             defaultChecked 
                                             value={ativo}

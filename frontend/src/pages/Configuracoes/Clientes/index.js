@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, InputGroup, InputGroupAddon, CardFooter, Form} from 'reactstrap';
 import { AppSwitch } from '@coreui/react'
 import '../../../global.css';
@@ -20,9 +20,15 @@ export default function Clientes() {
     const [telefonecelular, setTelefoneCelular] = useState('');
     const [telefoneresponsavel, setTelefoneResponsavel] = useState('');
     const [parceiroid, setParceiroId] = useState('');
+    const [parceiros, setParceiros] = useState([]);
     const [ativo, setAtivo] = useState("true");
     const usuarioId = localStorage.getItem('userId');
 
+    useEffect(() => {
+        api.get('parceiro').then(response => {            
+            setParceiros(response.data);
+        })
+    }, [usuarioId]);  
 
 
     async function handleClientes(e) {
@@ -90,11 +96,11 @@ export default function Clientes() {
                                         <Label htmlFor="parceiroId">Parceiro</Label>
                                         <Input required type="select" name="select" id="cboParceiroId"
                                             value={parceiroid}
-                                            onChange={e => setParceiroId(e.target.value)}
-                                        >
-                                            <option value={undefined}>Selecione...</option>
-                                            <option value={1}>Parceiro1</option>
-                                            <option value={2}>Parceiro2</option>
+                                            onChange={e => setParceiroId(e.target.value)}>
+                                                <option value={undefined} defaultValue>Selecione...</option>
+                                                    {parceiros.map(parceiro => (                                                
+                                                        <option value={parceiro.id}>{parceiro.nomeparceiro}</option>
+                                                    ))} 
 
                                         </Input>
                                     </Col>
@@ -155,12 +161,33 @@ export default function Clientes() {
                                             <Input type="select" required name="select" id="cboEstado"
                                                 value={estado}
                                                 onChange={e => setEstado(e.target.value)}>
-                                                <option value={undefined}>Selecione...</option>
-                                                <option value="1">São Paulo</option>
-                                                <option value="2">Rio de Janeiro</option>
-                                                <option value="3">Minas Gerais</option>
-                                                <option value="4">Paraná</option>
-                                                <option value="5">Santa Catarina</option>
+                                                    <option value={undefined}>Selecione...</option>
+                                                    <option value="SP">São Paulo</option>
+                                                    <option value="RJ">Rio de Janeiro</option>
+                                                    <option value="MG">Minas Gerais</option>
+                                                    <option value="PR">Paraná</option>
+                                                    <option value="AC">Acre</option>
+                                                    <option value="Al">Alagoas</option>
+                                                    <option value="AP">Amapá</option>
+                                                    <option value="AM">Amazonas</option>
+                                                    <option value="BH">Bahia</option>
+                                                    <option value="CE">Ceará</option>
+                                                    <option value="DF">Distrito Federal</option>
+                                                    <option value="GO">Goiás</option>
+                                                    <option value="DF">Distrito Federal</option>
+                                                    <option value="MA">Maranhão</option>
+                                                    <option value="MG">Mato Grosso</option>
+                                                    <option value="MT">Mato Grosso do Sul</option>
+                                                    <option value="PA">Pará</option>
+                                                    <option value="PB">Paraíba</option>
+                                                    <option value="PE">Pernambuco</option>
+                                                    <option value="PI">Piau</option>
+                                                    <option value="RN">Rio Grande do Norte</option>
+                                                    <option value="RS">Rio Grande do Sul</option>
+                                                    <option value="RR">Rondônia</option>
+                                                    <option value="SC">Santa Catarina</option>
+                                                    <option value="SE">Sergipe</option>
+                                                    <option value="TO">Tocantins</option>
                                             </Input>
                                     </Col>    
                                     <Col md="3">

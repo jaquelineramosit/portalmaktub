@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, InputGroup, CardFooter, Form} from 'reactstrap';
 import { AppSwitch } from '@coreui/react'
 import '../../../global.css';
@@ -6,8 +6,11 @@ import api from '../../../../src/services/api';
 
 export default function DadosBancarios() {
     const [tecnicoid, setTecnicoId] = useState('');
+    const [tecnicos, setTecnicos] = useState([]);
     const [bancoid, setBancoId] = useState('');
+    const [bancos, setBancos] = useState([]);
     const [tipocontaid, setTipoContaId] = useState('');
+    const [tipocontas, setTipoContas] = useState([]);
     const [agencia, setAgencia] = useState('');  
     const [conta, setConta] = useState('');
     const [titularconta, setTitularConta] = useState('');
@@ -16,6 +19,21 @@ export default function DadosBancarios() {
     const [ativo, setAtivo] = useState("true");
     const usuarioId = localStorage.getItem('userId');
 
+    useEffect(() => {
+        api.get('tecnico').then(response => {            
+            setTecnicos(response.data);
+        })
+    }, [usuarioId]);   
+    useEffect(() => {
+        api.get('banco').then(response => {            
+            setBancos(response.data);
+        })
+    }, [usuarioId]);   
+    useEffect(() => {
+        api.get('tipo-conta').then(response => {            
+            setTipoContas(response.data);
+        })
+    }, [usuarioId]);   
 
 
     async function handleDadosBancarios(e) {
@@ -63,11 +81,11 @@ export default function DadosBancarios() {
                                         <Label htmlFor="tecnicoId">Técnico</Label>
                                         <Input required type="select" name="select" id="cboTecnicoId"
                                             value={tecnicoid}
-                                            onChange={e => setTecnicoId(e.target.value)}
-                                        >
-                                            <option value={undefined}>Selecione...</option>
-                                            <option value={1}>Técnico1</option>
-                                            <option value={2}>Técnico2</option>
+                                            onChange={e => setTecnicoId(e.target.value)}>
+                                                <option value={undefined} defaultValue>Selecione...</option>
+                                                {tecnicos.map(tecnico => (                                                
+                                                <option value={tecnico.id}>{tecnico.nometecnico}</option>
+                                                ))}   
 
                                         </Input>
                                     </Col>
@@ -75,23 +93,22 @@ export default function DadosBancarios() {
                                         <Label htmlFor="bancoId">Banco</Label>
                                         <Input required type="select" name="select" id="cboBancoId"
                                             value={bancoid}
-                                            onChange={e => setBancoId(e.target.value)}
-                                        >
-                                            <option value={undefined}>Selecione...</option>
-                                            <option value={1}>Banco1</option>
-                                            <option value={2}>Banco2</option>
-
+                                            onChange={e => setBancoId(e.target.value)}>
+                                                <option value={undefined} defaultValue>Selecione...</option>
+                                                {bancos.map(banco => (                                                
+                                                <option value={banco.id}>{banco.nomebanco}</option>
+                                                ))}
                                         </Input>
                                     </Col>
                                     <Col md="3">
                                         <Label htmlFor="tipoContaId">Tipo de Conta</Label>
                                         <Input required type="select" name="select" id="cboTipoContaId"
                                             value={tipocontaid}
-                                            onChange={e => setTipoContaId(e.target.value)}
-                                        >
-                                            <option value={undefined}>Selecione...</option>
-                                            <option value={1}>Tipo de Conta1</option>
-                                            <option value={2}>Tipo de Conta2</option>
+                                            onChange={e => setTipoContaId(e.target.value)}>
+                                                <option value={undefined} defaultValue>Selecione...</option>
+                                                {tipocontas.map(tipoconta => (                                                
+                                                <option value={tipoconta.id}>{tipoconta.nometipoconta}</option>
+                                                ))}
 
                                         </Input>
                                     </Col>

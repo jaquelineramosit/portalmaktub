@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect} from 'react';
 import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, CardFooter, Form,  } from 'reactstrap';
 import { AppSwitch } from '@coreui/react'
 import '../../../global.css';
@@ -6,13 +6,40 @@ import api from '../../../../src/services/api';
 
 export default function Movimentacaoos() {   
     const [ordemservicoid, setOrdemServicoId] = useState('');
+    const [ordemservicos, setOrdemServicos] = useState([]);
     const [statusatendimentoid, setStatusAtendimentoId] = useState('');
+    const [statusatendimentos, setStatusAtendimentos] = useState([]);
     const [statuspagamentoid, setStatusPagamentoId] = useState('');
+    const [statuspagamentos, setStatusPagamentos] = useState([]);
     const [statuscobrancaid, setStatusCobrancaId] = useState('');
+    const [statuscobrancas, setStatusCobrancas] = useState([]);
     const [observacao, setObservacao] = useState('');
     const [ativo, setAtivo] = useState('true');
     const usuarioId = localStorage.getItem('userId');
 
+    useEffect(() => {
+        api.get('ordem-servico').then(response => {            
+            setOrdemServicos(response.data);
+        })
+    }, [usuarioId]);  
+
+    useEffect(() => {
+        api.get('status-atendimento').then(response => {            
+            setStatusAtendimentos(response.data);
+        })
+    }, [usuarioId]);  
+
+    useEffect(() => {
+        api.get('status-cobranca').then(response => {            
+            setStatusCobrancas(response.data);
+        })
+    }, [usuarioId]);  
+
+    useEffect(() => {
+        api.get('status-pagamento').then(response => {            
+            setStatusPagamentos(response.data);
+        })
+    }, [usuarioId]);  
 
 
     async function handleMovimentacaoos(e) {
@@ -57,9 +84,10 @@ export default function Movimentacaoos() {
                                         <Input type="select" required name="select" id="cboOrdemServicoId" multiple = {false}
                                             value={ordemservicoid}
                                             onChange={e => setOrdemServicoId(e.target.value)}>
-                                            <option value={undefined}>Selecione...</option>
-                                            <option value="1">OS1</option>
-                                            <option value="2">OS2</option>                                          
+                                            <option value={undefined} defaultValue>Selecione...</option>
+                                            {ordemservicos.map(ordemservico => (                                                
+                                                <option value={ordemservico.id}>{ordemservico.numeroos}</option>
+                                            ))}                                           
                                         </Input>
                                     </Col>
                                     <Col md="4">
@@ -67,9 +95,10 @@ export default function Movimentacaoos() {
                                         <Input type="select" required name="select" id="cboStatusAtendimentoId" multiple = {false}
                                             value={statusatendimentoid}
                                             onChange={e => setStatusAtendimentoId(e.target.value)}>
-                                            <option value={undefined}>Selecione...</option>
-                                            <option value="1">Status1</option>
-                                            <option value="2">Status2</option>                                           
+                                                <option value={undefined} defaultValue>Selecione...</option>
+                                                {statusatendimentos.map(statusatendimento => (                                                
+                                                <option value={statusatendimento.id}>{statusatendimento.status}</option>
+                                                ))}                                         
                                         </Input>
                                     </Col>
                                     </FormGroup>
@@ -79,9 +108,10 @@ export default function Movimentacaoos() {
                                         <Input type="select" required name="select" id="cboStatusCobrancaId" multiple = {false}
                                             value={statuscobrancaid}
                                             onChange={e => setStatusCobrancaId(e.target.value)}>
-                                            <option value={undefined}>Selecione...</option>
-                                            <option value="1">Status1</option>
-                                            <option value="2">Status2</option>                                           
+                                                <option value={undefined} defaultValue>Selecione...</option>
+                                                {statuscobrancas.map(statuscobranca => (                                                
+                                                <option value={statuscobranca.id}>{statuscobranca.status}</option>
+                                                ))}                                           
                                         </Input>
                                     </Col>
                                     <Col md="4">
@@ -89,9 +119,10 @@ export default function Movimentacaoos() {
                                         <Input type="select" required name="select" id="cboStatuspPagamentoId" multiple = {false}
                                             value={statuspagamentoid}
                                             onChange={e => setStatusPagamentoId(e.target.value)}>
-                                            <option value={undefined}>Selecione...</option>
-                                            <option value="1">Status1</option>
-                                            <option value="2">Status2</option>                                           
+                                                <option value={undefined} defaultValue>Selecione...</option>
+                                                {statuspagamentos.map(statuspagamento => (                                                
+                                                <option value={statuspagamento.id}>{statuspagamento.status}</option>
+                                                ))}                                              
                                         </Input>
                                     </Col>                                
                                 </FormGroup>

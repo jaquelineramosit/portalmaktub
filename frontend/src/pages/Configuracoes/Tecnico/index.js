@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, InputGroup, InputGroupAddon, CardFooter, Form, FormFeedback } from 'reactstrap';
+import React, { useState, useEffect } from 'react';
+import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, InputGroup, InputGroupAddon, CardFooter, Form } from 'reactstrap';
 import { AppSwitch } from '@coreui/react'
 import '../../../global.css';
 import api from '../../../../src/services/api';
@@ -7,6 +7,7 @@ import api from '../../../../src/services/api';
 export default function Tecnico() {
     const [nometecnico, setNomeTecnico] = useState('');
     const [tipotecnicoid, setTipoTecnicoId] = useState('');
+    const [tipoTecnicos, setTipoTecnicos] = useState([]);
     const [rg, setRg] = useState('');
     const [cpf, setCpf] = useState('');  
     const [logradouro, setLogradouro] = useState('');
@@ -21,7 +22,11 @@ export default function Tecnico() {
     const [ativo, setAtivo] = useState("true");
     const usuarioId = localStorage.getItem('userId');
 
-
+    useEffect(() => {
+        api.get('tipo-tecnico').then(response => {            
+            setTipoTecnicos(response.data);
+        })
+    }, [usuarioId]);
 
     async function handleTecnico(e) {
         e.preventDefault();
@@ -176,9 +181,10 @@ export default function Tecnico() {
                                         <Input type="select" required name="select" id="cboTipoTecnicoId"
                                             value={tipotecnicoid}
                                             onChange={e => setTipoTecnicoId(e.target.value)}>
-                                            <option value={undefined}>Selecione...</option>
-                                            <option value="1">Tipo1</option>   
-                                            <option value="2">Tipo2</option>                                         
+                                                 <option value={undefined} defaultValue>Selecione...</option>
+                                                {tipoTecnicos.map(tipoTecnico => (                                                
+                                                <option value={tipoTecnico.id}>{tipoTecnico.nometipotecnico}</option>
+                                                ))}                                           
                                         </Input>
                                     </Col>
                                 </FormGroup>

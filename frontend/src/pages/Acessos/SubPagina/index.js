@@ -1,15 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, CardFooter, Form, } from 'reactstrap';
 import { AppSwitch } from '@coreui/react'
 import '../../../global.css';
 import api from '../../../../src/services/api';
 
+
 export default function SubPagina() {
+    
     const [paginaid, setPaginaId] = useState('');
     const [nomesubpagina, setNomeSubPagina] = useState('');
     const [descricao, setDescricao] = useState('');    
     const [ativo, setAtivo] = useState('true');
-    const usuarioId = localStorage.getItem('userId');    
+    const usuarioId = localStorage.getItem('userId');  
+    const [paginas, setPaginas] = useState([]);  
+
+    useEffect(() => {
+        api.get('paginas').then(response => {            
+            setPaginas(response.data);
+        })
+    }, [usuarioId]);   
 
     async function handleSubPagina(e) {
         e.preventDefault();
@@ -33,7 +42,7 @@ export default function SubPagina() {
         } catch (err) {
 
             alert('Erro no cadastro, tente novamente.');
-        }
+        } 
     
     }
     return (        
@@ -49,20 +58,15 @@ export default function SubPagina() {
                             <CardBody>
                                 <FormGroup row>
                                     <Col md="4">
-                                        <Label htmlFor="paginaId">Qual a Página?</Label>
-                                        <Input type="select" required id="cboPaginaId"
+                                    <Label htmlFor="pagina">Qual a Página?</Label>
+                                        <Input type="select" required name="select" id="cboPagina"
                                         value={paginaid}
-                                        onChange={ e => setPaginaId(e.target.value)} >
-
-                                            <option value={undefined}>Selecione...</option>
-                                            <option value={1}>Domingo</option>
-                                            <option value={2}>Segunda-Feira</option>
-                                            <option value={3}>Terça-Feira</option>
-                                            <option value={4}>Quarta-Feria</option>
-                                            <option value={5}>Quinta-Feira</option>
-                                            <option value={6}>Sexta-Feira</option>
-                                            <option value={7}>Sabado</option>  
-                                        </Input>                                      
+                                        onChange={ e => setPaginaId(e.target.value)}>
+                                        <option value={undefined} defaultValue>Selecione...</option>
+                                            {paginas.map(pagina => (                                                
+                                                <option value={pagina.id}>{pagina.nomepagina}</option>
+                                            ))}                                            
+                                        </Input>                                    
                                     </Col>
                                     <Col md="4">
                                         <Label htmlFor="nomeSubPagina">Nome da Su Página</Label>

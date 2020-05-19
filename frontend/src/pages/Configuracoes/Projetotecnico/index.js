@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, CardFooter, Form } from 'reactstrap';
 import { AppSwitch } from '@coreui/react'
 import '../../../global.css';
@@ -6,11 +6,23 @@ import api from '../../../../src/services/api';
 
 export default function ProjetoTecnico() {   
     const [tecnicoid, setTecnicoId] = useState('');
+    const [tecnicos, setTecnicos] = useState([]);
     const [tipoprojetoid, setTipoProjetoId] = useState('');
+    const [tipoProjetos, setTipoProjetos] = useState([]);
     const [ativo, setAtivo] = useState('true');
     const usuarioId = localStorage.getItem('userId');
 
+    useEffect(() => {
+        api.get('tecnico').then(response => {            
+            setTecnicos(response.data);
+        })
+    }, [usuarioId]);  
 
+    useEffect(() => {
+        api.get('tipo-projeto').then(response => {            
+            setTipoProjetos(response.data);
+        })
+    }, [usuarioId]);  
 
     async function handleProjetoTecnico(e) {
         e.preventDefault();
@@ -51,9 +63,10 @@ export default function ProjetoTecnico() {
                                         <Input type="select" required name="select" id="cboTécnicoId" multiple={false}
                                             value={tecnicoid}
                                             onChange={e => setTecnicoId(e.target.value)}>
-                                            <option value={undefined}>Selecione...</option>
-                                            <option value="1">Técnico1</option>
-                                            <option value="2">Técnico2</option>                                          
+                                                <option value={undefined} defaultValue>Selecione...</option>
+                                                {tecnicos.map(tecnico => (                                                
+                                                    <option value={tecnico.id}>{tecnico.nometecnico}</option>
+                                                ))}                                           
                                         </Input>
                                     </Col>
                                     <Col md="4">
@@ -61,9 +74,10 @@ export default function ProjetoTecnico() {
                                         <Input type="select" required name="select" id="cboTipoProjetoId"  multiple={false}
                                             value={tipoprojetoid}
                                             onChange={e => setTipoProjetoId(e.target.value)}>
-                                            <option value={undefined}>Selecione...</option>
-                                            <option value="1">Projeto1</option>
-                                            <option value="2">Projeto2</option>                                           
+                                                <option value={undefined} defaultValue>Selecione...</option>
+                                                {tipoProjetos.map(tipoProjeto => (                                                
+                                                    <option value={tipoProjeto.id}>{tipoProjeto.nometipoprojeto}</option>
+                                                ))}                                          
                                         </Input>
                                     </Col>
                                 </FormGroup>

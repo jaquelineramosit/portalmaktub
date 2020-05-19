@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect} from 'react';
 import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, InputGroup , InputGroupAddon, CardFooter, Form } from 'reactstrap';
 import { AppSwitch } from '@coreui/react'
 import '../../../global.css';
@@ -6,14 +6,25 @@ import api from '../../../../src/services/api';
 
 export default function Adiantamentoos() {
     const [ordemservicoid, setOrdemServicoId] = useState('');
+    const [ordemservicos, setOrdemServicos] = useState([]);
     const [valoradiantamento, setValorAdiantamento] = useState('');
     const [dataadiantamento, setDataAdiantamento] = useState('');
     const [dataquitacao, setDataQuitacao] = useState('');  
     const [statusadiantamentoid, setStatusAdiantamentoId] = useState('');
+    const [statusAdiantamentos, setStatusAdiantamentos] = useState([]);
     const [ativo, setAtivo] = useState("true");
     const usuarioId = localStorage.getItem('userId');
 
-
+    useEffect(() => {
+        api.get('ordem-servico').then(response => {            
+            setOrdemServicos(response.data);
+        })
+    }, [usuarioId]); 
+    useEffect(() => {
+        api.get('status-adiantamento').then(response => {            
+            setStatusAdiantamentos(response.data);
+        })
+    }, [usuarioId]); 
 
     async function handleAdiantamentoOs(e) {
         e.preventDefault();
@@ -58,19 +69,21 @@ export default function Adiantamentoos() {
                                         <Input type="select" required name="select" id="cboOrdemServicoId" multiple = {false}
                                             value={ordemservicoid}
                                             onChange={e => setOrdemServicoId(e.target.value)}>
-                                            <option value={undefined}>Selecione...</option>
-                                            <option value="1">OS1</option>
-                                            <option value="2">OS2</option>                                          
+                                               <option value={undefined} defaultValue>Selecione...</option>
+                                                 {ordemservicos.map(ordemservico => (                                                
+                                                <option value={ordemservico.id}>{ordemservico.numeroos}</option>
+                                                ))}                                            
                                         </Input>
                                     </Col>
                                     <Col md="4">
                                         <Label htmlFor="statusAtendimentoId">Status do Adiantamento</Label>
                                         <Input type="select" required name="select" id="cboStatusAdiantamentoId" multiple = {false}
-                                            value={statusadiantamentoid}
-                                            onChange={e => setStatusAdiantamentoId(e.target.value)}>
-                                            <option value={undefined}>Selecione...</option>
-                                            <option value="1">Status1</option>
-                                            <option value="2">Status2</option>                                           
+                                         value={statusadiantamentoid}
+                                        onChange={e => setStatusAdiantamentoId(e.target.value)}>>
+                                                <option value={undefined} defaultValue>Selecione...</option>
+                                             {statusAdiantamentos.map(statusAdiantamento => (                                                
+                                             <option value={statusAdiantamento.id}>{statusAdiantamento.status}</option>
+                                            ))}                                             
                                         </Input>
                                     </Col>
                                 </FormGroup>

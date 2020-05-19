@@ -1,17 +1,48 @@
-import React, { useState } from 'react';
-import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, InputGroup, InputGroupAddon, CardFooter, Form, FormFeedback } from 'reactstrap';
+import React, { useState, useEffect} from 'react';
+import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, CardFooter, Form } from 'reactstrap';
 import { AppSwitch } from '@coreui/react'
 import '../../../global.css';
 import api from '../../../../src/services/api';
 
 export default function PermissaAcesso() {
     const [perfilacessoid, setPerfilAcessoId] = useState('');
+    const [perfilacessos, setPerfilAcessos] = useState([]);
     const [moduloid, setModuloId] = useState('');
+    const [modulos, setModulos] = useState([]);
     const [paginaid, setPaginaId] = useState('');
+    const [paginas, setPaginas] = useState([]);
     const [subpaginaid, setSubPaginaId] = useState('');
+    const [subpaginas, setSubPaginas] = useState([]);
     const [funcaoid, setFuncaoId] = useState('');    
+    const [funcaos, setFuncaos] = useState([]);
     const [ativo, setAtivo] = useState('true');
     const usuarioId = localStorage.getItem('userId');    
+
+    useEffect(() => {
+        api.get('perfis-acesso').then(response => {            
+            setPerfilAcessos(response.data);
+        })
+    }, [usuarioId]);
+    useEffect(() => {
+        api.get('modulos').then(response => {            
+            setModulos(response.data);
+        })
+    }, [usuarioId]);
+    useEffect(() => {
+        api.get('paginas').then(response => {            
+            setPaginas(response.data);
+        })
+    }, [usuarioId]); 
+    useEffect(() => {
+        api.get('sub-paginas').then(response => {            
+            setSubPaginas(response.data);
+        })
+    }, [usuarioId]);
+    useEffect(() => {
+        api.get('funcao').then(response => {            
+            setFuncaos(response.data);
+        })
+    }, [usuarioId]);
 
 
     async function handlePermissaoAcesso(e) {
@@ -58,16 +89,11 @@ export default function PermissaAcesso() {
                                             <Input type="select" required id="cboPerfilAcesso"
                                             value={perfilacessoid}
                                             onChange={ e => setPerfilAcessoId(e.target.value)} >
-
-                                                <option value={undefined}>Selecione...</option>
-                                                <option value={1}>Domingo</option>
-                                                <option value={2}>Segunda-Feira</option>
-                                                <option value={3}>Terça-Feira</option>
-                                                <option value={4}>Quarta-Feria</option>
-                                                <option value={5}>Quinta-Feira</option>
-                                                <option value={6}>Sexta-Feira</option>
-                                                <option value={7}>Sabado</option>  
-                                            </Input>                                      
+                                             <option value={undefined} defaultValue>Selecione...</option>
+                                            {perfilacessos.map(perfilacesso => (                                                
+                                                <option value={perfilacesso.id}>{perfilacesso.nomeperfil}</option>
+                                            ))}                                            
+                                            </Input>                                     
                                         </Col>
                                         <Col md="4">
                                             <Label htmlFor="moduloId">Qual o Módulo?</Label>
@@ -75,14 +101,10 @@ export default function PermissaAcesso() {
                                             value={moduloid}
                                             onChange={ e => setModuloId(e.target.value)} >
 
-                                                <option value={undefined}>Selecione...</option>
-                                                <option value={1}>Domingo</option>
-                                                <option value={2}>Segunda-Feira</option>
-                                                <option value={3}>Terça-Feira</option>
-                                                <option value={4}>Quarta-Feria</option>
-                                                <option value={5}>Quinta-Feira</option>
-                                                <option value={6}>Sexta-Feira</option>
-                                                <option value={7}>Sabado</option>  
+                                            <option value={undefined} defaultValue>Selecione...</option>
+                                            {modulos.map(modulo => (                                                
+                                                <option value={modulo.id}>{modulo.nomemodulo}</option>
+                                            ))}                                            
                                             </Input>                                      
                                         </Col>
                                      </FormGroup>   
@@ -93,15 +115,11 @@ export default function PermissaAcesso() {
                                                 value={paginaid}
                                                 onChange={ e => setPaginaId(e.target.value)} >
 
-                                                    <option value={undefined}>Selecione...</option>
-                                                    <option value={1}>Domingo</option>
-                                                    <option value={2}>Segunda-Feira</option>
-                                                    <option value={3}>Terça-Feira</option>
-                                                    <option value={4}>Quarta-Feria</option>
-                                                    <option value={5}>Quinta-Feira</option>
-                                                    <option value={6}>Sexta-Feira</option>
-                                                    <option value={7}>Sabado</option>  
-                                                </Input>                                      
+                                                    <option value={undefined} defaultValue>Selecione...</option>
+                                                    {paginas.map(pagina => (                                                
+                                                        <option value={pagina.id}>{pagina.nomepagina}</option>
+                                                    ))}                                            
+                                                </Input>                                     
                                             </Col>
                                             <Col md="4">
                                                 <Label htmlFor="subPaginaId">Qual a Sub Página?</Label>
@@ -109,15 +127,11 @@ export default function PermissaAcesso() {
                                                 value={subpaginaid}
                                                 onChange={ e => setSubPaginaId(e.target.value)} >
 
-                                                    <option value={undefined}>Selecione...</option>
-                                                    <option value={1}>Domingo</option>
-                                                    <option value={2}>Segunda-Feira</option>
-                                                    <option value={3}>Terça-Feira</option>
-                                                    <option value={4}>Quarta-Feria</option>
-                                                    <option value={5}>Quinta-Feira</option>
-                                                    <option value={6}>Sexta-Feira</option>
-                                                    <option value={7}>Sabado</option>  
-                                                </Input>                                      
+                                                    <option value={undefined} defaultValue>Selecione...</option>
+                                                    {subpaginas.map(subpagina => (                                                
+                                                        <option value={subpagina.id}>{subpagina.nomesubpagina}</option>
+                                                    ))}                                            
+                                                </Input>                                    
                                             </Col>
                                         </FormGroup>
                                         <FormGroup row>
@@ -127,14 +141,10 @@ export default function PermissaAcesso() {
                                                 value={funcaoid}
                                                 onChange={ e => setFuncaoId(e.target.value)} >
 
-                                                    <option value={undefined}>Selecione...</option>
-                                                    <option value={1}>Domingo</option>
-                                                    <option value={2}>Segunda-Feira</option>
-                                                    <option value={3}>Terça-Feira</option>
-                                                    <option value={4}>Quarta-Feria</option>
-                                                    <option value={5}>Quinta-Feira</option>
-                                                    <option value={6}>Sexta-Feira</option>
-                                                    <option value={7}>Sabado</option>  
+                                                    <option value={undefined} defaultValue>Selecione...</option>
+                                                    {funcaos.map(funcao => (                                                
+                                                        <option value={funcao.id}>{funcao.nomefuncao}</option>
+                                                    ))}                                            
                                                 </Input>                                      
                                             </Col>
                                         </FormGroup>

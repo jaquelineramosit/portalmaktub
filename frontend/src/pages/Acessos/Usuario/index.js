@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, InputGroup, InputGroupAddon, CardFooter, Form, FormFeedback } from 'reactstrap';
 import { AppSwitch } from '@coreui/react'
@@ -27,8 +27,15 @@ export default function Usuario() {
     const [senhaConfirmaForm, setSenhaConfirmaForm] = useState('');
     const [ativo, setAtivo] = useState('true');
     const [perfilAcessoId, setperfilAcessoId] = useState(true);
+    const [perfilAcessos, setPerfilAcessos] = useState([]);
+    const usuarioId = localStorage.getItem('userId');  
     const history = useHistory();
 
+    useEffect(() => {
+        api.get('perfils-acesso').then(response => {            
+            setPerfilAcessos(response.data);
+        })
+    }, [usuarioId]); 
 
     async function handleRegister(e) {
         e.preventDefault();
@@ -167,12 +174,33 @@ export default function Usuario() {
                                         <Input type="select" required name="select" id="cboEstado"
                                         value={estado}
                                         onChange={ e => setEstado(e.target.value)}>
-                                            <option value={undefined}>Selecione...</option>
-                                            <option value="1">São Paulo</option>
-                                            <option value="2">Rio de Janeiro</option>
-                                            <option value="3">Minas Gerais</option>
-                                            <option value="4">Paraná</option>
-                                            <option value="5">Santa Catarina</option>
+                                                <option value={undefined}>Selecione...</option>
+                                                <option value="SP">São Paulo</option>
+                                                <option value="RJ">Rio de Janeiro</option>
+                                                <option value="MG">Minas Gerais</option>
+                                                <option value="PR">Paraná</option>
+                                                <option value="AC">Acre</option>
+                                                <option value="Al">Alagoas</option>
+                                                <option value="AP">Amapá</option>
+                                                <option value="AM">Amazonas</option>
+                                                <option value="BH">Bahia</option>
+                                                <option value="CE">Ceará</option>
+                                                <option value="DF">Distrito Federal</option>
+                                                <option value="GO">Goiás</option>
+                                                <option value="DF">Distrito Federal</option>
+                                                <option value="MA">Maranhão</option>
+                                                <option value="MG">Mato Grosso</option>
+                                                <option value="MT">Mato Grosso do Sul</option>
+                                                <option value="PA">Pará</option>
+                                                <option value="PB">Paraíba</option>
+                                                <option value="PE">Pernambuco</option>
+                                                <option value="PI">Piau</option>
+                                                <option value="RN">Rio Grande do Norte</option>
+                                                <option value="RS">Rio Grande do Sul</option>
+                                                <option value="RR">Rondônia</option>
+                                                <option value="SC">Santa Catarina</option>
+                                                <option value="SE">Sergipe</option>
+                                                <option value="TO">Tocantins</option>
                                         </Input>
                                     </Col>                                                      
                                 </FormGroup>                        
@@ -245,11 +273,11 @@ export default function Usuario() {
                                         <Input type="select" required name="select" id="cboPerfilAcesso"
                                         value={perfilAcessoId}
                                         onChange={ e => setperfilAcessoId(e.target.value)}>
-                                            <option value={undefined}>Selecione...</option>
-                                            <option value="1">Administrador</option>
-                                            <option value="2">Vendedor</option>
-                                            <option value="3">Gerente</option>                                        
-                                        </Input>
+                                        <option value={undefined} defaultValue>Selecione...</option>
+                                            {perfilAcessos.map(perfilAcesso => (                                                
+                                                <option value={perfilAcesso.id}>{perfilAcesso.nomeperfil}</option>
+                                            ))}                                            
+                                        </Input>  
                                     </Col>                                                                                                                                    
                                 </FormGroup>
                                 <FormGroup row>                                

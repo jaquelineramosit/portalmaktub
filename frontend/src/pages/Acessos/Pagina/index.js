@@ -1,15 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, InputGroup, InputGroupAddon, CardFooter, Form, FormFeedback } from 'reactstrap';
 import { AppSwitch } from '@coreui/react'
 import '../../../global.css';
 import api from '../../../../src/services/api';
+import Modulo from '../Modulo';
 
 export default function Pagina() {
     const [moduloId, setModuloId] = useState('');
+    const [modulos, setModulos] = useState([]);
     const [nomePagina, setNomePagina] = useState('');
     const [descricao, setDescricao] = useState('');    
     const [ativo, setAtivo] = useState('true');
-    const usuarioId = localStorage.getItem('userId');    
+    const usuarioId = localStorage.getItem('userId');
+    
+    useEffect(() => {
+        api.get('modulos').then(response => {            
+            setModulos(response.data);
+        })
+    }, [usuarioId]);   
 
     async function handlePagina(e) {
         e.preventDefault();
@@ -52,17 +60,12 @@ export default function Pagina() {
                                         <Label htmlFor="moduloId">Qual o Módulo</Label>
                                         <Input type="select" required id="cboModuloId"
                                         value={moduloId}
-                                        onChange={ e => setModuloId(e.target.value)} >
-
-                                            <option value={undefined}>Selecione...</option>
-                                            <option value={1}>Domingo</option>
-                                            <option value={2}>Segunda-Feira</option>
-                                            <option value={3}>Terça-Feira</option>
-                                            <option value={4}>Quarta-Feria</option>
-                                            <option value={5}>Quinta-Feira</option>
-                                            <option value={6}>Sexta-Feira</option>
-                                            <option value={7}>Sabado</option>  
-                                        </Input>                                      
+                                        onChange={ e => setModuloId(e.target.value)}>
+                                        <option value={undefined} defaultValue>Selecione...</option>
+                                        {modulos.map(modulo=> (                                                
+                                                <option value={modulo.id}>{modulo.nomemodulo}</option>
+                                            ))}                                           
+                                        </Input>                                     
                                     </Col>
                                     <Col md="4">
                                         <Label htmlFor="nomePagina">Nome da Página</Label>

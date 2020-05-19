@@ -1,23 +1,38 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, CardFooter, Form, } from 'reactstrap';
 import { AppSwitch } from '@coreui/react'
 import '../../../global.css';
 import api from '../../../../src/services/api';
 
 export default function Funcao() {
-    const [subPaginaId, setSubPaginaId] = useState('');
-    const [paginaId, setPaginaId] = useState('');
+    const [subpaginaid, setSubPaginaId] = useState('');
+    const [paginaid, setPaginaId] = useState('');
     const [nomefuncao, setNomeFuncao] = useState(''); 
     const [descricao, setDescricao] = useState('');    
     const [ativo, setAtivo] = useState('true');
-    const usuarioId = localStorage.getItem('userId');    
+    const usuarioId = localStorage.getItem('userId');
+   const [subPaginas, setSubPaginas] = useState([]);
+    const [paginas, setPaginas] = useState([]);  
+
+    
+    useEffect(() => {
+        api.get('paginas').then(response => {            
+            setPaginas(response.data);
+        })
+    }, [usuarioId]);  
+
+    useEffect(() => {
+        api.get('sub-paginas').then(response => {            
+            setSubPaginas(response.data);
+        })
+    }, [usuarioId]);
 
     async function handleFuncao(e) {
         e.preventDefault();
         
         const data = {
-            subPaginaId,
-            paginaId,
+            subpaginaid,
+            paginaid,
             nomefuncao,
             descricao, 
             ativo,     
@@ -27,7 +42,7 @@ export default function Funcao() {
         try {
             const response = await api.post('/funcao', data, {
                 headers: {
-                    Authorization: usuarioId,
+                    Authorization: 1,
                 }
             });
             alert(`Feito o cadastro com sucesso`);
@@ -53,34 +68,24 @@ export default function Funcao() {
                                     <Col md="3">
                                         <Label htmlFor="subPaginaId">Qual a Sub Página?</Label>
                                         <Input type="select" required id="cboSubPaginaId"
-                                        value={subPaginaId}
-                                        onChange={ e => setSubPaginaId(e.target.value)} >
-
-                                            <option value={undefined}>Selecione...</option>
-                                            <option value={1}>Domingo</option>
-                                            <option value={2}>Segunda-Feira</option>
-                                            <option value={3}>Terça-Feira</option>
-                                            <option value={4}>Quarta-Feria</option>
-                                            <option value={5}>Quinta-Feira</option>
-                                            <option value={6}>Sexta-Feira</option>
-                                            <option value={7}>Sabado</option>  
+                                        value={subpaginaid}
+                                        onChange={ e => setSubPaginaId(e.target.value)}>
+                                        <option value={undefined} defaultValue> Selecione...</option>
+                                            {subPaginas.map(subPagina => (                                                
+                                            <option value={subPagina.id}>{subPagina.nomesubpagina}</option>
+                                            ))}  
                                         </Input>                                      
                                     </Col>
                                     <Col md="3">
-                                        <Label htmlFor="paginaId">Qual a Página?</Label>
-                                        <Input type="select" required id="cboPaginaId"
-                                        value={paginaId}
-                                        onChange={ e => setPaginaId(e.target.value)} >
-
-                                            <option value={undefined}>Selecione...</option>
-                                            <option value={1}>Domingo</option>
-                                            <option value={2}>Segunda-Feira</option>
-                                            <option value={3}>Terça-Feira</option>
-                                            <option value={4}>Quarta-Feria</option>
-                                            <option value={5}>Quinta-Feira</option>
-                                            <option value={6}>Sexta-Feira</option>
-                                            <option value={7}>Sabado</option>  
-                                        </Input>                                      
+                                    <Label htmlFor="pagina">Qual a Página?</Label>
+                                    <Input type="select" required name="select" id="cboPagina"
+                                        value={paginaid}
+                                        onChange={ e => setPaginaId(e.target.value)}>
+                                        <option value={undefined} defaultValue> Selecione...</option>
+                                            {paginas.map(pagina => (                                                
+                                            <option value={pagina.id}>{pagina.nomepagina}</option>
+                                            ))}                                            
+                                        </Input>                                          
                                     </Col>
                                     <Col md="3">
                                         <Label htmlFor="nomeFuncao">Nome da Função</Label>

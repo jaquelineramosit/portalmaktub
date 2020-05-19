@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, InputGroup, InputGroupAddon, CardFooter, Form, FormFeedback } from 'reactstrap';
+import React, { useState, useEffect } from 'react';
+import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, InputGroup, InputGroupAddon, CardFooter, Form } from 'reactstrap';
 import { AppSwitch } from '@coreui/react'
 import '../../../global.css';
 import api from '../../../services/api';
@@ -9,11 +9,14 @@ export default function OrdemServico() {
     const [datasolicitacao, setDataSolicitacao] = useState('');
     const [dataatendimento, setDataAtendimento] = useState('');
     const [clientefilialid, setClienteFilialId] = useState('');
+    const [clienteFiliais, setClienteFiliais] = useState([]);
     const [tiposervicoid, setTipoServicoId] = useState('');
+    const [tipoServicos, setTipoServicos] = useState([]);
     const [descricaoservico, setDescricaoServico] = useState('');
     const [tecnicoid, setTecnicoId] = useState('');
+    const [tecnicos, setTecnicos] = useState([]);
     const [observacaoos, setObservacaoOs] = useState('');
-    const [datafechamento, setDataFechamento] = useState('');
+    const [datafechamento, setDataFechamento] = useState([]);
     const [horaentrada, setHoraEntrada] = useState('');
     const [horasaida, setHoraSaida] = useState('');
     const [qtdehoras, setQtdeHoras] = useState('');
@@ -27,7 +30,23 @@ export default function OrdemServico() {
     const [ativo, setAtivo] = useState('true');
     const usuarioId = localStorage.getItem('userId');
 
+    useEffect(() => {
+        api.get('filiais').then(response => {            
+            setClienteFiliais(response.data);
+        })
+    }, [usuarioId]); 
 
+    useEffect(() => {
+        api.get('tecnico').then(response => {            
+            setTecnicos(response.data);
+        })
+    }, [usuarioId]); 
+
+    useEffect(() => {
+        api.get('tipo-projeto').then(response => {            
+            setTipoServicos(response.data);
+        })
+    }, [usuarioId]); 
 
     async function handleOs(e) {
         e.preventDefault();
@@ -141,9 +160,11 @@ export default function OrdemServico() {
                                             <Input required type="select" name="select" id="cboClienteFilial"
                                                     value={clientefilialid}
                                                     onChange={e => setClienteFilialId(e.target.value)} >
-                                                    <option value={undefined}>Selecione...</option>
-                                                    <option value={1}>Filial1</option>
-                                                    <option value={2}>Filial2</option>
+                                        
+                                                <option value={undefined} defaultValue>Selecione...</option>
+                                                {clienteFiliais.map(clienteFilial => (                                                
+                                                    <option value={clienteFilial.id}>{clienteFilial.nomefilial}</option>
+                                                ))}  
                                             </Input>
                                             <InputGroupAddon addonType="append">
                                                 <Button type="button" color= "secondary  fa fa-building-o"></Button>
@@ -156,9 +177,10 @@ export default function OrdemServico() {
                                             <Input required type="select" name="select" id="cobTecnico"
                                                 value={tecnicoid}
                                                 onChange={e => setTecnicoId(e.target.value)} >
-                                                <option value={undefined}>Selecione...</option>
-                                                <option value={1}>Tecnico1</option>
-                                                <option value={2}>Tecnico2</option>
+                                                <option value={undefined} defaultValue>Selecione...</option>
+                                                {tecnicos.map(tecnico => (                                                
+                                                    <option value={tecnico.id}>{tecnico.nometecnico}</option>
+                                                ))}  
                                             </Input>
                                             <InputGroupAddon addonType="append">
                                                 <Button type="button" color= "secondary  fa fa-user-md"></Button>
@@ -171,9 +193,10 @@ export default function OrdemServico() {
                                             <Input required type="select" name="select" id="cboTipoServico"
                                                 value={tiposervicoid}
                                                 onChange={e => setTipoServicoId(e.target.value)}>
-                                                <option value={undefined}>Selecione...</option>
-                                                <option value={1}>Tiposervico1</option>
-                                                <option value={2}>Tiposervico2</option>
+                                                <option value={undefined} defaultValue>Selecione...</option>
+                                                {tipoServicos.map(tipoServico => (                                                
+                                                    <option value={tipoServico.id}>{tipoServico.nometipoprojeto}</option>
+                                                ))}  
                                             </Input>
                                             <InputGroupAddon addonType="append">
                                                 <Button type="button" color= "secondary icon-wrench"></Button>
