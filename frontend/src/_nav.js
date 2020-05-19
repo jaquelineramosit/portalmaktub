@@ -20,7 +20,6 @@ export default {
     },
     {
       name: 'Ordem de Serviço',
-      url: '/ordem-servico',
       url: '/tab-ordemservico',
       icon: 'icon-wrench',
     },
