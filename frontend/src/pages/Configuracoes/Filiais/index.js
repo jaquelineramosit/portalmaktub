@@ -240,6 +240,11 @@ export default function Filiais() {
                                             <option value="SC">Santa Catarina</option>
                                             <option value="SE">Sergipe</option>
                                             <option value="TO">Tocantins</option>
+                                            <option value="São Paulo">São Paulo</option>
+                                            <option value="Rio de Janeiro">Rio de Janeiro</option>
+                                            <option value=">Minas Gerais">Minas Gerais</option>
+                                            <option value="Paraná">Paraná</option>
+                                            <option value="Santa Catarina">Santa Catarina</option>
                                         </Input>
                                     </Col>
 
