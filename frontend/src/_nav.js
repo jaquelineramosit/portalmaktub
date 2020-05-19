@@ -164,7 +164,7 @@ export default {
     },
     {
       name: 'Ordem de Serviço',      
-      icon: 'fa fa-lock',
+      icon: 'icon-wrench',
       children: [
         {
           name: 'Ordem de Serviço',
