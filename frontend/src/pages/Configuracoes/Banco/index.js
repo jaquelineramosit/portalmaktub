@@ -5,8 +5,8 @@ import '../../../global.css';
 import api from '../../../../src/services/api';
 
 export default function Banco() {   
-    const [codbanco, setCodbanco] = useState('');
-    const [nomebanco, setNomebanco] = useState('');
+    const [codbanco, setCodBanco] = useState('');
+    const [nomebanco, setNomeBanco] = useState('');
     const [ativo, setAtivo] = useState('true');
     const usuarioId = localStorage.getItem('userId');
 
@@ -47,17 +47,19 @@ export default function Banco() {
                             <CardBody>
                                 <FormGroup row>
                                     <Col md="4">
-                                        <Label htmlFor="codbanco">Código do Banco</Label>
-                                        <Input type="text" required id="txtCodbanco" placeholder="Digite o Código do banco"
+                                        <Label htmlFor="codBanco">Código do Banco</Label>
+                                        <Input type="text" required id="txtCodBanco" placeholder="Digite o Código do banco"
                                             value={codbanco}
-                                            onChange={e => setCodbanco(e.target.value)} />
+                                            onChange={e => setCodBanco(e.target.value)} />
                                     </Col>
                                     <Col md="4">
-                                        <Label htmlFor="codbanco">Nome do Banco</Label>
-                                        <Input type="text" required id="txtNomebanco" placeholder="Digite o Nome do Banco"
+                                        <Label htmlFor="codBanco">Nome do Banco</Label>
+                                        <Input type="text" required id="txtNomeBanco" placeholder="Digite o Nome do Banco"
                                             value={nomebanco}
-                                            onChange={e => setNomebanco(e.target.value)} />
+                                            onChange={e => setNomeBanco(e.target.value)} />
                                     </Col>
+                                </FormGroup>
+                                <FormGroup>    
                                     <Col md="1">
                                         <Label check className="form-check-label" htmlFor="ativo1">Ativo</Label>
                                         <AppSwitch id="rdAtivo" className={'switch-ativo'}  label color={'success'} defaultChecked size={'sm'}
@@ -65,9 +67,7 @@ export default function Banco() {
                                         onChange={ e => setAtivo(e.target.value)}
                                         />                                    
                                     </Col>                                
-                                </FormGroup>
-                                <FormGroup row>                             
-                                </FormGroup>                                                 
+                                </FormGroup>                                                
                             </CardBody>
                             <CardFooter className="text-center">
                                 <Button type="submit" size="sm" color="success" className=" mr-3"><i className="fa fa-check"></i> Salvar</Button>

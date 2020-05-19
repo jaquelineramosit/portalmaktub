@@ -4,13 +4,13 @@ import { AppSwitch } from '@coreui/react'
 import '../../../global.css';
 import api from '../../../../src/services/api';
 
-export default function PerfilAcesso() {
+export default function PermissaAcesso() {
     const [perfilacessoid, setPerfilAcessoId] = useState('');
     const [moduloid, setModuloId] = useState('');
     const [paginaid, setPaginaId] = useState('');
     const [subpaginaid, setSubPaginaId] = useState('');
     const [funcaoid, setFuncaoId] = useState('');    
-    const [ativo, setAtivo] = useState(true);
+    const [ativo, setAtivo] = useState('true');
     const usuarioId = localStorage.getItem('userId');    
 
 
@@ -87,55 +87,57 @@ export default function PerfilAcesso() {
                                         </Col>
                                      </FormGroup>   
                                      <FormGroup row>   
-                                        <Col md="4">
-                                            <Label htmlFor="paginaId">Qual a Página?</Label>
-                                            <Input type="select" required id="cboPaginaId"
-                                            value={paginaid}
-                                            onChange={ e => setPaginaId(e.target.value)} >
+                                            <Col md="4">
+                                                <Label htmlFor="paginaId">Qual a Página?</Label>
+                                                <Input type="select" required id="cboPaginaId"
+                                                value={paginaid}
+                                                onChange={ e => setPaginaId(e.target.value)} >
 
-                                                <option value={undefined}>Selecione...</option>
-                                                <option value={1}>Domingo</option>
-                                                <option value={2}>Segunda-Feira</option>
-                                                <option value={3}>Terça-Feira</option>
-                                                <option value={4}>Quarta-Feria</option>
-                                                <option value={5}>Quinta-Feira</option>
-                                                <option value={6}>Sexta-Feira</option>
-                                                <option value={7}>Sabado</option>  
-                                            </Input>                                      
-                                        </Col>
-                                        <Col md="4">
-                                            <Label htmlFor="subPaginaId">Qual a Sub Página?</Label>
-                                            <Input type="select" required id="cboSubPaginaId"
-                                            value={subpaginaid}
-                                            onChange={ e => setSubPaginaId(e.target.value)} >
+                                                    <option value={undefined}>Selecione...</option>
+                                                    <option value={1}>Domingo</option>
+                                                    <option value={2}>Segunda-Feira</option>
+                                                    <option value={3}>Terça-Feira</option>
+                                                    <option value={4}>Quarta-Feria</option>
+                                                    <option value={5}>Quinta-Feira</option>
+                                                    <option value={6}>Sexta-Feira</option>
+                                                    <option value={7}>Sabado</option>  
+                                                </Input>                                      
+                                            </Col>
+                                            <Col md="4">
+                                                <Label htmlFor="subPaginaId">Qual a Sub Página?</Label>
+                                                <Input type="select" required id="cboSubPaginaId"
+                                                value={subpaginaid}
+                                                onChange={ e => setSubPaginaId(e.target.value)} >
 
-                                                <option value={undefined}>Selecione...</option>
-                                                <option value={1}>Domingo</option>
-                                                <option value={2}>Segunda-Feira</option>
-                                                <option value={3}>Terça-Feira</option>
-                                                <option value={4}>Quarta-Feria</option>
-                                                <option value={5}>Quinta-Feira</option>
-                                                <option value={6}>Sexta-Feira</option>
-                                                <option value={7}>Sabado</option>  
-                                            </Input>                                      
-                                        </Col>
-                                        <Col md="4">
-                                            <Label htmlFor="funcaoId">Qual a Função?</Label>
-                                            <Input type="select" required id="cboFuncaoId"
-                                            value={funcaoid}
-                                            onChange={ e => setFuncaoId(e.target.value)} >
+                                                    <option value={undefined}>Selecione...</option>
+                                                    <option value={1}>Domingo</option>
+                                                    <option value={2}>Segunda-Feira</option>
+                                                    <option value={3}>Terça-Feira</option>
+                                                    <option value={4}>Quarta-Feria</option>
+                                                    <option value={5}>Quinta-Feira</option>
+                                                    <option value={6}>Sexta-Feira</option>
+                                                    <option value={7}>Sabado</option>  
+                                                </Input>                                      
+                                            </Col>
+                                        </FormGroup>
+                                        <FormGroup row>
+                                            <Col md="4">
+                                                <Label htmlFor="funcaoId">Qual a Função?</Label>
+                                                <Input type="select" required id="cboFuncaoId"
+                                                value={funcaoid}
+                                                onChange={ e => setFuncaoId(e.target.value)} >
 
-                                                <option value={undefined}>Selecione...</option>
-                                                <option value={1}>Domingo</option>
-                                                <option value={2}>Segunda-Feira</option>
-                                                <option value={3}>Terça-Feira</option>
-                                                <option value={4}>Quarta-Feria</option>
-                                                <option value={5}>Quinta-Feira</option>
-                                                <option value={6}>Sexta-Feira</option>
-                                                <option value={7}>Sabado</option>  
-                                            </Input>                                      
-                                        </Col>
-                                </FormGroup>
+                                                    <option value={undefined}>Selecione...</option>
+                                                    <option value={1}>Domingo</option>
+                                                    <option value={2}>Segunda-Feira</option>
+                                                    <option value={3}>Terça-Feira</option>
+                                                    <option value={4}>Quarta-Feria</option>
+                                                    <option value={5}>Quinta-Feira</option>
+                                                    <option value={6}>Sexta-Feira</option>
+                                                    <option value={7}>Sabado</option>  
+                                                </Input>                                      
+                                            </Col>
+                                        </FormGroup>
                                 <FormGroup row>                                     
                                 <Col md="2">
                                         <Label htmlFor="ativo">Ativo</Label>

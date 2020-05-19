@@ -5,14 +5,14 @@ import '../../../global.css';
 import api from '../../../../src/services/api';
 
 export default function Tipotecnico() {   
-    const [nometipotecnico, setNometipotecnico] = useState('');
-    const [desctipotecnico, setDesctipotecnico] = useState('');
+    const [nometipotecnico, setNomeTipoTecnico] = useState('');
+    const [desctipotecnico, setDescTipoTecnico] = useState('');
     const [ativo, setAtivo] = useState('true');
     const usuarioId = localStorage.getItem('userId');
 
 
 
-    async function handleTipotecnico(e) {
+    async function handleTipoTecnico(e) {
         e.preventDefault();
 
         const data = {
@@ -36,39 +36,39 @@ export default function Tipotecnico() {
 
     return (
         <div className="animated fadeIn">
-            <Form onSubmit={handleTipotecnico}>
+            <Form onSubmit={handleTipoTecnico}>
                 <Row>
                     <Col xs="12" md="12">
                         <Card>
                             <CardHeader>
-                                <strong>Tipos de Técnico</strong>
+                                <strong>Tipo de Técnico</strong>
                                 <small> novo</small>
                             </CardHeader>
                             <CardBody>
                                 <FormGroup row>
                                     <Col md="4">
-                                        <Label htmlFor="nometipotecnico">Nome do Tipo de Técnico</Label>
-                                        <Input type="text" required id="txtNometipotecnico" placeholder="Digite o Tipo de Técnico"
+                                        <Label htmlFor="nomeTipoTecnico">Nome do Tipo de Técnico</Label>
+                                        <Input type="text" required id="txtNomeTipoTecnico" placeholder="Digite o Tipo de Técnico"
                                             value={nometipotecnico}
-                                            onChange={e => setNometipotecnico(e.target.value)} />
+                                            onChange={e => setNomeTipoTecnico(e.target.value)} />
                                     </Col>
-                                    <Col md="1">
-                                        <Label check className="form-check-label" htmlFor="ativo1">Ativo</Label>
+                                </FormGroup>                
+                                <FormGroup row>
+                                    <Col md="8">
+                                        <Label>Descrição</Label>
+                                        <Input type="textarea" rows="5"  placeholder="Descreva o Tipo de Técnico inserido"
+                                            value={desctipotecnico}
+                                            onChange={e => setDescTipoTecnico(e.target.value)} />
+                                    </Col>
+                                </FormGroup>
+                                <FormGroup>    
+                                <Col md="1">
+                                        <Label check className="form-check-label" htmlFor="ativo">Ativo</Label>
                                         <AppSwitch id="rdAtivo" className={'switch-ativo'}  label color={'success'} defaultChecked size={'sm'}
                                         value={ativo}
                                         onChange={ e => setAtivo(e.target.value)}
                                         />                                    
                                     </Col>                                
-                                </FormGroup>
-                                <FormGroup row>                             
-                                </FormGroup>                   
-                                <FormGroup row>
-                                    <Col md="4">
-                                        <Label>Descrição</Label>
-                                        <Input type="textarea" rows="5"  placeholder="Descreva o Tipo de Técnico inserido"
-                                            value={desctipotecnico}
-                                            onChange={e => setDesctipotecnico(e.target.value)} />
-                                    </Col>
                                 </FormGroup>
                             </CardBody>
                             <CardFooter className="text-center">

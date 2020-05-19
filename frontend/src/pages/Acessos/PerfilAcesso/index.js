@@ -5,12 +5,12 @@ import '../../../global.css';
 import api from '../../../../src/services/api';
 
 export default function PerfilAcesso() {
-    const [nomeperfil, setNomeperfil] = useState('');
+    const [nomeperfil, setNomePerfil] = useState('');
     const [descricao, setDescricao] = useState('');    
-    const [ativo, setAtivo] = useState(true);
+    const [ativo, setAtivo] = useState('true');
     const usuarioId = localStorage.getItem('userId');    
 
-    async function handleSubPagina(e) {
+    async function handlePerfilAcesso(e) {
         e.preventDefault();
         
         const data = {
@@ -36,7 +36,7 @@ export default function PerfilAcesso() {
     }
     return (        
         <div className="animated fadeIn">
-            <Form onSubmit={handleSubPagina}>
+            <Form onSubmit={handlePerfilAcesso}>
                 <Row>                              
                     <Col xs="12" md="12">
                         <Card>
@@ -48,9 +48,9 @@ export default function PerfilAcesso() {
                                 <FormGroup row>
                                     <Col md="4">
                                         <Label htmlFor="nomePerfilAccesso">Nome do Perfil de Acesso</Label>
-                                        <Input type="text" id="txtNomeSubPagina" multiple placeholder="Digite o nome do Perfil de Acesso"
+                                        <Input type="text" id="txtPerfilAcesso" multiple placeholder="Digite o nome do Perfil de Acesso"
                                         value={nomeperfil}
-                                        onChange={ e => setNomeperfil(e.target.value)}
+                                        onChange={ e => setNomePerfil(e.target.value)}
                                         />
                                     </Col> 
                                 </FormGroup> 
@@ -65,12 +65,11 @@ export default function PerfilAcesso() {
                                 </FormGroup>
                                 <FormGroup row>                                     
                                     <Col md="2">
-                                        <Label htmlFor="DataNasc">Ativo</Label>
-                                        <AppSwitch id="rdAtivo" className={'switch-ativo'}  label color={'success'} 
-                                            defaultChecked 
+                                        <Label htmlFor="ativo">Ativo</Label>
+                                        <Label check className="form-check-label" htmlFor="ativo1">Ativo</Label>
+                                        <AppSwitch id="rdAtivo" className={'switch-ativo'} label color={'success'} defaultChecked size={'sm'}
                                             value={ativo}
-                                            onChange={ e => setAtivo(e.target.value)}
-                                            size={'sm'} />
+                                            onChange={e => setAtivo(e.target.value)} />
                                     </Col>                                                           
                                 </FormGroup>                                                                                         
                             </CardBody>

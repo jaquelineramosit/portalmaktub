@@ -168,8 +168,13 @@ export default {
       children: [
         {
           name: 'Ordem de Serviço',
+<<<<<<< HEAD
           url: '/tab-ordemservico',
           icon: 'fa fa-user-circle',
+=======
+          url: '/ordem-servico',
+          icon: 'icon-wrench',
+>>>>>>> fc363dfb5ec491ecf3c5f0dedd5d60120f359e31
         },
       ]  
     },

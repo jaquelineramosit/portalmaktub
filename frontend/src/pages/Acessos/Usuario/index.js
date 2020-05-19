@@ -24,8 +24,8 @@ export default function Usuario() {
     const [email, setEmail] = useState('');
     const [login, setLogin] = useState('');
     const [senhaForm, setSenhaForm] = useState('');
-    const [senhaConfirmaForm, setsenhaConfirmaForm] = useState('');
-    const [ativo, setAtivo] = useState("true");
+    const [senhaConfirmaForm, setSenhaConfirmaForm] = useState('');
+    const [ativo, setAtivo] = useState('true');
     const [perfilAcessoId, setperfilAcessoId] = useState(true);
     const history = useHistory();
 
@@ -100,14 +100,14 @@ export default function Usuario() {
                                             value={dataNasc}
                                             onChange={ e => setDataNasc(e.target.value)} />
                                             <InputGroupAddon addonType="append">
-                                                <Button type="button" color="secondary icon-calendar"></Button>
+                                                <Button type="button" color="secondary  fa fa-calendar"></Button>
                                             </InputGroupAddon>
                                         </InputGroup>
                                         
                                     </Col>
                                     <Col md="2">
                                         <Label htmlFor="Genero">Genero</Label>
-                                        <Input required type="select" name="select" id="ddlGenero"
+                                        <Input required type="select" name="select" id="cboGenero"
                                         value={genero}
                                         onChange={ e => setGenero(e.target.value)}
                                         >
@@ -119,9 +119,9 @@ export default function Usuario() {
                                 </FormGroup>
                                 <FormGroup row>
                                     <Col md="2">
-                                        <Label htmlFor="CEP">CEP</Label>
+                                        <Label htmlFor="Cep">CEP</Label>
                                         <InputGroup>
-                                            <Input id="txtCEP" size="16" required type="text" placeholder="00000-000"
+                                            <Input id="txtCep" size="16" required type="text" placeholder="00000-000"
                                             value={cep}
                                             onChange={ e => setCep(e.target.value)} />
                                             <InputGroupAddon addonType="append">
@@ -164,7 +164,7 @@ export default function Usuario() {
                                     </Col>
                                     <Col md="2">
                                         <Label htmlFor="Estado">Estado</Label>
-                                        <Input type="select" required name="select" id="ddlEstado"
+                                        <Input type="select" required name="select" id="cboEstado"
                                         value={estado}
                                         onChange={ e => setEstado(e.target.value)}>
                                             <option value={undefined}>Selecione...</option>
@@ -174,13 +174,6 @@ export default function Usuario() {
                                             <option value="4">Paraná</option>
                                             <option value="5">Santa Catarina</option>
                                         </Input>
-                                    </Col>
-                                    <Col md="2">
-                                        <Label check className="form-check-label" htmlFor="ativo1">Ativo</Label>
-                                        <AppSwitch id="rdAtivo" className={'switch-ativo'}  label color={'success'} defaultChecked size={'sm'}
-                                        value={ativo}
-                                        onChange={ e => setAtivo(e.target.value)}
-                                        />                                    
                                     </Col>                                                      
                                 </FormGroup>                        
                                 <FormGroup row>
@@ -191,8 +184,8 @@ export default function Usuario() {
                                         onChange={ e => setRg(e.target.value)} />
                                     </Col>                               
                                     <Col md="4">
-                                        <Label htmlFor="CPF">CPF</Label>
-                                        <Input type="text" required id="txtCPF" placeholder="Digite o número do CPF"
+                                        <Label htmlFor="Cpf">CPF</Label>
+                                        <Input type="text" required id="txtCpf" placeholder="Digite o número do CPF"
                                         value={cpf}
                                         onChange={ e => setCpf(e.target.value)} />                                    
                                     </Col>
@@ -217,10 +210,18 @@ export default function Usuario() {
                                             <InputGroupAddon addonType="append">
                                                 <Button type="button" color="secondary icon-screen-smartphone"></Button>
                                             </InputGroupAddon>
-                                        </InputGroup>
-                                                                        
+                                        </InputGroup>                                
                                     </Col>                                                                                                                       
                                 </FormGroup>
+                                <FormGroup row>
+                                    <Col md="2">
+                                            <Label check className="form-check-label" htmlFor="ativo">Ativo</Label>
+                                            <AppSwitch id="rdAtivo" className={'switch-ativo'}  label color={'success'} defaultChecked size={'sm'}
+                                            value={ativo}
+                                            onChange={ e => setAtivo(e.target.value)}
+                                            />                                    
+                                        </Col>
+                                </FormGroup>    
                             </CardBody>
                             <CardHeader className="border-top">
                                 <strong>Dados de Acesso</strong>                            
@@ -241,7 +242,7 @@ export default function Usuario() {
                                     </Col>
                                     <Col md="4">
                                         <Label htmlFor="PerfilAcesso">Perfil de Acesso</Label>
-                                        <Input type="select" required name="select" id="ddlPerfilAcesso"
+                                        <Input type="select" required name="select" id="cboPerfilAcesso"
                                         value={perfilAcessoId}
                                         onChange={ e => setperfilAcessoId(e.target.value)}>
                                             <option value={undefined}>Selecione...</option>
@@ -280,7 +281,7 @@ export default function Usuario() {
                                         <InputGroup>
                                             <Input type="password" id="txtConfirmarSenha" placeholder="Confirme a senha"
                                             value={senhaConfirmaForm}
-                                            onChange={ e => setsenhaConfirmaForm(e.target.value)} />  
+                                            onChange={ e => setSenhaConfirmaForm(e.target.value)} />  
                                             <InputGroupAddon addonType="append">
                                                 <Button type="button" color="secondary icon-lock"></Button>
                                             </InputGroupAddon>
