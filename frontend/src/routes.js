@@ -45,10 +45,40 @@ const Movimentacaoos = React.lazy(() => import('./pages/OrdemServico/Movimentaca
 const Adiantamentoos = React.lazy(() => import('./pages/OrdemServico/Adiantamentoos'));
 
 
-
+// Tabelas
+const Tabcliente = React.lazy(() => import('./pages/Tabelas/Tabcliente'));
+const Tabfiliais = React.lazy(() => import('./pages/Tabelas/Tabfiliais'));
+const Tabbandeira = React.lazy(() => import('./pages/Tabelas/Tabbandeira'));
+const Tabparceiros = React.lazy(() => import('./pages/Tabelas/Tabparceiros'));
+const Tabtecnicos = React.lazy(() => import('./pages/Tabelas/Tabtecnicos'));
+const Tabtipotecnicos = React.lazy(() => import('./pages/Tabelas/Tabtipotecnicos'));
+const Tabdisponibilidade = React.lazy(() => import('./pages/Tabelas/Tabdisponibilidade'));
+const Tabdisponibilidadetecnico = React.lazy(() => import('./pages/Tabelas/Tabdisponibilidadetecnico'));
+const Tabtipoprojeto = React.lazy(() => import('./pages/Tabelas/Tabtipoprojeto'));
+const Tabprojetotecnico = React.lazy(() => import('./pages/Tabelas/Tabprojetotecnico'));
+const Tabferramentas = React.lazy(() => import('./pages/Tabelas/Tabferramentas'));
+const Tabdadosbancarios = React.lazy(() => import('./pages/Tabelas/Tabdadosbancarios'));
+const Tabbanco = React.lazy(() => import('./pages/Tabelas/Tabbanco'));
+const Tabtipoconta = React.lazy(() => import('./pages/Tabelas/Tabtipoconta'));
+const Tabstatusadiantamento = React.lazy(() => import('./pages/Tabelas/Tabstatusadiantamento'));
+const Tabstatusatendimento = React.lazy(() => import('./pages/Tabelas/Tabstatusatendimento'));
+const Tabstatuscobranca = React.lazy(() => import('./pages/Tabelas/Tabstatuscobranca'));
+const Tabstatuspagamento = React.lazy(() => import('./pages/Tabelas/Tabstatuspagamento'));
+const Tabordemservico = React.lazy(() => import('./pages/Tabelas/Tabordemservico'));
+const Tabmovimentacaoso = React.lazy(() => import('./pages/Tabelas/Tabmovimentacaoso'));
+const Tabadiantamentoos = React.lazy(() => import('./pages/Tabelas/Tabadiantamentoos'));
+const Tabusuarios = React.lazy(() => import('./pages/Tabelas/Tabusuarios'));
+const Tabpermissaoacesso = React.lazy(() => import('./pages/Tabelas/Tabpermissaoacesso'));
+const Tabperfisacesso = React.lazy(() => import('./pages/Tabelas/Tabperfisacesso'));
+const Tabmodulos = React.lazy(() => import('./pages/Tabelas/Tabmodulos'));
+const Tabpaginas = React.lazy(() => import('./pages/Tabelas/Tabpaginas'));
+const Tabsubpagina = React.lazy(() => import('./pages/Tabelas/Tabsubpagina'));
+const Tabfuncoes = React.lazy(() => import('./pages/Tabelas/Tabfuncoes'));
 
 const routes = [
-  
+
+
+
   // Dashboards
   { path: '/', exact: true, name: 'Home' },
   { path: '/dashboardv1', name: 'Dashboard', component: Dashboard },
@@ -98,6 +128,38 @@ const routes = [
   { path: '/movimentacao-os', name: 'Movimentacao de OS', component: Movimentacaoos },
   { path: '/adiantamento-os', name: 'Adiantamento de OS', component: Adiantamentoos },
   
+  //Tabelas
+{ path: '/tab-cliente', name: 'Lista de Clientes', component: Tabcliente },
+{ path: '/tab-filiais', name: 'Lista de Filiais', component: Tabfiliais },
+{ path: '/tab-bandeira', name: 'Lista de Bandeiras', component: Tabbandeira },
+{ path: '/tab-parceiros', name: 'Lista de parceiros', component: Tabparceiros},
+{ path: '/tab-tecnicos', name: 'Lista de Técnicos', component: Tabtecnicos},
+{ path: '/tab-tipotecnicos', name: 'Lista de tipo de Técnicos', component: Tabtipotecnicos},
+{ path: '/tab-disponibilidade', name: 'Lista de Disponibilidade', component: Tabdisponibilidade},
+{ path: '/tab-disponibilidadetecnico', name: 'Lista de Disponibilidade de Técnico', component: Tabdisponibilidadetecnico},
+{ path: '/tab-tipoprojeto', name: 'Lista de tipo de Projeto', component: Tabtipoprojeto},
+{ path: '/tab-projetotecnico', name: 'Lista de Projeto X Técnico', component: Tabprojetotecnico},
+{ path: '/tab-ferramentas', name: 'Lista de Disponibilidade de Técnico', component: Tabferramentas},
+{ path: '/tab-dadosbancarios', name: 'Lista de Dados Bancários', component: Tabdadosbancarios},
+{ path: '/tab-banco', name: 'Lista de Banco', component: Tabbanco},
+{ path: '/tab-tipoconta', name: 'Lista de Tipo de Conta', component: Tabtipoconta},
+{ path: '/tab-statusadiantamento', name: 'Lista de Status de Adiantamento', component: Tabstatusadiantamento},
+{ path: '/tab-statusatendimento', name: 'Lista de  Status de Atendimento', component: Tabstatusatendimento},
+{ path: '/tab-statuscobranca', name: 'Lista de Status de Cobrança', component: Tabstatuscobranca},
+{ path: '/tab-statuspagamento', name: 'Lista de Status de pagamento', component: Tabstatuspagamento},
+{ path: '/tab-ordemservico', name: 'Lista de Ordem de Serviço ', component: Tabordemservico},
+{ path: '/tab-movimentacaoso', name: 'Lista de Movimentação de OS', component: Tabmovimentacaoso},
+{ path: '/tab-adiantamentoos', name: 'Lista de Adiantamento de OS', component: Tabadiantamentoos},
+{ path: '/tab-usuarios', name: 'Lista de Usuários', component: Tabusuarios},
+{ path: '/tab-permissaoacesso', name: 'Lista de Permissão de Acesso', component: Tabpermissaoacesso},
+{ path: '/tab-perfisacesso', name: 'Lista de Perfil de Acesso', component: Tabperfisacesso},
+{ path: '/tab-modulos', name: 'Lista de Módulos', component: Tabmodulos},
+{ path: '/tab-paginas', name: 'Lista de Páginas', component: Tabpaginas},
+{ path: '/tab-subpaginas', name: 'Lista de Sub Páginas', component: Tabsubpagina},
+{ path: '/tab-funcoes', name: 'Lista de Funções', component: Tabfuncoes},
+
+
 ];
+
 
 export default routes;

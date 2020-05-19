@@ -171,11 +171,11 @@ export default function Filiais() {
                                             value={estado}
                                             onChange={e => setEstado(e.target.value)}>
                                             <option value={undefined}>Selecione...</option>
-                                            <option value="1">São Paulo</option>
-                                            <option value="2">Rio de Janeiro</option>
-                                            <option value="3">Minas Gerais</option>
-                                            <option value="4">Paraná</option>
-                                            <option value="5">Santa Catarina</option>
+                                            <option value="São Paulo">São Paulo</option>
+                                            <option value="Rio de Janeiro">Rio de Janeiro</option>
+                                            <option value=">Minas Gerais">Minas Gerais</option>
+                                            <option value="Paraná">Paraná</option>
+                                            <option value="Santa Catarina">Santa Catarina</option>
                                         </Input>
                                     </Col>
 

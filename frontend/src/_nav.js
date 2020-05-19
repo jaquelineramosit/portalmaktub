@@ -21,17 +21,18 @@ export default {
     {
       name: 'Ordem de Serviço',
       url: '/ordem-servico',
+      url: '/tab-ordemservico',
       icon: 'icon-wrench',
     },
     {
       name: 'Movimentação de OS',
-      url: '/movimentacao-os',
+      url: '/tab-movimentacaoso',
       icon: 'fa fa-arrows',
     },
     
     {
       name: 'Adiantamento de OS',
-      url: '/adiantamento-os',
+      url: '/tab-adiantamentoos',
       icon: 'fa fa-share-square-o',
     },
     {
@@ -48,22 +49,22 @@ export default {
       children: [
         {
           name: 'Clientes',
-          url: '/clientes',
+          url: '/tab-cliente',
           icon: 'fa fa-handshake-o',
         },
         {
           name: 'Filiais',
-          url: '/filiais',
+          url: '/tab-filiais',
           icon: 'fa fa-handshake-o',
         },
         {
           name: 'Bandeira',
-          url: '/bandeira',
+          url: '/tab-bandeira',
           icon: 'fa fa-handshake-o',
         },
         {
           name: 'Parceiros',
-          url: '/parceiros',
+          url: '/tab-parceiros',
           icon: 'fa fa-handshake-o',
         },        
       ],
@@ -74,22 +75,22 @@ export default {
       children: [
         {
           name: 'Técnicos',
-          url: '/tecnico',
+          url: '/tab-tecnicos',
           icon: 'icon-support',
         },
         {
           name: 'Tipos de Técnicos',
-          url: '/Tipo-tecnico',
+          url: '/tab-tipotecnicos',
           icon: 'icon-support',
         },
         {
           name: 'Disponibilidade',
-          url: '/disponibilidade',
+          url: '/tab-disponibilidade',
           icon: 'icon-support',
         },
         {
           name: 'Dispon. Técnicos',
-          url: '/disponibilidade-tecnico',
+          url: '/tab-disponibilidadetecnico',
           icon: 'icon-support',
         },                
       ],
@@ -100,17 +101,17 @@ export default {
       children: [
         {
           name: 'Tipo de Projeto',
-          url: '/tipo-projeto',
+          url: '/tab-tipoprojeto',
           icon: 'icon-note',
         },
         {
           name: 'Projeto x Técnico',
-          url: '/projeto-tecnico',
+          url: '/tab-projetotecnico',
           icon: 'icon-note',
         },
         {
           name: 'Ferramentas',
-          url: '/ferramentas',
+          url: '/tab-ferramentas',
           icon: 'icon-note',
         },                       
       ],
@@ -121,17 +122,17 @@ export default {
       children: [
         {
           name: 'Dados Bancários',
-          url: '/dados-bancarios',
+          url: '/tab-dadosbancarios',
           icon: 'fa fa-credit-card-alt',
         },
         {
           name: 'Bancos',
-          url: '/banco',
+          url: '/tab-banco',
           icon: 'fa fa-credit-card-alt',
         },
         {
           name: 'Tipo de Conta',
-          url: '/tipo-conta',
+          url: '/tab-tipoconta',
           icon: 'fa fa-credit-card-alt',
         },        
       ],
@@ -142,22 +143,22 @@ export default {
       children: [
         {
         name: 'Status Adiantamento',
-        url: '/status-adiantamento',
+        url: '/tab-statusadiantamento',
         icon: 'fa fa-check-square-o',          
         },
         {
           name: 'Status Atendimento',
-          url: '/status-atendimento',
+          url: '/tab-statusatendimento',
           icon: 'fa fa-check-square-o',          
         },        
         {
           name: 'Status Cobrança',
-          url: '/status-cobranca',
+          url: '/tab-statuscobranca',
           icon: 'fa fa-check-square-o',
         },
         {
           name: 'Status Pagamento',
-          url: '/status-pagamento',
+          url: '/tab-statuspagamento',
           icon: 'fa fa-check-square-o',
         },         
       ],
@@ -168,7 +169,7 @@ export default {
       children: [
         {
           name: 'Ordem de Serviço',
-          url: '/ordem-servico',
+          url: '/tab-ordemservico',
           icon: 'fa fa-user-circle',
         },
       ]  
@@ -179,37 +180,37 @@ export default {
       children: [
         {
           name: 'Usuários',
-          url: '/usuarios',
+          url: '/tab-usuarios',
           icon: 'fa fa-user-circle',
         },
         {
           name: 'Perfil de Acesso',
-          url: '/perfis-acesso',
+          url: '/tab-perfisacesso',
           icon: 'fa fa-id-card',
         },
         {
           name: 'Permissão de Acesso',
-          url: '/permissao-acesso',
+          url: '/tab-permissaoacesso',
           icon: 'fa fa-user-secret',
         },
         {
           name: 'Módulos',
-          url: '/modulos',
+          url: '/tab-modulos',
           icon: 'fa fa-puzzle-piece',
         },
         {
           name: 'Páginas',
-          url: '/paginas',
+          url: '/tab-paginas',
           icon: 'fa fa-window-maximize',
         },
         {
           name: 'Sub Páginas',
-          url: '/sub-paginas',
+          url: '/tab-subpaginas',
           icon: 'fa fa-window-restore',
         },
         {
           name: 'Funções',
-          url: '/funcao',
+          url: '/tab-funcoes',
           icon: 'fa fa-code',
         },
       ],
