@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {Link } from 'react-router-dom';
 import {Card, CardBody, CardHeader, Col, Pagination, PaginationItem, PaginationLink, Row, Table,Input, FormGroup} from 'reactstrap';
-import './style.css';
+
 
 import api from '../../../services/api';
 
@@ -24,7 +24,7 @@ export default function ListaFiliais() {
                        
                         <i className="fa fa-align-justify"></i> Filiais  
                                                    
-                        <Link to={`filiais`} className="filiais btn btn-secondary">
+                        <Link to={`filiais`} className="btn btn-secondary float-right">
                                                 <i className="cui-file icons mr-1"></i>
                                                 Novo
                                             </Link>   

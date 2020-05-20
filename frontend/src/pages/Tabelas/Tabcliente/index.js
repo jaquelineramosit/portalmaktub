@@ -23,7 +23,7 @@ export default function ListaCliente() {
                        
                         <i className="fa fa-align-justify"></i> Clientes  
                                                    
-                        <Link to={`clientes`} className="novo btn btn-secondary">
+                        <Link to={`clientes`} className="btn btn-secondary float-right">
                                                 <i className="cui-file icons mr-1"></i>
                                                 Novo
                                             </Link>                                                                                             
@@ -46,8 +46,8 @@ export default function ListaCliente() {
                                             <td>{clientes.nomecliente}</td>
                                             <td>{clientes.logradouro}</td>
                                             <td>{clientes.cidade}</td>
-                                            <td>{clientes.bairro}</td>
-                                            <td style={{ textAlign : 'right' }}>
+                                            <td>{clientes.bairo}</td>
+                                            <td style={{ textAlrign : 'right' }}>
                                                 <Link to={`clientes/${clientes.id}`} className="btn-sm btn-primary">
                                                     <i className="fa fa-pencil fa-lg mr-1"></i>
                                                     Editar

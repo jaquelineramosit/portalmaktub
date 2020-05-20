@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {Link } from 'react-router-dom';
 import {Card, CardBody, CardHeader, Col, Pagination, PaginationItem, PaginationLink, Row, Table,Input, FormGroup} from 'reactstrap';
-import './style.css';
 import api from '../../../services/api';
 
 export default function ListaOrdemservico() {
@@ -23,7 +22,7 @@ export default function ListaOrdemservico() {
                        
                         <i className="fa fa-align-justify"></i> Ordem de Serviço  
                                                    
-                        <Link to={`ordem-servico`} className="ordemservico btn btn-secondary">
+                        <Link to={`ordem-servico`} className="btn btn-secondary float-right">
                                                 <i className="cui-file icons mr-1"></i>
                                                 Novo
                                             </Link>                                                                                             
@@ -52,7 +51,7 @@ export default function ListaOrdemservico() {
                                             <td>{ordemservico.tecnicoid}</td>
                                             <td>{ordemservico.tiposervicoid}</td>
                                             <td style={{ textAlign : 'right' }}>
-                                                <Link to={`ordem-servico/${ordemservico.id}`} key={ordemservico.id}className="btn-sm btn-primary">
+                                                <Link to={`ordem-servico/${ordemservico.id}`}className="btn-sm btn-primary">
                                                     <i className="fa fa-pencil fa-lg mr-1"></i>
                                                     Editar
                                                 </Link>                                              

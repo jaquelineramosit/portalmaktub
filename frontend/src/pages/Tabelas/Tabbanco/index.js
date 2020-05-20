@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardBody, CardHeader, Col, Pagination, PaginationItem, PaginationLink, Row, Table, Input, FormGroup } from 'reactstrap';
-import './style.css';
+
 
 import api from '../../../services/api';
 
@@ -23,7 +23,7 @@ export default function ListaBanco() {
                         <CardHeader className="links">
 
                             <i className="fa fa-align-justify"></i>Bancos
-                            <Link to={`banco`} className="banco btn btn-secondary">
+                            <Link to={`banco`} className="banco btn btn-secondary float-right">
                                 <i className="cui-file icons mr-1"></i>
                                                 Novo
                                             </Link>

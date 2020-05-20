@@ -24,7 +24,7 @@ export default function ListaBandeira() {
                            
                             <i className="fa fa-align-justify"></i>Bandeira 
                                                        
-                            <Link to={`bandeira`} className="novo btn btn-secondary">
+                            <Link to={`bandeira`} className="btn btn-secondary float-right">
                                                     <i className="cui-file icons mr-1"></i>
                                                     Novo
                                                 </Link>                                                                                             

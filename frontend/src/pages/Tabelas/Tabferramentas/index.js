@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {Link } from 'react-router-dom';
 import {Card, CardBody, CardHeader, Col, Pagination, PaginationItem, PaginationLink, Row, Table,Input, FormGroup} from 'reactstrap';
-import './style.css';
 import api from '../../../services/api';
 
 export default function ListaFerramenta() {
@@ -23,7 +22,7 @@ export default function ListaFerramenta() {
                        
                         <i className="fa fa-align-justify"></i>Ferramentas  
                                                    
-                        <Link to={`ferramentas`} className="ferramenta btn btn-secondary">
+                        <Link to={`ferramentas`} className="btn btn-secondary float-right">
                                                 <i className="cui-file icons mr-1"></i>
                                                 Novo
                                             </Link>                                                                                             
