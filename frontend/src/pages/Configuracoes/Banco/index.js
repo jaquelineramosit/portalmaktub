@@ -23,7 +23,7 @@ export default function Banco() {
         try {
             const response = await api.post('banco', data, {
                 headers: {
-                    Authorization: usuarioId,
+                    Authorization: 1,
                 }
             });
             alert(`Feito o cadastro com sucesso`);

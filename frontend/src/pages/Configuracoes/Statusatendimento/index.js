@@ -23,7 +23,7 @@ export default function StatusAtendimento() {
         try {
             const response = await api.post('status-atendimento', data, {
                 headers: {
-                    Authorization: usuarioId,
+                    Authorization: 1,
                 }
             });
             alert(`Feito o cadastro com sucesso`);

@@ -23,7 +23,7 @@ export default function Parceiros() {
         try {
             const response = await api.post('parceiro', data, {
                 headers: {
-                    Authorization: usuarioId,
+                    Authorization: 1,
                 }
             });
             alert(`Feito o cadastro com sucesso`);

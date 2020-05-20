@@ -23,7 +23,7 @@ export default function StatusCobranca() {
         try {
             const response = await api.post('status-cobranca', data, {
                 headers: {
-                    Authorization: usuarioId,
+                    Authorization: 1,
                 }
             });
             alert(`Feito o cadastro com sucesso`);

@@ -21,7 +21,7 @@ export default function Bandeiras() {
         try {
             const response = await api.post('bandeira', data, {
                 headers: {
-                    Authorization: usuarioId,
+                    Authorization: 1,
                 }
             });
             console.log(response);

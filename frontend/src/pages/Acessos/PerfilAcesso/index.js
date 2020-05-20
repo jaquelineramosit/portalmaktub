@@ -23,7 +23,7 @@ export default function PerfilAcesso() {
         try {
             const response = await api.post('/perfis-acesso', data, {
                 headers: {
-                    Authorization: usuarioId,
+                    Authorization:1,
                 }
             });
             alert(`Feito o cadastro com sucesso`);

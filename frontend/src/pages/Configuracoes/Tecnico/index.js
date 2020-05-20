@@ -51,7 +51,7 @@ export default function Tecnico() {
         try {
             const response = await api.post('tecnico', data, {
                 headers: {
-                    Authorization: usuarioId,
+                    Authorization: 1,
                 }
             });
             alert(`Feito o cadastro com sucesso`);

@@ -54,7 +54,7 @@ export default function DadosBancarios() {
         try {
             const response = await api.post('dados-bancarios', data, {
                 headers: {
-                    Authorization: usuarioId,
+                    Authorization: 1,
                 }
             });
             alert(`Feito o cadastro com sucesso`);
