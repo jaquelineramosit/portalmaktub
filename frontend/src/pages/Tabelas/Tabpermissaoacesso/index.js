@@ -23,7 +23,7 @@ export default function ListaPermissaoacesso() {
                        
                         <i className="fa fa-align-justify"></i>Permissão Acesso  
                                                    
-                        <Link to={`permissao-acesso/${permissaoacesso.id}`} className="permissaoacesso btn btn-secondary">
+                        <Link to={`permissao-acesso`} className="permissaoacesso btn btn-secondary">
                                                 <i className="cui-file icons mr-1"></i>
                                                 Novo
                                             </Link>                                                                                             

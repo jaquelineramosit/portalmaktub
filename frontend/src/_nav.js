@@ -172,7 +172,8 @@ export default {
           //icon: 'fa fa-user-circle',
           url: '/ordem-servico',
           icon: 'icon-wrench',
-
+          //url: '/tab-ordemservico',
+          //icon: 'fa fa-user-circle',
         },
       ]  
     },

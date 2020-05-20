@@ -5,7 +5,7 @@ import '../../../global.css';
 
 import api from '../../../services/api';
 
-export default function ListaClientes() {
+export default function ListaBandeira() {
     const [bandeira, setBandeira] = useState([]);
     const usuarioId = localStorage.getItem('userId'); 
 
@@ -24,7 +24,7 @@ export default function ListaClientes() {
                            
                             <i className="fa fa-align-justify"></i>Bandeira 
                                                        
-                            <Link to={`bandeira/${bandeira.id}`} className="novo btn btn-secondary">
+                            <Link to={`bandeira`} className="novo btn btn-secondary">
                                                     <i className="cui-file icons mr-1"></i>
                                                     Novo
                                                 </Link>                                                                                             

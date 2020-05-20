@@ -6,7 +6,7 @@ import './style.css';
 
 import api from '../../../services/api';
 
-export default function ListaFiliais() {
+export default function ListaTipotecnico() {
     const [tipotecnico, setTipotecnico] = useState([]);
     const usuarioId = localStorage.getItem('userId'); 
 
@@ -24,7 +24,7 @@ export default function ListaFiliais() {
                     <CardHeader className="links">
                        
                         <i className="fa fa-align-justify"></i>Tipo de Técnicos                                      
-                        <Link to={`tipo-tecnico/${tipotecnico.id}`} className="tipotec btn btn-secondary">
+                        <Link to={`tipo-tecnico`} className="tipotec btn btn-secondary">
                                                 <i className="cui-file icons mr-1"></i>
                                                 Novo
                                             </Link>   

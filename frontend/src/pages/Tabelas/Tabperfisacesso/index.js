@@ -23,7 +23,7 @@ export default function ListaPerfisAcesso() {
                        
                         <i className="fa fa-align-justify"></i>Perfil de Acesso  
                                                    
-                        <Link to={`perfis-acesso/${perfisacesso.id}`} className="perfisacesso btn btn-secondary">
+                        <Link to={`perfis-acesso`} className="perfisacesso btn btn-secondary">
                                                 <i className="cui-file icons mr-1"></i>
                                                 Novo
                                             </Link>                                                                                             

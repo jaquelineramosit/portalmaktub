@@ -4,7 +4,7 @@ import {Card, CardBody, CardHeader, Col, Pagination, PaginationItem, PaginationL
 import './style.css';
 import api from '../../../services/api';
 
-export default function ListaPerfisAcesso() {
+export default function ListaModulos() {
     const [modulos, setModulos] = useState([]);
     const usuarioId = localStorage.getItem('userId'); 
 
@@ -23,7 +23,7 @@ export default function ListaPerfisAcesso() {
                        
                         <i className="fa fa-align-justify"></i>Módulo  
                                                    
-                        <Link to={`modulos/${modulos.id}`} className="modulos btn btn-secondary">
+                        <Link to={`modulos`} className="modulos btn btn-secondary">
                                                 <i className="cui-file icons mr-1"></i>
                                                 Novo
                                             </Link>                                                                                             

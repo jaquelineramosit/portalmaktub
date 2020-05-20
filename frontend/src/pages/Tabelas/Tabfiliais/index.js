@@ -24,7 +24,7 @@ export default function ListaFiliais() {
                        
                         <i className="fa fa-align-justify"></i> Filiais  
                                                    
-                        <Link to={`filiais/${filiais.id}`} className="filiais btn btn-secondary">
+                        <Link to={`filiais`} className="filiais btn btn-secondary">
                                                 <i className="cui-file icons mr-1"></i>
                                                 Novo
                                             </Link>   

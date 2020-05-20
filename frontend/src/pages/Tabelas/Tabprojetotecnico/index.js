@@ -4,7 +4,7 @@ import {Card, CardBody, CardHeader, Col, Pagination, PaginationItem, PaginationL
 import api from '../../../services/api';
 import './style.css'
 
-export default function ListaClinete() {
+export default function ListaProjetotecnico() {
     const [projetotecnico, setProjetotecnico] = useState([]);
     const usuarioId = localStorage.getItem('userId'); 
 
@@ -23,7 +23,7 @@ export default function ListaClinete() {
                        
                         <i className="fa fa-align-justify"></i>Projeto x Técnico
                                                    
-                        <Link to={`projeto-tecnico/${projetotecnico.id}`} className="projetotecnico btn btn-secondary">
+                        <Link to={`projeto-tecnico`} className="projetotecnico btn btn-secondary">
                                                 <i className="cui-file icons mr-1"></i>
                                                 Novo
                                             </Link>                                                                                             

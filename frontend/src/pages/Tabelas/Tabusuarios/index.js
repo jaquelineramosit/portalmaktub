@@ -23,7 +23,7 @@ export default function ListaUsuários() {
                        
                         <i className="fa fa-align-justify"></i>Usuários  
                                                    
-                        <Link to={`usuarios/${usuarios.id}`} className="usuarios btn btn-secondary">
+                        <Link to={`usuarios`} className="usuarios btn btn-secondary">
                                                 <i className="cui-file icons mr-1"></i>
                                                 Novo
                                             </Link>                                                                                             

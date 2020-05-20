@@ -56,7 +56,7 @@ export default function Movimentacaoos() {
         try {
             const response = await api.post('movimentacao-os', data, {
                 headers: {
-                    Authorization: usuarioId,
+                    Authorization: 1,
                 }
             });
             alert(`Feito o cadastro com sucesso`);
@@ -86,7 +86,7 @@ export default function Movimentacaoos() {
                                             onChange={e => setOrdemServicoId(e.target.value)}>
                                             <option value={undefined} defaultValue>Selecione...</option>
                                             {ordemservicos.map(ordemservico => (                                                
-                                                <option value={ordemservico.id}>{ordemservico.numeroos}</option>
+                                                <option key={ordemservico.id} value={ordemservico.id}>{ordemservico.numeroos}</option>
                                             ))}                                           
                                         </Input>
                                     </Col>
@@ -97,7 +97,7 @@ export default function Movimentacaoos() {
                                             onChange={e => setStatusAtendimentoId(e.target.value)}>
                                                 <option value={undefined} defaultValue>Selecione...</option>
                                                 {statusatendimentos.map(statusatendimento => (                                                
-                                                <option value={statusatendimento.id}>{statusatendimento.status}</option>
+                                                <option key={statusatendimento.id} value={statusatendimento.id}>{statusatendimento.status}</option>
                                                 ))}                                         
                                         </Input>
                                     </Col>
@@ -110,7 +110,7 @@ export default function Movimentacaoos() {
                                             onChange={e => setStatusCobrancaId(e.target.value)}>
                                                 <option value={undefined} defaultValue>Selecione...</option>
                                                 {statuscobrancas.map(statuscobranca => (                                                
-                                                <option value={statuscobranca.id}>{statuscobranca.status}</option>
+                                                <option key={statuscobranca.id}value={statuscobranca.id}>{statuscobranca.status}</option>
                                                 ))}                                           
                                         </Input>
                                     </Col>
@@ -121,7 +121,7 @@ export default function Movimentacaoos() {
                                             onChange={e => setStatusPagamentoId(e.target.value)}>
                                                 <option value={undefined} defaultValue>Selecione...</option>
                                                 {statuspagamentos.map(statuspagamento => (                                                
-                                                <option value={statuspagamento.id}>{statuspagamento.status}</option>
+                                                <option key={statuspagamento.id} value={statuspagamento.id}>{statuspagamento.status}</option>
                                                 ))}                                              
                                         </Input>
                                     </Col>                                

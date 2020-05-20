@@ -163,7 +163,7 @@ export default function OrdemServico() {
                                         
                                                 <option value={undefined} defaultValue>Selecione...</option>
                                                 {clienteFiliais.map(clienteFilial => (                                                
-                                                    <option value={clienteFilial.id}>{clienteFilial.nomefilial}</option>
+                                                    <option key={clienteFilial.id} value={clienteFilial.id}>{clienteFilial.nomefilial}</option>
                                                 ))}  
                                             </Input>
                                             <InputGroupAddon addonType="append">
@@ -179,7 +179,7 @@ export default function OrdemServico() {
                                                 onChange={e => setTecnicoId(e.target.value)} >
                                                 <option value={undefined} defaultValue>Selecione...</option>
                                                 {tecnicos.map(tecnico => (                                                
-                                                    <option value={tecnico.id}>{tecnico.nometecnico}</option>
+                                                    <option key={tecnico.id}value={tecnico.id}>{tecnico.nometecnico}</option>
                                                 ))}  
                                             </Input>
                                             <InputGroupAddon addonType="append">
@@ -195,7 +195,7 @@ export default function OrdemServico() {
                                                 onChange={e => setTipoServicoId(e.target.value)}>
                                                 <option value={undefined} defaultValue>Selecione...</option>
                                                 {tipoServicos.map(tipoServico => (                                                
-                                                    <option value={tipoServico.id}>{tipoServico.nometipoprojeto}</option>
+                                                    <option key={tipoServico.id} value={tipoServico.id}>{tipoServico.nometipoprojeto}</option>
                                                 ))}  
                                             </Input>
                                             <InputGroupAddon addonType="append">

@@ -23,7 +23,7 @@ export default function ListaBanco() {
                         <CardHeader className="links">
 
                             <i className="fa fa-align-justify"></i>Bancos
-                            <Link to={`banco/${banco.id}`} className="banco btn btn-secondary">
+                            <Link to={`banco`} className="banco btn btn-secondary">
                                 <i className="cui-file icons mr-1"></i>
                                                 Novo
                                             </Link>
