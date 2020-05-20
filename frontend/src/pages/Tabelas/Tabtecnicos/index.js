@@ -5,7 +5,7 @@ import '../../../global.css';
 
 import api from '../../../services/api';
 
-export default function ListaFiliais() {
+export default function ListaTecnicos() {
     const [tecnico, setTecnico] = useState([]);
     const usuarioId = localStorage.getItem('userId'); 
 
@@ -23,7 +23,7 @@ export default function ListaFiliais() {
                     <CardHeader className="links">
                        
                         <i className="fa fa-align-justify"></i>Técnicos                                      
-                        <Link to={`tecnico/${tecnico.id}`} className="novo btn btn-secondary">
+                        <Link to={`tecnico`} className="novo btn btn-secondary">
                                                 <i className="cui-file icons mr-1"></i>
                                                 Novo
                                             </Link>   

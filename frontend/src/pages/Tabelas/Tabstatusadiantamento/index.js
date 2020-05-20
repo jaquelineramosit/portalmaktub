@@ -23,7 +23,7 @@ export default function ListaStatusadiantamento() {
                        
                         <i className="fa fa-align-justify"></i>Status Adiantamento 
                                                    
-                        <Link to={`status-adiantamento/${statusadiantamento.id}`} className="statusadiantamento btn btn-secondary">
+                        <Link to={`status-adiantamento`} className="statusadiantamento btn btn-secondary">
                                                 <i className="cui-file icons mr-1"></i>
                                                 Novo
                                             </Link>                                                                                             

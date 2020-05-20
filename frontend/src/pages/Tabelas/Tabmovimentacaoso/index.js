@@ -21,9 +21,9 @@ export default function ListaMovimentacaoos() {
                 <Card>
                     <CardHeader className="links">
                        
-                        <i className="fa fa-align-justify"></i> Movimentação de OS 
+                        <i className="fa fa-align-justify"></i>Movimentação de OS 
                                                    
-                        <Link to={`movimentacao-os/${movimentacaoos.id}`} className="movimentacaoos btn btn-secondary">
+                        <Link to={`movimentacao-os`} className="movimentacaoos btn btn-secondary">
                                                 <i className="cui-file icons mr-1"></i>
                                                 Novo
                                             </Link>                                                                                             

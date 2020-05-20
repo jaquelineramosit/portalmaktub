@@ -23,7 +23,7 @@ export default function ListaStatuspagamento() {
                        
                         <i className="fa fa-align-justify"></i>Status Pagamento 
                                                    
-                        <Link to={`status-pagamento/${statuspagamento.id}`} className="statuspagamento btn btn-secondary">
+                        <Link to={`status-pagamento`} className="statuspagamento btn btn-secondary">
                                                 <i className="cui-file icons mr-1"></i>
                                                 Novo
                                             </Link>                                                                                             

@@ -21,9 +21,9 @@ export default function ListaAdiantamentoos() {
                 <Card>
                     <CardHeader className="links">
                        
-                        <i className="fa fa-align-justify"></i> Movimentação de OS 
+                        <i className="fa fa-align-justify"></i> Adiantamento de OS 
                                                    
-                        <Link to={`adiantamento-os/${adiantamentoos.id}`} className="adiantamentoos btn btn-secondary">
+                        <Link to={`adiantamento-os`} className="adiantamentoos btn btn-secondary">
                                                 <i className="cui-file icons mr-1"></i>
                                                 Novo
                                             </Link>                                                                                             

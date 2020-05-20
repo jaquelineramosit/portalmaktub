@@ -23,7 +23,7 @@ export default function ListaDadosbancarios() {
                        
                         <i className="fa fa-align-justify"></i>Dados Bancários  
                                                    
-                        <Link to={`dados-bancarios/${dadosbancarios.id}`} className="dadosbancarios btn btn-secondary">
+                        <Link to={`dados-bancarios`} className="dadosbancarios btn btn-secondary">
                                                 <i className="cui-file icons mr-1"></i>
                                                 Novo
                                             </Link>                                                                                             

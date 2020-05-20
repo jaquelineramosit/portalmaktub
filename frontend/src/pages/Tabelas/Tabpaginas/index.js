@@ -23,7 +23,7 @@ export default function ListaPaginas() {
                        
                         <i className="fa fa-align-justify"></i>Páginas  
                                                    
-                        <Link to={`paginas/${paginas.id}`} className="paginas btn btn-secondary">
+                        <Link to={`paginas`} className="paginas btn btn-secondary">
                                                 <i className="cui-file icons mr-1"></i>
                                                 Novo
                                             </Link>                                                                                             

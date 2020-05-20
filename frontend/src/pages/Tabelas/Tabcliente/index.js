@@ -4,7 +4,7 @@ import {Card, CardBody, CardHeader, Col, Pagination, PaginationItem, PaginationL
 import '../../../global.css';
 import api from '../../../services/api';
 
-export default function ListaClinete() {
+export default function ListaCliente() {
     const [clientes, setClientes] = useState([]);
     const usuarioId = localStorage.getItem('userId'); 
 
@@ -23,7 +23,7 @@ export default function ListaClinete() {
                        
                         <i className="fa fa-align-justify"></i> Clientes  
                                                    
-                        <Link to={`clientes/${clientes.id}`} className="novo btn btn-secondary">
+                        <Link to={`clientes`} className="novo btn btn-secondary">
                                                 <i className="cui-file icons mr-1"></i>
                                                 Novo
                                             </Link>                                                                                             

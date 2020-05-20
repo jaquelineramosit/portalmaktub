@@ -23,7 +23,7 @@ export default function ListaSubpaginas() {
                        
                         <i className="fa fa-align-justify"></i>Sub Páginas  
                                                    
-                        <Link to={`sub-paginas/${subpaginas.id}`} className="subpaginas btn btn-secondary">
+                        <Link to={`sub-paginas`} className="subpaginas btn btn-secondary">
                                                 <i className="cui-file icons mr-1"></i>
                                                 Novo
                                             </Link>                                                                                             

@@ -4,7 +4,7 @@ import {Card, CardBody, CardHeader, Col, Pagination, PaginationItem, PaginationL
 import './style.css';
 import api from '../../../services/api';
 
-export default function ListaClinete() {
+export default function ListaFerramenta() {
     const [ferramentas, setFerramentas] = useState([]);
     const usuarioId = localStorage.getItem('userId'); 
 
@@ -23,7 +23,7 @@ export default function ListaClinete() {
                        
                         <i className="fa fa-align-justify"></i>Ferramentas  
                                                    
-                        <Link to={`ferramentas/${ferramentas.id}`} className="ferramenta btn btn-secondary">
+                        <Link to={`ferramentas`} className="ferramenta btn btn-secondary">
                                                 <i className="cui-file icons mr-1"></i>
                                                 Novo
                                             </Link>                                                                                             

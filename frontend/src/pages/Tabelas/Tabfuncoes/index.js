@@ -23,7 +23,7 @@ export default function ListaFuncao() {
                        
                         <i className="fa fa-align-justify"></i>Função  
                                                    
-                        <Link to={`funcao/${funcao.id}`} className="funcao btn btn-secondary">
+                        <Link to={`funcao`} className="funcao btn btn-secondary">
                                                 <i className="cui-file icons mr-1"></i>
                                                 Novo
                                             </Link>                                                                                             
