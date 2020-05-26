@@ -44,9 +44,9 @@ export default function ListaDadosbancarios() {
                                 <tbody>
                                     {dadosbancarios.map(dadosbancarios => (
                                         <tr>
-                                            <td>{dadosbancarios.tecnicoid}</td>
-                                            <td>{dadosbancarios.bancoid}</td>
-                                            <td>{dadosbancarios.tipocontaid}</td>
+                                            <td>{dadosbancarios.nometecnico}</td>
+                                            <td>{dadosbancarios.nomebanco}</td>
+                                            <td>{dadosbancarios.nometipoconta}</td>
                                             <td>{dadosbancarios.agencia}</td>
                                             <td>{dadosbancarios.conta}</td>
                                             <td>{dadosbancarios.titularconta}</td>

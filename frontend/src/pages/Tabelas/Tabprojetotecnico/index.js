@@ -40,8 +40,8 @@ export default function ListaProjetotecnico() {
                                 <tbody>
                                     {projetotecnico.map(projetotecnico => (
                                         <tr>
-                                            <td>{projetotecnico.tipoprojetoid}</td>
-                                            <td>{projetotecnico.tecnicoid}</td>
+                                            <td>{projetotecnico.nometipoprojeto}</td>
+                                            <td>{projetotecnico.nometecnico}</td>
                                             <td style={{ textAlign : 'right' }}>
                                                 <Link to={`tipo-projeto/${projetotecnico.id}`} className="btn-sm btn-primary">
                                                     <i className="fa fa-pencil fa-lg mr-1"></i>
