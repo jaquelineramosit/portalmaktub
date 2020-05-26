@@ -39,8 +39,8 @@ export default function ListaDisponibilidadetecnico() {
                                 <tbody>
                                     {disponibilidadetecnico.map(disponibilidadetecnico => (
                                         <tr>
-                                            <td>{disponibilidadetecnico.disponibilidadeId}</td>
-                                            <td>{disponibilidadetecnico.tecnicoId}</td>
+                                            <td>{disponibilidadetecnico.nomedisponibilidade}</td>
+                                            <td>{disponibilidadetecnico.nometecnico}</td>
                                             <td style={{ textAlign: 'right' }}>
                                                 <Link to={`disponibilidade-tecnico/${disponibilidadetecnico.id}`} className="btn-sm btn-primary">
                                                     <i className="fa fa-pencil fa-lg mr-1"></i>

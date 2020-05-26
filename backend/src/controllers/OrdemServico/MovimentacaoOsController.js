@@ -9,10 +9,11 @@ module.exports = {
         .join('statuscobranca', 'statuscobranca.id', '=', 'movimentacaoos.statuscobrancaid')
         .join('usuario', 'usuario.id', '=', 'movimentacaoos.usuarioid')
         .select([
-            'ordemservico.*',
-            'statusatendimento.descstatus as descStatusAtendimento',
-            'statuspagamento.descstatus as descStatusPagamento',
-            'statuscobranca.descstatus as descStatusCobranca',
+            'movimentacaoos.*',
+            'ordemservico.numeroos',
+            'statusatendimento.status',
+            'statuspagamento.status ',
+            'statuscobranca.status',
             'usuario.nome'
         ]);
     
@@ -30,10 +31,11 @@ module.exports = {
             .join('statuscobranca', 'statuscobranca.id', '=', 'movimentacaoos.statuscobrancaid')
             .join('usuario', 'usuario.id', '=', 'movimentacaoos.usuarioid')
             .select([
-                'ordemservico.*',
-                'statusatendimento.descstatus as descStatusAtendimento',
-                'statuspagamento.descstatus as descStatusPagamento',
-                'statuscobranca.descstatus as descStatusCobranca',
+                'movimentacaoos.*',
+                'ordemservico.numeroos',
+                'statusatendimento.status',
+                'statuspagamento.status',
+                'statuscobranca.status',
                 'usuario.nome'
             ])            
             .first();

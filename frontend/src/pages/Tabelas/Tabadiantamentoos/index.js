@@ -43,11 +43,11 @@ export default function ListaAdiantamentoos() {
                                 <tbody>
                                     {adiantamentoos.map(adiantamentoos => (
                                         <tr>
-                                            <td>{adiantamentoos.ordemservicoid}</td>
+                                            <td>{adiantamentoos.numeroos}</td>
                                             <td>{adiantamentoos.valoradiantamento}</td>
                                             <td>{adiantamentoos.dataadiantamento}</td>
                                             <td>{adiantamentoos.dataquitacao}</td>
-                                            <td>{adiantamentoos.statusadiantamentoid}</td>
+                                            <td>{adiantamentoos.status}</td>
                                             <td style={{ textAlign : 'right' }}>
                                                 <Link to={`adiantamento-os/${adiantamentoos.id}`} className="btn-sm btn-primary">
                                                     <i className="fa fa-pencil fa-lg mr-1"></i>

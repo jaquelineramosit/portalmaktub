@@ -46,8 +46,8 @@ export default function ListaFiliais() {
                                     {filiais.map(filiais => (
                                         <tr>
                                             <td>{filiais.nomefilial}</td>
-                                            <td>{filiais.clienteid}</td>
-                                            <td>{filiais.bandeiraid}</td>
+                                            <td>{filiais.nomecliente}</td>
+                                            <td>{filiais.nomebandeira}</td>
                                             <td>{filiais.estado}</td>
                                             <td>{filiais.cidade}</td>
                                             
