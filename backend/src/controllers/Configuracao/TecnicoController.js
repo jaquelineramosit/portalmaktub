@@ -2,7 +2,15 @@ const connection = require('../../database/connection');
 const getDate = require('../../utils/getDate');
 module.exports = {
     async getAll (request, response) {
-        const tecnico = await connection('tecnico').select('*');
+        const tecnico = await connection('tecnico')
+        .join('usuario', 'usuario.id', '=', 'tecnico.usuarioid')   
+        .join('tipotecnico', 'tipotecnico.id', '=', 'tecnico.tipotecnicoid')   
+        .select([
+            'tecnico.*',
+            'tipotecnico.nometipotecnico',  
+            'tipotecnico.desctipotecnico',   
+            'usuario.nome'
+        ]);
     
         return response.json(tecnico);
     },
@@ -11,8 +19,15 @@ module.exports = {
         const  { id }  = request.params;
 
         const tecnico = await connection('tecnico')
-            .where('id', id)
-            .select()
+            .where('tecnico.id', id)
+            .join('usuario', 'usuario.id', '=', 'tecnico.usuarioid')   
+            .join('tipotecnico', 'tipotecnico.id', '=', 'tecnico.tipotecnicoid')   
+            .select([
+                'tecnico.*',
+                'tipotecnico.nometipotecnico',  
+                'tipotecnico.desctipotecnico',   
+                'usuario.nome'
+            ])
             .first();
     
         return response.json(tecnico);

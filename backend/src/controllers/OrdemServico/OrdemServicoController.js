@@ -3,17 +3,38 @@ const getDate = require('../../utils/getDate');
 
 module.exports = {
     async getAll (request, response) {
-        const ordemservico = await connection('ordemservico').select('*');
+        const ordemservico = await connection('ordemservico')
+            .join('clientefilial', 'clientefilial.id', '=', 'ordemservico.clientefilialid')
+            .join('tipoprojeto', 'tipoprojeto.id', '=', 'ordemservico.tipoprojetoid')
+            .join('tecnico', 'tecnico.id', '=', 'ordemservico.tecnicoid')
+            .join('usuario', 'usuario.id', '=', 'ordemservico.usuarioid')
+            .select([
+                'ordemservico.*',
+                'clientefilial.nomefilial',
+                'tipoprojeto.nometipoprojeto',
+                'tecnico.nometecnico',
+                'usuario.nome'
+            ])
     
         return response.json(ordemservico);
     },
 
     async getById (request, response) {
         const  { id }  = request.params;
-
+        
         const ordemservico = await connection('ordemservico')
-            .where('id', id)
-            .select()
+            .where('ordemservico.id', id)
+            .join('clientefilial', 'clientefilial.id', '=', 'ordemservico.clientefilialid')
+            .join('tipoprojeto', 'tipoprojeto.id', '=', 'ordemservico.tipoprojetoid')
+            .join('tecnico', 'tecnico.id', '=', 'ordemservico.tecnicoid')
+            .join('usuario', 'usuario.id', '=', 'ordemservico.usuarioid')
+            .select([
+                'ordemservico.*',
+                'clientefilial.nomefilial',
+                'tipoprojeto.nometipoprojeto',
+                'tecnico.nometecnico',
+                'usuario.nome'
+            ])
             .first();
     
         return response.json(ordemservico);

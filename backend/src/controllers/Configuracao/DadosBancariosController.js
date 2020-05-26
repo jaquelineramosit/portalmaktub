@@ -2,8 +2,21 @@ const connection = require('../../database/connection');
 const getDate = require('../../utils/getDate');
 module.exports = {
     async getAll (request, response) {
-        const dadosbancarios = await connection('dadosbancarios').select('*');
+        const dadosbancarios = await connection('dadosbancarios')
+        .join('tecnico', 'tecnico.id', '=', 'dadosbancarios.tecnicoid')   
+        .join('banco', 'banco.id', '=', 'dadosbancarios.bancoid')   
+        .join('tipoconta', 'tipoconta.id', '=', 'dadosbancarios.tipocontaid') 
+        .join('usuario', 'usuario.id', '=', 'dadosbancarios.usuarioid')   
+        .select([
+            'dadosbancarios.*',
+            'tecnico.nometecnico',
+            'banco.nomebanco',
+            'tipoconta.nometipoconta',           
+            'usuario.nome'
+        ]);
     
+
+
         return response.json(dadosbancarios);
     },
 
@@ -11,8 +24,18 @@ module.exports = {
         const  { id }  = request.params;
 
         const dadosbancarios = await connection('dadosbancarios')
-            .where('id', id)
-            .select()
+            .where('dadosbancarios.id', id)
+            .join('tecnico', 'tecnico.id', '=', 'dadosbancarios.tecnicoid')   
+            .join('banco', 'banco.id', '=', 'dadosbancarios.bancoid')   
+            .join('tipoconta', 'tipoconta.id', '=', 'dadosbancarios.tipocontaid') 
+            .join('usuario', 'usuario.id', '=', 'dadosbancarios.usuarioid')   
+            .select([
+                'dadosbancarios.*',
+                'tecnico.nometecnico',
+                'banco.nomebanco',
+                'tipoconta.nometipoconta',           
+                'usuario.nome'
+            ])
             .first();
     
         return response.json(dadosbancarios);

@@ -2,7 +2,16 @@ const connection = require('../../database/connection');
 const getDate = require('../../utils/getDate');
 module.exports = {
     async getAll (request, response) {
-        const ferramentaos = await connection('ferramentaos').select('*');
+        const ferramentaos = await connection('ferramentaos')
+        .join('ferramenta', 'ferramenta.id', '=', 'ferramentaos.ferramentaid') 
+        .join('ordemservico', 'ordemservico.id', '=', 'ferramentaos.ordemservicoid') 
+        .join('usuario', 'usuario.id', '=', 'ferramentaos.usuarioid')   
+        .select([
+            'ferramentaos.*',
+            'ordemservico.numeroos',
+            'ferramenta.codferramenta',
+            'usuario.nome'
+        ]);
     
         return response.json(ferramentaos);
     },
@@ -11,8 +20,16 @@ module.exports = {
         const  { id }  = request.params;
 
         const ferramentaos = await connection('ferramentaos')
-            .where('id', id)
-            .select()
+            .where('ferramentaos.id', id)
+            .join('ferramenta', 'ferramenta.id', '=', 'ferramentaos.ferramentaid') 
+            .join('ordemservico', 'ordemservico.id', '=', 'ferramentaos.ordemservicoid') 
+            .join('usuario', 'usuario.id', '=', 'ferramentaos.usuarioid')   
+            .select([
+                'ferramentaos.*',
+                'ordemservico.numeroos',
+                'ferramenta.codferramenta',
+                'usuario.nome'
+            ])
             .first();
     
         return response.json(ferramentaos);

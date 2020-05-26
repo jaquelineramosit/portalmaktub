@@ -2,7 +2,16 @@ const connection = require('../../database/connection');
 const getDate = require('../../utils/getDate');
 module.exports = {
     async getAll (request, response) {
-        const clientefilial = await connection('clientefilial').select('*');
+        const clientefilial = await connection('clientefilial')
+        .join('bandeira', 'bandeira.id', '=', 'clientefilial.bandeiraid')  
+        .join('cliente', 'cliente.id', '=', 'clientefilial.clienteid')  
+        .join('usuario', 'usuario.id', '=', 'clientefilial.usuarioid')   
+        .select([
+            'clientefilial.*',
+            'bandeira.nomebandeira',
+            'cliente.nomecliente',
+            'usuario.nome'
+        ]);
     
         return response.json(clientefilial);
     },
@@ -11,8 +20,16 @@ module.exports = {
         const  { id }  = request.params;
 
         const clientefilial = await connection('clientefilial')
-            .where('id', id)
-            .select()
+            .where('clientefilial.id', id)
+            .join('bandeira', 'bandeira.id', '=', 'clientefilial.bandeiraid')  
+            .join('cliente', 'cliente.id', '=', 'clientefilial.clienteid')  
+            .join('usuario', 'usuario.id', '=', 'clientefilial.usuarioid')   
+            .select([
+                'clientefilial.*',
+                'bandeira.nomebandeira',
+                'cliente.nomecliente',
+                'usuario.nome'
+            ])
             .first();
     
         return response.json(clientefilial);

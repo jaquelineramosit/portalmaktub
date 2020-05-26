@@ -2,7 +2,9 @@ const connection = require('../../database/connection');
 const getDate = require('../../utils/getDate');
 module.exports = {
     async getAll (request, response) {
-        const perfilacesso = await connection('perfilacesso').select('*');
+        const perfilacesso = await connection('perfilacesso')
+        .join('usuario', 'usuario.id', '=', 'perfilacesso.usuarioid')
+        .select('perfilacesso.*', 'usuario.nome');
     
         return response.json(perfilacesso);
     },
@@ -11,8 +13,9 @@ module.exports = {
         const  { id }  = request.params;
 
         const perfilacesso = await connection('perfilacesso')
-            .where('id', id)
-            .select()
+            .where('perfilacesso.id', id)
+            .join('usuario', 'usuario.id', '=', 'perfilacesso.usuarioid')
+            .select('perfilacesso.*', 'usuario.nome')
             .first();
     
         return response.json(perfilacesso);

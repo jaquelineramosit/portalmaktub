@@ -2,7 +2,19 @@ const connection = require('../../database/connection');
 const getDate = require('../../utils/getDate');
 module.exports = {
     async getAll (request, response) {
-        const movimentacaoos = await connection('movimentacaoos').select('*');
+        const movimentacaoos = await connection('movimentacaoos')
+        .join('ordemservico', 'ordemservico.id', '=', 'movimentacaoos.ordemservicoid')
+        .join('statusatendimento', 'statusatendimento.id', '=', 'movimentacaoos.statusatendimentoid')
+        .join('statuspagamento', 'statuspagamento.id', '=', 'movimentacaoos.statuspagamentoid')
+        .join('statuscobranca', 'statuscobranca.id', '=', 'movimentacaoos.statuscobrancaid')
+        .join('usuario', 'usuario.id', '=', 'movimentacaoos.usuarioid')
+        .select([
+            'ordemservico.*',
+            'statusatendimento.descstatus as descStatusAtendimento',
+            'statuspagamento.descstatus as descStatusPagamento',
+            'statuscobranca.descstatus as descStatusCobranca',
+            'usuario.nome'
+        ]);
     
         return response.json(movimentacaoos);
     },
@@ -11,8 +23,19 @@ module.exports = {
         const  { id }  = request.params;
 
         const movimentacaoos = await connection('movimentacaoos')
-            .where('id', id)
-            .select()
+            .where('movimentacaoos.id', id)
+            .join('ordemservico', 'ordemservico.id', '=', 'movimentacaoos.ordemservicoid')
+            .join('statusatendimento', 'statusatendimento.id', '=', 'movimentacaoos.statusatendimentoid')
+            .join('statuspagamento', 'statuspagamento.id', '=', 'movimentacaoos.statuspagamentoid')
+            .join('statuscobranca', 'statuscobranca.id', '=', 'movimentacaoos.statuscobrancaid')
+            .join('usuario', 'usuario.id', '=', 'movimentacaoos.usuarioid')
+            .select([
+                'ordemservico.*',
+                'statusatendimento.descstatus as descStatusAtendimento',
+                'statuspagamento.descstatus as descStatusPagamento',
+                'statuscobranca.descstatus as descStatusCobranca',
+                'usuario.nome'
+            ])            
             .first();
     
         return response.json(movimentacaoos);

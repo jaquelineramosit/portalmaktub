@@ -19,15 +19,12 @@ export default function ListaCliente() {
         <Row>
             <Col xs="12" lg="12">
                 <Card>
-                    <CardHeader className="links">
-                       
-                        <i className="fa fa-align-justify"></i> Clientes  
-                                                   
-                        <Link to={`clientes`} className="novo btn btn-secondary">
-                                                <i className="cui-file icons mr-1"></i>
-                                                Novo
-                                            </Link>                                                                                             
-                                                                                                                 
+                    <CardHeader className="links">                       
+                        <i className="fa fa-align-justify"></i> Clientes                                                     
+                        <Link to={`clientes`} className="btn btn-secondary float-right">
+                            <i className="cui-file icons mr-1"></i>
+                            Novo
+                        </Link>                                                                                                                 
                     </CardHeader>
                         <CardBody>
                             <Table responsive striped>
@@ -36,19 +33,19 @@ export default function ListaCliente() {
                                         <th>Clientes</th>
                                         <th>Razão Social</th>
                                         <th>Cidade</th>
-                                        <th>bairro</th>
+                                        <th>Bairro</th>
                                         <th style={{ textAlign : 'right' }}>Ações</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {clientes.map(clientes => (
+                                    {clientes.map(cliente => (
                                         <tr>
-                                            <td>{clientes.nomecliente}</td>
-                                            <td>{clientes.logradouro}</td>
-                                            <td>{clientes.cidade}</td>
-                                            <td>{clientes.bairro}</td>
+                                            <td>{cliente.nomecliente}</td>
+                                            <td>{cliente.logradouro}</td>
+                                            <td>{cliente.cidade}</td>
+                                            <td>{cliente.bairro}</td>
                                             <td style={{ textAlign : 'right' }}>
-                                                <Link to={`clientes/${clientes.id}`} className="btn-sm btn-primary">
+                                                <Link to={`clientes/${cliente.id}`} className="btn-sm btn-primary">
                                                     <i className="fa fa-pencil fa-lg mr-1"></i>
                                                     Editar
                                                 </Link>                                              

@@ -2,7 +2,16 @@ const connection = require('../../database/connection');
 const getDate = require('../../utils/getDate');
 module.exports = {
     async getAll (request, response) {
-        const adiantamentoos = await connection('adiantamentoos').select('*');
+        const adiantamentoos = await connection('adiantamentoos')
+        .join('ordemservico', 'ordemservico.id', '=', 'adiantamentoos.ordemservicoid')
+        .join('usuario', 'usuario.id', '=', 'adiantamentoos.usuarioid')
+        .join('statusadiantamento', 'statusadiantamento.id', '=', 'adiantamentoos.statusadiantamentoid')
+        .select([
+            'adiantamentoos.*', 
+            'ordemservico.numeroos',
+            'statusadiantamento.descstatus as descStatusAdiantamento',
+            'usuario.nome'        
+        ]);
     
         return response.json(adiantamentoos);
     },
@@ -11,8 +20,16 @@ module.exports = {
         const  { id }  = request.params;
 
         const adiantamentoos = await connection('adiantamentoos')
-            .where('id', id)
-            .select()
+            .where('adiantamentoos.id', id)
+            .join('ordemservico', 'ordemservico.id', '=', 'adiantamentoos.ordemservicoid')
+            .join('usuario', 'usuario.id', '=', 'adiantamentoos.usuarioid')
+            .join('statusadiantamento', 'statusadiantamento.id', '=', 'adiantamentoos.statusadiantamentoid')
+            .select([
+                'adiantamentoos.*', 
+                'ordemservico.numeroos',
+                'statusadiantamento.descstatus as descStatusAdiantamento',
+                'usuario.nome'        
+            ])
             .first();
     
         return response.json(adiantamentoos);

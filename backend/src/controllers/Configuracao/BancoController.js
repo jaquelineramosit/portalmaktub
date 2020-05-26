@@ -2,7 +2,12 @@ const connection = require('../../database/connection');
 const getDate = require('../../utils/getDate');
 module.exports = {
     async getAll (request, response) {
-        const banco = await connection('banco').select('*');
+        const banco = await connection('banco')
+        .join('usuario', 'usuario.id', '=', 'banco.usuarioid') 
+        .select([
+            'banco.*', 
+            'usuario.nome'
+        ]);
     
         return response.json(banco);
     },
@@ -11,8 +16,12 @@ module.exports = {
         const  { id }  = request.params;
 
         const banco = await connection('banco')
-            .where('id', id)
-            .select()
+            .where('banco.id', id)
+            .join('usuario', 'usuario.id', '=', 'banco.usuarioid') 
+            .select([
+                'banco.*', 
+                'usuario.nome'
+            ])            
             .first();
     
         return response.json(banco);

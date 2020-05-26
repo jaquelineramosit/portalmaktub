@@ -2,7 +2,16 @@ const connection = require('../../database/connection');
 const getDate = require('../../utils/getDate');
 module.exports = {
     async getAll (request, response) {
-        const funcao = await connection('funcao').select('*');
+        const funcao = await connection('funcao')
+        .join('subpagina', 'subpagina.id', '=', 'funcao.subpaginaid')
+        .join('pagina', 'pagina.id', '=', 'funcao.paginaid')
+        .join('usuario', 'usuario.id', '=', 'funcao.usuarioid')   
+        .select([
+            'funcao.*',
+            'subpagina.nomesubpagina',
+            'pagina.nomepagina',
+            'usuario.nome'
+        ]);
     
         return response.json(funcao);
     },
@@ -11,8 +20,16 @@ module.exports = {
         const  { id }  = request.params;
 
         const funcao = await connection('funcao')
-            .where('id', id)
-            .select()
+            .where('funcao.id', id)
+            .join('subpagina', 'subpagina.id', '=', 'funcao.subpaginaid')
+            .join('pagina', 'pagina.id', '=', 'funcao.paginaid')
+            .join('usuario', 'usuario.id', '=', 'funcao.usuarioid')     
+            .select([
+                'funcao.*',
+                'subpagina.nomesubpagina',
+                'pagina.nomepagina',
+                'usuario.nome'
+            ])
             .first();
     
         return response.json(funcao);

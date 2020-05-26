@@ -2,7 +2,16 @@ const connection = require('../../database/connection');
 const getDate = require('../../utils/getDate');
 module.exports = {
     async getAll (request, response) {
-        const tipoprojetotecnico = await connection('tipoprojetotecnico').select('*');
+        const tipoprojetotecnico = await connection('tipoprojetotecnico')
+        .join('tecnico', 'tecnico.id', '=', 'tipoprojetotecnico.tecnicoid') 
+        .join('tipoprojeto', 'tipoprojeto.id', '=', 'tipoprojetotecnico.tipoprojetoid') 
+        .join('usuario', 'usuario.id', '=', 'tipoprojetotecnico.usuarioid')   
+        .select([
+            'tipoprojetotecnico.*',
+            'tipoprojeto.nometipoprojeto',
+            'tecnico.nometecnico',
+            'usuario.nome'
+        ]);
     
         return response.json(tipoprojetotecnico);
     },
@@ -11,8 +20,16 @@ module.exports = {
         const  { id }  = request.params;
 
         const tipoprojetotecnico = await connection('tipoprojetotecnico')
-            .where('id', id)
-            .select()
+            .where('tipoprojetotecnico.id', id)
+            .join('tecnico', 'tecnico.id', '=', 'tipoprojetotecnico.tecnicoid') 
+            .join('tipoprojeto', 'tipoprojeto.id', '=', 'tipoprojetotecnico.tipoprojetoid') 
+            .join('usuario', 'usuario.id', '=', 'tipoprojetotecnico.usuarioid')   
+            .select([
+                'tipoprojetotecnico.*',
+                'tipoprojeto.nometipoprojeto',
+                'tecnico.nometecnico',
+                'usuario.nome'
+            ])
             .first();
     
         return response.json(tipoprojetotecnico);

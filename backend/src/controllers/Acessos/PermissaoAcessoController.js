@@ -2,7 +2,22 @@ const connection = require('../../database/connection');
 const getDate = require('../../utils/getDate');
 module.exports = {
     async getAll (request, response) {
-        const acessopagina = await connection('permissaoacesso').select('*');
+        const acessopagina = await connection('permissaoacesso')
+        .join('perfilacesso', 'perfilacesso.id', '=', 'permissaoacesso.perfilacessoid')
+        .join('modulo', 'modulo.id', '=', 'permissaoacesso.moduloid')
+        .join('pagina', 'pagina.id', '=', 'permissaoacesso.paginaid')
+        .join('subpagina', 'subpagina.id', '=', 'permissaoacesso.subpaginaid')
+        .join('funcao', 'funcao.id', '=', 'permissaoacesso.funcaoid')
+        .join('usuario', 'usuario.id', '=', 'permissaoacesso.usuarioid')
+        .select([
+            'permissaoacesso.*',
+            'perfilacesso.nomeperfil',
+            'modulo.nomemodulo',
+            'pagina.nomepagina',
+            'subpagina.nomesubpagina',
+            'funcao.nomefuncao',
+            'usuario.nome'
+        ]);
     
         return response.json(acessopagina);
     },
@@ -11,8 +26,22 @@ module.exports = {
         const  { id }  = request.params;
 
         const acessopagina = await connection('permissaoacesso')
-            .where('id', id)
-            .select()
+            .where('permissaoacesso.id', id)
+            .join('perfilacesso', 'perfilacesso.id', '=', 'permissaoacesso.perfilacessoid')
+            .join('modulo', 'modulo.id', '=', 'permissaoacesso.moduloid')
+            .join('pagina', 'pagina.id', '=', 'permissaoacesso.paginaid')
+            .join('subpagina', 'subpagina.id', '=', 'permissaoacesso.subpaginaid')
+            .join('funcao', 'funcao.id', '=', 'permissaoacesso.funcaoid')
+            .join('usuario', 'usuario.id', '=', 'permissaoacesso.usuarioid')
+            .select([
+                'permissaoacesso.*',
+                'perfilacesso.nomeperfil',
+                'modulo.nomemodulo',
+                'pagina.nomepagina',
+                'subpagina.nomesubpagina',
+                'funcao.nomefuncao',
+                'usuario.nome'
+            ])
             .first();
     
         return response.json(acessopagina);

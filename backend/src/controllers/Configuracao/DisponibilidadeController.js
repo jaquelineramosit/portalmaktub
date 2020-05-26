@@ -2,7 +2,12 @@ const connection = require('../../database/connection');
 const getDate = require('../../utils/getDate');
 module.exports = {
     async getAll (request, response) {
-        const disponibilidade = await connection('disponibilidade').select('*');
+        const disponibilidade = await connection('disponibilidade')
+        .join('usuario', 'usuario.id', '=', 'disponibilidade.usuarioid')   
+        .select([
+            'disponibilidade.*',
+            'usuario.nome'
+        ]);
     
         return response.json(disponibilidade);
     },
@@ -11,8 +16,12 @@ module.exports = {
         const  { id }  = request.params;
 
         const disponibilidade = await connection('disponibilidade')
-            .where('id', id)
-            .select()
+            .where('disponibilidade.id', id)
+            .join('usuario', 'usuario.id', '=', 'disponibilidade.usuarioid')   
+            .select([
+                'disponibilidade.*',
+                'usuario.nome'
+            ])
             .first();
     
         return response.json(disponibilidade);

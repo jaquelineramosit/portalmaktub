@@ -2,7 +2,12 @@ const connection = require('../../database/connection');
 const getDate = require('../../utils/getDate');
 module.exports = {
     async getAll (request, response) {
-        const statusadiantamento = await connection('statusadiantamento').select('*');
+        const statusadiantamento = await connection('statusadiantamento')
+        .join('usuario', 'usuario.id', '=', 'statusadiantamento.usuarioid')   
+        .select([
+            'statusadiantamento.*',            
+            'usuario.nome'
+        ]);
     
         return response.json(statusadiantamento);
     },
@@ -11,8 +16,12 @@ module.exports = {
         const  { id }  = request.params;
 
         const statusadiantamento = await connection('statusadiantamento')
-            .where('id', id)
-            .select()
+            .where('statusadiantamento.id', id)
+            .join('usuario', 'usuario.id', '=', 'statusadiantamento.usuarioid')   
+            .select([
+                'statusadiantamento.*',            
+                'usuario.nome'
+            ])
             .first();
     
         return response.json(statusadiantamento);

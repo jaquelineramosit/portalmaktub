@@ -2,7 +2,16 @@ const connection = require('../../database/connection');
 const getDate = require('../../utils/getDate');
 module.exports = {
     async getAll (request, response) {
-        const disponibilidadetecnico = await connection('disponibilidadetecnico').select('*');
+        const disponibilidadetecnico = await connection('disponibilidadetecnico')        
+        .join('disponibilidade', 'disponibilidade.id', '=', 'disponibilidadetecnico.disponibilidadeId')   
+        .join('tecnico', 'tecnico.id', '=', 'disponibilidadetecnico.tecnicoId')   
+        .join('usuario', 'usuario.id', '=', 'disponibilidadetecnico.usuarioid')
+        .select([
+            'disponibilidadetecnico.*',
+            'tecnico.nometecnico',
+            'disponibilidade.nomedisponibilidade',
+            'usuario.nome'
+        ]);
     
         return response.json(disponibilidadetecnico);
     },
@@ -11,8 +20,16 @@ module.exports = {
         const  { id }  = request.params;
 
         const disponibilidadetecnico = await connection('disponibilidadetecnico')
-            .where('id', id)
-            .select()
+            .where('disponibilidadetecnico.id', id)
+            .join('disponibilidade', 'disponibilidade.id', '=', 'disponibilidadetecnico.disponibilidadeId')   
+            .join('tecnico', 'tecnico.id', '=', 'disponibilidadetecnico.tecnicoId')   
+            .join('usuario', 'usuario.id', '=', 'disponibilidadetecnico.usuarioid')
+            .select([
+                'disponibilidadetecnico.*',
+                'tecnico.nometecnico',
+                'disponibilidade.nomedisponibilidade',
+                'usuario.nome'
+            ])
             .first();
     
         return response.json(disponibilidadetecnico);
