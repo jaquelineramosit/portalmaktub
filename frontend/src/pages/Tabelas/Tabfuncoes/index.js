@@ -43,7 +43,7 @@ export default function ListaFuncao() {
                                     {funcao.map(funcao => (
                                         <tr>
                                             <td>{funcao.nomepagina}</td>  
-                                            <td>{funcao.subpaginaid}</td>  
+                                            <td>{funcao.nomeçsubpagina}</td>  
                                             <td>{funcao.nomefuncao}</td>   
                                             <td>{funcao.descricao}</td>          
                                             <td style={{ textAlign : 'right' }}>
