@@ -47,7 +47,7 @@ export default function ListaTecnicos() {
                                             <td>{tecnico.telefonecelular}</td>
                                             <td>{tecnico.cidade}</td>   
                                             <td>{tecnico.estado}</td>   
-                                            <td>{tecnico.tipotecnicoid}</td>                                                  
+                                            <td>{tecnico.desctipotecnico}</td>                                                  
                                             <td style={{ textAlign : 'right' }}>
                                                 <Link to={`tecnico/${tecnico.id}`} className="btn-sm btn-primary">
                                                     <i className="fa fa-pencil fa-lg mr-1"></i>

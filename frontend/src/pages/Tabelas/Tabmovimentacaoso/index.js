@@ -43,11 +43,11 @@ export default function ListaMovimentacaoos() {
                                 <tbody>
                                     {movimentacaoos.map(movimentacaoos => (
                                         <tr>
-                                            <td>{movimentacaoos.ordemservicoid}</td>
-                                            <td>{movimentacaoos.statusatendimentoid}</td>
-                                            <td>{movimentacaoos.statuspagamentoid}</td>
-                                            <td>{movimentacaoos.statuscobrancaid}</td>
-                                            <td>{movimentacaoos.observacao}</td>
+                                            <td>{movimentacaoos.numeroos}</td>
+                                            <td>{movimentacaoos.status}</td>
+                                            <td>{movimentacaoos.status}</td>
+                                            <td>{movimentacaoos.status}</td>
+                                            <td>{movimentacaoos.status}</td>
                                             <td style={{ textAlign : 'right' }}>
                                                 <Link to={`movimentacao-os/${movimentacaoos.id}`} className="btn-sm btn-primary">
                                                     <i className="fa fa-pencil fa-lg mr-1"></i>

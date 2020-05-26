@@ -9,7 +9,7 @@ module.exports = {
         .select([
             'adiantamentoos.*', 
             'ordemservico.numeroos',
-            'statusadiantamento.descstatus as descStatusAdiantamento',
+            'statusadiantamento.status',
             'usuario.nome'        
         ]);
     
@@ -27,7 +27,7 @@ module.exports = {
             .select([
                 'adiantamentoos.*', 
                 'ordemservico.numeroos',
-                'statusadiantamento.descstatus as descStatusAdiantamento',
+                'statusadiantamento.status',
                 'usuario.nome'        
             ])
             .first();
