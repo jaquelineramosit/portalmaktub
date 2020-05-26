@@ -23,7 +23,7 @@ export default function Disponibilidade() {
         try {
             const response = await api.post('disponibilidade', data, {
                 headers: {
-                    Authorization: usuarioId,
+                    Authorization: 1,
                 }
             });
             alert(`Feito o cadastro com sucesso`);

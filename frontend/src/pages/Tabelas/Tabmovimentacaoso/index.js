@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {Link } from 'react-router-dom';
 import {Card, CardBody, CardHeader, Col, Pagination, PaginationItem, PaginationLink, Row, Table,Input, FormGroup} from 'reactstrap';
-import './style.css';
 import api from '../../../services/api';
 
 export default function ListaMovimentacaoos() {
@@ -23,7 +22,7 @@ export default function ListaMovimentacaoos() {
                        
                         <i className="fa fa-align-justify"></i>Movimentação de OS 
                                                    
-                        <Link to={`movimentacao-os`} className="movimentacaoos btn btn-secondary">
+                        <Link to={`movimentacao-os`} className="btn btn-secondary float-right">
                                                 <i className="cui-file icons mr-1"></i>
                                                 Novo
                                             </Link>                                                                                             

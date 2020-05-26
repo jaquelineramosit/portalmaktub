@@ -32,7 +32,7 @@ export default function TipoProjeto() {
         try {
             const response = await api.post('tipo-projeto', data, {
                 headers: {
-                    Authorization: usuarioId,
+                    Authorization: 1,
                 }
             });
             alert(`Feito o cadastro com sucesso`);

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {Link } from 'react-router-dom';
 import {Card, CardBody, CardHeader, Col, Pagination, PaginationItem, PaginationLink, Row, Table,Input, FormGroup} from 'reactstrap';
-import './style.css';
 import api from '../../../services/api';
 
 export default function ListaStatusadiantamento() {
@@ -23,7 +22,7 @@ export default function ListaStatusadiantamento() {
                        
                         <i className="fa fa-align-justify"></i>Status Adiantamento 
                                                    
-                        <Link to={`status-adiantamento`} className="statusadiantamento btn btn-secondary">
+                        <Link to={`status-adiantamento`} className="btn btn-secondary float-right">
                                                 <i className="cui-file icons mr-1"></i>
                                                 Novo
                                             </Link>                                                                                             

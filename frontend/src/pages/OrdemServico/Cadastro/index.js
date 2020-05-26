@@ -10,13 +10,13 @@ export default function OrdemServico() {
     const [dataatendimento, setDataAtendimento] = useState('');
     const [clientefilialid, setClienteFilialId] = useState('');
     const [clienteFiliais, setClienteFiliais] = useState([]);
-    const [tiposervicoid, setTipoServicoId] = useState('');
-    const [tipoServicos, setTipoServicos] = useState([]);
+    const [tipoprojetoid, setTipoProjetoId] = useState('');
+    const [tipoProjeto, setTipoProjeto] = useState([]);
     const [descricaoservico, setDescricaoServico] = useState('');
     const [tecnicoid, setTecnicoId] = useState('');
     const [tecnicos, setTecnicos] = useState([]);
     const [observacaoos, setObservacaoOs] = useState('');
-    const [datafechamento, setDataFechamento] = useState([]);
+    const [datafechamento, setDataFechamento] = useState('');
     const [horaentrada, setHoraEntrada] = useState('');
     const [horasaida, setHoraSaida] = useState('');
     const [qtdehoras, setQtdeHoras] = useState('');
@@ -44,7 +44,7 @@ export default function OrdemServico() {
 
     useEffect(() => {
         api.get('tipo-projeto').then(response => {            
-            setTipoServicos(response.data);
+            setTipoProjeto(response.data);
         })
     }, [usuarioId]); 
 
@@ -56,7 +56,7 @@ export default function OrdemServico() {
             datasolicitacao,
             dataatendimento,
             clientefilialid,
-            tiposervicoid,
+            tipoprojetoid,
             descricaoservico,
             tecnicoid,
             observacaoos,
@@ -73,11 +73,11 @@ export default function OrdemServico() {
             custoadicional,
             ativo,
        };
-
+       console.log(data);
         try {
             const response = await api.post('ordem-servico', data, {
                 headers: {
-                    Authorization: usuarioId,
+                    Authorization: 1,
                 }
             });
             alert(`Feito o cadastro com sucesso`);
@@ -163,7 +163,7 @@ export default function OrdemServico() {
                                         
                                                 <option value={undefined} defaultValue>Selecione...</option>
                                                 {clienteFiliais.map(clienteFilial => (                                                
-                                                    <option key={clienteFilial.id} value={clienteFilial.id}>{clienteFilial.nomefilial}</option>
+                                                    <option value={clienteFilial.id}>{clienteFilial.nomefilial}</option>
                                                 ))}  
                                             </Input>
                                             <InputGroupAddon addonType="append">
@@ -179,7 +179,7 @@ export default function OrdemServico() {
                                                 onChange={e => setTecnicoId(e.target.value)} >
                                                 <option value={undefined} defaultValue>Selecione...</option>
                                                 {tecnicos.map(tecnico => (                                                
-                                                    <option key={tecnico.id}value={tecnico.id}>{tecnico.nometecnico}</option>
+                                                    <option value={tecnico.id}>{tecnico.nometecnico}</option>
                                                 ))}  
                                             </Input>
                                             <InputGroupAddon addonType="append">
@@ -191,11 +191,11 @@ export default function OrdemServico() {
                                         <Label htmlFor="tiposervicoid">Tipo de Serviço</Label>
                                         <InputGroup>
                                             <Input required type="select" name="select" id="cboTipoServico"
-                                                value={tiposervicoid}
-                                                onChange={e => setTipoServicoId(e.target.value)}>
+                                                value={tipoprojetoid}
+                                                onChange={e => setTipoProjetoId(e.target.value)}>
                                                 <option value={undefined} defaultValue>Selecione...</option>
-                                                {tipoServicos.map(tipoServico => (                                                
-                                                    <option key={tipoServico.id} value={tipoServico.id}>{tipoServico.nometipoprojeto}</option>
+                                                {tipoProjeto.map(tipoProjeto => (                                                
+                                                    <option value={tipoProjeto.id}>{tipoProjeto.nometipoprojeto}</option>
                                                 ))}  
                                             </Input>
                                             <InputGroupAddon addonType="append">

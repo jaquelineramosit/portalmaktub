@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import {Link } from 'react-router-dom';
 import {Card, CardBody, CardHeader, Col, Pagination, PaginationItem, PaginationLink, Row, Table,Input, FormGroup} from 'reactstrap';
 import api from '../../../services/api';
-import './style.css'
 
 export default function ListaProjetotecnico() {
     const [projetotecnico, setProjetotecnico] = useState([]);
@@ -23,7 +22,7 @@ export default function ListaProjetotecnico() {
                        
                         <i className="fa fa-align-justify"></i>Projeto x Técnico
                                                    
-                        <Link to={`projeto-tecnico`} className="projetotecnico btn btn-secondary">
+                        <Link to={`projeto-tecnico`} className="btn btn-secondary float-right">
                                                 <i className="cui-file icons mr-1"></i>
                                                 Novo
                                             </Link>                                                                                             

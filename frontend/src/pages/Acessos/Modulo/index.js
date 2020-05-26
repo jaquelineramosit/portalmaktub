@@ -26,7 +26,7 @@ export default function Modulo() {
             
             const response = await api.post('/modulos', data, {
                 headers: {
-                    Authorization : usuarioId,
+                    Authorization : 1,
                 }
 
             });

@@ -23,7 +23,7 @@ export default function Tipotecnico() {
         try {
             const response = await api.post('tipo-tecnico', data, {
                 headers: {
-                    Authorization: usuarioId,
+                    Authorization: 1,
                 }
             });
             alert(`Feito o cadastro com sucesso`);

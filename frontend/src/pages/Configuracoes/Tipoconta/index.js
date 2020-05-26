@@ -21,7 +21,7 @@ export default function TipoConta() {
         try {
             const response = await api.post('tipo-conta', data, {
                 headers: {
-                    Authorization: usuarioId,
+                    Authorization: 1,
                 }
             });
             alert(`Feito o cadastro com sucesso`);

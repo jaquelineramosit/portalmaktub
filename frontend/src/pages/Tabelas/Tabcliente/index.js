@@ -48,8 +48,7 @@ export default function ListaCliente() {
                                                 <Link to={`clientes/${cliente.id}`} className="btn-sm btn-primary">
                                                     <i className="fa fa-pencil fa-lg mr-1"></i>
                                                     Editar
-                                                </Link>                                              
-                                               
+                                                </Link>                                                                                             
                                             </td>
                                         </tr>
                                     ))}                                                                      

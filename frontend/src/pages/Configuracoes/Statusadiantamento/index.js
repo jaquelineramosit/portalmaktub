@@ -23,7 +23,7 @@ export default function StatusAdiantamento() {
         try {
             const response = await api.post('status-adiantamento', data, {
                 headers: {
-                    Authorization: usuarioId,
+                    Authorization: 1,
                 }
             });
             alert(`Feito o cadastro com sucesso`);

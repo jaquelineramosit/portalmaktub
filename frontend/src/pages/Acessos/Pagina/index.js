@@ -33,7 +33,7 @@ export default function Pagina() {
         try {
             const response = await api.post('/paginas', data, {
                 headers: {
-                    Authorization: usuarioId,
+                    Authorization: 1,
                 }
             });
             alert(`Feito o cadastro com sucesso`);

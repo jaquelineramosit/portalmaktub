@@ -34,7 +34,7 @@ export default function SubPagina() {
         try {
             const response = await api.post('/sub-paginas', data, {
                 headers: {
-                    Authorization: usuarioId,
+                    Authorization: 1,
                 }
             });
             alert(`Feito o cadastro com sucesso`);

@@ -56,7 +56,7 @@ export default function Clientes() {
         try {
             const response = await api.post('clientes', data, {
                 headers: {
-                    Authorization: usuarioId,
+                    Authorization: 1,
                 }
             });
             alert(`Feito o cadastro com sucesso`);

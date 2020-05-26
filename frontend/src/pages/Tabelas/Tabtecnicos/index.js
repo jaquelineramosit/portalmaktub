@@ -23,7 +23,7 @@ export default function ListaTecnicos() {
                     <CardHeader className="links">
                        
                         <i className="fa fa-align-justify"></i>Técnicos                                      
-                        <Link to={`tecnico`} className="novo btn btn-secondary">
+                        <Link to={`tecnico`} className="btn btn-secondary float-right">
                                                 <i className="cui-file icons mr-1"></i>
                                                 Novo
                                             </Link>   

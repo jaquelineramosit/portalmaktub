@@ -23,7 +23,7 @@ export default function StatusPagamento() {
         try {
             const response = await api.post('status-pagamento', data, {
                 headers: {
-                    Authorization: usuarioId,
+                    Authorization: 1,
                 }
             });
             alert(`Feito o cadastro com sucesso`);

@@ -23,7 +23,7 @@ export default function Ferramentas() {
         try {
             const response = await api.post('ferramentas', data, {
                 headers: {
-                    Authorization: usuarioId,
+                    Authorization: 1,
                 }
             });
             alert(`Feito o cadastro com sucesso`);

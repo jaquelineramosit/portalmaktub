@@ -44,17 +44,17 @@ module.exports = {
         const  usuarioid  = request.headers.authorization;
         const  dataultmodif = getDate();
 
-        const { numeroos, datasolicitacao, dataatendimento, clientefilialid, tiposervicoid, 
+        const { numeroos, datasolicitacao, dataatendimento, clientefilialid, tipoprojetoid, 
                 descricaoservico, tecnicoid, observacaoos, datafechamento, horaentrada, 
                 horasaida, qtdehoras, horaextra, valorapagar, valorareceber, totalapagar, 
                 totalareceber, diadasemana, custoadicional, ativo } = request.body;
-        
+        console.log(request.body);
         const [id] = await connection('ordemservico').insert({            
             numeroos,
             datasolicitacao,
             dataatendimento,
             clientefilialid,
-            tiposervicoid,
+            tipoprojetoid,
             descricaoservico,
             tecnicoid,
             observacaoos,
