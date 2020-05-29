@@ -2,7 +2,11 @@ const connection = require('../../database/connection');
 const getDate = require('../../utils/getDate');
 module.exports = {
     async getAll (request, response) {
-        const tipoprojeto = await connection('tipoprojeto').select('*');
+        const { page = 1 } = request.query;
+        const tipoprojeto = await connection('tipoprojeto')
+        .select('*')
+        .limit(20) //limita o retorno dos registros
+        .offset((page - 1) * 20); //paginacao   
     
         return response.json(tipoprojeto);
     },
@@ -60,4 +64,10 @@ module.exports = {
 
         return response.status(204).send();
     },
+    async getCount (request,response) {        
+
+        const [count] = await connection('tipoprojeto').count()
+        const { page = 1 } = request.query;
+        return response.json(count['count(*)']);        
+    }
 };

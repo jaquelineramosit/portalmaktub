@@ -163,21 +163,6 @@ export default {
       ],
     },
     {
-      name: 'Ordem de Serviço',      
-      icon: 'icon-wrench',
-      children: [
-        {
-          name: 'Ordem de Serviço',
-          //url: '/tab-ordemservico',
-          //icon: 'fa fa-user-circle',
-          url: '/ordem-servico',
-          icon: 'icon-wrench',
-          //url: '/tab-ordemservico',
-          //icon: 'fa fa-user-circle',
-        },
-      ]  
-    },
-    {
       name: 'Acessos',      
       icon: 'fa fa-lock',
       children: [

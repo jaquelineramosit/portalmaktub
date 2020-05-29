@@ -2,7 +2,11 @@ const connection = require('../../database/connection');
 const getDate = require('../../utils/getDate');
 module.exports = {
     async getAll (request, response) {
-        const tipotecnico = await connection('tipotecnico').select('*');
+        const { page = 1 } = request.query;
+        const tipotecnico = await connection('tipotecnico')
+        .select('*')
+        .limit(20) //limita o retorno dos registros
+        .offset((page - 1) * 20); //paginacao   
     
         return response.json(tipotecnico);
     },
@@ -51,5 +55,12 @@ module.exports = {
         });           
 
         return response.status(204).send();
+        
     },
+    async getCount (request,response) {        
+
+        const [count] = await connection('tipotecnico').count()
+        const { page = 1 } = request.query;
+        return response.json(count['count(*)']);        
+    }
 };

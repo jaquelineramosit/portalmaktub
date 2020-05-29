@@ -2,12 +2,15 @@ const connection = require('../../database/connection');
 const getDate = require('../../utils/getDate');
 module.exports = {
     async getAll (request, response) {
+        const { page = 1 } = request.query;
         const movimentacaoos = await connection('movimentacaoos')
         .join('ordemservico', 'ordemservico.id', '=', 'movimentacaoos.ordemservicoid')
         .join('statusatendimento', 'statusatendimento.id', '=', 'movimentacaoos.statusatendimentoid')
         .join('statuspagamento', 'statuspagamento.id', '=', 'movimentacaoos.statuspagamentoid')
         .join('statuscobranca', 'statuscobranca.id', '=', 'movimentacaoos.statuscobrancaid')
         .join('usuario', 'usuario.id', '=', 'movimentacaoos.usuarioid')
+        .limit(20) //limita o retorno dos registros
+        .offset((page - 1) * 20) //paginacao
         .select([
             'movimentacaoos.*',
             'ordemservico.numeroos',
@@ -92,4 +95,10 @@ module.exports = {
 
         return response.status(204).send();
     },
+    async getCount (request,response) {        
+
+        const [count] = await connection('movimentacaoos').count()
+        const { page = 1 } = request.query;
+        return response.json(count['count(*)']);        
+    }
 };

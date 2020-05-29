@@ -37,6 +37,10 @@ const TipoContaController = require('./controllers/Configuracao/TipoContaControl
 const TipoProjetoController = require('./controllers/Configuracao/TipoProjetoController');
 const TipoTecnicoController = require('./controllers/Configuracao/TipoTecnicoController');
 
+
+
+
+
 // //Dashboards
 // const Dashboardv1Controller = require('./controllers/Dashboards/Dashboardv1Controller');
 // const Dashboardv2Controller = require('./controllers/Dashboards/Dashboardv2Controller');
@@ -47,36 +51,44 @@ const routes = express.Router();
 // Acessos
 routes.post('/logon', LogonController.create);
 
+routes.get('/usuariosAtivo', UsuarioController.getAtivo);
+routes.get('/usuariosCount', UsuarioController.getCount);
 routes.get('/usuarios', UsuarioController.getAll);
 routes.get('/usuarios/:id', UsuarioController.getById);
 routes.post('/usuarios', UsuarioController.create);
 routes.put('/usuarios/:id', UsuarioController.update);
 
+routes.get('/modulosCount', ModuloController.getCount);
 routes.get('/modulos', ModuloController.getAll);
 routes.get('/modulos/:id', ModuloController.getById);
 routes.post('/modulos', ModuloController.create);
 routes.put('/modulos/:id', ModuloController.update);
 
+routes.get('/paginasCount', PaginaController.getCount);
 routes.get('/paginas', PaginaController.getAll);
 routes.get('/paginas/:id', PaginaController.getById);
 routes.post('/paginas', PaginaController.create);
 routes.put('/paginas/:id', PaginaController.update);
 
+routes.get('/subpaginasCount', SubPaginaController.getCount);
 routes.get('/sub-paginas', SubPaginaController.getAll);
 routes.get('/sub-paginas/:id', SubPaginaController.getById);
 routes.post('/sub-paginas', SubPaginaController.create);
 routes.put('/sub-paginas/:id', SubPaginaController.update);
 
+routes.get('/funcaoCount', FuncaoController.getCount);
 routes.get('/funcao', FuncaoController.getAll);
 routes.get('/funcao/:id', FuncaoController.getById);
 routes.post('/funcao', FuncaoController.create);
 routes.put('/funcao/:id', FuncaoController.update);
 
+routes.get('/perfisacessoCount', PerfilAcessoController.getCount);
 routes.get('/perfis-acesso', PerfilAcessoController.getAll);
 routes.get('/perfis-acesso/:id', PerfilAcessoController.getById);
 routes.post('/perfis-acesso', PerfilAcessoController.create);
 routes.put('/perfis-acesso/:id', PerfilAcessoController.update);
 
+routes.get('/permissaoacessoCount', PermissaoAcessoController.getCount);
 routes.get('/permissao-acesso', PermissaoAcessoController.getAll);
 routes.get('/permissao-acesso/:id', PermissaoAcessoController.getById);
 routes.post('/permissao-acesso', PermissaoAcessoController.create);
@@ -88,117 +100,142 @@ routes.post('/register', RegisterController.create);
 routes.put('/register/:id', RegisterController.update);
 
 // Ordem de Servico
+routes.get('/ordemservicoCount', OrdemServicoController.getCount);
 routes.get('/ordem-servico', OrdemServicoController.getAll);
 routes.get('/ordem-servico/:id', OrdemServicoController.getById);
 routes.post('/ordem-servico', OrdemServicoController.create);
 routes.put('/ordem-servico/:id', OrdemServicoController.update);
 
+routes.get('/movimentacaoCount', MovimentacaoOsController.getCount);
 routes.get('/movimentacao-os', MovimentacaoOsController.getAll);
 routes.get('/movimentacao-os/:id', MovimentacaoOsController.getById);
 routes.post('/movimentacao-os', MovimentacaoOsController.create);
 routes.put('/movimentacao-os/:id', MovimentacaoOsController.update);
 
+routes.get('/adiantamentoCount', AdiantamentoOsController.getCount);
 routes.get('/adiantamento-os', AdiantamentoOsController.getAll);
 routes.get('/adiantamento-os/:id', AdiantamentoOsController.getById);
 routes.post('/adiantamento-os', AdiantamentoOsController.create);
 routes.put('/adiantamento-os/:id', AdiantamentoOsController.update);
 
 // Configuração
+routes.get('/bancoCount', BancoController.getCount);
 routes.get('/banco', BancoController.getAll);
 routes.get('/banco/:id', BancoController.getById);
 routes.post('/banco', BancoController.create);
 routes.put('/banco/:id', BancoController.update);
 
+routes.get('/bandeiraCount', BandeiraController.getCount);
 routes.get('/bandeira', BandeiraController.getAll);
 routes.get('/bandeira/:id', BandeiraController.getById);
 routes.post('/bandeira', BandeiraController.create);
 routes.put('/bandeira/:id', BandeiraController.update);
 
+routes.get('/clienteAtivo', ClienteController.getAtivo);
+routes.get('/clientesCount', ClienteController.getCount);
 routes.get('/clientes', ClienteController.getAll);
 routes.get('/clientes/:id', ClienteController.getById);
 routes.post('/clientes', ClienteController.create);
 routes.put('/clientes/:id', ClienteController.update);
 
+routes.get('/dadosbancariosCount', DadosBancariosController.getCount);
 routes.get('/dados-bancarios', DadosBancariosController.getAll);
 routes.get('/dados-bancarios/:id', DadosBancariosController.getById);
 routes.post('/dados-bancarios', DadosBancariosController.create);
 routes.put('/dados-bancarios/:id', DadosBancariosController.update);
 
+routes.get('/disponibilidadeCount', DisponibilidadeController.getCount);
 routes.get('/disponibilidade', DisponibilidadeController.getAll);
 routes.get('/disponibilidade/:id', DisponibilidadeController.getById);
 routes.post('/disponibilidade', DisponibilidadeController.create);
 routes.put('/disponibilidade/:id', DisponibilidadeController.update);
 
+routes.get('/disponibilidadetecnicoCount', DisponTecnicoController.getCount);
 routes.get('/disponibilidade-tecnico', DisponTecnicoController.getAll);
 routes.get('/disponibilidade-tecnico/:id', DisponTecnicoController.getById);
 routes.post('/disponibilidade-tecnico', DisponTecnicoController.create);
 routes.put('/disponibilidade-tecnico/:id', DisponTecnicoController.update);
 
+routes.get('/filiaisCount', FilialController.getCount);
 routes.get('/filiais', FilialController.getAll);
 routes.get('/filiais/:id', FilialController.getById);
 routes.post('/filiais', FilialController.create);
 routes.put('/filiais/:id', FilialController.update);
 
+routes.get('/ferramentasCount', FerramentaController.getCount);
 routes.get('/ferramentas', FerramentaController.getAll);
 routes.get('/ferramentas/:id', FerramentaController.getById);
 routes.post('/ferramentas', FerramentaController.create);
 routes.put('/ferramentas/:id', FerramentaController.update);
 
+routes.get('/ferramentasosCount', FerramentaOSController.getCount);
 routes.get('/ferramentas-os', FerramentaOSController.getAll);
 routes.get('/ferramentas-os/:id', FerramentaOSController.getById);
 routes.post('/ferramentas-os', FerramentaOSController.create);
 routes.put('/ferramentas-os/:id', FerramentaOSController.update);
 
+routes.get('/parceiroCount', ParceiroController.getCount);
 routes.get('/parceiro', ParceiroController.getAll);
 routes.get('/parceiro/:id', ParceiroController.getById);
 routes.post('/parceiro', ParceiroController.create);
 routes.put('/parceiro/:id', ParceiroController.update);
 
+routes.get('/tipoprojetoCount', TipoProjetoController.getCount);
 routes.get('/tipo-projeto', TipoProjetoController.getAll);
 routes.get('/tipo-projeto/:id', TipoProjetoController.getById);
 routes.post('/tipo-projeto', TipoProjetoController.create);
 routes.put('/tipo-projeto/:id', TipoProjetoController.update);
 
+routes.get('/projetotecnicoCount', ProjetoTecnicoController.getCount);
 routes.get('/projeto-tecnico', ProjetoTecnicoController.getAll);
 routes.get('/projeto-tecnico/:id', ProjetoTecnicoController.getById);
 routes.post('/projeto-tecnico', ProjetoTecnicoController.create);
 routes.put('/projeto-tecnico/:id', ProjetoTecnicoController.update);
 
+routes.get('/statusadiantamentoAtivo', StatusAdiantamentoController.getAtivo);
+routes.get('/statusadiantamentoCount', StatusAdiantamentoController.getCount);
 routes.get('/status-adiantamento', StatusAdiantamentoController.getAll);
 routes.get('/status-adiantamento/:id', StatusAdiantamentoController.getById);
 routes.post('/status-adiantamento', StatusAdiantamentoController.create);
 routes.put('/status-adiantamento/:id', StatusAdiantamentoController.update);
 
+routes.get('/statusatendimentoCount', StatusAtendimentoController.getCount);
 routes.get('/status-atendimento', StatusAtendimentoController.getAll);
 routes.get('/status-atendimento/:id', StatusAtendimentoController.getById);
 routes.post('/status-atendimento', StatusAtendimentoController.create);
 routes.put('/status-atendimento/:id', StatusAtendimentoController.update);
 
+routes.get('/statuscobrancaCount', StatusCobrancaController.getCount);
 routes.get('/status-cobranca', StatusCobrancaController.getAll);
 routes.get('/status-cobranca/:id', StatusCobrancaController.getById);
 routes.post('/status-cobranca', StatusCobrancaController.create);
 routes.put('/status-cobranca/:id', StatusCobrancaController.update);
 
+routes.get('/statuspagamentoCount', StatusCobrancaController.getCount);
 routes.get('/status-pagamento', StatusPagamentoController.getAll);
 routes.get('/status-pagamento/:id', StatusPagamentoController.getById);
 routes.post('/status-pagamento', StatusPagamentoController.create);
 routes.put('/status-pagamento/:id', StatusPagamentoController.update);
 
+routes.get('/tecnicoCount', TecnicoController.getCount);
 routes.get('/tecnico', TecnicoController.getAll);
 routes.get('/tecnico/:id', TecnicoController.getById);
 routes.post('/tecnico', TecnicoController.create);
 routes.put('/tecnico/:id', TecnicoController.update);
 
+routes.get('/tipocontaCount', TipoContaController.getCount);
 routes.get('/tipo-conta', TipoContaController.getAll);
 routes.get('/tipo-conta/:id', TipoContaController.getById);
 routes.post('/tipo-conta', TipoContaController.create);
 routes.put('/tipo-conta/:id', TipoContaController.update);
 
+routes.get('/tipoprojetoCount', TipoProjetoController.getCount);
 routes.get('/tipo-projeto', TipoProjetoController.getAll);
 routes.get('/tipo-projeto/:id', TipoProjetoController.getById);
 routes.post('/tipo-projeto', TipoProjetoController.create);
 routes.put('/tipo-projeto/:id', TipoProjetoController.update);
 
+routes.get('/tipotecnicoCount', TipoTecnicoController.getCount);
 routes.get('/tipo-tecnico', TipoTecnicoController.getAll);
 routes.get('/tipo-tecnico/:id', TipoTecnicoController.getById);
 routes.post('/tipo-tecnico', TipoTecnicoController.create);

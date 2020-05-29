@@ -1,5 +1,5 @@
-import React, { useState, useEffect} from 'react';
-import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, InputGroup , InputGroupAddon, CardFooter, Form } from 'reactstrap';
+import React, { useState, useEffect } from 'react';
+import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, InputGroup, InputGroupAddon, CardFooter, Form } from 'reactstrap';
 import { AppSwitch } from '@coreui/react'
 import '../../../global.css';
 import api from '../../../../src/services/api';
@@ -9,22 +9,31 @@ export default function Adiantamentoos() {
     const [ordemservicos, setOrdemServicos] = useState([]);
     const [valoradiantamento, setValorAdiantamento] = useState('');
     const [dataadiantamento, setDataAdiantamento] = useState('');
-    const [dataquitacao, setDataQuitacao] = useState('');  
+    const [dataquitacao, setDataQuitacao] = useState('');
     const [statusadiantamentoid, setStatusAdiantamentoId] = useState('');
     const [statusAdiantamentos, setStatusAdiantamentos] = useState([]);
-    const [ativo, setAtivo] = useState("true");
+    const [ativo, setAtivo] = useState(1);
     const usuarioId = localStorage.getItem('userId');
 
+    function handleSwitch(e) {
+        if (ativo === 1) {
+            setAtivo(0);
+        }
+        else {
+            setAtivo(1);
+        }
+    }
+
     useEffect(() => {
-        api.get('ordem-servico').then(response => {            
+        api.get('ordem-servico').then(response => {
             setOrdemServicos(response.data);
         })
-    }, [usuarioId]); 
+    }, [usuarioId]);
     useEffect(() => {
-        api.get('status-adiantamento').then(response => {            
+        api.get('status-adiantamento').then(response => {
             setStatusAdiantamentos(response.data);
         })
-    }, [usuarioId]); 
+    }, [usuarioId]);
 
     async function handleAdiantamentoOs(e) {
         e.preventDefault();
@@ -64,26 +73,26 @@ export default function Adiantamentoos() {
                             </CardHeader>
                             <CardBody>
                                 <FormGroup row>
-                                     <Col md="4">
+                                    <Col md="4">
                                         <Label htmlFor="ordemServicoId">Ordem de Serviço</Label>
-                                        <Input type="select" required name="select" id="cboOrdemServicoId" multiple = {false}
+                                        <Input type="select" required name="select" id="cboOrdemServicoId" multiple={false}
                                             value={ordemservicoid}
                                             onChange={e => setOrdemServicoId(e.target.value)}>
-                                               <option value={undefined} defaultValue>Selecione...</option>
-                                                 {ordemservicos.map(ordemservico => (                                                
+                                            <option value={undefined} defaultValue>Selecione...</option>
+                                            {ordemservicos.map(ordemservico => (
                                                 <option value={ordemservico.id}>{ordemservico.numeroos}</option>
-                                                ))}                                            
+                                            ))}
                                         </Input>
                                     </Col>
                                     <Col md="4">
                                         <Label htmlFor="statusAtendimentoId">Status do Adiantamento</Label>
-                                        <Input type="select" required name="select" id="cboStatusAdiantamentoId" multiple = {false}
-                                         value={statusadiantamentoid}
-                                        onChange={e => setStatusAdiantamentoId(e.target.value)}>>
+                                        <Input type="select" required name="select" id="cboStatusAdiantamentoId" multiple={false}
+                                            value={statusadiantamentoid}
+                                            onChange={e => setStatusAdiantamentoId(e.target.value)}>>
                                                 <option value={undefined} defaultValue>Selecione...</option>
-                                             {statusAdiantamentos.map(statusAdiantamento => (                                                
-                                             <option value={statusAdiantamento.id}>{statusAdiantamento.status}</option>
-                                            ))}                                             
+                                            {statusAdiantamentos.map(statusAdiantamento => (
+                                                <option value={statusAdiantamento.id}>{statusAdiantamento.status}</option>
+                                            ))}
                                         </Input>
                                     </Col>
                                 </FormGroup>
@@ -91,24 +100,24 @@ export default function Adiantamentoos() {
                                     <Col md="4">
                                         <Label htmlFor="dataAdiantamento">Data do Adiantamento</Label>
                                         <InputGroup>
-                                            <Input type="date" required id="txtDataAdiantamento"                                             
+                                            <Input type="date" required id="txtDataAdiantamento"
                                                 value={dataadiantamento}
                                                 onChange={e => setDataAdiantamento(e.target.value)} >
                                             </Input>
                                             <InputGroupAddon addonType="append">
-                                                <Button type="button" color= "secondary  fa fa-calendar"></Button>
+                                                <Button type="button" color="secondary  fa fa-calendar"></Button>
                                             </InputGroupAddon>
                                         </InputGroup>
                                     </Col>
                                     <Col md="4">
                                         <Label htmlFor="dataquitacao">Data da quitacao</Label>
                                         <InputGroup>
-                                            <Input type="date" required id="txtDataquitacao"                                             
+                                            <Input type="date" required id="txtDataquitacao"
                                                 value={dataquitacao}
                                                 onChange={e => setDataQuitacao(e.target.value)}>
                                             </Input>
                                             <InputGroupAddon addonType="append">
-                                                    <Button type="button" color= "secondary  fa fa-calendar"></Button>
+                                                <Button type="button" color="secondary  fa fa-calendar"></Button>
                                             </InputGroupAddon>
                                         </InputGroup>
                                     </Col>
@@ -117,23 +126,22 @@ export default function Adiantamentoos() {
                                     <Col md="4">
                                         <Label htmlFor="valorAdiantamento">Valor do Adiantamento</Label>
                                         <InputGroup>
-                                            <Input type="number" required id="txtValorAdiantamento"  placeholder ="00,00"
+                                            <Input type="number" required id="txtValorAdiantamento" placeholder="00,00"
                                                 value={valoradiantamento}
                                                 onChange={e => setValorAdiantamento(e.target.value)} >
                                             </Input>
                                             <InputGroupAddon addonType="append">
-                                                <Button type="button" color= "secondary  fa fa-money"></Button>
+                                                <Button type="button" color="secondary  fa fa-money"></Button>
                                             </InputGroupAddon>
-                                        </InputGroup>            
-                                    </Col>                              
+                                        </InputGroup>
+                                    </Col>
                                     <Col md="2">
                                         <Label check className="form-check-label" htmlFor="ativo">Ativo</Label>
                                         <AppSwitch id="rdAtivo" className={'switch-ativo'} label color={'success'} defaultChecked size={'sm'}
-                                            value={ativo}
-                                            onChange={e => setAtivo(e.target.value)}
+                                            onChange={handleSwitch}
                                         />
                                     </Col>
-                                </FormGroup>                                                               
+                                </FormGroup>
                             </CardBody>
                             <CardFooter className="text-center">
                                 <Button type="submit" size="sm" color="success" className=" mr-3"><i className="fa fa-check"></i> Salvar</Button>

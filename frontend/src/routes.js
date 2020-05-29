@@ -74,6 +74,7 @@ const Tabmodulos = React.lazy(() => import('./pages/Tabelas/Tabmodulos'));
 const Tabpaginas = React.lazy(() => import('./pages/Tabelas/Tabpaginas'));
 const Tabsubpagina = React.lazy(() => import('./pages/Tabelas/Tabsubpagina'));
 const Tabfuncoes = React.lazy(() => import('./pages/Tabelas/Tabfuncoes'));
+const pageNum = 0;
 
 const routes = [
 
@@ -147,7 +148,7 @@ const routes = [
 { path: '/tab-statusatendimento', name: 'Lista de  Status de Atendimento', component: Tabstatusatendimento},
 { path: '/tab-statuscobranca', name: 'Lista de Status de Cobrança', component: Tabstatuscobranca},
 { path: '/tab-statuspagamento', name: 'Lista de Status de pagamento', component: Tabstatuspagamento},
-{ path: '/tab-ordemservico', name: 'Lista de Ordem de Serviço ', component: Tabordemservico},
+{ path: '/tab-ordemservico', queryParams : { page: pageNum }, exact: true, name: 'Lista de Ordem de Serviço ', component: Tabordemservico},
 { path: '/tab-movimentacaoso', name: 'Lista de Movimentação de OS', component: Tabmovimentacaoso},
 { path: '/tab-adiantamentoos', name: 'Lista de Adiantamento de OS', component: Tabadiantamentoos},
 { path: '/tab-usuarios', name: 'Lista de Usuários', component: Tabusuarios},

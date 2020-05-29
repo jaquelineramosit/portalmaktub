@@ -19,9 +19,17 @@ export default function Tecnico() {
     const [estado, setEstado] = useState('');
     const [telefonefixo, setTelefoneFixo] = useState('');
     const [telefonecelular, setTelefoneCelular] = useState('');
-    const [ativo, setAtivo] = useState("true");
+    const [ativo, setAtivo] = useState(1);
     const usuarioId = localStorage.getItem('userId');
 
+    function handleSwitch(e) {
+        if (ativo === 1) {
+            setAtivo(0);
+        }
+        else {
+            setAtivo(1);
+        }
+    }
     useEffect(() => {
         api.get('tipo-tecnico').then(response => {            
             setTipoTecnicos(response.data);
@@ -192,8 +200,7 @@ export default function Tecnico() {
                                     <Col md="2">
                                         <Label check className="form-check-label" htmlFor="ativo">Ativo</Label>
                                         <AppSwitch id="rdAtivo" className={'switch-ativo'} label color={'success'} defaultChecked size={'sm'}
-                                            value={ativo}
-                                            onChange={e => setAtivo(e.target.value)} />
+                                            onChange={handleSwitch} />
                                     </Col>
                                 </FormGroup>
                             </CardBody>

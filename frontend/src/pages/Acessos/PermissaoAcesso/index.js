@@ -15,8 +15,17 @@ export default function PermissaAcesso() {
     const [subpaginas, setSubPaginas] = useState([]);
     const [funcaoid, setFuncaoId] = useState('');    
     const [funcaos, setFuncaos] = useState([]);
-    const [ativo, setAtivo] = useState('true');
+    const [ativo, setAtivo] = useState(1);
     const usuarioId = localStorage.getItem('userId');    
+
+    function handleSwitch(e) {
+        if (ativo === 1) {
+            setAtivo(0);
+        }
+        else {
+            setAtivo(1);
+        }
+    }
 
     useEffect(() => {
         api.get('perfis-acesso').then(response => {            
@@ -153,8 +162,7 @@ export default function PermissaAcesso() {
                                         <Label htmlFor="ativo">Ativo</Label>
                                         <AppSwitch id="rdAtivo" className={'switch-ativo'}  label color={'success'} 
                                             defaultChecked 
-                                            value={ativo}
-                                            onChange={ e => setAtivo(e.target.value)}
+                                            onChange={handleSwitch}
                                             size={'sm'} />
                                     </Col>                                                                   
                                 </FormGroup>                                                                                         

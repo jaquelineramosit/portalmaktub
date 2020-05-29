@@ -11,10 +11,17 @@ export default function TipoProjeto() {
     const [horas, setHoras] = useState('');  
     const [valorhoracobrado, setValorHoraCobrado] = useState('');
     const [valorhoratecnico, setValorHoraTecnico] = useState('');
-    const [ativo, setAtivo] = useState("true");
+    const [ativo, setAtivo] = useState(1);
     const usuarioId = localStorage.getItem('userId');
 
-
+    function handleSwitch(e) {
+        if (ativo === 1) {
+            setAtivo(0);
+        }
+        else {
+            setAtivo(1);
+        }
+    }
 
     async function handleTipoProjeto(e) {
         e.preventDefault();
@@ -114,8 +121,7 @@ export default function TipoProjeto() {
                                     <Col md="2">
                                         <Label check className="form-check-label" htmlFor="ativo1">Ativo</Label>
                                         <AppSwitch id="rdAtivo" className={'switch-ativo'} label color={'success'} defaultChecked size={'sm'}
-                                            value={ativo}
-                                            onChange={e => setAtivo(e.target.value)}
+                                            onChange={handleSwitch}
                                         />
                                     </Col>
                                 </FormGroup>                                                               

@@ -2,17 +2,87 @@ import React, { useState, useEffect } from 'react';
 import {Link } from 'react-router-dom';
 import {Card, CardBody, CardHeader, Col, Pagination, PaginationItem, PaginationLink, Row, Table,Input, FormGroup} from 'reactstrap';
 import api from '../../../services/api';
-
+var currentPage;  
+var previousPage;
+var nextPage;
+var idPag = '';
 export default function ListaMovimentacaoos() {
     const [movimentacaoos, setMovimentacaoos] = useState([]);
+    const [total, setTotal] = useState(0);
     const usuarioId = localStorage.getItem('userId'); 
-
-    useEffect(() => {
-        api.get('movimentacao-os').then(response => {            
-            setMovimentacaoos(response.data);
+      //logica para pegar o total
+      useEffect(() => {        
+        api.get('movimentacaoCount', {
+            headers: {
+                Authorization: 1,
+            }
+        }).then(response => {            
+           setTotal(response.data);
         })
-    }, [usuarioId]);
+    }, [1]);
+    //Logica para mostrar os numeros de pagina
+    const pageNumbers = [];
+    for (let i = 1; i <= (total / 20); i++) {
+        pageNumbers.push(i);        
+    }
+
+    if (total % 20 > 0) {
+        pageNumbers.push(pageNumbers.length + 1);
+    } 
+
     
+    useEffect(() => {
+        api.get('movimentacao-os', {
+            headers: {
+                Authorization: 1,
+            },
+            params : {
+                page: currentPage
+            }            
+        }).then(response => {            
+            setMovimentacaoos(response.data);                       
+        })
+    }, [usuarioId]);    
+    //Paginação
+    async function handlePage(e) {
+        e.preventDefault();
+
+        idPag = e.currentTarget.name;  
+        
+        if (idPag == 'btnPrevious') {
+            currentPage = previousPage;
+            previousPage = currentPage - 1;
+            nextPage = currentPage + 1;
+        } else if (idPag == 'btnNext') {
+            // se existe, quer dizer que foi apertado após qualquer numero
+            if (currentPage) {
+                currentPage = nextPage;
+                previousPage = currentPage - 1;
+                nextPage = currentPage + 1; 
+            } else { // next apertado antes de qlqr numero (1º load + next em vez d pag 2)
+                currentPage = 2;
+                nextPage = 3;
+                previousPage = 1;
+            };        
+        } else {            
+                currentPage = parseInt(e.currentTarget.id);
+                previousPage = currentPage - 1;
+                nextPage = currentPage + 1;
+        };
+                    
+        api.get('movimentacao-os', {
+            headers: {
+                Authorization: 1,
+            },
+            params : {
+                page: currentPage
+            }
+        }).then(response => {            
+            setMovimentacaoos(response.data);              
+        });            
+}
+    
+  
     return ( 
         <div className="animated-fadeIn">            
         <Row>
@@ -60,14 +130,23 @@ export default function ListaMovimentacaoos() {
                                 </tbody>
                             </Table>
                             <Pagination>
-                                <PaginationItem disabled><PaginationLink previous tag="button">Prev</PaginationLink></PaginationItem>
-                                <PaginationItem active>
-                                    <PaginationLink tag="button">1</PaginationLink>                            
-                                </PaginationItem>
-                                <PaginationItem><PaginationLink tag="button">2</PaginationLink></PaginationItem>
-                                <PaginationItem><PaginationLink tag="button">3</PaginationLink></PaginationItem>
-                                <PaginationItem><PaginationLink tag="button">4</PaginationLink></PaginationItem>
-                                <PaginationItem><PaginationLink next tag="button">Next</PaginationLink></PaginationItem>
+                            <Pagination>                                                             
+                                    <PaginationItem>      
+                                        <PaginationLink previous id="btnPrevious" name="btnPrevious" onClick={e => handlePage(e)} tag="button">
+                                            <i className="fa fa-angle-double-left"></i>
+                                        </PaginationLink>
+                                    </PaginationItem>                            
+                                {pageNumbers.map(number => (
+                                    <PaginationItem key={'pgItem' + number} >
+                                        <PaginationLink id={number} name={number} onClick={e => handlePage(e)} tag="button">{number}</PaginationLink>
+                                    </PaginationItem>                                                                    
+                                ))}
+                                    <PaginationItem>
+                                        <PaginationLink next id="btnNext" name="btnNext" onClick={e => handlePage(e)} next tag="button">
+                                            <i className="fa fa-angle-double-right"></i>
+                                        </PaginationLink>
+                                    </PaginationItem>
+                                </Pagination>
                             </Pagination>
                         </CardBody>
                     </Card>

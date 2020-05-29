@@ -2,6 +2,7 @@ const connection = require('../../database/connection');
 const getDate = require('../../utils/getDate');
 module.exports = {
     async getAll (request, response) {
+        const { page = 1 } = request.query;
         const acessopagina = await connection('permissaoacesso')
         .join('perfilacesso', 'perfilacesso.id', '=', 'permissaoacesso.perfilacessoid')
         .join('modulo', 'modulo.id', '=', 'permissaoacesso.moduloid')
@@ -9,6 +10,8 @@ module.exports = {
         .join('subpagina', 'subpagina.id', '=', 'permissaoacesso.subpaginaid')
         .join('funcao', 'funcao.id', '=', 'permissaoacesso.funcaoid')
         .join('usuario', 'usuario.id', '=', 'permissaoacesso.usuarioid')
+        .limit(20) //limita o retorno dos registros
+        .offset((page - 1) * 20) //paginacao
         .select([
             'permissaoacesso.*',
             'perfilacesso.nomeperfil',
@@ -74,7 +77,7 @@ module.exports = {
 
             const {perfilacessoId, moduloId, paginaId, descricao, ativo } = request.body;
     
-            await connection('acessopagina').where('id', id).update({                
+            await connection('permissaoacesso').where('id', id).update({                
                 perfilacessoId,
                 moduloId,
                 paginaId,
@@ -86,4 +89,10 @@ module.exports = {
 
             return response.status(204).send();
         },
+        async getCount (request,response) {        
+
+            const [count] = await connection('permissaoacesso').count()
+            const { page = 1 } = request.query;
+            return response.json(count['count(*)']);        
+        }
     };

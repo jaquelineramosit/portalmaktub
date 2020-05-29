@@ -28,11 +28,19 @@ export default function Usuario() {
     const [ativo, setAtivo] = useState('true');
     const [perfilAcessoId, setperfilAcessoId] = useState(true);
     const [perfilAcessos, setPerfilAcessos] = useState([]);
-    const usuarioId = localStorage.getItem('userId');  
+    const usuarioId = localStorage.getItem(1);  
     const history = useHistory();
 
+    function handleSwitch(e) {
+        if (ativo === 1) {
+            setAtivo(0);
+        }
+        else {
+            setAtivo(1);
+        }
+    }
     useEffect(() => {
-        api.get('perfils-acesso').then(response => {            
+        api.get('perfis-acesso').then(response => {            
             setPerfilAcessos(response.data);
         })
     }, [usuarioId]); 
@@ -245,8 +253,7 @@ export default function Usuario() {
                                     <Col md="2">
                                             <Label check className="form-check-label" htmlFor="ativo">Ativo</Label>
                                             <AppSwitch id="rdAtivo" className={'switch-ativo'}  label color={'success'} defaultChecked size={'sm'}
-                                            value={ativo}
-                                            onChange={ e => setAtivo(e.target.value)}
+                                            onChange={handleSwitch}
                                             />                                    
                                         </Col>
                                 </FormGroup>    

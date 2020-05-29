@@ -3,11 +3,16 @@ const getDate = require('../../utils/getDate');
 
 module.exports = {
     async getAll (request, response) {
+        const { page = 1 } = request.query;
+        const [count] = await connection('ordemservico').count();
         const ordemservico = await connection('ordemservico')
+        
             .join('clientefilial', 'clientefilial.id', '=', 'ordemservico.clientefilialid')
             .join('tipoprojeto', 'tipoprojeto.id', '=', 'ordemservico.tipoprojetoid')
             .join('tecnico', 'tecnico.id', '=', 'ordemservico.tecnicoid')
             .join('usuario', 'usuario.id', '=', 'ordemservico.usuarioid')
+            .limit(20) //limita o retorno dos registros
+            .offset((page - 1) * 20) //paginacao
             .select([
                 'ordemservico.*',
                 'clientefilial.nomefilial',
@@ -15,6 +20,7 @@ module.exports = {
                 'tecnico.nometecnico',
                 'usuario.nome'
             ])
+            response.header('X-Total-Count', count['count(*)']);
     
         return response.json(ordemservico);
     },
@@ -114,4 +120,10 @@ module.exports = {
 
             return response.status(204).send();
         },
+        async getCount (request,response) {        
+
+            const [count] = await connection('ordemservico').count()
+            const { page = 1 } = request.query;
+            return response.json(count['count(*)']);        
+        }
     };

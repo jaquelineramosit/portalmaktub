@@ -2,8 +2,11 @@ const connection = require('../../database/connection');
 const getDate = require('../../utils/getDate');
 module.exports = {
     async getAll (request, response) {
+        const { page = 1 } = request.query;
         const bandeira = await connection('bandeira')
         .join('usuario', 'usuario.id', '=', 'bandeira.usuarioid') 
+        .limit(20) //limita o retorno dos registros
+        .offset((page - 1) * 20) //paginacao
         .select([
             'bandeira.*', 
             'usuario.nome'
@@ -59,4 +62,10 @@ module.exports = {
 
         return response.status(204).send();
     },
+    async getCount (request,response) {        
+
+        const [count] = await connection('bandeira').count()
+        const { page = 1 } = request.query;
+        return response.json(count['count(*)']);        
+    }
 };

@@ -10,8 +10,17 @@ export default function Pagina() {
     const [modulos, setModulos] = useState([]);
     const [nomePagina, setNomePagina] = useState('');
     const [descricao, setDescricao] = useState('');    
-    const [ativo, setAtivo] = useState('true');
+    const [ativo, setAtivo] = useState(1);
     const usuarioId = localStorage.getItem('userId');
+
+    function handleSwitch(e) {
+        if (ativo === 1) {
+            setAtivo(0);
+        }
+        else {
+            setAtivo(1);
+        }
+    }
     
     useEffect(() => {
         api.get('modulos').then(response => {            
@@ -89,8 +98,7 @@ export default function Pagina() {
                                         <Label htmlFor="Ativo">Ativo</Label>
                                         <AppSwitch id="rdAtivo" className={'switch-ativo'}  label color={'success'} 
                                             defaultChecked 
-                                            value={ativo}
-                                            onChange={ e => setAtivo(e.target.value)}
+                                            onChange={handleSwitch}
                                             size={'sm'} />
                                     </Col>                                                           
                                 </FormGroup>                                                                                         

@@ -9,8 +9,17 @@ export default function DisponibilidadeTecnico() {
     const [disponibilidades, setDisponibilidades] = useState([]);
     const [tecnicoId, setTecnicoId] = useState('');
     const [tecnicos, setTecnicos] = useState([]);
-    const [ativo, setAtivo] = useState('true');
+    const [ativo, setAtivo] = useState(1);
     const usuarioId = localStorage.getItem('userId');
+
+    function handleSwitch(e) {
+        if (ativo === 1) {
+            setAtivo(0);
+        }
+        else {
+            setAtivo(1);
+        }
+    }
 
     useEffect(() => {
         api.get('disponibilidade').then(response => {            
@@ -85,8 +94,7 @@ export default function DisponibilidadeTecnico() {
                                     <Col md="1">
                                         <Label check className="form-check-label" htmlFor="ativo">Ativo</Label>
                                         <AppSwitch id="rdAtivo" className={'switch-ativo'}  label color={'success'} defaultChecked size={'sm'}
-                                        value={ativo}
-                                        onChange={ e => setAtivo(e.target.value)}
+                                       onChange={handleSwitch} 
                                         />                                    
                                     </Col>                                
                                 </FormGroup>             

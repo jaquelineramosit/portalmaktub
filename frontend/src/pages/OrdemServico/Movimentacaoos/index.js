@@ -16,6 +16,15 @@ export default function Movimentacaoos() {
     const [observacao, setObservacao] = useState('');
     const [ativo, setAtivo] = useState('true');
     const usuarioId = localStorage.getItem('userId');
+   
+    function handleSwitch(e) {
+        if (ativo === 1) {
+            setAtivo(0);
+        }
+        else {
+            setAtivo(1);
+        }
+    }
 
     useEffect(() => {
         api.get('ordem-servico').then(response => {            
@@ -138,8 +147,7 @@ export default function Movimentacaoos() {
                                     <Col md="1">
                                         <Label check className="form-check-label" htmlFor="ativo">Ativo</Label>
                                         <AppSwitch id="rdAtivo" className={'switch-ativo'}  label color={'success'} defaultChecked size={'sm'}
-                                        value={ativo}
-                                        onChange={ e => setAtivo(e.target.value)} />                                    
+                                        onChange={handleSwitch} />                                    
                                     </Col>                             
                                 </FormGroup>                   
                             </CardBody>

@@ -7,11 +7,18 @@ import api from '../../../../src/services/api';
 export default function StatusAtendimento() {   
     const [status, setStatus] = useState('');
     const [descstatus, setDescStatus] = useState('');
-    const [ativo, setAtivo] = useState('true');
+    const [ativo, setAtivo] = useState(1);
     const usuarioId = localStorage.getItem('userId');
-
-
-
+  
+    function handleSwitch(e) {
+        if (ativo === 1) {
+            setAtivo(0);
+        }
+        else {
+            setAtivo(1);
+        }
+    }   
+    
     async function handleStatusAtendimento(e) {
         e.preventDefault();
 
@@ -21,11 +28,15 @@ export default function StatusAtendimento() {
             ativo,
         }
         try {
+        
             const response = await api.post('status-atendimento', data, {
                 headers: {
                     Authorization: 1,
                 }
+
+               
             });
+       
             alert(`Feito o cadastro com sucesso`);
 
         } catch (err) {
@@ -62,14 +73,14 @@ export default function StatusAtendimento() {
                                     </Col>                           
                                 </FormGroup>                   
                                 <FormGroup row>
-                                    <Col md="1">
-                                            <Label check className="form-check-label" htmlFor="ativo">Ativo</Label>
-                                            <AppSwitch id="rdAtivo" className={'switch-ativo'}  label color={'success'} defaultChecked size={'sm'}
-                                            value={ativo}
-                                            onChange={ e => setAtivo(e.target.value)}
-                                            />                                    
-                                    </Col> 
-                                </FormGroup>
+                                <Col md="2">
+                                        <Label check className="form-check-label" htmlFor="ativo1">Ativo</Label>
+                                        <AppSwitch id="rdAtivo" className={'switch-ativo'}  label color={'success'} defaultChecked size={'sm'}
+                                            onChange={handleSwitch}
+                                                  
+                                        />                                                             
+                                    </Col>                                                                               
+                                </FormGroup>                          
                             </CardBody>
                             <CardFooter className="text-center">
                                 <Button type="submit" size="sm" color="success" className=" mr-3"><i className="fa fa-check"></i> Salvar</Button>
@@ -80,5 +91,7 @@ export default function StatusAtendimento() {
                 </Row>
             </Form>
         </div>
+        
     );
+    
 }
