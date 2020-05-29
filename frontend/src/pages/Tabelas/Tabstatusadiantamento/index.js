@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Badge,Card, CardBody, CardHeader, Col, Pagination, PaginationItem, PaginationLink, Row, Table, Input, FormGroup } from 'reactstrap';
+import { Badge,Card, CardBody, CardHeader, Col, Pagination, PaginationItem, PaginationLink, Row, Table } from 'reactstrap';
 import api from '../../../services/api';
 var currentPage;
 var previousPage;
@@ -116,7 +116,7 @@ export default function ListaStatusadiantamento() {
                                         <tr>
                                             <td>{statusadiantamento.status}</td>
                                             <td>{statusadiantamento.descstatus}</td>                                     
-                                            <td><Badge variant="danger">Ativo</Badge>
+                                            <td><Badge color="success" >Ativo</Badge>
                                             </td>
                                             <td style={{ textAlign: 'right' }}>
                                                 <Link to={`status-adiantamento/${statusadiantamento.id}`} className="btn-sm btn-primary">

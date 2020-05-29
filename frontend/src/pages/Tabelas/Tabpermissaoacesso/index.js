@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Card, CardBody, CardHeader, Col, Pagination, PaginationItem, PaginationLink, Row, Table, Input, FormGroup } from 'reactstrap';
+import { Badge, Card, CardBody, CardHeader, Col, Pagination, PaginationItem, PaginationLink, Row, Table, Input, FormGroup } from 'reactstrap';
 import api from '../../../services/api';
 var currentPage;
 var previousPage;
@@ -108,6 +108,7 @@ export default function ListaPermissaoacesso() {
                                         <th>Página</th>
                                         <th>Sub Página</th>
                                         <th>Função</th>
+                                        <th>Ativo</th>
                                         <th style={{ textAlign: 'right' }}>Ações</th>
                                     </tr>
                                 </thead>
@@ -116,10 +117,10 @@ export default function ListaPermissaoacesso() {
                                         <tr>
                                             <td>{permissaoacesso.nomeperfil}</td>
                                             <td>{permissaoacesso.nomemodulo}</td>
-                                            <td>{permissaoacesso.paginaid}</td>
-                                            <td>{permissaoacesso.subpaginaid}</td>
-                                            <td>{permissaoacesso.funcaoid}</td>
-
+                                            <td>{permissaoacesso.nomepagina}</td>
+                                            <td>{permissaoacesso.nomesubpagina}</td>
+                                            <td>{permissaoacesso.nomefuncao}</td>
+                                            <td><Badge color="success">Ativo</Badge></td>
                                             <td style={{ textAlign: 'right' }}>
                                                 <Link to={`permissao-acesso/${permissaoacesso.id}`} className="btn-sm btn-primary">
                                                     <i className="fa fa-pencil fa-lg mr-1"></i>
