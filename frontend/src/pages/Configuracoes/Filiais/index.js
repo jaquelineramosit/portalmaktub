@@ -353,13 +353,13 @@ export default function Filiais() {
                                         </InputGroup>       
                                     </Col>
                                 </FormGroup>
-                                <FormGroup>
+                                 {/*<FormGroup>
                                     <Col md="3">
                                         <Label check className="form-check-label" htmlFor="ativo">Ativo</Label>
                                         <AppSwitch id="rdAtivo" className={'switch-ativo'} label color={'success'} defaultChecked size={'sm'}
                                          onChange={handleSwitch} />
                                     </Col>
-                                </FormGroup>
+                                 </FormGroup>*/}
                             </CardBody>
                             <CardFooter className="text-center">
                                 <Button type="submit" size="sm" color="success" className=" mr-3"><i className="fa fa-check"></i> Salvar</Button>

@@ -72,7 +72,7 @@ export default function StatusAtendimento() {
                                                 onChange={e => setDescStatus(e.target.value)} />
                                     </Col>                           
                                 </FormGroup>                   
-                                <FormGroup row>
+                                 {/*<FormGroup row>
                                 <Col md="2">
                                         <Label check className="form-check-label" htmlFor="ativo1">Ativo</Label>
                                         <AppSwitch id="rdAtivo" className={'switch-ativo'}  label color={'success'} defaultChecked size={'sm'}
@@ -80,7 +80,7 @@ export default function StatusAtendimento() {
                                                   
                                         />                                                             
                                     </Col>                                                                               
-                                </FormGroup>                          
+                                 </FormGroup> */}                         
                             </CardBody>
                             <CardFooter className="text-center">
                                 <Button type="submit" size="sm" color="success" className=" mr-3"><i className="fa fa-check"></i> Salvar</Button>
