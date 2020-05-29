@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Card, CardBody, CardHeader, Col, Pagination, PaginationItem, PaginationLink, Row, Table, Input, FormGroup } from 'reactstrap';
+import { Card, CardBody, CardHeader, Col, Pagination, PaginationItem, PaginationLink, Row, Table,Badge} from 'reactstrap';
 import api from '../../../services/api';
 var currentPage;
 var previousPage;
@@ -103,6 +103,7 @@ export default function ListaDisponibilidade() {
                                     <tr>
                                         <th>Disponibilidade</th>
                                         <th>Descrição</th>
+                                        <th>Ativo</th>
                                         <th style={{ textAlign: 'right' }}>Ações</th>
                                     </tr>
                                 </thead>
@@ -111,6 +112,7 @@ export default function ListaDisponibilidade() {
                                         <tr>
                                             <td>{disponibilidade.nomedisponibilidade}</td>
                                             <td>{disponibilidade.descricao}</td>
+                                            <td><Badge color="success">Ativo</Badge></td>
                                             <td style={{ textAlign: 'right' }}>
                                                 <Link to={`disponibilidade/${disponibilidade.id}`} className="btn-sm btn-primary">
                                                     <i className="fa fa-pencil fa-lg mr-1"></i>

@@ -75,7 +75,7 @@ export default function Usuario() {
             const response = await api.post('/usuarios', data);
             console.log(response);
             alert(`Seu login de acesso: ${response.data.login}`);      
-            history.push('/');
+         
             
         } catch (err) {
     

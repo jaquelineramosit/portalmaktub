@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Card, CardBody, CardHeader, Col, Pagination, PaginationItem, PaginationLink, Row, Table, Input, FormGroup } from 'reactstrap';
+import { Card, CardBody, CardHeader, Col, Pagination, PaginationItem, PaginationLink, Row, Table,Badge } from 'reactstrap';
 import api from '../../../services/api';
 var currentPage;
 var previousPage;
@@ -104,14 +104,16 @@ export default function ListaProjetotecnico() {
                                     <tr>
                                         <th>Tipo de Projeto</th>
                                         <th>Técnico</th>
+                                        <th>Ativo</th>
                                         <th style={{ textAlign: 'right' }}>Ações</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {projetotecnico.map(projetotecnico => (
                                         <tr>
-                                            <td>{projetotecnico.tipoprojetoid}</td>
-                                            <td>{projetotecnico.tecnicoid}</td>
+                                            <td>{projetotecnico.nometipoprojeto}</td>
+                                            <td>{projetotecnico.nometecnico}</td>
+                                            <td><Badge color="success">Ativo</Badge></td>
                                             <td style={{ textAlign: 'right' }}>
                                                 <Link to={`tipo-projeto/${projetotecnico.id}`} className="btn-sm btn-primary">
                                                     <i className="fa fa-pencil fa-lg mr-1"></i>

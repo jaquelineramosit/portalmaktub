@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Card, CardBody, CardHeader, Col, Pagination, PaginationItem, PaginationLink, Row, Table, Input, FormGroup } from 'reactstrap';
+import { Card, CardBody, CardHeader, Col, Pagination, PaginationItem, PaginationLink, Row, Table, Badge } from 'reactstrap';
 import api from '../../../services/api';
 var currentPage;
 var previousPage;
@@ -102,6 +102,7 @@ export default function ListaTipotecnico() {
                                     <tr>
                                         <th>Tipo de Técnico</th>
                                         <th>Descrição</th>
+                                        <th>Ativo</th>
                                         <th style={{ textAlign: 'right' }}>Ações</th>
                                     </tr>
                                 </thead>
@@ -110,6 +111,7 @@ export default function ListaTipotecnico() {
                                         <tr>
                                             <td>{tipotecnico.nometipotecnico}</td>
                                             <td>{tipotecnico.desctipotecnico}</td>
+                                            <td><Badge color="success">Ativo</Badge></td>
                                             <td style={{ textAlign: 'right' }}>
                                                 <Link to={`tipo-tecnico/${tipotecnico.id}`} className="btn-sm btn-primary">
                                                     <i className="fa fa-pencil fa-lg mr-1"></i>

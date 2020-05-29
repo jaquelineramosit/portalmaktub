@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Card, CardBody, CardHeader, Col, Pagination, PaginationItem, PaginationLink, Row, Table,Label, Input, FormGroup } from 'reactstrap';
-import { AppSwitch } from '@coreui/react'
+import { Card, CardBody, CardHeader, Col, Pagination, PaginationItem, PaginationLink, Row, Table,Badge } from 'reactstrap';
 import api from '../../../services/api';
 import Usuario from '../../Acessos/Usuario';
 var currentPage;
@@ -109,7 +108,7 @@ export default function ListaUsuários() {
                                         <th>Nome</th>                                      
                                         <th>Estado</th>
                                         <th>Telefone</th>
-                                        <th>Email</th>
+                                        <th>Email</th>                                    
                                         <th>Ativo</th>
                                         <th style={{ textAlign: 'right' }}>Ações</th>
                                     </tr>
@@ -122,8 +121,8 @@ export default function ListaUsuários() {
                                             <td>{usuarios.estado}</td>
                                             <td>{usuarios.telefone}</td>                                          
                                             <td>{usuarios.email}</td>
-                                            <td> <AppSwitch id="rdAtivo" className={'switch-ativo'}  label color={'success'} defaultChecked size={'sm'}                                               
-                                            /></td>
+                           
+                                            <td> <Badge color="success">Ativo</Badge></td>
                                             <td style={{ textAlign: 'right' }}>
                                                 <Link to={`usuarios/${usuarios.id}`} className="btn-sm btn-primary">
                                                     <i className="fa fa-pencil fa-lg mr-1"></i>

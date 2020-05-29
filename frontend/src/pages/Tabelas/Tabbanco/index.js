@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Card, CardBody, CardHeader, Col, Pagination, PaginationItem, PaginationLink, Row, Table, Input, FormGroup } from 'reactstrap';
+import { Card, CardBody, CardHeader, Col, Pagination, PaginationItem, PaginationLink, Row, Table,Badge } from 'reactstrap';
 import api from '../../../services/api';
 var currentPage;
 var previousPage;
@@ -102,6 +102,7 @@ async function handlePage(e) {
                                     <tr>
                                         <th>Codigo do Banco</th>
                                         <th>Nome do Banco</th>
+                                        <th>Ativo</th>
                                         <th style={{ textAlign: 'right' }}>Ações</th>
                                     </tr>
                                 </thead>
@@ -110,6 +111,7 @@ async function handlePage(e) {
                                         <tr>
                                             <td>{banco.codbanco}</td>
                                             <td>{banco.nomebanco}</td>
+                                            <td><Badge color="success">Ativo</Badge></td>
                                             <td style={{ textAlign: 'right' }}>
                                                 <Link to={`banco/${banco.id}`} className="btn-sm btn-primary">
                                                     <i className="fa fa-pencil fa-lg mr-1"></i>

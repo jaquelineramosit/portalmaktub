@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Card, CardBody, CardHeader, Col, Pagination, PaginationItem, PaginationLink, Row, Table, Input, FormGroup } from 'reactstrap';
+import { Card, CardBody, CardHeader, Col, Pagination, PaginationItem, PaginationLink, Row, Table, Badge } from 'reactstrap';
 
 
 import api from '../../../services/api';
@@ -106,6 +106,7 @@ export default function ListaFiliais() {
                                         <th>Bandeira</th>
                                         <th>Estado</th>
                                         <th>Cidade</th>
+                                        <th>Ativo</th>
 
                                         <th style={{ textAlign: 'right' }}>Ações</th>
                                     </tr>
@@ -118,6 +119,7 @@ export default function ListaFiliais() {
                                             <td>{filiais.nomebandeira}</td>
                                             <td>{filiais.estado}</td>
                                             <td>{filiais.cidade}</td>
+                                            <td><Badge color="success">Ativo</Badge></td>
 
                                             <td style={{ textAlign: 'right' }}>
                                                 <Link to={`filiais/${filiais.id}`} className="btn-sm btn-primary">

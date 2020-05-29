@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {Link } from 'react-router-dom';
-import {Card, CardBody, CardHeader, Col, Pagination, PaginationItem, PaginationLink, Row, Table,Input, FormGroup} from 'reactstrap';
+import {Card, CardBody, CardHeader, Col, Pagination, PaginationItem, PaginationLink, Row, Table,Badge} from 'reactstrap';
 import '../../../global.css';
 import api from '../../../services/api';
 var currentPage;  
@@ -101,9 +101,9 @@ async function handlePage(e) {
                                 <thead>
                                     <tr>
                                         <th>Clientes</th>
-                                        <th>Razão Social</th>
-                                        <th>Cidade</th>
-                                        <th>Bairro</th>
+                                        <th>Parceiros</th>
+                                        <th>Estado</th>
+                                        <th>Ativo</th>
                                         <th style={{ textAlign : 'right' }}>Ações</th>
                                     </tr>
                                 </thead>
@@ -111,9 +111,9 @@ async function handlePage(e) {
                                     {clientes.map(cliente => (
                                         <tr>
                                             <td>{cliente.nomecliente}</td>
-                                            <td>{cliente.logradouro}</td>
-                                            <td>{cliente.cidade}</td>
-                                            <td>{cliente.bairro}</td>
+                                            <td>{cliente.nomeparceiro}</td>
+                                            <td>{cliente.estado}</td>
+                                            <td><Badge color="success">Ativo</Badge></td>
                                             <td style={{ textAlign : 'right' }}>
                                                 <Link to={`clientes/${cliente.id}`} className="btn-sm btn-primary">
                                                     <i className="fa fa-pencil fa-lg mr-1"></i>
