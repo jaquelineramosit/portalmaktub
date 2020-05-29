@@ -114,7 +114,7 @@ export default function ListaPermissaoacesso() {
                                 <tbody>
                                     {permissaoacesso.map(permissaoacesso => (
                                         <tr>
-                                            <td>{permissaoacesso.perfilacessoid}</td>
+                                            <td>{permissaoacesso.nomeperfil}</td>
                                             <td>{permissaoacesso.nomemodulo}</td>
                                             <td>{permissaoacesso.paginaid}</td>
                                             <td>{permissaoacesso.subpaginaid}</td>
