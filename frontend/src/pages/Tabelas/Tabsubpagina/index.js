@@ -110,7 +110,7 @@ export default function ListaSubpaginas() {
                                 <tbody>
                                     {subpaginas.map(subpaginas => (
                                         <tr>
-                                            <td>{subpaginas.paginaid}</td>
+                                            <td>{subpaginas.nomepagina}</td>
                                             <td>{subpaginas.nomesubpagina}</td>
                                             <td>{subpaginas.descricao}</td>
                                             <td style={{ textAlign: 'right' }}>

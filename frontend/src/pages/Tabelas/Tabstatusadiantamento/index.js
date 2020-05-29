@@ -12,7 +12,8 @@ export default function ListaStatusadiantamento() {
     const [total, setTotal] = useState(0);
     const usuarioId = localStorage.getItem('userId');
 
-    
+
+
     //logica para pegar o total
     useEffect(() => {
         api.get('statusadiantamentoCount', {
@@ -115,8 +116,7 @@ export default function ListaStatusadiantamento() {
                                         <tr>
                                             <td>{statusadiantamento.status}</td>
                                             <td>{statusadiantamento.descstatus}</td>                                     
-                                            <td>
-                                          <Badge color={statusadiantamento.ativo === 1 ? "success" : statusadiantamento.ativo === 0 ? "danger" : "success" }>{statusadiantamento.ativo}</Badge>
+                                            <td><Badge variant="danger">Ativo</Badge>
                                             </td>
                                             <td style={{ textAlign: 'right' }}>
                                                 <Link to={`status-adiantamento/${statusadiantamento.id}`} className="btn-sm btn-primary">
