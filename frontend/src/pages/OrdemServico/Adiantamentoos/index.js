@@ -135,12 +135,12 @@ export default function Adiantamentoos() {
                                             </InputGroupAddon>
                                         </InputGroup>
                                     </Col>
-                                    <Col md="2">
+                                    {/*<Col md="2">
                                         <Label check className="form-check-label" htmlFor="ativo">Ativo</Label>
                                         <AppSwitch id="rdAtivo" className={'switch-ativo'} label color={'success'} defaultChecked size={'sm'}
                                             onChange={handleSwitch}
                                         />
-                                    </Col>
+                                        </Col>*/}
                                 </FormGroup>
                             </CardBody>
                             <CardFooter className="text-center">

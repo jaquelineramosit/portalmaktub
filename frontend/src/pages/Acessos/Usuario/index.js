@@ -249,14 +249,14 @@ export default function Usuario() {
                                         </InputGroup>                                
                                     </Col>                                                                                                                       
                                 </FormGroup>
-                                <FormGroup row>
-                                    <Col md="2">
+                                {/*<FormGroup row>
+                                   <Col md="2">
                                             <Label check className="form-check-label" htmlFor="ativo">Ativo</Label>
                                             <AppSwitch id="rdAtivo" className={'switch-ativo'}  label color={'success'} defaultChecked size={'sm'}
                                             onChange={handleSwitch}
                                             />                                    
-                                        </Col>
-                                </FormGroup>    
+                                </Col>
+                                </FormGroup>*/}    
                             </CardBody>
                             <CardHeader className="border-top">
                                 <strong>Dados de Acesso</strong>                            
