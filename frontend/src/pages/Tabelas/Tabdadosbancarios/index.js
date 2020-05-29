@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Card, CardBody, CardHeader, Col, Pagination, PaginationItem, PaginationLink, Row, Table, Input, FormGroup } from 'reactstrap';
+import { Badge, Card, CardBody, CardHeader, Col, Pagination, PaginationItem, PaginationLink, Row, Table, Input, FormGroup } from 'reactstrap';
 import api from '../../../services/api';
 var currentPage;
 var previousPage;
@@ -105,11 +105,12 @@ export default function ListaDadosbancarios() {
                                 <thead>
                                     <tr>
                                         <th>Técnico</th>
+                                        <th>Titular da Conta</th>
                                         <th>Banco</th>
                                         <th>Tipo de Conta</th>
                                         <th>Agência</th>
                                         <th>Conta</th>
-                                        <th>Titular da Conta</th>
+                                        <th>Ativo</th>
                                         <th style={{ textAlign: 'right' }}>Ações</th>
                                     </tr>
                                 </thead>
@@ -117,11 +118,12 @@ export default function ListaDadosbancarios() {
                                     {dadosbancarios.map(dadosbancarios => (
                                         <tr>
                                             <td>{dadosbancarios.nometecnico}</td>
+                                            <td>{dadosbancarios.titularconta}</td>
                                             <td>{dadosbancarios.nomebanco}</td>
                                             <td>{dadosbancarios.nometipoconta}</td>
                                             <td>{dadosbancarios.agencia}</td>
                                             <td>{dadosbancarios.conta}</td>
-                                            <td>{dadosbancarios.titularconta}</td>
+                                            <td><Badge color="success">Ativo</Badge></td>
                                             <td style={{ textAlign: 'right' }}>
                                                 <Link to={`dados-bancarios/${dadosbancarios.id}`} className="btn-sm btn-primary">
                                                     <i className="fa fa-pencil fa-lg mr-1"></i>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {Link } from 'react-router-dom';
-import {Card, CardBody, CardHeader, Col, Pagination, PaginationItem, PaginationLink, Row, Table,Input, FormGroup} from 'reactstrap';
+import {Badge, Card, CardBody, CardHeader, Col, Pagination, PaginationItem, PaginationLink, Row, Table,Input, FormGroup} from 'reactstrap';
 import api from '../../../services/api';
 var currentPage;
 var previousPage;
@@ -104,6 +104,7 @@ export default function ListaFerramenta() {
                                     <tr>
                                         <th>Ferramenta</th>
                                         <th>Descrição</th>
+                                        <th>Ativo</th>
                                         <th style={{ textAlign : 'right' }}>Ações</th>
                                     </tr>
                                 </thead>
@@ -112,6 +113,7 @@ export default function ListaFerramenta() {
                                         <tr>
                                             <td>{ferramentas.codferramenta}</td>
                                             <td>{ferramentas.descferramenta}</td>
+                                            <td><Badge color="success">Ativo</Badge></td>
                                             <td style={{ textAlign : 'right' }}>
                                                 <Link to={`ferramentas/${ferramentas.id}`} className="btn-sm btn-primary">
                                                     <i className="fa fa-pencil fa-lg mr-1"></i>

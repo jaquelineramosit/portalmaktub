@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Card, CardBody, CardHeader, Col, Pagination, PaginationItem, PaginationLink, Row, Table, Input, FormGroup } from 'reactstrap';
+import { Badge, Card, CardBody, CardHeader, Col, Pagination, PaginationItem, PaginationLink, Row, Table, Input, FormGroup } from 'reactstrap';
 import api from '../../../services/api';
 var currentPage;
 var previousPage;
@@ -104,7 +104,7 @@ export default function ListaFuncao() {
                                         <th>Página</th>
                                         <th>Sub Página</th>
                                         <th>Função</th>
-                                        <th>Descrição</th>
+                                        <th>Ativo</th>
                                         <th style={{ textAlign: 'right' }}>Ações</th>
                                     </tr>
                                 </thead>
@@ -115,6 +115,8 @@ export default function ListaFuncao() {
                                             <td>{funcao.nomesubpagina}</td>
                                             <td>{funcao.nomefuncao}</td>
                                             <td>{funcao.descricao}</td>
+                                            <td><Badge color="success">Ativo</Badge></td>
+
                                             <td style={{ textAlign: 'right' }}>
                                                 <Link to={`funcao/${funcao.id}`} className="btn-sm btn-primary">
                                                     <i className="fa fa-pencil fa-lg mr-1"></i>

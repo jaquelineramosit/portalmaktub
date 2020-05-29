@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Card, CardBody, CardHeader, Col, Pagination, PaginationItem, PaginationLink, Row, Table, Input, FormGroup } from 'reactstrap';
+import { Badge, Card, CardBody, CardHeader, Col, Pagination, PaginationItem, PaginationLink, Row, Table, Input, FormGroup } from 'reactstrap';
 import api from '../../../services/api';
 var currentPage;
 var previousPage;
@@ -101,14 +101,16 @@ export default function ListaTipoconta() {
                             <Table responsive striped>
                                 <thead>
                                     <tr>
-                                        <th>Nome Tipo da Conta</th>                                       
+                                        <th>Nome Tipo da Conta</th>
+                                        <th>Ativo</th>                                       
                                         <th style={{ textAlign: 'right' }}>Ações</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {tipoconta.map(tipoconta => (
                                         <tr>
-                                            <td>{tipoconta.nometipoconta}</td>                                        
+                                            <td>{tipoconta.nometipoconta}</td>
+                                            <td><Badge color="success">Ativo</Badge></td>                                    
                                             <td style={{ textAlign: 'right' }}>
                                                 <Link to={`tipo-conta/${tipoconta.id}`} className="btn-sm btn-primary">
                                                     <i className="fa fa-pencil fa-lg mr-1"></i>
