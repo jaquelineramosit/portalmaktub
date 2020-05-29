@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Card, CardBody, CardHeader, Col, Pagination, PaginationItem, PaginationLink, Row, Table, Input, FormGroup } from 'reactstrap';
+import { Badge, Card, CardBody, CardHeader, Col, Pagination, PaginationItem, PaginationLink, Row, Table } from 'reactstrap';
 import api from '../../../services/api';
 var currentPage;
 var previousPage;
@@ -104,15 +104,17 @@ export default function ListaPaginas() {
                                         <th>Módulo</th>
                                         <th>Nome da Página</th>
                                         <th>Descrição</th>
+                                        <th>Ativo</th>
                                         <th style={{ textAlign: 'right' }}>Ações</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {paginas.map(paginas => (
                                         <tr>
-                                            <td>{paginas.moduloid}</td>
+                                            <td>{paginas.nomemodulo}</td>
                                             <td>{paginas.nomepagina}</td>
                                             <td>{paginas.descricao}</td>
+                                            <td> <Badge color="success">Ativo</Badge></td>
                                             <td style={{ textAlign: 'right' }}>
                                                 <Link to={`paginas/${paginas.id}`} className="btn-sm btn-primary">
                                                     <i className="fa fa-pencil fa-lg mr-1"></i>
