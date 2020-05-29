@@ -241,7 +241,7 @@ export default function Clientes() {
                                         </InputGroup>
                                     </Col>
                                 </FormGroup>
-                                <FormGroup>    
+                                {/*<FormGroup>    
                                 <Col md="2">
                                         <Label check className="form-check-label" htmlFor="ativo1">Ativo</Label>
                                         <AppSwitch id="rdAtivo" className={'switch-ativo'}  label color={'success'} defaultChecked size={'sm'}
@@ -249,7 +249,7 @@ export default function Clientes() {
                                         />                                    
                                     </Col>                                                          
 
-                                </FormGroup>
+                                </FormGroup>*/}
                             </CardBody>
                             <CardFooter className="text-center">
                                 <Button type="submit" size="sm" color="success" className=" mr-3"><i className="fa fa-check"></i> Salvar</Button>
