@@ -157,7 +157,7 @@ export default function PermissaAcesso() {
                                                 </Input>                                      
                                             </Col>
                                         </FormGroup>
-                                <FormGroup row>                                     
+                                {/*<FormGroup row>                                     
                                 <Col md="2">
                                         <Label htmlFor="ativo">Ativo</Label>
                                         <AppSwitch id="rdAtivo" className={'switch-ativo'}  label color={'success'} 
@@ -165,7 +165,7 @@ export default function PermissaAcesso() {
                                             onChange={handleSwitch}
                                             size={'sm'} />
                                     </Col>                                                                   
-                                </FormGroup>                                                                                         
+                                </FormGroup>*/}                                                                                  
                             </CardBody>
                             <CardFooter className="text-center">
                                 <Button type="submit" size="sm" color="success" className=" mr-3"><i className="fa fa-check"></i> Salvar</Button>
