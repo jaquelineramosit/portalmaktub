@@ -76,6 +76,14 @@ const Tabsubpagina = React.lazy(() => import('./pages/Tabelas/Tabsubpagina'));
 const Tabfuncoes = React.lazy(() => import('./pages/Tabelas/Tabfuncoes'));
 const pageNum = 0;
 
+//Relatórios
+const Relprojetosolicitacoes = React.lazy(() => import('./pages/Relatórios/Relatorio ProjetoxSolicitacoes'));
+const Relprojetocliente = React.lazy(() => import('./pages/Relatórios/Relatorio ProjetoxCliente'));
+const Relprojetotecnico = React.lazy(() => import('./pages/Relatórios/Relatorio ProjetoxTecnico'));
+const Relprojetofaturado = React.lazy(() => import('./pages/Relatórios/Relatorio ProjetoxFaturado'));
+const Relclientefaturado = React.lazy(() => import('./pages/Relatórios/Relatorio ClientexFaturado'));
+const Reltecnicofaturado = React.lazy(() => import('./pages/Relatórios/Relatorio TecnicoxFaturado'));
+
 const routes = [
 
 
@@ -158,6 +166,14 @@ const routes = [
 { path: '/tab-paginas', name: 'Lista de Páginas', component: Tabpaginas},
 { path: '/tab-subpaginas', name: 'Lista de Sub Páginas', component: Tabsubpagina},
 { path: '/tab-funcoes', name: 'Lista de Funções', component: Tabfuncoes},
+
+  //Relatórios
+  { path: '/rel-projetoxsolicitacoes', name: 'Relatório de Projeto x Solicitações ', component: Relprojetosolicitacoes},
+  { path: '/rel-projetoxcliente', name: 'Relatório de Projeto x Cliente ', component: Relprojetocliente},
+  { path: '/rel-projetoxtecnico', name: 'Relatório de Projeto x Técnico ', component: Relprojetotecnico},
+  { path: '/rel-projetoxfaturado', name: 'Relatório de Projeto x Faturado ', component: Relprojetofaturado},
+  { path: '/rel-clientexfaturado', name: 'Relatório de Cliente x Faturado ', component: Relclientefaturado},
+  { path: '/rel-tecnicoxfaturado', name: 'Relatório de Técnico x Faturado ', component: Reltecnicofaturado},
 
 
 ];

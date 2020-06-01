@@ -91,11 +91,12 @@ export default function ListaOrdemservico(props) {
                     <CardHeader className="links">
                        
                         <i className="fa fa-align-justify"></i> Ordem de Serviço  
-                                                   
+                       
                         <Link to={`ordem-servico`} className="btn btn-secondary float-right">
                                                 <i className="cui-file icons mr-1"></i>
                                                 Novo
-                                            </Link>                                                                                             
+                                            </Link> 
+                                                                                                                                    
                                                                                                                  
                     </CardHeader>
                         <CardBody>
@@ -103,8 +104,7 @@ export default function ListaOrdemservico(props) {
                                 <thead>
                                     <tr>
                                         <th>Número de OS</th>                                 
-                                        <th>Filial</th>
-                                        <th>Data de Solicitação</th>
+                                        <th>Filial</th>                                
                                         <th>Data Atendimento</th>
                                         <th>Técnico</th>
                                         <th>Tipo de Serviço</th>
@@ -116,8 +116,7 @@ export default function ListaOrdemservico(props) {
                                     {ordemservico.map(ordemservico => (
                                         <tr>
                                             <td>{ordemservico.numeroos}</td>
-                                            <td>{ordemservico.nomefilial}</td>
-                                            <td>{ordemservico.datasolicitacao}</td>
+                                            <td>{ordemservico.nomefilial}</td>          
                                             <td>{ordemservico.dataatendimento}</td>
                                             <td>{ordemservico.nometecnico}</td>
                                             <td>{ordemservico.nometipoprojeto}</td>

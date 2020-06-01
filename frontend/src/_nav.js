@@ -200,7 +200,61 @@ export default {
           name: 'Funções',
           url: '/tab-funcoes',
           icon: 'fa fa-code',
+        },   
+        {
+         },
+         
+      ], 
+    },
+    {
+      title: true,
+      name: 'Relatórios',
+      wrapper: {
+        element: '',
+        attributes: {},
+      },
+    },
+    {
+      name: 'Relatórios',
+      icon: 'fa fa-bar-chart',
+      children: [
+        {
+          name: 'Projeto x Solicitações',
+          url: '/rel-projetoxsolicitacoes',
+          icon: 'fa fa-bar-chart',
         },
+        {
+          name: 'Projeto x Cliente',
+          url: '/rel-projetoxcliente',
+          icon: 'fa fa-bar-chart',
+        },
+        {
+          name: 'Projeto x Técnico',
+          url: '/rel-projetoxtecnico',
+          icon: 'fa fa-bar-chart',
+        },      
+        {
+          name: 'Projeto x Faturado',
+          url: '/rel-projetoxfaturado',
+          icon: 'fa fa-bar-chart',
+        },          
+        {
+          name: 'Cliente x Faturado',
+          url: '/rel-clientexfaturado',
+          icon: 'fa fa-bar-chart',
+        },
+       
+        {
+          name: 'Técnico x Faturado',
+          url: '/rel-tecnicoxfaturado',
+          icon: 'fa fa-bar-chart',
+        },        
+        {
+          name: 'Custo x Técnico',
+          url: '/tab-parceiros',
+          icon: 'fa fa-bar-chart',
+        },        
+       
       ],
     },
   ],
