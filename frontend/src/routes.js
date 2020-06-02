@@ -83,6 +83,7 @@ const Relprojetotecnico = React.lazy(() => import('./pages/Relatórios/Relatorio
 const Relprojetofaturado = React.lazy(() => import('./pages/Relatórios/Relatorio ProjetoxFaturado'));
 const Relclientefaturado = React.lazy(() => import('./pages/Relatórios/Relatorio ClientexFaturado'));
 const Reltecnicofaturado = React.lazy(() => import('./pages/Relatórios/Relatorio TecnicoxFaturado'));
+const Relcustotecnico = React.lazy(() => import('./pages/Relatórios/Relatorio CustoxTecnico'));
 
 const routes = [
 
@@ -174,6 +175,9 @@ const routes = [
   { path: '/rel-projetoxfaturado', name: 'Relatório de Projeto x Faturado ', component: Relprojetofaturado},
   { path: '/rel-clientexfaturado', name: 'Relatório de Cliente x Faturado ', component: Relclientefaturado},
   { path: '/rel-tecnicoxfaturado', name: 'Relatório de Técnico x Faturado ', component: Reltecnicofaturado},
+  { path: '/rel-tecnicoxfaturado', name: 'Relatório de Técnico x Faturado ', component: Reltecnicofaturado},
+  { path: '/rel-custoxtecnico', name: 'Relatório de Custo x Técnico ', component: Relcustotecnico},
+
 
 
 ];

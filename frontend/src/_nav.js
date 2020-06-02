@@ -251,7 +251,7 @@ export default {
         },        
         {
           name: 'Custo x Técnico',
-          url: '/tab-parceiros',
+          url: '/rel-custoxtecnico',
           icon: 'fa fa-bar-chart',
         },        
        
