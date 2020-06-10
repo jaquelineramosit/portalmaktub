@@ -29,7 +29,7 @@ export default function ListaTecnicos() {
         pageNumbers.push(i);
     }
 
-    if (total % 20 > 0) {
+    if (total % 20 >= 0) {
         pageNumbers.push(pageNumbers.length + 1);
     }
 

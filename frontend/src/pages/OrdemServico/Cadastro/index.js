@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Component } from 'react';
 import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, InputGroup, InputGroupAddon, CardFooter, Form } from 'reactstrap';
 import { AppSwitch } from '@coreui/react'
 import '../../../global.css';
+import {numMask} from '../../../mask'
 import api from '../../../services/api';
-
 export default function OrdemServico() {
+    
     const [numeroos, setNumeroOs] = useState('');
     const [datasolicitacao, setDataSolicitacao] = useState('');
     const [dataatendimento, setDataAtendimento] = useState('');
@@ -30,6 +31,9 @@ export default function OrdemServico() {
     const [ativo, setAtivo] = useState(1);
     const usuarioId = localStorage.getItem('userId');
     
+    
+
+    
     function handleSwitch(e) {
         if (ativo === 1) {
             setAtivo(0);
@@ -37,7 +41,8 @@ export default function OrdemServico() {
         else {
             setAtivo(1);
         }
-    }   
+    }
+    
     useEffect(() => {
         api.get('filiais').then(response => {            
             setClienteFiliais(response.data);
@@ -95,6 +100,7 @@ export default function OrdemServico() {
             alert('Erro no cadastro, tente novamente.');
         }
     }
+    
 
     return (
         <div className="animated fadeIn">
@@ -112,7 +118,7 @@ export default function OrdemServico() {
                                         <Label htmlFor="numeroOs">Número da OS</Label>
                                         <Input type="text" required id="txtNumeroOs" placeholder="Numero OS"
                                             value={numeroos}
-                                            onChange={e => setNumeroOs(e.target.value)} />
+                                            onChange={e => setNumeroOs(numMask(e.target.value))} />
                                     </Col>
                                 </FormGroup>
                                 <FormGroup row>
@@ -127,27 +133,6 @@ export default function OrdemServico() {
                                                         </InputGroupAddon>
                                             </InputGroup>            
                                     </Col>
-                                    <Col md="3">
-                                            <Label htmlFor="diaSemana">Dia da Semana</Label>
-                                            <InputGroup>
-                                                <Input required type="select" name="select" id="cobDiaSemana"
-                                                value={diadasemana}
-                                                onChange={e => setDiaSemana(e.target.value)} >
-                                                <option value={undefined}>Selecione...</option>
-                                                <option value={1}>Domingo</option>
-                                                <option value={2}>Segunda-Feira</option>
-                                                <option value={3}>Terça-Feira</option>
-                                                <option value={4}>Quarta-Feria</option>
-                                                <option value={5}>Quinta-Feira</option>
-                                                <option value={6}>Sexta-Feira</option>
-                                                <option value={7}>Sabado</option>
-                                                </Input>
-                                                <InputGroupAddon addonType="append">
-                                                    <Button type="button" color= "secondary  fa fa-calendar fa-lg"></Button>
-                                                </InputGroupAddon>
-                                        </InputGroup>
-
-                                    </Col>
                                     <Col md="3 ">
                                         <Label htmlFor="dataatendimento">Data atendimento</Label>
                                         <InputGroup>
@@ -160,6 +145,13 @@ export default function OrdemServico() {
                                                 </InputGroupAddon>
                                         </InputGroup>
                                     </Col>
+                                    <Col md="3">
+                                    <Label htmlFor="didasemana">Dia Da semana</Label>
+                                        <Input type="text" required id="txtDiasemana" disabled
+                                            value={diadasemana}
+                                            onChange={e => setDiaSemana(e.target.value)} />
+                                    </Col>
+                                   
                                 </FormGroup>
                                 <FormGroup row>
                                     <Col md="3">
@@ -180,22 +172,6 @@ export default function OrdemServico() {
                                         </InputGroup>
                                     </Col>
                                     <Col md="3">
-                                        <Label htmlFor="tecnicoId"> Técinico</Label>
-                                        <InputGroup>
-                                            <Input required type="select" name="select" id="cobTecnico"
-                                                value={tecnicoid}
-                                                onChange={e => setTecnicoId(e.target.value)} >
-                                                <option value={undefined} defaultValue>Selecione...</option>
-                                                {tecnicos.map(tecnico => (                                                
-                                                    <option value={tecnico.id}>{tecnico.nometecnico}</option>
-                                                ))}  
-                                            </Input>
-                                            <InputGroupAddon addonType="append">
-                                                <Button type="button" color= "secondary  fa fa-user-md"></Button>
-                                            </InputGroupAddon>
-                                        </InputGroup>
-                                    </Col>
-                                    <Col md="3">
                                         <Label htmlFor="tiposervicoid">Tipo de Serviço</Label>
                                         <InputGroup>
                                             <Input required type="select" name="select" id="cboTipoServico"
@@ -211,8 +187,44 @@ export default function OrdemServico() {
                                             </InputGroupAddon>
                                         </InputGroup>
                                     </Col>
+                                    <Col md="3">
+                                        <Label htmlFor="tecnicoId"> Técnico</Label>
+                                        <InputGroup>
+                                            <Input required type="select" name="select" id="cobTecnico"
+                                                value={tecnicoid}
+                                                onChange={e => setTecnicoId(e.target.value)} >
+                                                <option value={undefined} defaultValue>Selecione...</option>
+                                                {tecnicos.map(tecnico => (                                                
+                                                    <option value={tecnico.id}>{tecnico.nometecnico}</option>
+                                                ))}  
+                                            </Input>
+                                            <InputGroupAddon addonType="append">
+                                                <Button type="button" color= "secondary  fa fa-user-md"></Button>
+                                            </InputGroupAddon>
+                                        </InputGroup>
+                                    </Col>
                                 </FormGroup>
                                 <FormGroup row>
+                                    <Col md="9">
+                                        <Label htmlFor="observacaoSs">Observações OS</Label>
+                                        <Input type="textarea" size="16" rows="5" required id="txtObservacaoOs" placeholder="Observações"
+                                            value={observacaoos}
+                                            onChange={e => setObservacaoOs(e.target.value)} />
+                                    </Col>
+                                </FormGroup>  
+
+                                
+                                {/*<FormGroup row>
+                                    <Col md="3">
+                                        <Label check className="form-check-label" htmlFor="ativo1">Ativo</Label>
+                                        <AppSwitch id="rdAtivo" className={'switch-ativo'} label color={'success'} defaultChecked size={'sm'}
+                                            onChange={handleSwitch}/>
+                                    </Col>
+                                </FormGroup>*/}   
+                            </CardBody>
+                            <CardHeader><strong>Informações Do Serviço</strong></CardHeader>
+                            <CardBody>
+                            <FormGroup row>
                                     <Col md="9">
                                         <Label htmlFor="descricaoservico">Descrição do Serviço</Label>
                                         <InputGroup>
@@ -264,8 +276,8 @@ export default function OrdemServico() {
                                             <InputGroup>
                                                 <Input type="number" id="txtValorPagar" placeholder="00,00"
                                                     value={valorapagar}
-                                                    onChange={e => setValorPagar(e.target.value)} />
-                                                    <InputGroupAddon addonType="append">
+                                                    onChange={e => setValorPagar(e.target.value)} />                                                 
+                                                    <InputGroupAddon addonType="append">                                                
                                                         <Button type="button" color= "secondary fa fa-money"></Button>
                                                     </InputGroupAddon>
                                             </InputGroup>
@@ -328,21 +340,8 @@ export default function OrdemServico() {
                                             </InputGroup>
                                         </Col>
                                 </FormGroup>
-                                <FormGroup row>
-                                    <Col md="9">
-                                        <Label htmlFor="observacaoSs">Observações OS</Label>
-                                        <Input type="textarea" size="16" rows="5" required id="txtObservacaoOs" placeholder="Observações"
-                                            value={observacaoos}
-                                            onChange={e => setObservacaoOs(e.target.value)} />
-                                    </Col>
-                                </FormGroup>  
-                                {/*<FormGroup row>
-                                    <Col md="3">
-                                        <Label check className="form-check-label" htmlFor="ativo1">Ativo</Label>
-                                        <AppSwitch id="rdAtivo" className={'switch-ativo'} label color={'success'} defaultChecked size={'sm'}
-                                            onChange={handleSwitch}/>
-                                    </Col>
-                                </FormGroup>*/}   
+                               
+
                             </CardBody>
                             <CardFooter className="text-center">
                                 <Button type="submit" size="sm" color="success" className=" mr-3"><i className="fa fa-check"></i> Salvar</Button>

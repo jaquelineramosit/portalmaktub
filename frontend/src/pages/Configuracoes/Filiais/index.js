@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, InputGroup, InputGroupAddon, CardFooter, Form } from 'reactstrap';
 import { AppSwitch } from '@coreui/react'
 import '../../../global.css';
+import {telMask, celMask, cepMask,numMask, cnpjMask } from '../../../mask'
 import api from '../../../../src/services/api';
 
 export default function Filiais() {
@@ -146,7 +147,7 @@ export default function Filiais() {
                                             <Input type="text" required id="txtCnpj"
                                                 placeholder="Digite a CNPJ"
                                                 value={cnpj}
-                                                onChange={e => setCnpj(e.target.value)} />
+                                                onChange={e => setCnpj(cnpjMask(e.target.value))} />
                                         </InputGroup>
                                     </Col>
                                 </FormGroup>
@@ -171,9 +172,9 @@ export default function Filiais() {
                                     <Col md="3">
                                         <Label htmlFor="cep">CEP</Label>
                                         <InputGroup>
-                                            <Input id="txtCep" size="16" required type="number" placeholder="00000-000"
+                                            <Input id="txtCep" size="16" required type="text" placeholder="00000-000"
                                                 value={cep}
-                                                onChange={e => setCep(e.target.value)} />
+                                                onChange={e => setCep(cepMask(e.target.value))} />
                                             <InputGroupAddon addonType="append">
                                                 <Button type="button" color="secondary fa fa-truck"></Button>
                                             </InputGroupAddon>
@@ -207,9 +208,9 @@ export default function Filiais() {
                                 <FormGroup row>
                                     <Col md="3">
                                         <Label htmlFor="numero">Número</Label>
-                                        <Input type="number" required id="txtNumero" placeholder="Digite o Números"
+                                        <Input type="text" required id="txtNumero" placeholder="Digite o Números"
                                             value={numero}
-                                            onChange={e => setNumero(e.target.value)} />
+                                            onChange={e => setNumero(numMask(e.target.value))} />
                                     </Col>
                                     <Col md="3">
                                         <Label htmlFor="complemento">Complemento</Label>
@@ -264,7 +265,7 @@ export default function Filiais() {
                                         <InputGroup>
                                             <Input type="text" id="txtTelefoneFixo" placeholder="(11) 9999-9999"
                                                 value={telefonefixo}
-                                                onChange={e => setTelefoneFixo(e.target.value)} />
+                                                onChange={e => setTelefoneFixo(telMask(e.target.value))} />
                                             <InputGroupAddon addonType="append">
                                                 <Button type="button" color="secondary icon-phone"></Button>
                                             </InputGroupAddon>
@@ -275,7 +276,7 @@ export default function Filiais() {
                                         <InputGroup>
                                             <Input type="text" id="txtTelefoneResponsavel" placeholder="(11) 9999-9999"
                                                 value={telefoneresponsavel}
-                                                onChange={e => setTelefoneResponsavel(e.target.value)} />
+                                                onChange={e => setTelefoneResponsavel(telMask(e.target.value))} />
                                             <InputGroupAddon addonType="append">
                                                 <Button type="button" color="secondary icon-phone"></Button>
                                             </InputGroupAddon>

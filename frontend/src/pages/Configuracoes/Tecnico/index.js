@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, InputGroup, InputGroupAddon, CardFooter, Form } from 'reactstrap';
 import { AppSwitch } from '@coreui/react'
 import '../../../global.css';
+import {cpfMask, rgMask, telMask, celMask, cepMask,numMask } from '../../../mask'
 import api from '../../../../src/services/api';
 
 export default function Tecnico() {
@@ -92,14 +93,14 @@ export default function Tecnico() {
                                         <Label htmlFor="rg">RG</Label>
                                         <Input type="text" required id="txtRg" placeholder="Digite o RG do Técnico"
                                             value={rg}
-                                            onChange={e => setRg(e.target.value)}
+                                            onChange={e => setRg(rgMask(e.target.value))}
                                         />
                                     </Col>
                                     <Col md="3">
                                         <Label htmlFor="cpf">CPF</Label>
-                                        <Input type="number" required id="txtCpf" placeholder="Digite o CPF do Técnico"
+                                        <Input type="text" required id="txtCpf" placeholder="Digite o CPF do Técnico"
                                             value={cpf}
-                                            onChange={e => setCpf(e.target.value)} />
+                                            onChange={e => setCpf(cpfMask(e.target.value))} />
                                     </Col>
                                 </FormGroup>
                                 <FormGroup row>
@@ -119,9 +120,9 @@ export default function Tecnico() {
                                     <Col md="3">
                                         <Label htmlFor="cep">CEP</Label>
                                         <InputGroup>
-                                            <Input id="txtCep" size="16" required type="number" placeholder="00000-000"
+                                            <Input id="txtCep" size="16" required type="text" placeholder="00000-000"
                                                 value={cep}
-                                                onChange={e => setCep(e.target.value)} />
+                                                onChange={e => setCep(cepMask(e.target.value))} />
                                             <InputGroupAddon addonType="append">
                                                 <Button type="button" color="secondary fa fa-truck"></Button>
                                             </InputGroupAddon>
@@ -131,9 +132,9 @@ export default function Tecnico() {
                                 <FormGroup row>
                                     <Col md="3">
                                         <Label htmlFor="numero">Número</Label>
-                                        <Input type="number" required id="txtNumero" placeholder="Digite apenas Números"
+                                        <Input type="text" required id="txtNumero" placeholder="Digite apenas Números"
                                             value={numero}
-                                            onChange={e => setNumero(e.target.value)} />
+                                            onChange={e => setNumero(numMask(e.target.value))} />
                                     </Col>
                                     <Col md="3">
                                         <Label htmlFor="complemento">Complemento</Label>
@@ -165,9 +166,9 @@ export default function Tecnico() {
                                     <Col md="3">
                                         <Label htmlFor="telefoneFixo">Telefone Fixo</Label>
                                         <InputGroup>
-                                            <Input type="number" id="txtTelefoneFixo" placeholder="(11) 9999-9999"
+                                            <Input type="text" id="txtTelefoneFixo" placeholder="(11) 9999-9999"
                                                 value={telefonefixo}
-                                                onChange={e => setTelefoneFixo(e.target.value)} />
+                                                onChange={e => setTelefoneFixo(telMask(e.target.value))} />
                                             <InputGroupAddon addonType="append">
                                                 <Button type="button" color="secondary icon-phone"></Button>
                                             </InputGroupAddon>
@@ -176,9 +177,9 @@ export default function Tecnico() {
                                     <Col md="3">
                                         <Label htmlFor="telefoneCelular">Telefone Celular</Label>
                                         <InputGroup>
-                                            <Input type="number" id="txtTelefoneCelular" placeholder="(11) 9999-9999"
+                                            <Input type="text" id="txtTelefoneCelular" placeholder="(11) 9999-9999"
                                                 value={telefonecelular}
-                                                onChange={e => setTelefoneCelular(e.target.value)} />
+                                                onChange={e => setTelefoneCelular(celMask(e.target.value))} />
                                             <InputGroupAddon addonType="append">
                                                 <Button type="button" color="secondary icon-phone"></Button>
                                             </InputGroupAddon>

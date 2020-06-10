@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, InputGroup, InputGroupAddon, CardFooter, Form, FormFeedback } from 'reactstrap';
 import { AppSwitch } from '@coreui/react'
 import '../../../global.css';
+import {cpfMask, rgMask, telMask, celMask, cepMask,numMask } from '../../../mask'
 import api from '../../../../src/services/api';
 
 export default function Usuario() {
@@ -138,7 +139,7 @@ export default function Usuario() {
                                         <InputGroup>
                                             <Input id="txtCep" size="16" required type="text" placeholder="00000-000"
                                             value={cep}
-                                            onChange={ e => setCep(e.target.value)} />
+                                            onChange={ e => setCep(cepMask(e.target.value))} />
                                             <InputGroupAddon addonType="append">
                                                 <Button type="button" color="secondary fa fa-truck"></Button>
                                             </InputGroupAddon>
@@ -155,7 +156,7 @@ export default function Usuario() {
                                         <Label htmlFor="Numero">Número</Label>
                                         <Input type="text" required id="txtNumero" placeholder="Digite apenas Números"
                                         value={numero}
-                                        onChange={ e => setNumero(e.target.value)} />
+                                        onChange={ e => setNumero(numMask(e.target.value))} />
                                     </Col>
                                     <Col md="2">
                                         <Label htmlFor="Complemento">Complemento</Label>
@@ -217,20 +218,20 @@ export default function Usuario() {
                                         <Label htmlFor="RG">Documento RG</Label>
                                         <Input type="text" id="txtRG" placeholder="Digite o número do RG"
                                         value={rg}
-                                        onChange={ e => setRg(e.target.value)} />
+                                        onChange={ e => setRg(rgMask(e.target.value))} />
                                     </Col>                               
                                     <Col md="4">
                                         <Label htmlFor="Cpf">CPF</Label>
                                         <Input type="text" required id="txtCpf" placeholder="Digite o número do CPF"
                                         value={cpf}
-                                        onChange={ e => setCpf(e.target.value)} />                                    
+                                        onChange={ e => setCpf(cpfMask(e.target.value))} />                                    
                                     </Col>
                                     <Col md="2">
                                         <Label htmlFor="TelefoneFixo">Telefone Fixo</Label>                                        
                                         <InputGroup>
                                             <Input type="text"  id="txtTelefoneFixo" placeholder="(11) 9999-9999"
                                             value={telefone}
-                                            onChange={ e => setTelefone(e.target.value)} />
+                                            onChange={ e => setTelefone(telMask(e.target.value))} />
                                             <InputGroupAddon addonType="append">
                                                 <Button type="button" color="secondary icon-phone"></Button>
                                             </InputGroupAddon>
@@ -242,7 +243,7 @@ export default function Usuario() {
                                         <InputGroup>
                                             <Input type="text" required id="txtCelular" placeholder="(11) 99999-9999"
                                             value={celular}
-                                            onChange={ e => setCelular(e.target.value)} />  
+                                            onChange={ e => setCelular(celMask(e.target.value))} />  
                                             <InputGroupAddon addonType="append">
                                                 <Button type="button" color="secondary icon-screen-smartphone"></Button>
                                             </InputGroupAddon>
