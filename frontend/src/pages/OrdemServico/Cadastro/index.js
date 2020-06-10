@@ -28,13 +28,11 @@ export default function OrdemServico() {
     const [valorareceber, setValorReceber] = useState('');
     const [totalareceber, setTotalaReceber] = useState('');
     const [totalapagar, setTotalPagar,] = useState('');
-    const [diadasemana, setDiaSemana] = useState('');
+    const [diadasemana, setDiaSemana] = useState(0);
+    const [nomediadasemana, setNomeDiaSemana] = useState('');
     const [custoadicional, setCustoAdicional] = useState('');
     const [ativo, setAtivo] = useState(1);
     const usuarioId = localStorage.getItem('userId');
-    
-    
-
     
     function handleSwitch(e) {
         if (ativo === 1) {
@@ -72,7 +70,8 @@ export default function OrdemServico() {
         
         var date = new Date(dataAtendimento);
 
-        console.log(dataAtendimento);
+        var diaNumero = date.getDay();
+        setDiaSemana(parseInt(diaNumero));
 
         var diasDaSemana = new Array(7);
         diasDaSemana[0] = "Domingo";
@@ -83,9 +82,9 @@ export default function OrdemServico() {
         diasDaSemana[5] = "Sexta-feira";
         diasDaSemana[6] = "Sábado";
 
-        var diaDaSemana = diasDaSemana[date.getDay()];
+        var nomeDiaDaSemana = diasDaSemana[date.getDay()];      
 
-        setDiaSemana(diaDaSemana);
+        setNomeDiaSemana(nomeDiaDaSemana);
     }
 
     async function handleOs(e) {
@@ -175,7 +174,7 @@ export default function OrdemServico() {
                                     <Col md="3">
                                     <Label htmlFor="didasemana">Dia Da semana</Label>
                                         <Input type="text" required id="txtDiasemana" disabled
-                                            value={diadasemana}
+                                            value={nomediadasemana}
                                             // onChange={e => setDiaSemana(e.target.value)}
                                         />
                                     </Col>
