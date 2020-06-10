@@ -4,6 +4,8 @@ import { AppSwitch } from '@coreui/react'
 import '../../../global.css';
 import {numMask} from '../../../mask'
 import api from '../../../services/api';
+import moment from 'moment';
+
 export default function OrdemServico() {
     
     const [numeroos, setNumeroOs] = useState('');
@@ -60,6 +62,31 @@ export default function OrdemServico() {
             setTipoProjeto(response.data);
         })
     }, [usuarioId]); 
+
+    function handleDataAtendimento(e) {
+        e.preventDefault();
+
+        setDataAtendimento(e.currentTarget.value);     
+
+        var dataAtendimento = String(moment(e.currentTarget.value));   
+        
+        var date = new Date(dataAtendimento);
+
+        console.log(dataAtendimento);
+
+        var diasDaSemana = new Array(7);
+        diasDaSemana[0] = "Domingo";
+        diasDaSemana[1] = "Segunda-feira";
+        diasDaSemana[2] = "Terça-feira";
+        diasDaSemana[3] = "Quarta-feira";
+        diasDaSemana[4] = "Quinta-feira";
+        diasDaSemana[5] = "Sexta-feira";
+        diasDaSemana[6] = "Sábado";
+
+        var diaDaSemana = diasDaSemana[date.getDay()];
+
+        setDiaSemana(diaDaSemana);
+    }
 
     async function handleOs(e) {
         e.preventDefault();
@@ -138,7 +165,7 @@ export default function OrdemServico() {
                                         <InputGroup>
                                             <Input type="date" required id="txtDataAtendimento" 
                                                 value={dataatendimento}
-                                                onChange={e => setDataAtendimento(e.target.value)} />
+                                                onChange={handleDataAtendimento} />
 
                                                 <InputGroupAddon addonType="append">
                                                     <Button type="button" color= "secondary  fa fa-calendar fa-lg"></Button>
@@ -149,7 +176,8 @@ export default function OrdemServico() {
                                     <Label htmlFor="didasemana">Dia Da semana</Label>
                                         <Input type="text" required id="txtDiasemana" disabled
                                             value={diadasemana}
-                                            onChange={e => setDiaSemana(e.target.value)} />
+                                            // onChange={e => setDiaSemana(e.target.value)}
+                                        />
                                     </Col>
                                    
                                 </FormGroup>
