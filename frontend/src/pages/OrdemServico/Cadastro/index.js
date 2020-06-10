@@ -2,7 +2,7 @@ import React, { useState, useEffect, Component } from 'react';
 import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, InputGroup, InputGroupAddon, CardFooter, Form } from 'reactstrap';
 import { AppSwitch } from '@coreui/react'
 import '../../../global.css';
-import {numMask} from '../../../mask'
+import {numMask,reaisMask} from '../../../mask'
 import api from '../../../services/api';
 export default function OrdemServico() {
     
@@ -274,9 +274,9 @@ export default function OrdemServico() {
                                     <Col md="3">
                                             <Label htmlFor="valorPpagar">Valor a Pagar</Label>
                                             <InputGroup>
-                                                <Input type="number" id="txtValorPagar" placeholder="00,00"
+                                                <Input type="text" id="txtValorPagar" placeholder="R$00,00"
                                                     value={valorapagar}
-                                                    onChange={e => setValorPagar(e.target.value)} />                                                 
+                                                    onChange={e => setValorPagar(reaisMask(e.target.value))} />                                                 
                                                     <InputGroupAddon addonType="append">                                                
                                                         <Button type="button" color= "secondary fa fa-money"></Button>
                                                     </InputGroupAddon>
@@ -285,9 +285,9 @@ export default function OrdemServico() {
                                     <Col md="3">
                                         <Label htmlFor="valorReceber">Valor a Receber</Label>
                                         <InputGroup>
-                                            <Input type="number" id="txtValorReceber" placeholder="00,00"
+                                            <Input type="text" id="txtValorReceber" placeholder="R$00,00"
                                                 value={valorareceber}
-                                                onChange={e => setValorReceber(e.target.value)} />
+                                                onChange={e => setValorReceber(reaisMask(e.target.value))} />
                                                 <InputGroupAddon addonType="append">
                                                     <Button type="button" color= "secondary fa fa-money"></Button>
                                                 </InputGroupAddon>
@@ -309,9 +309,9 @@ export default function OrdemServico() {
                                     <Col md="3">
                                         <Label htmlFor="totalpagar">Total a pagar</Label>
                                         <InputGroup>
-                                            <Input type="number" id="txtTotalPagar" placeholder="00,00"
+                                            <Input type="text" id="txtTotalPagar" placeholder="R$00,00"
                                                 value={totalapagar}
-                                                onChange={e => setTotalPagar(e.target.value)} />
+                                                onChange={e => setTotalPagar(reaisMask(e.target.value))} />
                                             <InputGroupAddon addonType="append">
                                                 <Button type="button" color= "secondary fa fa-money"></Button>
                                             </InputGroupAddon>
@@ -320,9 +320,9 @@ export default function OrdemServico() {
                                         <Col md="3">
                                             <Label htmlFor="totalreceber">Total a Receber</Label>
                                             <InputGroup>
-                                                <Input type="number" id="txtTotalReceber" placeholder="00,00"
+                                                <Input type="text" id="txtTotalReceber" placeholder="R$00,00"
                                                     value={totalareceber}
-                                                    onChange={e => setTotalaReceber(e.target.value)} />
+                                                    onChange={e => setTotalaReceber(reaisMask(e.target.value))} />
                                                 <InputGroupAddon addonType="append">
                                                     <Button type="button" color= "secondary fa fa-money"></Button>
                                                 </InputGroupAddon>
@@ -331,9 +331,9 @@ export default function OrdemServico() {
                                     <Col md="3">
                                             <Label htmlFor="custoAdicional">Custo Adicional</Label>
                                             <InputGroup>
-                                                <Input type="number" id="txtCrustoAdicional" placeholder="00,00"
+                                                <Input type="text" id="txtCrustoAdicional" placeholder="R$00,00"
                                                     value={custoadicional}
-                                                    onChange={e => setCustoAdicional(e.target.value)} />
+                                                    onChange={e => setCustoAdicional(reaisMask(e.target.value))} />
                                                 <InputGroupAddon addonType="append">
                                                     <Button type="button" color= "secondary fa fa-money"></Button>
                                                 </InputGroupAddon>

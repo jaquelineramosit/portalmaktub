@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, InputGroup , CardFooter, Form, InputGroupAddon } from 'reactstrap';
 import { AppSwitch } from '@coreui/react'
+import {reaisMask} from '../../../mask'
 import '../../../global.css';
 import api from '../../../../src/services/api';
 
@@ -70,16 +71,16 @@ export default function TipoProjeto() {
                                     </Col>
                                     <Col md="3">
                                         <Label htmlFor="despesa">Despesa</Label>
-                                        <Input type="number" required id="txtDespesa" placeholder="insira a despesa do projeto"
+                                        <Input type="text" required id="txtDespesa" placeholder="R$00,00"
                                             value={despesa}
-                                            onChange={e => setDespesa(e.target.value)}
+                                            onChange={e => setDespesa(reaisMask(e.target.value))}
                                         />
                                     </Col>
                                     <Col md="3">
                                         <Label htmlFor="receita">Receita</Label>
-                                        <Input type="number" required id="txtReceita" placeholder="Digite a receita do projeto"
+                                        <Input type="text" required id="txtReceita" placeholder="R$00,00"
                                             value={receita}
-                                            onChange={e => setReceita(e.target.value)} />
+                                            onChange={e => setReceita(reaisMask(e.target.value))} />
                                     </Col>
                                 </FormGroup>
                                 <FormGroup row>
@@ -97,9 +98,9 @@ export default function TipoProjeto() {
                                     <Col md="3">
                                         <Label htmlFor="valorHoraCobrado">Valor hora Cobrado</Label>
                                         <InputGroup>    
-                                            <Input type="number" required id="txtValorHoraCobrado" placeholder="00,00"
+                                            <Input type="text" required id="txtValorHoraCobrado" placeholder="R$00,00"
                                             value={valorhoracobrado}
-                                            onChange={e => setValorHoraCobrado(e.target.value)} />
+                                            onChange={e => setValorHoraCobrado(reaisMask(e.target.value))} />
                                            <InputGroupAddon addonType="append">
                                                 <Button type="button" color= "secondary fa fa-money"></Button>
                                             </InputGroupAddon>
@@ -108,9 +109,9 @@ export default function TipoProjeto() {
                                     <Col md="3">
                                         <Label htmlFor="valorHoraTecnico">Valor hora Técnico</Label>
                                         <InputGroup>
-                                            <Input id="txtValorHoraTecnico" required type="number" placeholder="00,00"
+                                            <Input id="txtValorHoraTecnico" required type="text" placeholder="R$00,00"
                                             value={valorhoratecnico}
-                                            onChange={e => setValorHoraTecnico(e.target.value)} /> 
+                                            onChange={e => setValorHoraTecnico(reaisMask(e.target.value))} /> 
                                             <InputGroupAddon addonType="append">
                                                 <Button type="button" color= "secondary fa fa-money"></Button>
                                             </InputGroupAddon>
