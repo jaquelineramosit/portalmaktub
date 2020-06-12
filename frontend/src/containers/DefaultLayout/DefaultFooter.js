@@ -16,7 +16,7 @@ class DefaultFooter extends Component {
     return (
       <React.Fragment>
         <span><a href="https://www.efatha.com.br">Portal Maktub</a> &copy; 2020.</span>
-        <span className="ml-auto">Desenvolvido por <a href="https://www.codefour.com.br">Code 4 - Software House</a></span>
+        <span className="ml-auto">Desenvolvido por <a href="https://www.codefour.com.br">Maktub</a></span>
       </React.Fragment>
     );
   }

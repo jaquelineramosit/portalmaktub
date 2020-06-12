@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, InputGroup, InputGroupAddon, CardFooter, Form } from 'reactstrap';
 import { AppSwitch } from '@coreui/react'
 import '../../../global.css';
+import {reaisMask} from '../../../mask'
 import api from '../../../../src/services/api';
 
 export default function Adiantamentoos() {
@@ -88,7 +89,7 @@ export default function Adiantamentoos() {
                                         <Label htmlFor="statusAtendimentoId">Status do Adiantamento</Label>
                                         <Input type="select" required name="select" id="cboStatusAdiantamentoId" multiple={false}
                                             value={statusadiantamentoid}
-                                            onChange={e => setStatusAdiantamentoId(e.target.value)}>>
+                                            onChange={e => setStatusAdiantamentoId(e.target.value)}>
                                                 <option value={undefined} defaultValue>Selecione...</option>
                                             {statusAdiantamentos.map(statusAdiantamento => (
                                                 <option value={statusAdiantamento.id}>{statusAdiantamento.status}</option>
@@ -126,9 +127,9 @@ export default function Adiantamentoos() {
                                     <Col md="4">
                                         <Label htmlFor="valorAdiantamento">Valor do Adiantamento</Label>
                                         <InputGroup>
-                                            <Input type="number" required id="txtValorAdiantamento" placeholder="00,00"
+                                            <Input type="text" required id="txtValorAdiantamento" placeholder="00,00"
                                                 value={valoradiantamento}
-                                                onChange={e => setValorAdiantamento(e.target.value)} >
+                                                onChange={e => setValorAdiantamento(reaisMask(e.target.value))} >
                                             </Input>
                                             <InputGroupAddon addonType="append">
                                                 <Button type="button" color="secondary  fa fa-money"></Button>
