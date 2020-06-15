@@ -3,7 +3,6 @@ const getDate = require('../../utils/getDate');
 
 module.exports = {
     async getAll (request, response) {
-        const { page = 1 } = request.query;
         const [count] = await connection('ordemservico').count();
         const ordemservico = await connection('ordemservico')
         
@@ -11,8 +10,6 @@ module.exports = {
             .join('tipoprojeto', 'tipoprojeto.id', '=', 'ordemservico.tipoprojetoid')
             .join('tecnico', 'tecnico.id', '=', 'ordemservico.tecnicoid')
             .join('usuario', 'usuario.id', '=', 'ordemservico.usuarioid')
-            .limit(20) //limita o retorno dos registros
-            .offset((page - 1) * 20) //paginacao
             .select([
                 'ordemservico.*',
                 'clientefilial.nomefilial',
