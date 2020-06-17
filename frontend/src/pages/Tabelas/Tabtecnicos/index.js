@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Card, CardBody, CardHeader, Col, Pagination, PaginationItem, PaginationLink, Row, Table, Badge } from 'reactstrap';
+import { Card, CardBody, CardHeader, Col, Row, Badge } from 'reactstrap';
 import '../../../global.css';
 import api from '../../../services/api';
-var currentPage;
-var previousPage;
-var nextPage;
-var idPag = '';
+import DataTable from 'react-data-table-component';
 
 export default function ListaTecnicos() {
     const [tecnico, setTecnico] = useState([]);
@@ -23,67 +20,69 @@ export default function ListaTecnicos() {
             setTotal(response.data);
         })
     }, [1]);
-    //Logica para mostrar os numeros de pagina
-    const pageNumbers = [];
-    for (let i = 1; i <= (total / 20); i++) {
-        pageNumbers.push(i);
-    }
-
-    if (total % 20 >= 0) {
-        pageNumbers.push(pageNumbers.length + 1);
-    }
-
 
     useEffect(() => {
         api.get('tecnico', {
             headers: {
                 Authorization: 1,
-            },
-            params: {
-                page: currentPage
             }
         }).then(response => {
             setTecnico(response.data);
         })
     }, [usuarioId]);
-    //Paginação
-    async function handlePage(e) {
-        e.preventDefault();
+    const data = tecnico;
 
-        idPag = e.currentTarget.name;
+    const columns = [
+        {
+            name: 'Nome Técnico',
+            selector: 'nometecnico',
+            sortable: true,
 
-        if (idPag == 'btnPrevious') {
-            currentPage = previousPage;
-            previousPage = currentPage - 1;
-            nextPage = currentPage + 1;
-        } else if (idPag == 'btnNext') {
-            // se existe, quer dizer que foi apertado após qualquer numero
-            if (currentPage) {
-                currentPage = nextPage;
-                previousPage = currentPage - 1;
-                nextPage = currentPage + 1;
-            } else { // next apertado antes de qlqr numero (1º load + next em vez d pag 2)
-                currentPage = 2;
-                nextPage = 3;
-                previousPage = 1;
-            };
-        } else {
-            currentPage = parseInt(e.currentTarget.id);
-            previousPage = currentPage - 1;
-            nextPage = currentPage + 1;
-        };
 
-        api.get('tecnico', {
-            headers: {
-                Authorization: 1,
-            },
-            params: {
-                page: currentPage
-            }
-        }).then(response => {
-            setTecnico(response.data);
-        });
-    }
+        },
+        {
+            name: 'Celular',
+            selector: 'telefonecelular',
+            sortable: true,
+            left: true,
+
+        },
+        {
+            name: 'Cidade',
+            selector: 'cidade',
+            sortable: true,
+            left: true,
+
+        },
+        {
+            name: 'Estado',
+            selector: 'estado',
+            sortable: true,
+            left: true,
+
+        },
+        {
+            name: 'Projeto',
+            selector: 'desctipotecnico',
+            sortable: true,
+            left: true,
+
+        },
+        {
+            name: 'Status',
+            sortable: true,
+            left: true,
+            cell: row => <Badge color="success">Ativo</Badge>,
+        },
+        {
+            name: 'Ações',
+            sortable: true,
+            right: true,
+            cell: row => <Link to={`tecnico/${row.id}`} className="btn-sm btn-primary"><i className="fa fa-pencil fa-lg mr-1"></i>
+            Editar</Link>
+        },
+    ];
+
 
     return (
         <div className="animated-fadeIn">
@@ -99,54 +98,15 @@ export default function ListaTecnicos() {
                                             </Link>
                         </CardHeader>
                         <CardBody>
-                            <Table responsive striped>
-                                <thead>
-                                    <tr>
-                                        <th>Nome Técnico</th>
-                                        <th>Celular</th>
-                                        <th>Cidade</th>
-                                        <th>Estado</th>
-                                        <th>Projeto</th>
-                                        <th>Ativo</th>
-                                        <th style={{ textAlign: 'right' }}>Ações</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {tecnico.map(tecnico => (
-                                        <tr>
-                                            <td>{tecnico.nometecnico}</td>
-                                            <td>{tecnico.telefonecelular}</td>
-                                            <td>{tecnico.cidade}</td>
-                                            <td>{tecnico.estado}</td>
-                                            <td>{tecnico.desctipotecnico}</td>
-                                            <td><Badge color="success">Ativo</Badge></td>
-                                            <td style={{ textAlign: 'right' }}>
-                                                <Link to={`tecnico/${tecnico.id}`} className="btn-sm btn-primary">
-                                                    <i className="fa fa-pencil fa-lg mr-1"></i>
-                                                    Editar
-                                                </Link>
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </Table>
-                            <Pagination>
-                                <PaginationItem>
-                                    <PaginationLink previous id="btnPrevious" name="btnPrevious" onClick={e => handlePage(e)} tag="button">
-                                        <i className="fa fa-angle-double-left"></i>
-                                    </PaginationLink>
-                                </PaginationItem>
-                                {pageNumbers.map(number => (
-                                    <PaginationItem key={'pgItem' + number} >
-                                        <PaginationLink id={number} name={number} onClick={e => handlePage(e)} tag="button">{number}</PaginationLink>
-                                    </PaginationItem>
-                                ))}
-                                <PaginationItem>
-                                    <PaginationLink next id="btnNext" name="btnNext" onClick={e => handlePage(e)} next tag="button">
-                                        <i className="fa fa-angle-double-right"></i>
-                                    </PaginationLink>
-                                </PaginationItem>
-                            </Pagination>
+                            <DataTable className="mt-n3"
+                                title="Técnicos"
+                                columns={columns}
+                                data={data}
+                                striped={true}
+                                highlightOnHover={true}
+                                responsive={true}
+                                pagination={true}
+                            />
                         </CardBody>
                     </Card>
                 </Col>

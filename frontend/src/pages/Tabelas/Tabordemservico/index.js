@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Card, CardBody, CardHeader, Col, Pagination, PaginationItem, PaginationLink, Row, Table, Badge } from 'reactstrap';
+import { Card, CardBody, CardHeader, Col, Row, Badge } from 'reactstrap';
 import api from '../../../services/api';
-import DataTable, { createTheme, } from 'react-data-table-component';
+import DataTable from 'react-data-table-component';
 
 
 export default function ListaOrdemservico(props) {
@@ -37,19 +37,19 @@ export default function ListaOrdemservico(props) {
             name: 'Número de OS',
             selector: 'numeroos',
             sortable: true,
-           
+
         },
         {
             name: 'Filial',
             selector: 'nomefilial',
             sortable: true,
-            
+
         },
         {
             name: 'Data Atendimento',
             selector: 'dataatendimento',
             sortable: true,
-           
+
         },
         {
             name: 'Técnico',
@@ -73,13 +73,11 @@ export default function ListaOrdemservico(props) {
         {
             name: 'Ações',
             sortable: true,
-            center: true,
-            cell: row => <Link to={`ordem-servico`} className="btn-sm btn-primary"><i className="fa fa-pencil fa-lg mr-1"></i>
+            right: true,
+            cell: row => <Link to={`ordem-servico/${row.id}`} className="btn-sm btn-primary"><i className="fa fa-pencil fa-lg mr-1"></i>
             Editar</Link>
         },
     ];
-
-
 
     return (
         <div className="animated-fadeIn">
@@ -101,10 +99,7 @@ export default function ListaOrdemservico(props) {
                                 striped={true}
                                 highlightOnHover={true}
                                 responsive={true}
-                                pagination={true}
-                                paginationDefaultPage="1"
-                                fixedHeader={true}
-
+                                pagination={true}                               
                             />
                         </CardBody>
                     </Card>

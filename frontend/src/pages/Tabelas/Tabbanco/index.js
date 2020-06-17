@@ -1,88 +1,64 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Card, CardBody, CardHeader, Col, Pagination, PaginationItem, PaginationLink, Row, Table,Badge } from 'reactstrap';
+import { Card, CardBody, CardHeader, Col, Row, Badge } from 'reactstrap';
 import api from '../../../services/api';
-var currentPage;
-var previousPage;
-var nextPage;
-var idPag = '';
+import DataTable from 'react-data-table-component';
 
 export default function ListaBanco() {
     const [banco, setBanco] = useState([]);
     const [total, setTotal] = useState(0);
     const usuarioId = localStorage.getItem('userId');
-  //logica para pegar o total
-  useEffect(() => {
-    api.get('bancoCount', {
-        headers: {
-            Authorization: 1,
+    //logica para pegar o total
+    useEffect(() => {
+        api.get('bancoCount', {
+            headers: {
+                Authorization: 1,
+            },
+
+        }).then(response => {
+            setTotal(response.data);
+        })
+    }, [1]);
+    useEffect(() => {
+        api.get('banco', {
+            headers: {
+                Authorization: 1,
+            }
+        }).then(response => {
+            setBanco(response.data);
+        })
+    }, [usuarioId]);
+    const data = banco;
+
+    const columns = [
+        {
+            name: 'Codigo do Banco',
+            selector: 'codbanco',
+            sortable: true,
+
+
         },
+        {
+            name: 'Nome do Banco',
+            selector: 'nomebanco',
+            sortable: true,
+            left: true,
 
-    }).then(response => {
-        setTotal(response.data);
-    })
-}, [1]);
-//Logica para mostrar os numeros de pagina
-const pageNumbers = [];
-for (let i = 1; i <= (total / 20); i++) {
-    pageNumbers.push(i);
-}
-
-if (total % 20 > 0) {
-    pageNumbers.push(pageNumbers.length + 1);
-}
-
-
-useEffect(() => {
-    api.get('banco', {
-        headers: {
-            Authorization: 1,
         },
-        params: {
-            page: currentPage
-        }
-    }).then(response => {
-        setBanco(response.data);
-    })
-}, [usuarioId]);
-//Paginação
-async function handlePage(e) {
-    e.preventDefault();
-
-    idPag = e.currentTarget.name;
-
-    if (idPag == 'btnPrevious') {
-        currentPage = previousPage;
-        previousPage = currentPage - 1;
-        nextPage = currentPage + 1;
-    } else if (idPag == 'btnNext') {
-        // se existe, quer dizer que foi apertado após qualquer numero
-        if (currentPage) {
-            currentPage = nextPage;
-            previousPage = currentPage - 1;
-            nextPage = currentPage + 1;
-        } else { // next apertado antes de qlqr numero (1º load + next em vez d pag 2)
-            currentPage = 2;
-            nextPage = 3;
-            previousPage = 1;
-        };
-    } else {
-        currentPage = parseInt(e.currentTarget.id);
-        previousPage = currentPage - 1;
-        nextPage = currentPage + 1;
-    };
-
-    api.get('banco', {
-        headers: {
-            Authorization: 1,
+        {
+            name: 'Status',
+            sortable: true,
+            left: true,
+            cell: row => <Badge color="success">Ativo</Badge>,
         },
-        params: {
-            page: currentPage
-        }
-    }).then(response => {
-        setBanco(response.data);
-    });
-}
+        {
+            name: 'Ações',
+            sortable: true,
+            right: true,
+            cell: row => <Link to={`banco/${row.id}`} className="btn-sm btn-primary"><i className="fa fa-pencil fa-lg mr-1"></i>
+            Editar</Link>
+        },
+    ];
     return (
         <div className="animated-fadeIn">
             <Row>
@@ -97,48 +73,15 @@ async function handlePage(e) {
                                             </Link>
                         </CardHeader>
                         <CardBody>
-                            <Table responsive striped>
-                                <thead>
-                                    <tr>
-                                        <th>Codigo do Banco</th>
-                                        <th>Nome do Banco</th>
-                                        <th>Ativo</th>
-                                        <th style={{ textAlign: 'right' }}>Ações</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {banco.map(banco => (
-                                        <tr>
-                                            <td>{banco.codbanco}</td>
-                                            <td>{banco.nomebanco}</td>
-                                            <td><Badge color="success">Ativo</Badge></td>
-                                            <td style={{ textAlign: 'right' }}>
-                                                <Link to={`banco/${banco.id}`} className="btn-sm btn-primary">
-                                                    <i className="fa fa-pencil fa-lg mr-1"></i>
-                                                    Editar
-                                                </Link>
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </Table>
-                            <Pagination>
-                                <PaginationItem>
-                                    <PaginationLink previous id="btnPrevious" name="btnPrevious" onClick={e => handlePage(e)} tag="button">
-                                        <i className="fa fa-angle-double-left"></i>
-                                    </PaginationLink>
-                                </PaginationItem>
-                                {pageNumbers.map(number => (
-                                    <PaginationItem key={'pgItem' + number} >
-                                        <PaginationLink id={number} name={number} onClick={e => handlePage(e)} tag="button">{number}</PaginationLink>
-                                    </PaginationItem>
-                                ))}
-                                <PaginationItem>
-                                    <PaginationLink next id="btnNext" name="btnNext" onClick={e => handlePage(e)} next tag="button">
-                                        <i className="fa fa-angle-double-right"></i>
-                                    </PaginationLink>
-                                </PaginationItem>
-                            </Pagination>
+                            <DataTable className="mt-n3"
+                                title="Bancos"
+                                columns={columns}
+                                data={data}
+                                striped={true}
+                                highlightOnHover={true}
+                                responsive={true}
+                                pagination={true}
+                            />
                         </CardBody>
                     </Card>
                 </Col>

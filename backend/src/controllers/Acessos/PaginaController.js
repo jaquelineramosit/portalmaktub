@@ -2,12 +2,9 @@ const connection = require('../../database/connection');
 const getDate = require('../../utils/getDate');
 module.exports = {
     async getAll (request, response) {
-        const { page = 1 } = request.query;
         const paginas = await connection('pagina')
         .join('modulo', 'modulo.id', '=', 'pagina.moduloid')
         .join('usuario', 'usuario.id', '=', 'pagina.usuarioid') 
-        .limit(20) //limita o retorno dos registros
-        .offset((page - 1) * 20) //paginacao
         .select(['pagina.*', 'modulo.nomemodulo', 'usuario.nome']);
     
         return response.json(paginas);

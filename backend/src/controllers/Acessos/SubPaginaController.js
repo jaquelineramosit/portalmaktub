@@ -3,12 +3,10 @@ const getDate = require('../../utils/getDate');
 
 module.exports = {
     async getAll (request, response) {
-        const { page = 1 } = request.query;
+        
         const subpagina = await connection('subpagina')
         .join('pagina', 'pagina.id', '=', 'subpagina.paginaid')
         .join('usuario', 'usuario.id', '=', 'subpagina.usuarioid')
-        .limit(20) //limita o retorno dos registros
-        .offset((page - 1) * 20) //paginacao
         .select(['subpagina.*', 'pagina.nomepagina', 'usuario.nome']);
     
         return response.json(subpagina);

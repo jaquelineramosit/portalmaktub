@@ -2,14 +2,11 @@ const connection = require('../../database/connection');
 const getDate = require('../../utils/getDate');
 module.exports = {
     async getAll (request, response) {
-        const { page = 1 } = request.query;
         const dadosbancarios = await connection('dadosbancarios')
         .join('tecnico', 'tecnico.id', '=', 'dadosbancarios.tecnicoid')   
         .join('banco', 'banco.id', '=', 'dadosbancarios.bancoid')   
         .join('tipoconta', 'tipoconta.id', '=', 'dadosbancarios.tipocontaid') 
         .join('usuario', 'usuario.id', '=', 'dadosbancarios.usuarioid')   
-        .limit(20) //limita o retorno dos registros
-        .offset((page - 1) * 20) //paginacao
         .select([
             'dadosbancarios.*',
             'tecnico.nometecnico',

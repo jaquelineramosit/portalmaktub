@@ -1,12 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Badge, Card, CardBody, CardHeader, Col, Pagination, PaginationItem, PaginationLink, Row, Table, Input, FormGroup } from 'reactstrap';
+import { Badge, Card, CardBody, CardHeader, Col, Row } from 'reactstrap';
 import api from '../../../services/api';
-var currentPage;
-var previousPage;
-var nextPage;
-var idPag = '';
-
+import DataTable from 'react-data-table-component';
 
 export default function ListaPermissaoacesso() {
     const [permissaoacesso, setPermissaoacesso] = useState([]);
@@ -22,68 +18,68 @@ export default function ListaPermissaoacesso() {
             setTotal(response.data);
         })
     }, [1]);
-    //Logica para mostrar os numeros de pagina
-    const pageNumbers = [];
-    for (let i = 1; i <= (total / 20); i++) {
-        pageNumbers.push(i);
-    }
-
-    if (total % 20 > 0) {
-        pageNumbers.push(pageNumbers.length + 1);
-    }
-
 
     useEffect(() => {
         api.get('permissao-acesso', {
             headers: {
                 Authorization: 1,
-            },
-            params: {
-                page: currentPage
             }
         }).then(response => {
             setPermissaoacesso(response.data);
         })
     }, [usuarioId]);
-    //Paginação
-    async function handlePage(e) {
-        e.preventDefault();
+    const data = permissaoacesso;
 
-        idPag = e.currentTarget.name;
+    const columns = [
+        {
+            name: 'Perfil Acesso',
+            selector: 'nomeperfil',
+            sortable: true,
 
-        if (idPag == 'btnPrevious') {
-            currentPage = previousPage;
-            previousPage = currentPage - 1;
-            nextPage = currentPage + 1;
-        } else if (idPag == 'btnNext') {
-            // se existe, quer dizer que foi apertado após qualquer numero
-            if (currentPage) {
-                currentPage = nextPage;
-                previousPage = currentPage - 1;
-                nextPage = currentPage + 1;
-            } else { // next apertado antes de qlqr numero (1º load + next em vez d pag 2)
-                currentPage = 2;
-                nextPage = 3;
-                previousPage = 1;
-            };
-        } else {
-            currentPage = parseInt(e.currentTarget.id);
-            previousPage = currentPage - 1;
-            nextPage = currentPage + 1;
-        };
 
-        api.get('permissao-acesso', {
-            headers: {
-                Authorization: 1,
-            },
-            params: {
-                page: currentPage
-            }
-        }).then(response => {
-            setPermissaoacesso(response.data);
-        });
-    }
+        },
+        {
+            name: 'Módulo',
+            selector: 'nomemodulo',
+            sortable: true,
+            left: true,
 
+        },
+        {
+            name: 'Página',
+            selector: 'nomepagina',
+            sortable: true,
+            left: true,
+
+        },
+        {
+            name: 'Sub Página',
+            selector: 'nomesubpagina',
+            sortable: true,
+            left: true,
+
+        },
+        {
+            name: 'Função',
+            selector: 'nomefuncao',
+            sortable: true,
+            left: true,
+
+        },
+        {
+            name: 'Status',
+            sortable: true,
+            center: true,
+            cell: row => <Badge color="success">Ativo</Badge>,
+        },
+        {
+            name: 'Ações',
+            sortable: true,
+            right: true,
+            cell: row => <Link to={`permissao-acesso/${row.id}`} className="btn-sm btn-primary"><i className="fa fa-pencil fa-lg mr-1"></i>
+            Editar</Link>
+        },
+    ];
     return (
         <div className="animated-fadeIn">
             <Row>
@@ -100,55 +96,15 @@ export default function ListaPermissaoacesso() {
 
                         </CardHeader>
                         <CardBody>
-                            <Table responsive striped>
-                                <thead>
-                                    <tr>
-                                        <th>Perfil Acesso</th>
-                                        <th>Módulo</th>
-                                        <th>Página</th>
-                                        <th>Sub Página</th>
-                                        <th>Função</th>
-                                        <th>Ativo</th>
-                                        <th style={{ textAlign: 'right' }}>Ações</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {permissaoacesso.map(permissaoacesso => (
-                                        <tr>
-                                            <td>{permissaoacesso.nomeperfil}</td>
-                                            <td>{permissaoacesso.nomemodulo}</td>
-                                            <td>{permissaoacesso.nomepagina}</td>
-                                            <td>{permissaoacesso.nomesubpagina}</td>
-                                            <td>{permissaoacesso.nomefuncao}</td>
-                                            <td><Badge color="success">Ativo</Badge></td>
-                                            <td style={{ textAlign: 'right' }}>
-                                                <Link to={`permissao-acesso/${permissaoacesso.id}`} className="btn-sm btn-primary">
-                                                    <i className="fa fa-pencil fa-lg mr-1"></i>
-                                                    Editar
-                                                </Link>
-
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </Table>
-                            <Pagination>
-                                <PaginationItem>
-                                    <PaginationLink previous id="btnPrevious" name="btnPrevious" onClick={e => handlePage(e)} tag="button">
-                                        <i className="fa fa-angle-double-left"></i>
-                                    </PaginationLink>
-                                </PaginationItem>
-                                {pageNumbers.map(number => (
-                                    <PaginationItem key={'pgItem' + number} >
-                                        <PaginationLink id={number} name={number} onClick={e => handlePage(e)} tag="button">{number}</PaginationLink>
-                                    </PaginationItem>
-                                ))}
-                                <PaginationItem>
-                                    <PaginationLink next id="btnNext" name="btnNext" onClick={e => handlePage(e)} next tag="button">
-                                        <i className="fa fa-angle-double-right"></i>
-                                    </PaginationLink>
-                                </PaginationItem>
-                            </Pagination>
+                            <DataTable className="mt-n3"
+                                title="Permissões de Acesso"
+                                columns={columns}
+                                data={data}
+                                striped={true}
+                                highlightOnHover={true}
+                                responsive={true}
+                                pagination={true}
+                            />
                         </CardBody>
                     </Card>
                 </Col>

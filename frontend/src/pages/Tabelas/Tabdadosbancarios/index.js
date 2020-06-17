@@ -1,11 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Badge, Card, CardBody, CardHeader, Col, Pagination, PaginationItem, PaginationLink, Row, Table, Input, FormGroup } from 'reactstrap';
+import { Badge, Card, CardBody, CardHeader, Col, Row } from 'reactstrap';
 import api from '../../../services/api';
-var currentPage;
-var previousPage;
-var nextPage;
-var idPag = '';
+import DataTable from 'react-data-table-component';
 
 export default function ListaDadosbancarios() {
     const [dadosbancarios, setDosbancarios] = useState([]);
@@ -22,68 +19,75 @@ export default function ListaDadosbancarios() {
             setTotal(response.data);
         })
     }, [1]);
-    //Logica para mostrar os numeros de pagina
-    const pageNumbers = [];
-    for (let i = 1; i <= (total / 20); i++) {
-        pageNumbers.push(i);
-    }
-
-    if (total % 20 > 0) {
-        pageNumbers.push(pageNumbers.length + 1);
-    }
-
 
     useEffect(() => {
         api.get('dados-bancarios', {
             headers: {
                 Authorization: 1,
-            },
-            params: {
-                page: currentPage
             }
         }).then(response => {
             setDosbancarios(response.data);
         })
     }, [usuarioId]);
-    //Paginação
-    async function handlePage(e) {
-        e.preventDefault();
+    const data = dadosbancarios;
 
-        idPag = e.currentTarget.name;
+    const columns = [
+        {
+            name: 'Técnico',
+            selector: 'nometecnico',
+            sortable: true,
 
-        if (idPag == 'btnPrevious') {
-            currentPage = previousPage;
-            previousPage = currentPage - 1;
-            nextPage = currentPage + 1;
-        } else if (idPag == 'btnNext') {
-            // se existe, quer dizer que foi apertado após qualquer numero
-            if (currentPage) {
-                currentPage = nextPage;
-                previousPage = currentPage - 1;
-                nextPage = currentPage + 1;
-            } else { // next apertado antes de qlqr numero (1º load + next em vez d pag 2)
-                currentPage = 2;
-                nextPage = 3;
-                previousPage = 1;
-            };
-        } else {
-            currentPage = parseInt(e.currentTarget.id);
-            previousPage = currentPage - 1;
-            nextPage = currentPage + 1;
-        };
 
-        api.get('dados-bancarios', {
-            headers: {
-                Authorization: 1,
-            },
-            params: {
-                page: currentPage
-            }
-        }).then(response => {
-            setDosbancarios(response.data);
-        });
-    }
+        },
+        {
+            name: 'Titular da Conta',
+            selector: 'titularconta',
+            sortable: true,
+            center: true,
 
+        },
+        {
+            name: 'Banco',
+            selector: 'nomebanco',
+            sortable: true,
+            center: true,
+
+        },
+        {
+            name: 'Tipo de Conta',
+            selector: 'nometipoconta',
+            sortable: true,
+            center: true,
+
+        },
+        {
+            name: 'Agência',
+            selector: 'agencia',
+            sortable: true,
+            center: true,
+
+        },
+        {
+            name: 'Conta',
+            selector: 'conta',
+            sortable: true,
+            center: true,
+
+        },
+        {
+            name: 'Status',
+            sortable: true,
+            center: true,
+            cell: row => <Badge color="success">Ativo</Badge>,
+        },
+        {
+            name: 'Ações',
+            sortable: true,
+            right: true,
+            cell: row => <Link to={`dados-bancarios/${row.id}`} className="btn-sm btn-primary"><i className="fa fa-pencil fa-lg mr-1"></i>
+            Editar</Link>
+        },
+    ];
 
     return (
         <div className="animated-fadeIn">
@@ -101,57 +105,15 @@ export default function ListaDadosbancarios() {
 
                         </CardHeader>
                         <CardBody>
-                            <Table responsive striped>
-                                <thead>
-                                    <tr>
-                                        <th>Técnico</th>
-                                        <th>Titular da Conta</th>
-                                        <th>Banco</th>
-                                        <th>Tipo de Conta</th>
-                                        <th>Agência</th>
-                                        <th>Conta</th>
-                                        <th>Ativo</th>
-                                        <th style={{ textAlign: 'right' }}>Ações</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {dadosbancarios.map(dadosbancarios => (
-                                        <tr>
-                                            <td>{dadosbancarios.nometecnico}</td>
-                                            <td>{dadosbancarios.titularconta}</td>
-                                            <td>{dadosbancarios.nomebanco}</td>
-                                            <td>{dadosbancarios.nometipoconta}</td>
-                                            <td>{dadosbancarios.agencia}</td>
-                                            <td>{dadosbancarios.conta}</td>
-                                            <td><Badge color="success">Ativo</Badge></td>
-                                            <td style={{ textAlign: 'right' }}>
-                                                <Link to={`dados-bancarios/${dadosbancarios.id}`} className="btn-sm btn-primary">
-                                                    <i className="fa fa-pencil fa-lg mr-1"></i>
-                                                    Editar
-                                                </Link>
-
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </Table>
-                            <Pagination>
-                                <PaginationItem>
-                                    <PaginationLink previous id="btnPrevious" name="btnPrevious" onClick={e => handlePage(e)} tag="button">
-                                        <i className="fa fa-angle-double-left"></i>
-                                    </PaginationLink>
-                                </PaginationItem>
-                                {pageNumbers.map(number => (
-                                    <PaginationItem key={'pgItem' + number} >
-                                        <PaginationLink id={number} name={number} onClick={e => handlePage(e)} tag="button">{number}</PaginationLink>
-                                    </PaginationItem>
-                                ))}
-                                <PaginationItem>
-                                    <PaginationLink next id="btnNext" name="btnNext" onClick={e => handlePage(e)} next tag="button">
-                                        <i className="fa fa-angle-double-right"></i>
-                                    </PaginationLink>
-                                </PaginationItem>
-                            </Pagination>
+                            <DataTable className="mt-n3"
+                                title="Dados Bancários"
+                                columns={columns}
+                                data={data}
+                                striped={true}
+                                highlightOnHover={true}
+                                responsive={true}
+                                pagination={true}
+                            />
                         </CardBody>
                     </Card>
                 </Col>
