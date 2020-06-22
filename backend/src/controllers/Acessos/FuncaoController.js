@@ -3,8 +3,8 @@ const getDate = require('../../utils/getDate');
 module.exports = {
     async getAll (request, response) {
         const funcao = await connection('funcao')
-        .join('subpagina', 'subpagina.id', '=', 'funcao.subpaginaid')
-        .join('pagina', 'pagina.id', '=', 'funcao.paginaid')
+        .leftJoin('subpagina', 'subpagina.id', '=', 'funcao.subpaginaid')
+        .leftJoin('pagina', 'pagina.id', '=', 'funcao.paginaid')
         .join('usuario', 'usuario.id', '=', 'funcao.usuarioid')   
         .select([
             'funcao.*',
@@ -21,8 +21,8 @@ module.exports = {
 
         const funcao = await connection('funcao')
             .where('funcao.id', id)
-            .join('subpagina', 'subpagina.id', '=', 'funcao.subpaginaid')
-            .join('pagina', 'pagina.id', '=', 'funcao.paginaid')
+            .leftJoin('subpagina', 'subpagina.id', '=', 'funcao.subpaginaid')
+            .leftJoin('pagina', 'pagina.id', '=', 'funcao.paginaid')
             .join('usuario', 'usuario.id', '=', 'funcao.usuarioid')     
             .select([
                 'funcao.*',

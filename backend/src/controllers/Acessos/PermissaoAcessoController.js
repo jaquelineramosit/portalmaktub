@@ -6,8 +6,8 @@ module.exports = {
         .join('perfilacesso', 'perfilacesso.id', '=', 'permissaoacesso.perfilacessoid')
         .join('modulo', 'modulo.id', '=', 'permissaoacesso.moduloid')
         .join('pagina', 'pagina.id', '=', 'permissaoacesso.paginaid')
-        .join('subpagina', 'subpagina.id', '=', 'permissaoacesso.subpaginaid')
-        .join('funcao', 'funcao.id', '=', 'permissaoacesso.funcaoid')
+        .leftJoin('subpagina', 'subpagina.id', '=', 'permissaoacesso.subpaginaid')
+        .leftJoin('funcao', 'funcao.id', '=', 'permissaoacesso.funcaoid')
         .join('usuario', 'usuario.id', '=', 'permissaoacesso.usuarioid')
         .select([
             'permissaoacesso.*',
@@ -30,8 +30,8 @@ module.exports = {
             .join('perfilacesso', 'perfilacesso.id', '=', 'permissaoacesso.perfilacessoid')
             .join('modulo', 'modulo.id', '=', 'permissaoacesso.moduloid')
             .join('pagina', 'pagina.id', '=', 'permissaoacesso.paginaid')
-            .join('subpagina', 'subpagina.id', '=', 'permissaoacesso.subpaginaid')
-            .join('funcao', 'funcao.id', '=', 'permissaoacesso.funcaoid')
+            .leftJoin('subpagina', 'subpagina.id', '=', 'permissaoacesso.subpaginaid')
+            .leftJoin('funcao', 'funcao.id', '=', 'permissaoacesso.funcaoid')
             .join('usuario', 'usuario.id', '=', 'permissaoacesso.usuarioid')
             .select([
                 'permissaoacesso.*',
