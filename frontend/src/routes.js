@@ -110,13 +110,15 @@ const routes = [
 
   //Configuração
   { path: '/filiais', name: 'Filiais', component: Filiais },
-  { path: '/clientes', name: 'Clientes', component: Clientes },
+  { path: '/clientes',exact:true, name: 'Clientes', component: Clientes },
+  { path: '/clientes/:id', name: 'Clientes', component: Clientes },
   { path: '/bandeira', exact:true, name: 'Bandeira', component: Bandeira },
   { path: '/bandeira/:id', name: 'Bandeira', component: Bandeira },
   { path: '/parceiros', name: 'Parceiros', component: Parceiros },
   { path: '/tecnico', name: 'Tecnico', component: Tecnico },
   { path: '/tipo-tecnico', name: 'Tipo do Tecnico', component: Tipotecnico },
-  { path: '/disponibilidade', name: 'disponibilidade', component: Disponibilidade },
+  { path: '/disponibilidade', exact:true, name: 'disponibilidade', component: Disponibilidade },
+  { path: '/disponibilidade/:id', name: 'disponibilidade', component: Disponibilidade },
   { path: '/disponibilidade-tecnico', name: 'Disponibilidade do tecnico', component: Disponibilidadetecnico },
   { path: '/tipo-projeto', name: 'Tipo de Projeto', component: Tipoprojeto },
   { path: '/projeto-tecnico', name: 'Projeto X Tecnico', component: Projetotecnico },
@@ -136,8 +138,6 @@ const routes = [
   { path: '/status-pagamento/:id', name: 'Status de pagamento', component: Statuspagamento },
   
   
-
-
 
   //Ordem de serviço
 

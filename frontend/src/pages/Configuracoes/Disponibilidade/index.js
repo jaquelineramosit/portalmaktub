@@ -1,48 +1,85 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, CardFooter, Form } from 'reactstrap';
-import { AppSwitch } from '@coreui/react'
 import '../../../global.css';
 import api from '../../../../src/services/api';
 
-export default function Disponibilidade() {   
-    const [nomedisponibilidade, setNomeDisponibilidade] = useState('');
-    const [descricao, setDescricao] = useState('');
-    const [ativo, setAtivo] = useState(1);
+const Disponibilidade = (props) => {
+
+    var search = props.location.search;
+    var params = new URLSearchParams(search);
+    var action = params.get('action');
+    var disponibilidadeIdParam = props.match.params.id;
+
     const usuarioId = localStorage.getItem('userId');
-    
-    function handleSwitch(e) {
-        if (ativo === 1) {
-            setAtivo(0);
+    const localId = localStorage.getItem('localId');
+    const [formData, setFormData] = useState({
+        nomedisponibilidade: '',
+        descricao: '',
+        localId: localId,
+    });
+
+    useEffect(() => {
+        if (action === 'edit' && disponibilidadeIdParam !== '') {
+            api.get(`disponibilidade/${disponibilidadeIdParam}`).then(response => {
+                document.getElementById('txtDisponibilidade').value = response.data.nomedisponibilidade;
+                document.getElementById('txtDescricao').value = response.data.descricao;
+
+                setFormData({
+                    ...formData,
+                    nomedisponibilidade: response.data.nomedisponibilidade,
+                    descricao: response.data.descricao,
+                })
+            });
+        } else {
+            return;
         }
-        else {
-            setAtivo(1);
-        }
-    }
-    async function handleDisponibilidade(e) {
+    }, [disponibilidadeIdParam])
+
+    function handleInputChange(event) {
+        const { name, value } = event.target;
+
+        setFormData({ ...formData, [name]: value });
+    };
+
+    async function handleTicket(e) {
         e.preventDefault();
 
-        const data = {
-            nomedisponibilidade,
-            descricao,
-            ativo,
-        }
-        try {
-            const response = await api.post('disponibilidade', data, {
-                headers: {
-                    Authorization: 1,
+        const data = formData;
+
+        if (action === 'edit') {
+
+            try {
+                const response = await api.put(`/disponibilidade/${disponibilidadeIdParam}`, data, {
+                    headers: {
+                        Authorization: 1,
+                    }
+                });
+                alert(`Cadastro atualizado com sucesso.`);
+            } catch (err) {
+
+                alert('Erro na atualização, tente novamente.');
+            }
+
+        } else {
+
+            if (action === 'novo') {
+                try {
+                    const response = await api.post('disponibilidade', data, {
+                        headers: {
+                            Authorization: 1,
+                        }
+                    });
+                    alert(`Cadastro realizado com sucesso.`);
+                } catch (err) {
+
+                    alert('Erro no cadastro, tente novamente.');
                 }
-            });
-            alert(`Feito o cadastro com sucesso`);
-
-        } catch (err) {
-
-            alert('Erro no cadastro, tente novamente.');
+            }
         }
     }
-
     return (
         <div className="animated fadeIn">
-            <Form onSubmit={handleDisponibilidade}>
+            <Form onSubmit={handleTicket}>
                 <Row>
                     <Col xs="12" md="12">
                         <Card>
@@ -55,16 +92,16 @@ export default function Disponibilidade() {
                                     <Col md="4">
                                         <Label htmlFor="nomeDisponibilidade">Disponibilidade</Label>
                                         <Input type="text" required id="txtDisponibilidade" placeholder="Digite a Disponibilidade"
-                                            value={nomedisponibilidade}
-                                            onChange={e => setNomeDisponibilidade(e.target.value)} />
+                                            name="nomedisponibilidade"
+                                            onChange={handleInputChange} />
                                     </Col>                              
                                 </FormGroup>                
                                 <FormGroup row>
                                     <Col md="8">
                                         <Label>Descrição</Label>
-                                        <Input type="textarea" rows="5"  placeholder="Descreva o Tipo de Técnico inserido"
-                                            value={descricao}
-                                            onChange={e => setDescricao(e.target.value)} />
+                                        <Input type="textarea" rows="5"  placeholder="Descreva o Tipo de Técnico inserido" id="txtDescricao"
+                                            name="descricao"
+                                            onChange={handleInputChange} />
                                     </Col>
                                 </FormGroup>
                                  {/*<FormGroup>
@@ -86,3 +123,4 @@ export default function Disponibilidade() {
         </div>
     );
 }
+export default Disponibilidade;

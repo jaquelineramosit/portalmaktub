@@ -5,34 +5,35 @@ import '../../../global.css';
 import {telMask, cepMask,numMask, cnpjMask, celMask} from '../../../mask'
 import api from '../../../../src/services/api';
 
-export default function Clientes() {
-    const [nomecliente, setNomeCliente] = useState('');
-    const [nomeresponsavel, setNomeResponsavel] = useState('');
-    const [razaosocial, setRazaoSocial] = useState('');
-    const [cnpj, setCnpj] = useState('');
-    const [logradouro, setLogradouro] = useState('');
-    const [numero, setNumero] = useState('');
-    const [complemento, setComplemento] = useState('');
-    const [bairro, setBairro] = useState('');
-    const [cep, setCep] = useState('');
-    const [cidade, setCidade] = useState('');
-    const [estado, setEstado] = useState('');
-    const [telefonefixo, setTelefoneFixo] = useState('');
-    const [telefonecelular, setTelefoneCelular] = useState('');
-    const [telefoneresponsavel, setTelefoneResponsavel] = useState('');
-    const [parceiroid, setParceiroId] = useState('');
-    const [parceiros, setParceiros] = useState([]);
-    const [ativo, setAtivo] = useState(1);
-    const usuarioId = localStorage.getItem('userId');
+const Cliente = (props) => {
 
-    function handleSwitch(e) {
-        if (ativo === 1) {
-            setAtivo(0);
-        }
-        else {
-            setAtivo(1);
-        }
-    }   
+    var search = props.location.search;
+    var params = new URLSearchParams(search);
+    var action = params.get('action');
+    var clienteIdParam = props.match.params.id;
+
+    const [parceiros, setParceiros] = useState([]);
+    const usuarioId = localStorage.getItem('userId');
+    const localId = localStorage.getItem('localId');
+    const [formData, setFormData] = useState({
+       
+        nomecliente: '',
+        cnpj: '',
+        razaosocial: '',
+        logradouro: '',
+        numero: '',
+        complemento: '',
+        bairro: '',
+        cidade: '',
+        estado: '',
+        cep: '',
+        telefonefixo: '',
+        telefonecelular: '',
+        nomeresponsavel: '',
+        telefoneresponsavel: '',
+        parceiroid: 0,
+        localId: localId,
+    });
 
     useEffect(() => {
         api.get('parceiro').then(response => {            
@@ -40,46 +41,95 @@ export default function Clientes() {
         })
     }, [usuarioId]);  
 
+    useEffect(() => {
+        if (action === 'edit' && clienteIdParam !== '') {
+            api.get(`clientes/${clienteIdParam}`).then(response => {
+                document.getElementById('cboParceiroId').value = response.data.parceiroid;
+                document.getElementById('txtNomeCliente').value = response.data.nomecliente;
+                document.getElementById('txtCnpj').value = response.data.cnpj;
+                document.getElementById('txtRazaoSocial').value = response.data.razaosocial;
+                document.getElementById('txtLogradouro').value = response.data.logradouro;
+                document.getElementById('txtNumero').value = response.data.numero;
+                document.getElementById('txtComplemento').value = response.data.complemento;
+                document.getElementById('txtBairro').value = response.data.bairro;
+                document.getElementById('txtCidade').value = response.data.cidade;
+                document.getElementById('cboEstado').value = response.data.estado;
+                document.getElementById('txtCep').value = response.data.cep;
+                document.getElementById('txtTelefoneFixo').value = response.data.telefonefixo;
+                document.getElementById('txtTelefoneCelular').value = response.data.telefonecelular;
+                document.getElementById('txtNomeResponsavel').value = response.data.nomeresponsavel;
+                document.getElementById('txtTelefoneResponsavel').value = response.data.telefoneresponsavel;
+                
+                setFormData({
+                    ...formData,
+                    parceiroid: response.data.parceiroid,
+                    nomecliente: response.data.nomecliente,
+                    cnpj: response.data.cnpj,
+                    razaosocial: response.data.razaosocial,
+                    logradouro: response.data.logradouro,
+                    numero: response.data.numero,
+                    complemento: response.data.complemento,
+                    bairro: response.data.bairro,
+                    cidade: response.data.cidade,
+                    estado: response.data.estado,
+                    telefonefixo: response.data.telefonefixo,
+                    telefonecelular: response.data.telefonecelular,
+                    nomeresponsavel: response.data.nomeresponsavel,
+                    telefoneresponsavel: response.data.telefoneresponsavel
 
-    async function handleClientes(e) {
+                })
+            });
+        } else {
+            return;
+        }
+    }, [clienteIdParam])
+
+    function handleInputChange(event) {
+        const { name, value } = event.target;
+
+        setFormData({ ...formData, [name]: value });
+    };
+
+    async function handleTicket(e) {
         e.preventDefault();
 
-        const data = {
-            nomecliente,
-            razaosocial,
-            cnpj,
-            logradouro,
-            numero,
-            complemento,
-            bairro,
-            cep,
-            cidade,
-            estado,
-            telefonefixo,
-            telefonecelular,
-            telefoneresponsavel,
-            parceiroid,
-            nomeresponsavel,
-            ativo
-        };
+        const data = formData;
 
-        try {
-            const response = await api.post('clientes', data, {
-                headers: {
-                    Authorization: 1,
+        if (action === 'edit') {
+
+            try {
+                const response = await api.put(`/clientes/${clienteIdParam}`, data, {
+                    headers: {
+                        Authorization: 1,
+                    }
+                });
+                alert(`Cadastro atualizado com sucesso.`);
+            } catch (err) {
+
+                alert('Erro na atualização, tente novamente.');
+            }
+
+        } else {
+
+            if (action === 'novo') {
+                try {
+                    const response = await api.post('clientes', data, {
+                        headers: {
+                            Authorization: 1,
+                        }
+                    });
+                    alert(`Cadastro realizado com sucesso.`);
+                } catch (err) {
+
+                    alert('Erro no cadastro, tente novamente.');
                 }
-            });
-            alert(`Feito o cadastro com sucesso`);
-
-        } catch (err) {
-
-            alert('Erro no cadastro, tente novamente.');
+            }
         }
     }
 
     return (
         <div className="animated fadeIn">
-            <Form onSubmit={handleClientes}>
+            <Form onSubmit={handleTicket}>
                 <Row>
                     <Col xs="12" md="12">
                         <Card>
@@ -92,26 +142,25 @@ export default function Clientes() {
                                     <Col md="3">
                                         <Label htmlFor="nomeCliente">Nome Cliente</Label>
                                         <Input type="text" required id="txtNomeCliente" placeholder="Digite o nome do Cliente"
-                                            value={nomecliente}
-                                            onChange={e => setNomeCliente(e.target.value)} />
+                                           name="nomecliente"
+                                           onChange={handleInputChange}  />
                                     </Col>
                                     <Col md="3">
                                         <Label htmlFor="nomeResponsavel">Nome Responsável</Label>
                                         <Input type="text" required id="txtNomeResponsavel" placeholder="Digite o Nome do responsável"
-                                            value={nomeresponsavel}
-                                            onChange={e => setNomeResponsavel(e.target.value)}
+                                            name="nomeresponsavel"
+                                            onChange={handleInputChange} 
                                         />
                                     </Col>
                                     <Col md="3">
                                         <Label htmlFor="parceiroId">Parceiro</Label>
                                         <Input required type="select" name="select" id="cboParceiroId"
-                                            value={parceiroid}
-                                            onChange={e => setParceiroId(e.target.value)}>
-                                                <option value={undefined} defaultValue>Selecione...</option>
-                                                    {parceiros.map(parceiro => (                                                
-                                                        <option value={parceiro.id}>{parceiro.nomeparceiro}</option>
-                                                    ))} 
-
+                                           name="parceiroid"
+                                           onChange={handleInputChange}>
+                                               <option value={undefined} defaultValue>Selecione...</option>
+                                                   {parceiros.map(parceiro => (                                                
+                                                       <option value={parceiro.id}>{parceiro.nomeparceiro}</option>
+                                                   ))} 
                                         </Input>
                                     </Col>
                                 </FormGroup>
@@ -119,16 +168,16 @@ export default function Clientes() {
                                      <Col md="3">
                                         <Label htmlFor="razaoSocial">Razão Social</Label>
                                         <Input type="text" required id="txtRazaoSocial" placeholder="Digite o nome do Cliente"
-                                            value={razaosocial}
-                                            onChange={e => setRazaoSocial(e.target.value)} />
+                                            name="razaosocial"
+                                            onChange={handleInputChange}  />
                                     </Col>
                                     <Col md="3">
                                         <Label htmlFor="cnpj">CNPJ</Label>
                                         <InputGroup>
                                             <Input type="text" required id="txtCnpj"
                                                 placeholder="Digite a CNPJ"
-                                                value={cnpj}
-                                                onChange={e => setCnpj(cnpjMask(e.target.value))} />
+                                                name="cnpj"
+                                                onChange={handleInputChange} />
                                         </InputGroup>
                                     </Col>
                                 </FormGroup>
@@ -137,40 +186,40 @@ export default function Clientes() {
                                         <Label htmlFor="logradouro">Logradouro</Label>
                                         <Input type="text" required id="txtLogradouro"
                                         placeholder="Digite o Logradouro"
-                                        value={logradouro}
-                                        onChange={e => setLogradouro(e.target.value)} />
+                                       name="logradouro"
+                                       onChange={handleInputChange}  />
                                     </Col>
                                     <Col md="3">
                                         <Label htmlFor="bairro">Bairro</Label>
                                         <Input type="text" required id="txtBairro" placeholder="Digite o Bairro"
-                                        value={bairro}
-                                        onChange={e => setBairro(e.target.value)} />
+                                        name="bairro"
+                                        onChange={handleInputChange}  />
                                     </Col>
                                     <Col md="3">
                                         <Label htmlFor="cep">CEP</Label>
-                                        <Input id="txtCep" size="16" required type="text" placeholder="00000-000"
-                                        value={cep}
-                                        onChange={e => setCep(cepMask(e.target.value))} />
+                                        <Input id="txtCep" size="16" required type="text" placeholder="00000-000" 
+                                        name="cep"
+                                        onChange={handleInputChange}  />
                                     </Col>
                                 </FormGroup>
                                 <FormGroup row>
                                     <Col md="2">
                                         <Label htmlFor="numero">Número</Label>
                                         <Input type="text" required id="txtNumero" placeholder="Digite Apenas Números"
-                                        value={numero}
-                                        onChange={e => setNumero(numMask(e.target.value))} />       
+                                        name="numero"
+                                        onChange={handleInputChange}  />       
                                     </Col>
                                     <Col md="2">
                                         <Label htmlFor="cidade">Cidade</Label>
                                         <Input type="text" required id="txtCidade" placeholder="Digite a Cidade"
-                                        value={cidade}
-                                        onChange={e => setCidade(e.target.value)} />
+                                       name="cidade"
+                                       onChange={handleInputChange}  />
                                     </Col>
                                     <Col md="2">
                                         <Label htmlFor="estado">UF</Label>    
                                             <Input type="select" required name="select" id="cboEstado"
-                                                value={estado}
-                                                onChange={e => setEstado(e.target.value)}>
+                                               name="estado"
+                                               onChange={handleInputChange} >
                                                     <option value={undefined}>Selecione...</option>
                                                     <option value="SP">São Paulo</option>
                                                     <option value="RJ">Rio de Janeiro</option>
@@ -203,8 +252,8 @@ export default function Clientes() {
                                     <Col md="3">
                                         <Label htmlFor="complemento">Complemento</Label>
                                         <Input type="text" id="txtComplemento" placeholder="Digite o Complemento"
-                                            value={complemento}
-                                            onChange={e => setComplemento(e.target.value)} />
+                                            name="estado"
+                                            onChange={handleInputChange}  />
                                     </Col>
                                 </FormGroup>
                                 <FormGroup row>
@@ -212,8 +261,8 @@ export default function Clientes() {
                                         <Label htmlFor="telefonefixo">Telefone Fixo</Label>
                                         <InputGroup>
                                             <Input type="text" id="txtTelefoneFixo" placeholder="(11) 9999-9999"
-                                                value={telefonefixo}
-                                                onChange={e => setTelefoneFixo(telMask(e.target.value))} />
+                                               name="telefonefixo"
+                                               onChange={handleInputChange}  />
                                             <InputGroupAddon addonType="append">
                                                 <Button type="button" color="secondary icon-phone"></Button>
                                             </InputGroupAddon>
@@ -222,9 +271,9 @@ export default function Clientes() {
                                     <Col md="3">
                                         <Label htmlFor="telefoneCelular">Telefone Celular</Label>
                                         <InputGroup>
-                                            <Input type="text" id="txtTelefoneCelular" placeholder="(11) 9999-9999"
-                                                value={telefonecelular}
-                                                onChange={e => setTelefoneCelular(celMask(e.target.value))} />
+                                            <Input type="text" id="txtTelefoneCelular" placeholder="(11) 9999-9999" cnpjMask="true"
+                                               name="telefonecelular"
+                                               onChange={handleInputChange} />
                                             <InputGroupAddon addonType="append">
                                                 <Button type="button" color="secondary icon-phone"></Button>
                                             </InputGroupAddon>
@@ -234,8 +283,8 @@ export default function Clientes() {
                                         <Label htmlFor="telefoneResponsavel">Telefone Responsável</Label>
                                         <InputGroup>
                                             <Input type="text" id="txtTelefoneResponsavel" placeholder="(11) 9999-9999"
-                                                value={telefoneresponsavel}
-                                                onChange={e => setTelefoneResponsavel(telMask(e.target.value))} />
+                                                name="telefoneresponsavel"
+                                                onChange={handleInputChange}  />
                                             <InputGroupAddon addonType="append">
                                                 <Button type="button" color="secondary icon-phone"></Button>
                                             </InputGroupAddon>
@@ -263,3 +312,4 @@ export default function Clientes() {
         </div>
     );
 }
+export default Cliente;
