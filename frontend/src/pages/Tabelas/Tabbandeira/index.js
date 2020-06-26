@@ -51,7 +51,7 @@ export default function ListaBandeira() {
             name: 'Ações',
             sortable: true,
             right: true,
-            cell: row => <Link to={`bandeira/${row.id}`} className="btn-sm btn-primary"><i className="fa fa-pencil fa-lg mr-1"></i>
+            cell: row => <Link to={`bandeira/${row.id}?action=edit`} className="btn-sm btn-primary"><i className="fa fa-pencil fa-lg mr-1"></i>
             Editar</Link>
         },
     ];

@@ -1,42 +1,86 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, CardFooter, Form } from 'reactstrap';
-import { AppSwitch } from '@coreui/react'
 import '../../../global.css';
 import api from '../../../../src/services/api';
 
-export default function StatusAdiantamento() {   
-    const [status, setStatus] = useState('');
-    const [descstatus, setDescStatus] = useState('');
-    const [ativo, setAtivo] = useState(1);
-    const usuarioId = localStorage.getItem('userId');
+const Statusadiantamento = (props) => {
 
-    function handleSwitch(e) {
-        if (ativo === 1) {
-            setAtivo(0);
+    var search = props.location.search;
+    var params = new URLSearchParams(search);
+    var action = params.get('action');
+    var statusadiantamentoIdParam = props.match.params.id;
+
+
+    const usuarioId = localStorage.getItem('userId');
+    const [formData, setFormData] = useState({
+        status: '',
+        descstatus: '',
+
+    });
+
+
+
+    useEffect(() => {
+        if (action === 'edit' && statusadiantamentoIdParam !== '') {
+
+            api.get(`/status-adiantamento/${statusadiantamentoIdParam}`).then(response => {
+                document.getElementById('txtStatus').value = response.data.status;
+                document.getElementById('txtDescstatus').value = response.data.descstatus;
+
+                setFormData({
+                    ...formData,
+                    status: response.data.status,
+                    descstatus: response.data.descstatus,
+
+                })
+
+            });
+        } else {
+            return;
         }
-        else {
-            setAtivo(1);
-        }
-    }
+
+    }, [statusadiantamentoIdParam])
+
+    function handleInputChange(event) {
+        const { name, value } = event.target;
+
+        setFormData({ ...formData, [name]: value });
+    };
+
+
     async function handleStatusAdiantamento(e) {
         e.preventDefault();
 
-        const data = {
-            status,
-            descstatus, 
-            ativo,
-        }
-        try {
-            const response = await api.post('status-adiantamento', data, {
-                headers: {
-                    Authorization: 1,
+        const data = formData;
+
+        if (action === 'edit') {
+
+            try {
+                const response = await api.put(`/status-adiantamento/${statusadiantamentoIdParam}`, data, {
+                    headers: {
+                        Authorization: 1,
+                    }
+                });
+                alert(`Cadastro atualizado com sucesso.`);
+            } catch (err) {
+
+                alert('Erro na atualização, tente novamente.');
+            }
+
+        } else {
+
+            if (action === 'novo') {
+                try {
+                    const response = await api.post('status-adiantamento', data, {
+                        headers: {
+                            Authorization: 1,
+                        }
+                    });
+                    alert(`Cadastro realizado com sucesso.`);
+                } catch (err) {
+                    alert('Erro no cadastro, tente novamente.');
                 }
-            });
-            alert(`Feito o cadastro com sucesso`);
-
-        } catch (err) {
-
-            alert('Erro no cadastro, tente novamente.');
+            }
         }
     }
 
@@ -55,19 +99,19 @@ export default function StatusAdiantamento() {
                                     <Col md="4">
                                         <Label htmlFor="status">Status de Adiantamento</Label>
                                         <Input type="text" required id="txtStatus" placeholder="Inisira o Status"
-                                            value={status}
-                                            onChange={e => setStatus(e.target.value)} />
-                                    </Col>                             
+                                            name="status"
+                                            onChange={handleInputChange} />
+                                    </Col>
                                 </FormGroup>
                                 <FormGroup row>
-                                <Col md="8">
+                                    <Col md="8">
                                         <Label>Descrição</Label>
-                                        <Input type="textarea" rows="5"  placeholder="Descreva o Status inserido" id="txtDescstatus"
-                                            value={descstatus}
-                                            onChange={e => setDescStatus(e.target.value)} />
-                                    </Col>                            
-                                </FormGroup>                   
-                                 {/*<FormGroup row>
+                                        <Input type="textarea" rows="5" placeholder="Descreva o Status inserido" id="txtDescstatus"
+                                            name="descstatus"
+                                            onChange={handleInputChange} />
+                                    </Col>
+                                </FormGroup>
+                                {/*<FormGroup row>
                                 <Col md="1">
                                         <Label check className="form-check-label" htmlFor="ativo">Ativo</Label>
                                         <AppSwitch id="rdAtivo" className={'switch-ativo'}  label color={'success'} defaultChecked size={'sm'}
@@ -86,4 +130,5 @@ export default function StatusAdiantamento() {
             </Form>
         </div>
     );
-}
+};
+export default Statusadiantamento;

@@ -1,49 +1,87 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, CardFooter, Form } from 'reactstrap';
-import { AppSwitch } from '@coreui/react'
 import '../../../global.css';
 import api from '../../../../src/services/api';
 
-export default function StatusPagamento() {   
-    const [status, setStatus] = useState('');
-    const [descstatus, setDescStatus] = useState('');
-    const [ativo, setAtivo] = useState(1);
+const Pagamento = (props) => {
+
+    var search = props.location.search;
+    var params = new URLSearchParams(search);
+    var action = params.get('action');
+    var pagamentoIdParam = props.match.params.id;
+
     const usuarioId = localStorage.getItem('userId');
+    const localId = localStorage.getItem('localId');
+    const [formData, setFormData] = useState({
+        status: '',
+        descstatus: '',
+        localId: localId,
+    });
 
-    function handleSwitch(e) {
-        if (ativo === 1) {
-            setAtivo(0);
-        }
-        else {
-            setAtivo(1);
-        }
-    }
+    useEffect(() => {
+        if (action === 'edit' && pagamentoIdParam !== '') {
+            api.get(`status-pagamento/${pagamentoIdParam}`).then(response => {
+                console.log('entrou');
+                document.getElementById('txtStatus').value = response.data.status;
+                document.getElementById('txtDescStatus').value = response.data.descstatus;
 
-    async function handleStatusPagamento(e) {
+                setFormData({
+                    ...formData,
+                    status: response.data.status,
+                    descstatus: response.data.descstatus,
+                })
+            });
+        } else {
+            return;
+        }
+    }, [pagamentoIdParam])
+
+    function handleInputChange(event) {
+        const { name, value } = event.target;
+
+        setFormData({ ...formData, [name]: value });
+    };
+
+    async function handleTicket(e) {
         e.preventDefault();
 
-        const data = {
-            status,
-            descstatus, 
-            ativo,
-        }
-        try {
-            const response = await api.post('status-pagamento', data, {
-                headers: {
-                    Authorization: 1,
+        const data = formData;
+
+        if (action === 'edit') {
+
+            try {
+                const response = await api.put(`/status-pagamento/${pagamentoIdParam}`, data, {
+                    headers: {
+                        Authorization: 1,
+                    }
+                });
+                alert(`Cadastro atualizado com sucesso.`);
+            } catch (err) {
+
+                alert('Erro na atualização, tente novamente.');
+            }
+
+        } else {
+
+            if (action === 'novo') {
+                try {
+                    const response = await api.post('status-pagamento', data, {
+                        headers: {
+                            Authorization: 1,
+                        }
+                    });
+                    alert(`Cadastro realizado com sucesso.`);
+                } catch (err) {
+
+                    alert('Erro no cadastro, tente novamente.');
                 }
-            });
-            alert(`Feito o cadastro com sucesso`);
-
-        } catch (err) {
-
-            alert('Erro no cadastro, tente novamente.');
+            }
         }
     }
 
     return (
         <div className="animated fadeIn">
-            <Form onSubmit={handleStatusPagamento}>
+            <Form onSubmit={handleTicket}>
                 <Row>
                     <Col xs="12" md="12">
                         <Card>
@@ -56,19 +94,19 @@ export default function StatusPagamento() {
                                     <Col md="4">
                                         <Label htmlFor="status">Status de Pagamento</Label>
                                         <Input type="text" required id="txtStatus" placeholder="Inisira o Status"
-                                            value={status}
-                                            onChange={e => setStatus(e.target.value)} />
+                                            name="status"
+                                            onChange={handleInputChange} />
                                     </Col>
-                                </FormGroup>    
+                                </FormGroup>
                                 <FormGroup row>
                                     <Col md="8">
                                         <Label>Descrição</Label>
-                                        <Input type="textarea" rows="5"  placeholder="Descreva o Status inserido" id="txtDescstatus"
-                                            value={descstatus}
-                                            onChange={e => setDescStatus(e.target.value)} />
+                                        <Input type="textarea" rows="5" placeholder="Descreva o Status inserido" id="txtDescStatus"
+                                            name="descstatus"
+                                            onChange={handleInputChange} />
                                     </Col>
                                 </FormGroup>
-                                 {/*<FormGroup>
+                                {/*<FormGroup>
                                     <Col md="1">
                                             <Label check className="form-check-label" htmlFor="ativo1">Ativo</Label>
                                             <AppSwitch id="rdAtivo" className={'switch-ativo'}  label color={'success'} defaultChecked size={'sm'}
@@ -88,3 +126,4 @@ export default function StatusPagamento() {
         </div>
     );
 }
+export default Pagamento;

@@ -1,47 +1,83 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, InputGroup, InputGroupAddon, CardFooter, Form } from 'reactstrap';
-import { AppSwitch } from '@coreui/react'
 import '../../../global.css';
 import api from '../../../services/api';
 
-export default function Bandeiras() {
-    const [nomebandeira, setNomeBandeira] = useState('');
-    const [ativo, setAtivo] = useState(1);
-    const usuarioId = localStorage.getItem('userId');
+const Bandeira = (props) => {
 
-    function handleSwitch(e) {
-        if (ativo === 1) {
-            setAtivo(0);
+    var search = props.location.search;
+    var params = new URLSearchParams(search);
+    var action = params.get('action');
+    var bandeiraIdParam = props.match.params.id;
+
+    const usuarioId = localStorage.getItem('userId');
+    const localId = localStorage.getItem('localId');
+    const [formData, setFormData] = useState({
+        nomebandeira: '',
+        localId: localId,
+    });
+
+    useEffect(() => {
+        if (action === 'edit' && bandeiraIdParam !== '') {
+            api.get(`bandeira/${bandeiraIdParam}`).then(response => {
+                document.getElementById('txtNomeBandeira').value = response.data.nomebandeira;
+
+                setFormData({
+                    ...formData,
+                    status: response.data.status,
+                    nomebandeira: response.data.nomebandeira,
+                })
+            });
+        } else {
+            return;
         }
-        else {
-            setAtivo(1);
-        }
-    }
-    async function handleBandeiras(e) {
+    }, [bandeiraIdParam])
+
+    function handleInputChange(event) {
+        const { name, value } = event.target;
+
+        setFormData({ ...formData, [name]: value });
+    };
+
+    async function handleTicket(e) {
         e.preventDefault();
 
-        const data = {
-            nomebandeira,
-            ativo
-        }
-        try {
-            const response = await api.post('bandeira', data, {
-                headers: {
-                    Authorization: 1,
+        const data = formData;
+
+        if (action === 'edit') {
+
+            try {
+                const response = await api.put(`/bandeira/${bandeiraIdParam}`, data, {
+                    headers: {
+                        Authorization: 1,
+                    }
+                });
+                alert(`Cadastro atualizado com sucesso.`);
+            } catch (err) {
+
+                alert('Erro na atualização, tente novamente.');
+            }
+
+        } else {
+
+            if (action === 'novo') {
+                try {
+                    const response = await api.post('bandeira', data, {
+                        headers: {
+                            Authorization: 1,
+                        }
+                    });
+                    alert(`Cadastro realizado com sucesso.`);
+                } catch (err) {
+
+                    alert('Erro no cadastro, tente novamente.');
                 }
-            });
-            console.log(response);
-            alert(`Feito o cadastro com sucesso`);
-
-        } catch (err) {
-
-            alert('Erro no cadastro, tente novamente.');
+            }
         }
     }
-
     return (
         <div className="animated fadeIn">
-            <Form onSubmit={handleBandeiras}>
+            <Form onSubmit={handleTicket}>
                 <Row>
                     <Col xs="12" md="12">
                         <Card>
@@ -55,8 +91,8 @@ export default function Bandeiras() {
                                         <Label htmlFor="nomeBandeira">Nome da Bandeira</Label>
                                         <InputGroup>
                                             <Input type="text" required id="txtNomeBandeira" placeholder="Digite o nome da Bandeira"
-                                                value={nomebandeira}
-                                                onChange={e => setNomeBandeira(e.target.value)} >
+                                               name="nomebandeira"
+                                               onChange={handleInputChange} >
                                             </Input>
                                             <InputGroupAddon addonType="append">
                                                 <Button type="button" color= "secondary fa fa-flag"></Button>
@@ -83,3 +119,4 @@ export default function Bandeiras() {
         </div>
     );
 }
+export default Bandeira;

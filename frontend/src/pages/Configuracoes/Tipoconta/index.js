@@ -1,49 +1,83 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect} from 'react';
 import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, CardFooter, Form } from 'reactstrap';
-import { AppSwitch } from '@coreui/react'
 import '../../../global.css';
 import api from '../../../../src/services/api';
 
-export default function TipoConta() {   
-    const [nometipoconta, setNomeTipoConta] = useState('');
-    const [ativo, setAtivo] = useState(1);
+const Tipoconta = (props) => {
+
+    var search = props.location.search;
+    var params = new URLSearchParams(search);
+    var action = params.get('action');
+    var tipocontaIdParam = props.match.params.id;
+
     const usuarioId = localStorage.getItem('userId');
+    const localId = localStorage.getItem('localId');
+    const [formData, setFormData] = useState({
+        nometipoconta: '',
+        localId: localId,
+    });
 
-    function handleSwitch(e) {
-        if (ativo === 1) {
-            setAtivo(0);
-        }
-        else {
-            setAtivo(1);
-        }
-    }
+    useEffect(() => {
+        if (action === 'edit' && tipocontaIdParam !== '') {
+            api.get(`tipo-conta/${tipocontaIdParam}`).then(response => {
+                document.getElementById('txtNomeTipoConta').value = response.data.nometipoconta;
 
-    async function handleTipoConta(e) {
+                setFormData({
+                    ...formData,
+                    status: response.data.status,
+                    descstatus: response.data.descstatus,
+                })
+            });
+        } else {
+            return;
+        }
+    }, [tipocontaIdParam])
+
+    function handleInputChange(event) {
+        const { name, value } = event.target;
+
+        setFormData({ ...formData, [name]: value });
+    };
+
+    async function handleTicket(e) {
         e.preventDefault();
 
-        const data = {
-            nometipoconta, 
-            ativo
-        }
-        try {
-            const response = await api.post('tipo-conta', data, {
-                headers: {
-                    Authorization: 1,
+        const data = formData;
+
+        if (action === 'edit') {
+
+            try {
+                const response = await api.put(`/tipo-conta/${tipocontaIdParam}`, data, {
+                    headers: {
+                        Authorization: 1,
+                    }
+                });
+                alert(`Cadastro atualizado com sucesso.`);
+            } catch (err) {
+
+                alert('Erro na atualização, tente novamente.');
+            }
+
+        } else {
+
+            if (action === 'novo') {
+                try {
+                    const response = await api.post('tipo-conta', data, {
+                        headers: {
+                            Authorization: 1,
+                        }
+                    });
+                    alert(`Cadastro realizado com sucesso.`);
+                } catch (err) {
+
+                    alert('Erro no cadastro, tente novamente.');
                 }
-            });
-            alert(`Feito o cadastro com sucesso`);
-         
-
-
-        } catch (err) {
-
-            alert('Erro no cadastro, tente novamente.');
+            }
         }
     }
-
     return (
         <div className="animated fadeIn">
-            <Form onSubmit={handleTipoConta}>
+            <Form onSubmit={handleTicket}>
                 <Row>
                     <Col xs="12" md="12">
                         <Card>
@@ -56,8 +90,8 @@ export default function TipoConta() {
                                     <Col md="4">
                                         <Label htmlFor="nomeTipoConta">Tipo de Conta</Label>
                                         <Input type="text" required id="txtNomeTipoConta" placeholder="Digite o Tipo de Conta"
-                                            value={nometipoconta}
-                                            onChange={e => setNomeTipoConta(e.target.value)} />
+                                            name="nometipoconta"
+                                            onChange={handleInputChange} />
                                     </Col> 
                                 </FormGroup>
                                 {/* <FormGroup>                                      
@@ -80,3 +114,4 @@ export default function TipoConta() {
         </div>
     );
 }
+export default Tipoconta;

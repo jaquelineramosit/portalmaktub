@@ -57,7 +57,7 @@ export default function ListaStatusadiantamento() {
             name: 'Ações',
             sortable: true,
             right: true,
-            cell: row => <Link to={`status-adiantamento/${row.id}`} className="btn-sm btn-primary"><i className="fa fa-pencil fa-lg mr-1"></i>
+            cell: row => <Link to={`status-adiantamento/${row.id}?action=edit`} className="btn-sm btn-primary"><i className="fa fa-pencil fa-lg mr-1"></i>
             Editar</Link>
         },
     ];
@@ -85,6 +85,7 @@ export default function ListaStatusadiantamento() {
                                 highlightOnHover={true}
                                 responsive={true}
                                 pagination={true}
+                                noHeader={true} 
                             />
                         </CardBody>
                     </Card>

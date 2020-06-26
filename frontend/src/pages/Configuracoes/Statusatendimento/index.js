@@ -1,53 +1,85 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, CardFooter, Form } from 'reactstrap';
-import { AppSwitch } from '@coreui/react'
 import '../../../global.css';
 import api from '../../../../src/services/api';
 
-export default function StatusAtendimento() {   
-    const [status, setStatus] = useState('');
-    const [descstatus, setDescStatus] = useState('');
-    const [ativo, setAtivo] = useState(1);
+const Atendimento = (props) => {
+
+    var search = props.location.search;
+    var params = new URLSearchParams(search);
+    var action = params.get('action');
+    var atendimentoIdParam = props.match.params.id;
+
     const usuarioId = localStorage.getItem('userId');
-  
-    function handleSwitch(e) {
-        if (ativo === 1) {
-            setAtivo(0);
+    const localId = localStorage.getItem('localId');
+    const [formData, setFormData] = useState({
+        status: '',
+        descstatus: '',
+        localId: localId,
+    });
+
+    useEffect(() => {
+        if (action === 'edit' && atendimentoIdParam !== '') {
+            api.get(`status-atendimento/${atendimentoIdParam}`).then(response => {
+                document.getElementById('txtStatus').value = response.data.status;
+                document.getElementById('txtDescStatus').value = response.data.descstatus;
+
+                setFormData({
+                    ...formData,
+                    status: response.data.status,
+                    descstatus: response.data.descstatus,
+                })
+            });
+        } else {
+            return;
         }
-        else {
-            setAtivo(1);
-        }
-    }   
-    
-    async function handleStatusAtendimento(e) {
+    }, [atendimentoIdParam])
+
+    function handleInputChange(event) {
+        const { name, value } = event.target;
+
+        setFormData({ ...formData, [name]: value });
+    };
+
+    async function handleTicket(e) {
         e.preventDefault();
 
-        const data = {
-            status,
-            descstatus, 
-            ativo,
-        }
-        try {
-        
-            const response = await api.post('status-atendimento', data, {
-                headers: {
-                    Authorization: 1,
+        const data = formData;
+
+        if (action === 'edit') {
+
+            try {
+                const response = await api.put(`/status-atendimento/${atendimentoIdParam}`, data, {
+                    headers: {
+                        Authorization: 1,
+                    }
+                });
+                alert(`Cadastro atualizado com sucesso.`);
+            } catch (err) {
+
+                alert('Erro na atualização, tente novamente.');
+            }
+
+        } else {
+
+            if (action === 'novo') {
+                try {
+                    const response = await api.post('status-atendimento', data, {
+                        headers: {
+                            Authorization: 1,
+                        }
+                    });
+                    alert(`Cadastro realizado com sucesso.`);
+                } catch (err) {
+
+                    alert('Erro no cadastro, tente novamente.');
                 }
-
-               
-            });
-       
-            alert(`Feito o cadastro com sucesso`);
-
-        } catch (err) {
-
-            alert('Erro no cadastro, tente novamente.');
+            }
         }
     }
-
     return (
         <div className="animated fadeIn">
-            <Form onSubmit={handleStatusAtendimento}>
+            <Form onSubmit={handleTicket}>
                 <Row>
                     <Col xs="12" md="12">
                         <Card>
@@ -60,19 +92,19 @@ export default function StatusAtendimento() {
                                     <Col md="4">
                                         <Label htmlFor="status">Status de Atendimento</Label>
                                         <Input type="text" required id="txtStatus" placeholder="Inisira o Status"
-                                            value={status}
-                                            onChange={e => setStatus(e.target.value)} />
-                                    </Col>                               
+                                            name="status"
+                                            onChange={handleInputChange} />
+                                    </Col>
                                 </FormGroup>
                                 <FormGroup row>
                                     <Col md="8">
-                                            <Label>Descrição</Label>
-                                            <Input type="textarea" rows="5"  placeholder="Descreva o Status inserido" id="txtDescStatus"
-                                                value={descstatus}
-                                                onChange={e => setDescStatus(e.target.value)} />
-                                    </Col>                           
-                                </FormGroup>                   
-                                 {/*<FormGroup row>
+                                        <Label>Descrição</Label>
+                                        <Input type="textarea" rows="5" placeholder="Descreva o Status inserido" id="txtDescStatus"
+                                            name="descstatus"
+                                            onChange={handleInputChange} />
+                                    </Col>
+                                </FormGroup>
+                                {/*<FormGroup row>
                                 <Col md="2">
                                         <Label check className="form-check-label" htmlFor="ativo1">Ativo</Label>
                                         <AppSwitch id="rdAtivo" className={'switch-ativo'}  label color={'success'} defaultChecked size={'sm'}
@@ -80,7 +112,7 @@ export default function StatusAtendimento() {
                                                   
                                         />                                                             
                                     </Col>                                                                               
-                                 </FormGroup> */}                         
+                                 </FormGroup> */}
                             </CardBody>
                             <CardFooter className="text-center">
                                 <Button type="submit" size="sm" color="success" className=" mr-3"><i className="fa fa-check"></i> Salvar</Button>
@@ -91,7 +123,8 @@ export default function StatusAtendimento() {
                 </Row>
             </Form>
         </div>
-        
+
     );
-    
+
 }
+export default Atendimento;

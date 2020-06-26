@@ -42,7 +42,6 @@ module.exports = {
         const { nometipoconta, ativo } = request.body;
 
         await connection('tipoconta').where('id', id).update({
-            codtipoconta,
             nometipoconta, 
             ativo,
             dataultmodif,
