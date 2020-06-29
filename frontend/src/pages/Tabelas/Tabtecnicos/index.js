@@ -78,7 +78,7 @@ export default function ListaTecnicos() {
             name: 'Ações',
             sortable: true,
             right: true,
-            cell: row => <Link to={`tecnico/${row.id}`} className="btn-sm btn-primary"><i className="fa fa-pencil fa-lg mr-1"></i>
+            cell: row => <Link to={`tecnico/${row.id}?action=edit`} className="btn-sm btn-primary"><i className="fa fa-pencil fa-lg mr-1"></i>
             Editar</Link>
         },
     ];
@@ -92,7 +92,7 @@ export default function ListaTecnicos() {
                         <CardHeader className="links">
 
                             <i className="fa fa-align-justify"></i>Técnicos
-                        <Link to={`tecnico`} className="btn btn-secondary float-right">
+                        <Link to={`tecnico?action=novo`} className="btn btn-secondary float-right">
                                 <i className="cui-file icons mr-1"></i>
                                                 Novo
                                             </Link>

@@ -1,26 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, CardFooter, Form } from 'reactstrap';
-import { AppSwitch } from '@coreui/react'
 import '../../../global.css';
 import api from '../../../../src/services/api';
 
-export default function ProjetoTecnico() {   
-    const [tecnicoid, setTecnicoId] = useState('');
-    const [tecnicos, setTecnicos] = useState([]);
-    const [tipoprojetoid, setTipoProjetoId] = useState('');
+const Projetotecnico = (props) => {
+
+    var search = props.location.search;
+    var params = new URLSearchParams(search);
+    var action = params.get('action');
+    var projtecnicoIdParam = props.match.params.id;
+
     const [tipoProjetos, setTipoProjetos] = useState([]);
-    const [ativo, setAtivo] = useState(1);
+    const [tecnicos, setTecnicos] = useState([]);
     const usuarioId = localStorage.getItem('userId');
-
-    function handleSwitch(e) {
-        if (ativo === 1) {
-            setAtivo(0);
-        }
-        else {
-            setAtivo(1);
-        }
-    }
-
+    const [formData, setFormData] = useState({
+        tecnicoid: '',
+        tipoprojetoid: '',
+        ativo:'1'
+    });
     useEffect(() => {
         api.get('tecnico').then(response => {            
             setTecnicos(response.data);
@@ -33,31 +30,72 @@ export default function ProjetoTecnico() {
         })
     }, [usuarioId]);  
 
-    async function handleProjetoTecnico(e) {
+    useEffect(() => {
+        if (action === 'edit' && projtecnicoIdParam !== '') {
+            api.get(`projeto-tecnico/${projtecnicoIdParam}`).then(response => {
+                document.getElementById('cboTécnicoId').value = response.data.tecnicoid;
+                document.getElementById('cboTipoProjetoId').value = response.tipoprojetoid;
+               
+
+                setFormData({
+                    ...formData,
+                    tecnicoid: response.data.tecnicoid,
+                    tipoprojetoid: response.data.tipoprojetoid,
+                    
+                })
+             
+            });
+        } else {
+            return;
+        }
+    }, [projtecnicoIdParam])
+
+    function handleInputChange(event) {
+        const { name, value } = event.target;
+
+        setFormData({ ...formData, [name]: value });
+    };
+
+    async function handleTicket(e) {
         e.preventDefault();
 
-        const data = {
-            tecnicoid,
-            tipoprojetoid, 
-            ativo,
-        }
-        try {
-            const response = await api.post('projeto-tecnico', data, {
-                headers: {
-                    Authorization: 1,
+        const data = formData;
+
+        if (action === 'edit') {
+
+            try {
+                const response = await api.put(`/projeto-tecnico/${projtecnicoIdParam}`, data, {
+                    headers: {
+                        Authorization: 1,
+                    }
+                });
+                alert(`Cadastro atualizado com sucesso.`);
+            } catch (err) {
+
+                alert('Erro na atualização, tente novamente.');
+            }
+
+        } else {
+
+            if (action === 'novo') {
+                try {
+                    const response = await api.post('projeto-tecnico', data, {
+                        headers: {
+                            Authorization: 1,
+                        }
+                    });
+                    alert(`Cadastro realizado com sucesso.`);
+                } catch (err) {
+
+                    alert('Erro no cadastro, tente novamente.');
                 }
-            });
-            alert(`Feito o cadastro com sucesso`);
-
-        } catch (err) {
-
-            alert('Erro no cadastro, tente novamente.');
+            }
         }
     }
 
     return (
         <div className="animated fadeIn">
-            <Form onSubmit={handleProjetoTecnico}>
+            <Form onSubmit={handleTicket}>
                 <Row>
                     <Col xs="12" md="12">
                         <Card>
@@ -69,9 +107,9 @@ export default function ProjetoTecnico() {
                                 <FormGroup row>
                                     <Col md="4">
                                         <Label htmlFor="tecnicoId">Técnico</Label>
-                                        <Input type="select" required name="select" id="cboTécnicoId" multiple={false}
-                                            value={tecnicoid}
-                                            onChange={e => setTecnicoId(e.target.value)}>
+                                        <Input type="select" required  id="cboTécnicoId" multiple={false}
+                                            name="tecnicoid"
+                                            onChange={handleInputChange}>
                                                 <option value={undefined} defaultValue>Selecione...</option>
                                                 {tecnicos.map(tecnico => (                                                
                                                     <option value={tecnico.id}>{tecnico.nometecnico}</option>
@@ -80,9 +118,9 @@ export default function ProjetoTecnico() {
                                     </Col>
                                     <Col md="4">
                                         <Label htmlFor="tipoTrojetoId">Tipo de Projeto</Label>
-                                        <Input type="select" required name="select" id="cboTipoProjetoId"  multiple={false}
-                                            value={tipoprojetoid}
-                                            onChange={e => setTipoProjetoId(e.target.value)}>
+                                        <Input type="select" required id="cboTipoProjetoId"  multiple={false}
+                                            name="tipoprojetoid"
+                                            onChange={handleInputChange}>
                                                 <option value={undefined} defaultValue>Selecione...</option>
                                                 {tipoProjetos.map(tipoProjeto => (                                                
                                                     <option value={tipoProjeto.id}>{tipoProjeto.nometipoprojeto}</option>
@@ -110,3 +148,4 @@ export default function ProjetoTecnico() {
         </div>
     );
 }
+export default Projetotecnico;

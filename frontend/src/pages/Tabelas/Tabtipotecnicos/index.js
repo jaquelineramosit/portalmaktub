@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Card, CardBody, CardHeader, Col, Pagination, PaginationItem, PaginationLink, Row, Table, Badge } from 'reactstrap';
+import { Card, CardBody, CardHeader, Col, Row, Badge } from 'reactstrap';
 import api from '../../../services/api';
 import DataTable from 'react-data-table-component';
 
@@ -56,7 +56,7 @@ export default function ListaTipotecnico() {
             name: 'Ações',
             sortable: true,
             right: true,
-            cell: row => <Link to={`tipo-tecnico/${row.id}`} className="btn-sm btn-primary"><i className="fa fa-pencil fa-lg mr-1"></i>
+            cell: row => <Link to={`tipo-tecnico/${row.id}?action=edit`} className="btn-sm btn-primary"><i className="fa fa-pencil fa-lg mr-1"></i>
             Editar</Link>
         },
     ];
@@ -68,7 +68,7 @@ export default function ListaTipotecnico() {
                         <CardHeader className="links">
 
                             <i className="fa fa-align-justify"></i>Tipo de Técnicos
-                        <Link to={`tipo-tecnico`} className=" btn btn-secondary float-right">
+                        <Link to={`tipo-tecnico?action=novo`} className=" btn btn-secondary float-right">
                                 <i className="cui-file icons mr-1"></i>
                                                 Novo
                                             </Link>

@@ -28,6 +28,7 @@ const Disponibilidade = (props) => {
                     ...formData,
                     nomedisponibilidade: response.data.nomedisponibilidade,
                     descricao: response.data.descricao,
+                    ativo:'1'
                 })
             });
         } else {

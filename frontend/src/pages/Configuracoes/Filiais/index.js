@@ -1,46 +1,44 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, InputGroup, InputGroupAddon, CardFooter, Form } from 'reactstrap';
-import { AppSwitch } from '@coreui/react'
 import '../../../global.css';
 import {telMask, celMask, cepMask,numMask, cnpjMask } from '../../../mask'
 import api from '../../../../src/services/api';
 
-export default function Filiais() {
-    const [bandeiraid, setBandeiraId] = useState('');
-    const [bandeiras, setBandeiras] = useState([]);
-    const [clienteid, setClienteId] = useState('');
-    const [clientes, setClientes] = useState([]);
-    const [ced, setCed] = useState('');
-    const [nomefilial, setNomeFilial] = useState('');
-    const [nomeresponsavel, setNomeResponsavel] = useState('');
-    const [razaosocial, setRazaoSocial] = useState('');
-    const [cnpj, setCnpj] = useState('');
-    const [logradouro, setLogradouro] = useState('');
-    const [numero, setNumero] = useState('');
-    const [complemento, setComplemento] = useState('');
-    const [bairro, setBairro] = useState('');
-    const [cep, setCep] = useState('');
-    const [cidade, setCidade] = useState('');
-    const [estado, setEstado] = useState('');
-    const [telefonefixo, setTelefoneFixo] = useState('');
-    const [telefoneresponsavel, setTelefoneResponsavel] = useState('');
-    const [horarioiniciosemana, setHorarioInicioSemana] = useState('');
-    const [horariofimsemana, setHorarioFimSemana] = useState('');
-    const [horarioiniciosabado, setHorarioInicioSabado] = useState('');
-    const [horariofimsabado, setHorarioFimSabado] = useState('');
-    const [horarioiniciodomingo, setHorarioInicioDomingo] = useState('');
-    const [horariofimdomingo, setHorarioFimDomingo] = useState('');
-    const [ativo, setAtivo] = useState(1);
-    const usuarioId = localStorage.getItem('userId');
+const Filiais = (props) => {
 
-    function handleSwitch(e) {
-        if (ativo === 1) {
-            setAtivo(0);
-        }
-        else {
-            setAtivo(1);
-        }
-    }
+    var search = props.location.search;
+    var params = new URLSearchParams(search);
+    var action = params.get('action');
+    var filiaisIdParam = props.match.params.id;
+
+    const [bandeiras, setBandeiras] = useState([]);
+    const [clientes, setClientes] = useState([]);
+    const usuarioId = localStorage.getItem('userId');
+    const [formData, setFormData] = useState({
+        bandeiraid: 1,
+        clienteid: 1,
+        ced: '',
+        nomefilial: '',
+        cnpj: '',
+        razaosocial: '',
+        logradouro: '',
+        numero: '',
+        complemento: '',
+        bairro: '',
+        cidade: '',
+        estado: '',
+        cep: '',
+        telefonefixo: '',
+        nomeresponsavel: '',
+        telefoneresponsavel: '',
+        horarioiniciosemana: '',
+        horariofimsemana: '',
+        horarioiniciosabado: '',
+        horariofimsabado: '',
+        horarioiniciodomingo : '',
+        horariofimdomingo: '',
+        ativo:'1'
+    });
 
     useEffect(() => {
         api.get('clientes').then(response => {            
@@ -54,46 +52,105 @@ export default function Filiais() {
         })
     }, [usuarioId]);   
 
+    useEffect(() => {
+        if (action === 'edit' && filiaisIdParam !== '') {
+            api.get(`filiais/${filiaisIdParam}`).then(response => {
+                document.getElementById('cboClienteid').value = response.data.clienteid;
+                document.getElementById('txtNomeFilial').value = response.data.nomefilial;
+                document.getElementById('txtNomeResponsavel').value = response.data.nomeresponsavel;
+                document.getElementById('txtRazaoSocial').value = response.data.razaosocial;
+                document.getElementById('txtCnpj').value = response.data.cnpj;
+                document.getElementById('cboBandeiraId').value = response.data.bandeiraid;
+                document.getElementById('txtCed').value = response.data.ced;
+                document.getElementById('txtCep').value = response.data.cep;
+                document.getElementById('txtLogradouro').value = response.data.logradouro;
+                document.getElementById('txtBairro').value = response.data.bairro;
+                document.getElementById('txtCidade').value = response.data.cidade;
+                document.getElementById('txtNumero').value = response.data.numero;
+                document.getElementById('txtComplemento').value = response.data.complemento;
+                document.getElementById('cboEstado').value = response.data.estado;
+                document.getElementById('txtTelefoneFixo').value = response.data.telefonefixo;
+                document.getElementById('txtTelefoneResponsavel').value = response.data.telefoneresponsavel;
+                document.getElementById('txtHorarioInicioSemana').value = response.data.horarioiniciosemana;
+                document.getElementById('horarioInicioDomingo').value = response.data.horarioiniciodomingo;
+                document.getElementById('txtHorarioInicioSabado').value = response.data.horarioiniciosabado;
+                document.getElementById('txtHorarioFimSemana').value = response.data.horariofimsemana;
+                document.getElementById('txtHorarioFimDomgingo').value = response.data.horariofimdomingo;
+                document.getElementById('txtHorarioFimSabado').value = response.data.horariofimsabado;
+
+                setFormData({
+                    ...formData,
+                    clienteid: response.data.clienteid,
+                    nomefilial: response.data.nomefilial,
+                    nomeresponsavel: response.data.nomeresponsavel,
+                    razaosocial: response.data.razaosocial,
+                    nomeparceiro: response.data.nomeparceiro,
+                    bandeiraid: response.data.bandeiraid,
+                    nomeparceiro: response.data.nomeparceiro,
+                    cep: response.data.cep,
+                    ced: response.data.ced,
+                    cnpj: response.data.cnpj,
+                    logradouro: response.data.logradouro,
+                    bairro: response.data.bairro,
+                    cidade: response.data.cidade,
+                    numero: response.data.numero,
+                    complemento: response.data.complemento,
+                    estado: response.data.estado,
+                    telefonefixo: response.data.telefonefixo,
+                    telefoneresponsavel: response.data.telefoneresponsavel,
+                    horarioiniciosemana: response.data.horarioiniciosemana,
+                    horarioiniciodomingo: response.data.horarioiniciodomingo,
+                    horarioiniciosabado: response.data.horarioiniciosabado,
+                    horariofimsemana: response.data.horariofimsemana,
+                    horariofimdomingo: response.data.horariofimdomingo,
+                    horariofimsabado: response.data.horariofimsabado,
+                })
+            });
+        } else {
+            return;
+        }
+    }, [filiaisIdParam])
+
+    function handleInputChange(event) {
+        const { name, value } = event.target;
+
+        setFormData({ ...formData, [name]: value });
+    };
+
     async function handleFiliais(e) {
         e.preventDefault();
 
-        const data = {
-            bandeiraid,
-            clienteid,
-            ced,
-            nomefilial,
-            razaosocial,
-            cnpj,
-            logradouro,
-            numero,
-            complemento,
-            bairro,
-            cep,
-            cidade,
-            estado,
-            telefonefixo,
-            telefoneresponsavel,
-            nomeresponsavel,
-            horarioiniciosemana,
-            horariofimsemana,
-            horarioiniciosabado,
-            horariofimsabado,
-            horarioiniciodomingo,
-            horariofimdomingo,
-            ativo
-        };
+        const data = formData;
 
-        try {
-            const response = await api.post('filiais', data, {
-                headers: {
-                    Authorization: 1,
+        if (action === 'edit') {
+
+            try {
+                const response = await api.put(`/filiais/${filiaisIdParam}`, data, {
+                    headers: {
+                        Authorization: 1,
+                    }
+                });
+                alert(`Cadastro atualizado com sucesso.`);
+            } catch (err) {
+
+                alert('Erro na atualização, tente novamente.');
+            }
+
+        } else {
+
+            if (action === 'novo') {
+                try {
+                    const response = await api.post('filiais', data, {
+                        headers: {
+                            Authorization: 1,
+                        }
+                    });
+                    alert(`Cadastro realizado com sucesso.`);
+                } catch (err) {
+
+                    alert('Erro no cadastro, tente novamente.');
                 }
-            });
-            alert(`Feito o cadastro com sucesso`);
-
-        } catch (err) {
-
-            alert('Erro no cadastro, tente novamente.');
+            }
         }
     }
 
@@ -112,8 +169,8 @@ export default function Filiais() {
                                     <Col md="3">
                                         <Label htmlFor="clienteId">Cliente</Label>
                                         <Input required type="select" name="select" id="cboClienteid" multiple={false}
-                                            value={clienteid}
-                                            onChange={e => setClienteId(e.target.value)} >
+                                            name="clienteid"
+                                            onChange={handleInputChange}  >
                                                 <option value={undefined} defaultValue>Selecione...</option>
                                                 {clientes.map(cliente => (                                                
                                                 <option value={cliente.id}>{cliente.nomecliente}</option>
@@ -123,14 +180,14 @@ export default function Filiais() {
                                     <Col md="3">
                                         <Label htmlFor="nomeFilial">Nome Filial</Label>
                                         <Input type="text" required id="txtNomeFilial" placeholder="Digite o nome da filial"
-                                            value={nomefilial}
-                                            onChange={e => setNomeFilial(e.target.value)} />
+                                            name="nomefilial"
+                                            onChange={handleInputChange} />
                                     </Col>
                                     <Col md="3">
                                         <Label htmlFor="nomeResponsavel">Nome Responsável</Label>
                                         <Input type="text" required id="txtNomeResponsavel" placeholder="Digite o nome do responsável"
-                                            value={nomeresponsavel}
-                                            onChange={e => setNomeResponsavel(e.target.value)}
+                                            name="nomeresponsavel"
+                                            onChange={handleInputChange} 
                                         />
                                     </Col>
                                 </FormGroup>
@@ -138,16 +195,16 @@ export default function Filiais() {
                                     <Col md="3">
                                         <Label htmlFor="RazaoSocial">Razão Social</Label>
                                         <Input type="text" required id="txtRazaoSocial" placeholder="Digite a razão social"
-                                            value={razaosocial}
-                                            onChange={e => setRazaoSocial(e.target.value)} />
+                                            name="razaosocial"
+                                            onChange={handleInputChange}  />
                                     </Col>
                                     <Col md="3">
                                         <Label htmlFor="cnpj">CNPJ</Label>
                                         <InputGroup>
                                             <Input type="text" required id="txtCnpj"
                                                 placeholder="Digite a CNPJ"
-                                                value={cnpj}
-                                                onChange={e => setCnpj(cnpjMask(e.target.value))} />
+                                                name="cnpj"
+                                                onChange={handleInputChange}  />
                                         </InputGroup>
                                     </Col>
                                 </FormGroup>
@@ -155,8 +212,8 @@ export default function Filiais() {
                                     <Col md="3">
                                         <Label htmlFor="bandeiraId">Bandeira</Label>
                                         <Input required type="select" name="select" id="cboBandeiraId" multiple={false}
-                                            value={bandeiraid}
-                                            onChange={e => setBandeiraId(e.target.value)}>
+                                            name="bandeiraid"
+                                            onChange={handleInputChange} >
                                             <option value={undefined} defaultValue>Selecione...</option>
                                                 {bandeiras.map(bandeira=> (                                                
                                                 <option value={bandeira.id}>{bandeira.nomebandeira}</option>
@@ -166,15 +223,15 @@ export default function Filiais() {
                                     <Col md="3">
                                         <Label htmlFor="ced">CED</Label>
                                         <Input type="text" required id="txtCed"
-                                            value={ced}
-                                            onChange={e => setCed(e.target.value)} />
+                                            name="ced"
+                                            onChange={handleInputChange} />
                                     </Col>
                                     <Col md="3">
                                         <Label htmlFor="cep">CEP</Label>
                                         <InputGroup>
                                             <Input id="txtCep" size="16" required type="text" placeholder="00000-000"
-                                                value={cep}
-                                                onChange={e => setCep(cepMask(e.target.value))} />
+                                                name="cep"
+                                                onChange={handleInputChange}  />
                                             <InputGroupAddon addonType="append">
                                                 <Button type="button" color="secondary fa fa-truck"></Button>
                                             </InputGroupAddon>
@@ -187,42 +244,42 @@ export default function Filiais() {
                                         <InputGroup>
                                             <Input type="text" required id="txtLogradouro"
                                                 placeholder="Digite o Logradouro"
-                                                value={logradouro}
-                                                onChange={e => setLogradouro(e.target.value)} />
+                                                name="logradouro"
+                                                onChange={handleInputChange}  />
                                         </InputGroup>
                                     </Col>
                                     <Col md="3">
                                         <Label htmlFor="bairro">Bairro</Label>
                                         <Input type="text" required id="txtBairro" placeholder="Digite o Bairro"
-                                            value={bairro}
-                                            onChange={e => setBairro(e.target.value)}
+                                            name="bairro"
+                                            onChange={handleInputChange} 
                                         />
                                     </Col>
                                     <Col md="3">
                                         <Label htmlFor="cidade">Cidade</Label>
                                         <Input type="text" required id="txtCidade" placeholder="Digite a Cidade"
-                                            value={cidade}
-                                            onChange={e => setCidade(e.target.value)} />
+                                            name="cidade"
+                                            onChange={handleInputChange}  />
                                     </Col>
                                 </FormGroup>
                                 <FormGroup row>
                                     <Col md="3">
                                         <Label htmlFor="numero">Número</Label>
                                         <Input type="text" required id="txtNumero" placeholder="Digite o Números"
-                                            value={numero}
-                                            onChange={e => setNumero(numMask(e.target.value))} />
+                                            name="numero"
+                                            onChange={handleInputChange} />
                                     </Col>
                                     <Col md="3">
                                         <Label htmlFor="complemento">Complemento</Label>
                                         <Input type="text" id="txtComplemento" placeholder="Digite o Complemento"
-                                            value={complemento}
-                                            onChange={e => setComplemento(e.target.value)} />
+                                          name="complemento"
+                                          onChange={handleInputChange}  />
                                     </Col>
                                     <Col md="3">
                                         <Label htmlFor="estado">UF</Label>
                                         <Input type="select" required name="select" id="cboEstado" multiple={false}
-                                            value={estado}
-                                            onChange={e => setEstado(e.target.value)}>
+                                            name="estado"
+                                            onChange={handleInputChange} >
                                             <option value={undefined}>Selecione...</option>
                                             <option value="SP">São Paulo</option>
                                             <option value="RJ">Rio de Janeiro</option>
@@ -264,8 +321,8 @@ export default function Filiais() {
                                         <Label htmlFor="telefoneFixo">Telefone Fixo</Label>
                                         <InputGroup>
                                             <Input type="text" id="txtTelefoneFixo" placeholder="(11) 9999-9999"
-                                                value={telefonefixo}
-                                                onChange={e => setTelefoneFixo(telMask(e.target.value))} />
+                                                name="telefonefixo"
+                                                onChange={handleInputChange}  />
                                             <InputGroupAddon addonType="append">
                                                 <Button type="button" color="secondary icon-phone"></Button>
                                             </InputGroupAddon>
@@ -275,8 +332,8 @@ export default function Filiais() {
                                         <Label htmlFor="telefoneResponsavel">Telefone Responsável</Label>
                                         <InputGroup>
                                             <Input type="text" id="txtTelefoneResponsavel" placeholder="(11) 9999-9999"
-                                                value={telefoneresponsavel}
-                                                onChange={e => setTelefoneResponsavel(telMask(e.target.value))} />
+                                                name="telefoneresponsavel"
+                                                onChange={handleInputChange}  />
                                             <InputGroupAddon addonType="append">
                                                 <Button type="button" color="secondary icon-phone"></Button>
                                             </InputGroupAddon>
@@ -288,8 +345,8 @@ export default function Filiais() {
                                         <Label htmlFor="horarioInicioSemana">Horario Início da semana</Label>
                                         <InputGroup>
                                             <Input type="time" required id="txtHorarioInicioSemana"
-                                                value={horarioiniciosemana}
-                                                onChange={e => setHorarioInicioSemana(e.target.value)} />
+                                               name="horarioiniciosemana"
+                                               onChange={handleInputChange}  />
                                             
                                             <InputGroupAddon addonType="append">
                                                 <Button type="button" color= "secondary fa fa-clock-o"></Button>
@@ -300,8 +357,8 @@ export default function Filiais() {
                                         <Label htmlFor="horarioInicioDomingo">Horario Início do Domingo</Label>
                                        <InputGroup> 
                                             <Input type="time" required id="horarioInicioDomingo"
-                                                value={horarioiniciodomingo}
-                                                onChange={e => setHorarioInicioDomingo(e.target.value)} />
+                                                name="horarioiniciodomingo"
+                                                onChange={handleInputChange}  />
                                                 <InputGroupAddon addonType="append">
                                                     <Button type="button" color= "secondary fa fa-clock-o"></Button>
                                                 </InputGroupAddon>    
@@ -311,8 +368,8 @@ export default function Filiais() {
                                         <Label htmlFor="horarioInicioSabado">Horario Início do Sábado</Label>
                                         <InputGroup>
                                             <Input type="time" required id="txtHorarioInicioSabado"
-                                                value={horarioiniciosabado}
-                                                onChange={e => setHorarioInicioSabado(e.target.value)} />
+                                                name="horarioiniciosabado"
+                                                onChange={handleInputChange}  />
                                             <InputGroupAddon addonType="append">
                                                         <Button type="button" color= "secondary fa fa-clock-o"></Button>
                                             </InputGroupAddon>
@@ -324,8 +381,8 @@ export default function Filiais() {
                                         <Label htmlFor="horarioFimSemana">Horario Fim da semana</Label>
                                         <InputGroup>
                                             <Input type="time" required id="txtHorarioFimSemana"
-                                                value={horariofimsemana}
-                                                onChange={e => setHorarioFimSemana(e.target.value)} />
+                                                name="horariofimsemana"
+                                                onChange={handleInputChange}  />
                                             <InputGroupAddon addonType="append">
                                                 <Button type="button" color= "secondary fa fa-clock-o"></Button>
                                             </InputGroupAddon>
@@ -335,8 +392,8 @@ export default function Filiais() {
                                         <Label htmlFor="horarioFimDomingo">Horario Fim do Domingo</Label>
                                         <InputGroup>
                                             <Input type="time" required id="txtHorarioFimDomgingo"
-                                                value={horariofimdomingo}
-                                                onChange={e => setHorarioFimDomingo(e.target.value)} />
+                                               name="horariofimdomingo"
+                                               onChange={handleInputChange}  />
                                                 <InputGroupAddon addonType="append">
                                                     <Button type="button" color= "secondary fa fa-clock-o"></Button>
                                                 </InputGroupAddon>
@@ -346,8 +403,8 @@ export default function Filiais() {
                                         <Label htmlFor="horarioFimSabado">Horario Fim do Sábado</Label>
                                         <InputGroup>    
                                             <Input type="time" required id="txtHorarioFimSabado"
-                                                value={horariofimsabado}
-                                                onChange={e => setHorarioFimSabado(e.target.value)} />
+                                                name="horariofimsabado"
+                                                onChange={handleInputChange}  />
                                             <InputGroupAddon addonType="append">
                                                     <Button type="button" color= "secondary fa fa-clock-o"></Button>
                                                 </InputGroupAddon> 
@@ -373,3 +430,4 @@ export default function Filiais() {
         </div>
     );
 }
+export default Filiais;

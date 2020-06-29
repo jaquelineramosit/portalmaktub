@@ -14,7 +14,6 @@ const Cliente = (props) => {
 
     const [parceiros, setParceiros] = useState([]);
     const usuarioId = localStorage.getItem('userId');
-    const localId = localStorage.getItem('localId');
     const [formData, setFormData] = useState({
        
         nomecliente: '',
@@ -32,7 +31,7 @@ const Cliente = (props) => {
         nomeresponsavel: '',
         telefoneresponsavel: '',
         parceiroid: 0,
-        localId: localId,
+        ativo:'1'
     });
 
     useEffect(() => {

@@ -1,49 +1,84 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, InputGroupAddon, CardFooter, Form, InputGroup } from 'reactstrap';
-import { AppSwitch } from '@coreui/react'
 import '../../../global.css';
 import api from '../../../../src/services/api';
 
-export default function Parceiros() {   
-    const [nomeparceiro, setNomeParceiro] = useState('');
-    const [descricao, setDescricao] = useState('');
-    const [ativo, setAtivo] = useState(1);
+const Parceiros = (props) => {
+
+    var search = props.location.search;
+    var params = new URLSearchParams(search);
+    var action = params.get('action');
+    var parceirosIdParam = props.match.params.id;
+
     const usuarioId = localStorage.getItem('userId');
+    const [formData, setFormData] = useState({
+        nomeparceiro: '',
+        descricao: '',
+        ativo:'1'
+    });
 
-    function handleSwitch(e) {
-        if (ativo === 1) {
-            setAtivo(0);
-        }
-        else {
-            setAtivo(1);
-        }
-    }
+    useEffect(() => {
+        if (action === 'edit' && parceirosIdParam !== '') {
+            api.get(`parceiro/${parceirosIdParam}`).then(response => {
+                document.getElementById('txtNomeParceiro').value = response.data.nomeparceiro;
+                document.getElementById('txtDescricao').value = response.data.descricao;
 
-    async function handleParceiros(e) {
+                setFormData({
+                    ...formData,
+                    nomeparceiro: response.data.nomeparceiro,
+                    descricao: response.data.descricao,
+                })
+            });
+        } else {
+            return;
+        }
+    }, [parceirosIdParam])
+
+    function handleInputChange(event) {
+        const { name, value } = event.target;
+
+        setFormData({ ...formData, [name]: value });
+    };
+
+    async function handleTicket(e) {
         e.preventDefault();
 
-        const data = {
-            nomeparceiro,
-            descricao,
-            ativo
-        }
-        try {
-            const response = await api.post('parceiro', data, {
-                headers: {
-                    Authorization: 1,
+        const data = formData;
+
+        if (action === 'edit') {
+
+            try {
+                const response = await api.put(`/parceiro/${parceirosIdParam}`, data, {
+                    headers: {
+                        Authorization: 1,
+                    }
+                });
+                alert(`Cadastro atualizado com sucesso.`);
+            } catch (err) {
+
+                alert('Erro na atualização, tente novamente.');
+            }
+
+        } else {
+
+            if (action === 'novo') {
+                try {
+                    const response = await api.post('parceiro', data, {
+                        headers: {
+                            Authorization: 1,
+                        }
+                    });
+                    alert(`Cadastro realizado com sucesso.`);
+                } catch (err) {
+
+                    alert('Erro no cadastro, tente novamente.');
                 }
-            });
-            alert(`Feito o cadastro com sucesso`);
-
-        } catch (err) {
-
-            alert('Erro no cadastro, tente novamente.');
+            }
         }
     }
-
     return (
         <div className="animated fadeIn">
-            <Form onSubmit={handleParceiros}>
+            <Form onSubmit={handleTicket}>
                 <Row>
                     <Col xs="12" md="12">
                         <Card>
@@ -57,31 +92,31 @@ export default function Parceiros() {
                                         <Label htmlFor="nomeParceiro">Nome do Parceiro</Label>
                                         <InputGroup>
                                             <Input type="text" required id="txtNomeParceiro" placeholder="Digite o nome do Parceiro"
-                                                value={nomeparceiro}
-                                                onChange={e => setNomeParceiro(e.target.value)} >
+                                                name="nomeparceiro"
+                                                onChange={handleInputChange} >
                                             </Input>
                                             <InputGroupAddon addonType="append">
-                                                <Button type="button" color= "secondary fa fa-handshake-o"></Button>
-                                            </InputGroupAddon> 
-                                        </InputGroup>   
-                                    </Col>                              
-                                </FormGroup>              
+                                                <Button type="button" color="secondary fa fa-handshake-o"></Button>
+                                            </InputGroupAddon>
+                                        </InputGroup>
+                                    </Col>
+                                </FormGroup>
                                 <FormGroup row>
                                     <Col md="8">
                                         <Label>Descrição</Label>
-                                        <Input type="textarea" rows="5"  placeholder="Descreva o parceiro inserido"
-                                            value={descricao}
-                                            onChange={e => setDescricao(e.target.value)} />
+                                        <Input type="textarea"  required id="txtDescricao" rows="5" placeholder="Descreva o parceiro inserido"
+                                            name="descricao"
+                                            onChange={handleInputChange}/>
                                     </Col>
                                 </FormGroup>
-                                 {/*<FormGroup>
+                                {/*<FormGroup>
                                     <Col md="1">
                                         <Label check className="form-check-label" htmlFor="ativo">Ativo</Label>
                                         <AppSwitch id="rdAtivo" className={'switch-ativo'}  label color={'success'} defaultChecked size={'sm'}
                                          onChange={handleSwitch}
                                         />                                    
                                     </Col>  
-                                 </FormGroup> */}  
+                                 </FormGroup> */}
                             </CardBody>
                             <CardFooter className="text-center">
                                 <Button type="submit" size="sm" color="success" className=" mr-3"><i className="fa fa-check"></i> Salvar</Button>
@@ -94,3 +129,4 @@ export default function Parceiros() {
         </div>
     );
 }
+export default Parceiros;

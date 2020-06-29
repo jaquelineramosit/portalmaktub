@@ -11,11 +11,11 @@ const Atendimento = (props) => {
     var atendimentoIdParam = props.match.params.id;
 
     const usuarioId = localStorage.getItem('userId');
-    const localId = localStorage.getItem('localId');
     const [formData, setFormData] = useState({
         status: '',
         descstatus: '',
-        localId: localId,
+        ativo:'1'
+        
     });
 
     useEffect(() => {

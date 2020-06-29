@@ -10,12 +10,12 @@ const Banco = (props) => {
     var action = params.get('action');
     var bancoIdParam = props.match.params.id;
 
+
     const usuarioId = localStorage.getItem('userId');
-    const localId = localStorage.getItem('localId');
     const [formData, setFormData] = useState({
         codbanco: '',
         nomebanco: '',
-        localId: localId,
+        ativo:'1'
     });
 
     useEffect(() => {

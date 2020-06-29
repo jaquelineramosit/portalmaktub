@@ -11,10 +11,9 @@ const Bandeira = (props) => {
     var bandeiraIdParam = props.match.params.id;
 
     const usuarioId = localStorage.getItem('userId');
-    const localId = localStorage.getItem('localId');
     const [formData, setFormData] = useState({
         nomebandeira: '',
-        localId: localId,
+        ativo:'1'
     });
 
     useEffect(() => {
