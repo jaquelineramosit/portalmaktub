@@ -89,6 +89,7 @@ const Cadastroos = (props) => {
                 document.getElementById('txtCrustoAdicional').value = response.data.custoadicional;
                 document.getElementById('txtDataSolicitacao').value = dateFormat(response.data.datasolicitacao, "yyyy-mm-dd");
                 document.getElementById('txtDataAtendimento').value = dateFormat(response.data.dataatendimento, "yyyy-mm-dd");
+                setNomeDiaSemana(getNameOfTheDay(response.data.diadasemana));
 
 
 
@@ -120,37 +121,51 @@ const Cadastroos = (props) => {
     }, [cadosdIdParam])
 
 
-    
+    function getNameOfTheDay(dayNumber) {
+        var diasDaSemana = new Array(7);
+        diasDaSemana[0] = "Domingo";
+        diasDaSemana[1] = "Segunda-feira";
+        diasDaSemana[2] = "Terça-feira";
+        diasDaSemana[3] = "Quarta-feira";
+        diasDaSemana[4] = "Quinta-feira";
+        diasDaSemana[5] = "Sexta-feira";
+        diasDaSemana[6] = "Sábado";
+
+        var nomeDiaDaSemana = diasDaSemana[dayNumber];
+
+        return nomeDiaDaSemana;
+    }
 
     function handleInputChange(event) {
         event.preventDefault();
 
         const { name, value } = event.target;
 
-        if ( name === 'dataatendimento' ) {
-            setDataAtendimento(value);
+        if (name === 'dataatendimento') {
+            if ('dataatendimento' != "") {
+                setDataAtendimento(value);
 
-            var dataAtendimento = String(moment(value));
+                var dataAtendimento = String(moment(value));
 
-            var date = new Date(dataAtendimento);
+                var date = new Date(dataAtendimento);
 
-            var diaNumero = date.getDay();
-            setDiaSemana(parseInt(diaNumero));
+                var diaNumero = date.getDay();
+                setDiaSemana(parseInt(diaNumero));
 
-            var diasDaSemana = new Array(7);
-            diasDaSemana[0] = "Domingo";
-            diasDaSemana[1] = "Segunda-feira";
-            diasDaSemana[2] = "Terça-feira";
-            diasDaSemana[3] = "Quarta-feira";
-            diasDaSemana[4] = "Quinta-feira";
-            diasDaSemana[5] = "Sexta-feira";
-            diasDaSemana[6] = "Sábado";
+                var diasDaSemana = new Array(7);
+                diasDaSemana[0] = "Domingo";
+                diasDaSemana[1] = "Segunda-feira";
+                diasDaSemana[2] = "Terça-feira";
+                diasDaSemana[3] = "Quarta-feira";
+                diasDaSemana[4] = "Quinta-feira";
+                diasDaSemana[5] = "Sexta-feira";
+                diasDaSemana[6] = "Sábado";
 
-            var nomeDiaDaSemana = diasDaSemana[date.getDay()];
+                var nomeDiaDaSemana = diasDaSemana[date.getDay()];
 
-            setNomeDiaSemana(nomeDiaDaSemana);
-        }        
-        
+                setNomeDiaSemana(nomeDiaDaSemana);
+            }
+        }
         switch (name) {
             case 'numeroos':
                 setNumos(numMask(event.target.value));
@@ -170,7 +185,7 @@ const Cadastroos = (props) => {
             case 'custoadicional':
                 setCustoAdicional(reaisMask(event.target.value));
                 break;
-            
+
         }
 
         setFormData({ ...formData, [name]: value });
@@ -474,6 +489,3 @@ const Cadastroos = (props) => {
     );
 }
 export default Cadastroos;
-
-
-
