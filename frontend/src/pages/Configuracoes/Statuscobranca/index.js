@@ -1,4 +1,4 @@
-import React, { useState,useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, CardFooter, Form } from 'reactstrap';
 import '../../../global.css';
 import api from '../../../../src/services/api';
@@ -14,7 +14,7 @@ const Cobranca = (props) => {
     const [formData, setFormData] = useState({
         status: '',
         descstatus: '',
-        ativo:'1'
+        ativo: '1'
     });
 
     useEffect(() => {
@@ -91,16 +91,16 @@ const Cobranca = (props) => {
                                     <Col md="4">
                                         <Label htmlFor="status">Status de Cobrança</Label>
                                         <Input type="text" required id="txtStatus" placeholder="Inisira o Status"
-                                         name="status"
-                                         onChange={handleInputChange} />
+                                            name="status"
+                                            onChange={handleInputChange} />
                                     </Col>
                                 </FormGroup>
                                 <FormGroup row>
                                     <Col md="8">
                                         <Label>Descrição</Label>
                                         <Input type="textarea" rows="5" placeholder="Descreva o Status inserido" id="txtDescStatus"
-                                              name="descstatus"
-                                              onChange={handleInputChange} />
+                                            name="descstatus"
+                                            onChange={handleInputChange} />
                                     </Col>
                                 </FormGroup>
                                 {/* <FormGroup row>

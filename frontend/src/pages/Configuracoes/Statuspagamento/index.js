@@ -14,7 +14,7 @@ const Pagamento = (props) => {
     const [formData, setFormData] = useState({
         status: '',
         descstatus: '',
-        ativo:'1'
+        ativo: '1'
     });
 
     useEffect(() => {

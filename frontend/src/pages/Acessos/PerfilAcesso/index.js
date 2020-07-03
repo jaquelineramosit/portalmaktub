@@ -1,52 +1,86 @@
-import React, { useState } from 'react';
-import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, InputGroup, InputGroupAddon, CardFooter, Form, FormFeedback } from 'reactstrap';
-import { AppSwitch } from '@coreui/react'
+import React, { useState,useEffect } from 'react';
+import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, CardFooter, Form } from 'reactstrap';
 import '../../../global.css';
 import api from '../../../../src/services/api';
 
-export default function PerfilAcesso() {
-    const [nomeperfil, setNomePerfil] = useState('');
-    const [descricao, setDescricao] = useState('');    
-    const [ativo, setAtivo] = useState(1);
-    const usuarioId = localStorage.getItem('userId');    
+const Perfilacesso = (props) => {
 
-    function handleSwitch(e) {
-        if (ativo === 1) {
-            setAtivo(0);
+    var search = props.location.search;
+    var params = new URLSearchParams(search);
+    var action = params.get('action');
+    var perfilacessoIdParam = props.match.params.id;
+
+    const usuarioId = localStorage.getItem('userId');
+    const [formData, setFormData] = useState({
+        nomeperfil:'',
+        descricao:'',
+        ativo: 1
+    });
+
+    useEffect(() => {
+        if (action === 'edit' && perfilacessoIdParam !== '') {
+            api.get(`perfis-acesso/${perfilacessoIdParam}`).then(response => {
+                document.getElementById('txtPerfilAcesso').value = response.data.nomeperfil;
+                document.getElementById('txtDescricao').value = response.data.descricao;
+
+                setFormData({
+                    ...formData,
+                    nomeperfil: response.data.nomeperfil,
+                    descricao: response.data.descricao,
+
+                })
+            });
+        } else {
+            return;
         }
-        else {
-            setAtivo(1);
-        }
-    }
+    }, [perfilacessoIdParam])
+
+    function handleInputChange(event) {
+        const { name, value } = event.target;
+
+        setFormData({ ...formData, [name]: value });
+    };
 
     async function handlePerfilAcesso(e) {
         e.preventDefault();
-        
-        const data = {
-            nomeperfil,
-            descricao, 
-            ativo,      
-        };
-        
 
-        try {
-            const response = await api.post('/perfis-acesso', data, {
-                headers: {
-                    Authorization:1,
+        const data = formData;
+
+        if (action === 'edit') {
+
+            try {
+                const response = await api.put(`/perfis-acesso/${perfilacessoIdParam}`, data, {
+                    headers: {
+                        Authorization: 1,
+                    }
+                });
+                alert(`Cadastro atualizado com sucesso.`);
+            } catch (err) {
+
+                alert('Erro na atualização, tente novamente.');
+            }
+
+        } else {
+
+            if (action === 'novo') {
+                try {
+                    const response = await api.post('perfis-acesso', data, {
+                        headers: {
+                            Authorization: 1,
+                        }
+                    });
+                    alert(`Cadastro realizado com sucesso.`);
+                } catch (err) {
+
+                    alert('Erro no cadastro, tente novamente.');
                 }
-            });
-            alert(`Feito o cadastro com sucesso`);
-
-        } catch (err) {
-
-            alert('Erro no cadastro, tente novamente.');
+            }
         }
-    
     }
-    return (        
+    return (
         <div className="animated fadeIn">
             <Form onSubmit={handlePerfilAcesso}>
-                <Row>                              
+                <Row>
                     <Col xs="12" md="12">
                         <Card>
                             <CardHeader>
@@ -58,19 +92,21 @@ export default function PerfilAcesso() {
                                     <Col md="4">
                                         <Label htmlFor="nomePerfilAccesso">Nome do Perfil de Acesso</Label>
                                         <Input type="text" id="txtPerfilAcesso" multiple placeholder="Digite o nome do Perfil de Acesso"
-                                        value={nomeperfil}
-                                        onChange={ e => setNomePerfil(e.target.value)}
+                                            name="nomeperfil"
+                                            onChange={handleInputChange}
+
                                         />
-                                    </Col> 
-                                </FormGroup> 
-                                <FormGroup row>          
+                                    </Col>
+                                </FormGroup>
+                                <FormGroup row>
                                     <Col md="10">
-                                            <Label htmlFor="descricao">Descrião</Label>
-                                            <Input type="textarea" id="txtDescricao" multiple placeholder="Digite a Descrição"
-                                            value={descricao}
-                                            onChange={ e => setDescricao(e.target.value)}
-                                            />
-                                    </Col>                                                                       
+                                        <Label htmlFor="descricao">Descrião</Label>
+                                        <Input type="textarea" id="txtDescricao" multiple placeholder="Digite a Descrição"
+                                            name="descricao"
+                                            onChange={handleInputChange}
+
+                                        />
+                                    </Col>
                                 </FormGroup>
                                 {/*<FormGroup row>                                     
                                     <Col md="2">
@@ -79,7 +115,7 @@ export default function PerfilAcesso() {
                                         <AppSwitch id="rdAtivo" className={'switch-ativo'} label color={'success'} defaultChecked size={'sm'}
                                              onChange={handleSwitch} />
                                     </Col>                                                           
-                                </FormGroup>*/}                                                                                         
+                                </FormGroup>*/}
                             </CardBody>
                             <CardFooter className="text-center">
                                 <Button type="submit" size="sm" color="success" className=" mr-3"><i className="fa fa-check"></i> Salvar</Button>
@@ -89,6 +125,7 @@ export default function PerfilAcesso() {
                     </Col>
                 </Row>
             </Form>
-        </div>    
-    );    
+        </div>
+    );
 }
+export default Perfilacesso;

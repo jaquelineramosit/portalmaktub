@@ -70,10 +70,12 @@ export default function ListaFuncao() {
             name: 'Ações',
             sortable: true,
             right: true,
-            cell: row => <Link to={`funcao/${row.id}`} className="btn-sm btn-primary"><i className="fa fa-pencil fa-lg mr-1"></i>
+            cell: row => <Link to={`funcao/${row.id}?action=edit`} className="btn-sm btn-primary"><i className="fa fa-pencil fa-lg mr-1"></i>
             Editar</Link>
         },
     ];
+    console.log(columns)
+    console.log(data)
     return (
         <div className="animated-fadeIn">
             <Row>
@@ -83,7 +85,7 @@ export default function ListaFuncao() {
 
                             <i className="fa fa-align-justify"></i>Função
 
-                        <Link to={`funcao`} className="btn btn-secondary float-right">
+                        <Link to={`funcao?action=novo`} className="btn btn-secondary float-right">
                                 <i className="cui-file icons mr-1"></i>
                                                 Novo
                                             </Link>

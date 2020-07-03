@@ -14,7 +14,7 @@ const Ferramenta = (props) => {
     const [formData, setFormData] = useState({
         codferramenta: '',
         descferramenta: '',
-        ativo:'1'
+        ativo: '1'
     });
 
     useEffect(() => {

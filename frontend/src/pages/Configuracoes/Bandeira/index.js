@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, InputGroup, InputGroupAddon, CardFooter, Form } from 'reactstrap';
 import '../../../global.css';
 import api from '../../../services/api';
@@ -13,7 +13,7 @@ const Bandeira = (props) => {
     const usuarioId = localStorage.getItem('userId');
     const [formData, setFormData] = useState({
         nomebandeira: '',
-        ativo:'1'
+        ativo: '1'
     });
 
     useEffect(() => {
@@ -90,22 +90,22 @@ const Bandeira = (props) => {
                                         <Label htmlFor="nomeBandeira">Nome da Bandeira</Label>
                                         <InputGroup>
                                             <Input type="text" required id="txtNomeBandeira" placeholder="Digite o nome da Bandeira"
-                                               name="nomebandeira"
-                                               onChange={handleInputChange} >
+                                                name="nomebandeira"
+                                                onChange={handleInputChange} >
                                             </Input>
                                             <InputGroupAddon addonType="append">
-                                                <Button type="button" color= "secondary fa fa-flag"></Button>
+                                                <Button type="button" color="secondary fa fa-flag"></Button>
                                             </InputGroupAddon>
-                                        </InputGroup>              
+                                        </InputGroup>
                                     </Col>
                                 </FormGroup>
-                               {/*} <FormGroup>    
+                                {/*} <FormGroup>    
                                     <Col md="1">
                                         <Label check className="form-check-label" htmlFor="ativo">Ativo</Label>
                                         <AppSwitch id="rdAtivo" className={'switch-ativo'}  label color={'success'} defaultChecked size={'sm'}
                                          onChange={handleSwitch} />                                  
                                     </Col>     
-                                </FormGroup>*/ }                               
+                                </FormGroup>*/ }
                             </CardBody>
                             <CardFooter className="text-center">
                                 <Button type="submit" size="sm" color="success" className=" mr-3"><i className="fa fa-check"></i> Salvar</Button>

@@ -15,7 +15,7 @@ const Banco = (props) => {
     const [formData, setFormData] = useState({
         codbanco: '',
         nomebanco: '',
-        ativo:'1'
+        ativo: '1'
     });
 
     useEffect(() => {
@@ -77,7 +77,7 @@ const Banco = (props) => {
             }
         }
     }
- 
+
     return (
         <div className="animated fadeIn">
             <Form onSubmit={handleTicket}>
@@ -99,8 +99,8 @@ const Banco = (props) => {
                                     <Col md="4">
                                         <Label htmlFor="codBanco">Nome do Banco</Label>
                                         <Input type="text" required id="txtNomeBanco" placeholder="Digite o Nome do Banco"
-                                              name="nomebanco"
-                                              onChange={handleInputChange}  />
+                                            name="nomebanco"
+                                            onChange={handleInputChange} />
                                     </Col>
                                 </FormGroup>
                                 {/*<FormGroup>    
@@ -110,7 +110,7 @@ const Banco = (props) => {
                                         onChange={handleSwitch}
                                         />                                    
                                     </Col>                                
-                                </FormGroup> */}                                               
+                                </FormGroup> */}
                             </CardBody>
                             <CardFooter className="text-center">
                                 <Button type="submit" size="sm" color="success" className=" mr-3"><i className="fa fa-check"></i> Salvar</Button>

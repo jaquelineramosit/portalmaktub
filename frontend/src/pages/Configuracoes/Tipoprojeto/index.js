@@ -1,6 +1,6 @@
-import React, { useState,useEffect } from 'react';
-import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, InputGroup , CardFooter, Form, InputGroupAddon } from 'reactstrap';
-import {reaisMask} from '../../../mask'
+import React, { useState, useEffect } from 'react';
+import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, InputGroup, CardFooter, Form, InputGroupAddon } from 'reactstrap';
+import { reaisMask } from '../../../mask'
 import '../../../global.css';
 import api from '../../../../src/services/api';
 
@@ -11,15 +11,19 @@ const Tipoprojeto = (props) => {
     var action = params.get('action');
     var tipoprojetoIdParam = props.match.params.id;
 
+    const [receita, setReceita] = useState();
+    const [despesa, setDespesa] = useState();
+    const [valorhoracobrado, setValorhoracobrado] = useState();
+    const [valorhoratecnico, setValorhoratecnico] = useState();
     const usuarioId = localStorage.getItem('userId');
     const [formData, setFormData] = useState({
         nometipoprojeto: '',
         receita: '',
-        despesa:'',
-        horas:'',
-        valorhoracobrado:'',
-        valorhoratecnico:'',
-        ativo:'1'
+        despesa: '',
+        horas: '',
+        valorhoracobrado: '',
+        valorhoratecnico: '',
+        ativo: '1'
     });
 
     useEffect(() => {
@@ -49,6 +53,20 @@ const Tipoprojeto = (props) => {
 
     function handleInputChange(event) {
         const { name, value } = event.target;
+        switch (name) {
+            case 'receita':
+                setReceita(reaisMask(event.target.value));
+                break;
+            case 'despesa':
+                setDespesa(reaisMask(event.target.value));
+                break;
+            case 'valorhoracobrado':
+                setValorhoracobrado(reaisMask(event.target.value));
+                break;
+            case 'valorhoratecnico':
+                setValorhoratecnico(reaisMask(event.target.value));
+                break;
+        }
 
         setFormData({ ...formData, [name]: value });
     };
@@ -110,6 +128,7 @@ const Tipoprojeto = (props) => {
                                     <Col md="3">
                                         <Label htmlFor="despesa">Despesa</Label>
                                         <Input type="text" required id="txtDespesa" placeholder="R$00,00"
+                                            value={despesa}
                                             name="despesa"
                                             onChange={handleInputChange}
                                         />
@@ -117,30 +136,32 @@ const Tipoprojeto = (props) => {
                                     <Col md="3">
                                         <Label htmlFor="receita">Receita</Label>
                                         <Input type="text" required id="txtReceita" placeholder="R$00,00"
-                                           name="receita"
-                                           onChange={handleInputChange} />
+                                            value={receita}
+                                            name="receita"
+                                            onChange={handleInputChange} />
                                     </Col>
                                 </FormGroup>
                                 <FormGroup row>
                                     <Col md="3">
                                         <Label htmlFor="horas">Horas Total do projeto</Label>
                                         <InputGroup>
-                                            <Input type="time" required id="txtHoras"  required id="txtHorastotal"                                          
-                                               name="horas"
-                                               onChange={handleInputChange}/>
+                                            <Input type="time" required id="txtHoras" required id="txtHorastotal"
+                                                name="horas"
+                                                onChange={handleInputChange} />
                                             <InputGroupAddon addonType="append">
-                                                <Button type="button" color= "secondary fa fa-clock-o"></Button>
+                                                <Button type="button" color="secondary fa fa-clock-o"></Button>
                                             </InputGroupAddon>
                                         </InputGroup>
                                     </Col>
                                     <Col md="3">
                                         <Label htmlFor="valorHoraCobrado">Valor hora Cobrado</Label>
-                                        <InputGroup>    
-                                            <Input type="text" required id="txtValorHoraCobrado" placeholder="R$00,00" required id="txtValorhora" 
-                                            name="valorhoracobrado"
-                                            onChange={handleInputChange} />
-                                           <InputGroupAddon addonType="append">
-                                                <Button type="button" color= "secondary fa fa-money"></Button>
+                                        <InputGroup>
+                                            <Input type="text" required id="txtValorHoraCobrado" placeholder="R$00,00" required id="txtValorhora"
+                                                value={valorhoracobrado}
+                                                name="valorhoracobrado"
+                                                onChange={handleInputChange} />
+                                            <InputGroupAddon addonType="append">
+                                                <Button type="button" color="secondary fa fa-money"></Button>
                                             </InputGroupAddon>
                                         </InputGroup>
                                     </Col>
@@ -148,10 +169,11 @@ const Tipoprojeto = (props) => {
                                         <Label htmlFor="valorHoraTecnico">Valor hora Técnico</Label>
                                         <InputGroup>
                                             <Input id="txtValorHoraTecnico" required type="text" placeholder="R$00,00" required id="txtValorhoraTecnico"
-                                            name="valorhoratecnico"
-                                            onChange={handleInputChange} /> 
+                                                value={valorhoratecnico}
+                                                name="valorhoratecnico"
+                                                onChange={handleInputChange} />
                                             <InputGroupAddon addonType="append">
-                                                <Button type="button" color= "secondary fa fa-money"></Button>
+                                                <Button type="button" color="secondary fa fa-money"></Button>
                                             </InputGroupAddon>
                                         </InputGroup>
                                     </Col>
@@ -163,7 +185,7 @@ const Tipoprojeto = (props) => {
                                             onChange={handleSwitch}
                                         />
                                     </Col>
-                                </FormGroup> */}                                                              
+                                </FormGroup> */}
                             </CardBody>
                             <CardFooter className="text-center">
                                 <Button type="submit" size="sm" color="success" className=" mr-3"><i className="fa fa-check"></i> Salvar</Button>

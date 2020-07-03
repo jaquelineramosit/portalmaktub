@@ -97,14 +97,21 @@ const routes = [
   
   // Acessos
   { path: '/logon', name: 'Logon', component: Logon },
-  { path: '/modulos', name: 'Módulos', component: Modulo },
-  { path: '/paginas', name: 'Páginas', component: Pagina },
-  { path: '/sub-paginas', name: 'Sub Páginas', component: SubPagina },   
-  { path: '/perfis-acesso', name: 'Perfil de Acesso', component: PerfilAcesso },
-  { path: '/permissao-acesso', name: 'Permissão deAcesso', component: PermissaoAcesso },
+  { path: '/modulos', exact:true, name: 'Módulos', component: Modulo },
+  { path: '/modulos/:id', name: 'Módulos', component: Modulo },
+  { path: '/paginas', exact:true, name: 'Páginas', component: Pagina },
+  { path: '/paginas/:id', name: 'Páginas', component: Pagina },
+  { path: '/sub-paginas', exact:true, name: 'Sub Páginas', component: SubPagina },  
+  { path: '/sub-paginas/:id', name: 'Sub Páginas', component: SubPagina },    
+  { path: '/perfis-acesso', exact:true, name: 'Perfil de Acesso', component: PerfilAcesso },
+  { path: '/perfis-acesso/:id', name: 'Perfil de Acesso', component: PerfilAcesso },
+  { path: '/permissao-acesso', exact:true, name: 'Permissão deAcesso', component: PermissaoAcesso },
+  { path: '/permissao-acesso/:id', name: 'Permissão deAcesso', component: PermissaoAcesso },
   { path: '/register', name: 'Register', component: Register },
-  { path: '/funcao', name: 'Função', component: Funcao },
-  { path: '/usuarios', name: 'Usuários', component: Usuario },
+  { path: '/funcao', exact:true, name: 'Função', component: Funcao },
+  { path: '/funcao/:id', name: 'Função', component: Funcao },
+  { path: '/usuarios', exact:true, name: 'Usuários', component: Usuario },
+  { path: '/usuarios/:id', name: 'Usuários', component: Usuario },
 
 
 
@@ -150,9 +157,12 @@ const routes = [
 
   //Ordem de serviço
 
-  { path: '/ordem-servico', name: 'Ordem de Serviço', component: OrdemServico },
-  { path: '/movimentacao-os', name: 'Movimentacao de OS', component: Movimentacaoos },
-  { path: '/adiantamento-os', name: 'Adiantamento de OS', component: Adiantamentoos },
+  { path: '/ordem-servico', exact:true, name: 'Ordem de Serviço', component: OrdemServico },
+  { path: '/ordem-servico/:id', name: 'Ordem de Serviço', component: OrdemServico },
+  { path: '/movimentacao-os', exact:true, name: 'Movimentacao de OS', component: Movimentacaoos },
+  { path: '/movimentacao-os/:id', name: 'Movimentacao de OS', component: Movimentacaoos },
+  { path: '/adiantamento-os', exact:true, name: 'Adiantamento de OS', component: Adiantamentoos },
+  { path: '/adiantamento-os/:id', name: 'Adiantamento de OS', component: Adiantamentoos },
   
   //Tabelas
 { path: '/tab-cliente', name: 'Lista de Clientes', component: Tabcliente },

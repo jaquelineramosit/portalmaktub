@@ -1,62 +1,103 @@
 import React, { useState, useEffect } from 'react';
-import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, InputGroup, InputGroupAddon, CardFooter, Form, FormFeedback } from 'reactstrap';
-import { AppSwitch } from '@coreui/react'
+import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button,  CardFooter, Form } from 'reactstrap';
 import '../../../global.css';
 import api from '../../../../src/services/api';
-import Modulo from '../Modulo';
 
-export default function Pagina() {
-    const [moduloId, setModuloId] = useState('');
+const Paginas = (props) => {
+
+    var search = props.location.search;
+    var params = new URLSearchParams(search);
+    var action = params.get('action');
+    var paginasIdParam = props.match.params.id;
+
     const [modulos, setModulos] = useState([]);
-    const [nomePagina, setNomePagina] = useState('');
-    const [descricao, setDescricao] = useState('');    
-    const [ativo, setAtivo] = useState(1);
     const usuarioId = localStorage.getItem('userId');
-
-    function handleSwitch(e) {
-        if (ativo === 1) {
-            setAtivo(0);
-        }
-        else {
-            setAtivo(1);
-        }
-    }
+    const [formData, setFormData] = useState({
+        moduloId: 1,
+        nomePagina: '',
+        descricao: '',
+        ativo: 1
+    });
     
+
     useEffect(() => {
-        api.get('modulos').then(response => {            
+        api.get('modulos').then(response => {
             setModulos(response.data);
         })
-    }, [usuarioId]);   
+    }, [usuarioId]);
 
+
+    useEffect(() => {
+        if (action === 'edit' && paginasIdParam !== '') {
+            api.get(`paginas/${paginasIdParam}`).then(response => {
+                document.getElementById('cboModuloId').value = response.data.moduloid;
+                document.getElementById('txtNomePagina').value = response.data.nomepagina;
+                document.getElementById('txtDescricao').value = response.data.descricao;
+
+                setFormData({
+                    ...formData,
+                    moduloid: response.data.moduloid,
+                    nomepagina: response.data.nomepagina,
+                    descricao: response.data.descricao,
+                    
+                })
+                console.log(formData)
+            });
+        } else {
+            return;
+        }
+    }, [paginasIdParam])
+
+
+    
+
+    function handleInputChange(event) {
+        const { name, value } = event.target;
+
+        setFormData({ ...formData, [name]: value });
+    };
+
+console.log(formData)
     async function handlePagina(e) {
         e.preventDefault();
-        
-        const data = {
-            moduloId,
-            nomePagina,
-            descricao, 
-            ativo,         
-        };
-        
 
-        try {
-            const response = await api.post('/paginas', data, {
-                headers: {
-                    Authorization: 1,
+        const data = formData;
+
+        if (action === 'edit') {
+
+            try {
+                const response = await api.put(`/paginas/${paginasIdParam}`, data, {
+                    headers: {
+                        Authorization: 1,
+                    }
+                });
+                alert(`Cadastro atualizado com sucesso.`);
+            } catch (err) {
+
+                alert('Erro na atualização, tente novamente.');
+            }
+
+        } else {
+
+            if (action === 'novo') {
+                try {
+                    const response = await api.post('paginas', data, {
+                        headers: {
+                            Authorization: 1,
+                        }
+                    });
+                    alert(`Cadastro realizado com sucesso.`);
+                } catch (err) {
+
+                    alert('Erro no cadastro, tente novamente.');
                 }
-            });
-            alert(`Feito o cadastro com sucesso`);
-
-        } catch (err) {
-
-            alert('Erro no cadastro, tente novamente.');
+            }
         }
-    
     }
-    return (        
+    return (
         <div className="animated fadeIn">
             <Form onSubmit={handlePagina}>
-                <Row>                              
+                <Row>
                     <Col xs="12" md="12">
                         <Card>
                             <CardHeader>
@@ -68,30 +109,30 @@ export default function Pagina() {
                                     <Col md="4">
                                         <Label htmlFor="moduloId">Qual o Módulo</Label>
                                         <Input type="select" required id="cboModuloId"
-                                        value={moduloId}
-                                        onChange={ e => setModuloId(e.target.value)}>
-                                        <option value={undefined} defaultValue>Selecione...</option>
-                                        {modulos.map(modulo=> (                                                
+                                            name="moduloId"
+                                           onChange={handleInputChange}>
+                                            <option value={undefined} defaultValue>Selecione...</option>
+                                            {modulos.map(modulo => (
                                                 <option value={modulo.id}>{modulo.nomemodulo}</option>
-                                            ))}                                           
-                                        </Input>                                     
+                                            ))}
+                                        </Input>
                                     </Col>
                                     <Col md="4">
                                         <Label htmlFor="nomePagina">Nome da Página</Label>
                                         <Input type="text" id="txtNomePagina" multiple placeholder="Digite o nome da Página"
-                                        value={nomePagina}
-                                        onChange={ e => setNomePagina(e.target.value)}
+                                            name="nomePagina"
+                                            onChange={handleInputChange} 
                                         />
-                                    </Col> 
-                                </FormGroup> 
-                                <FormGroup row>          
+                                    </Col>
+                                </FormGroup>
+                                <FormGroup row>
                                     <Col md="10">
-                                            <Label htmlFor="descricao">Descrião</Label>
-                                            <Input type="textarea" id="txtDescricao" multiple placeholder="Digite a Descrição"
-                                            value={descricao}
-                                            onChange={ e => setDescricao(e.target.value)}
-                                            />
-                                    </Col>                                                                       
+                                        <Label htmlFor="descricao">Descrição</Label>
+                                        <Input type="textarea" id="txtDescricao" multiple placeholder="Digite a Descrição"
+                                            name="descricao"
+                                            onChange={handleInputChange} 
+                                        />
+                                    </Col>
                                 </FormGroup>
                                 {/*<FormGroup row>                                     
                                     <Col md="2">
@@ -101,7 +142,7 @@ export default function Pagina() {
                                             onChange={handleSwitch}
                                             size={'sm'} />
                                     </Col>                                                           
-                                </FormGroup>*/}                                                                                         
+                                </FormGroup>*/}
                             </CardBody>
                             <CardFooter className="text-center">
                                 <Button type="submit" size="sm" color="success" className=" mr-3"><i className="fa fa-check"></i> Salvar</Button>
@@ -111,6 +152,7 @@ export default function Pagina() {
                     </Col>
                 </Row>
             </Form>
-        </div>    
-    );    
+        </div>
+    );
 }
+export default Paginas;

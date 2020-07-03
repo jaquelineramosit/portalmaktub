@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, InputGroupAddon, CardFooter, Form, InputGroup } from 'reactstrap';
 import '../../../global.css';
 import api from '../../../../src/services/api';
@@ -14,7 +14,7 @@ const Parceiros = (props) => {
     const [formData, setFormData] = useState({
         nomeparceiro: '',
         descricao: '',
-        ativo:'1'
+        ativo: '1'
     });
 
     useEffect(() => {
@@ -104,9 +104,9 @@ const Parceiros = (props) => {
                                 <FormGroup row>
                                     <Col md="8">
                                         <Label>Descrição</Label>
-                                        <Input type="textarea"  required id="txtDescricao" rows="5" placeholder="Descreva o parceiro inserido"
+                                        <Input type="textarea" required id="txtDescricao" rows="5" placeholder="Descreva o parceiro inserido"
                                             name="descricao"
-                                            onChange={handleInputChange}/>
+                                            onChange={handleInputChange} />
                                     </Col>
                                 </FormGroup>
                                 {/*<FormGroup>

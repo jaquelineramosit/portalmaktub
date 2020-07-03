@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, InputGroup, InputGroupAddon, CardFooter, Form } from 'reactstrap';
 import '../../../global.css';
-import {telMask, celMask, cepMask,numMask, cnpjMask } from '../../../mask'
+import { telMask,cepMask, numMask, cnpjMask } from '../../../mask'
 import api from '../../../../src/services/api';
 
 const Filiais = (props) => {
@@ -11,6 +11,11 @@ const Filiais = (props) => {
     var action = params.get('action');
     var filiaisIdParam = props.match.params.id;
 
+    const [telefoneresponsavel, setTelefoneresponsavel] = useState();
+    const [telefonefixo, setTelefonefixo] = useState();
+    const [cep, setCep] = useState();
+    const [num, setNum] = useState();
+    const [cnpj, setCnpj] = useState();
     const [bandeiras, setBandeiras] = useState([]);
     const [clientes, setClientes] = useState([]);
     const usuarioId = localStorage.getItem('userId');
@@ -35,22 +40,22 @@ const Filiais = (props) => {
         horariofimsemana: '',
         horarioiniciosabado: '',
         horariofimsabado: '',
-        horarioiniciodomingo : '',
+        horarioiniciodomingo: '',
         horariofimdomingo: '',
-        ativo:'1'
+        ativo: '1'
     });
 
     useEffect(() => {
-        api.get('clientes').then(response => {            
+        api.get('clientes').then(response => {
             setClientes(response.data);
         })
-    }, [usuarioId]);   
+    }, [usuarioId]);
 
     useEffect(() => {
-        api.get('bandeira').then(response => {            
+        api.get('bandeira').then(response => {
             setBandeiras(response.data);
         })
-    }, [usuarioId]);   
+    }, [usuarioId]);
 
     useEffect(() => {
         if (action === 'edit' && filiaisIdParam !== '') {
@@ -113,9 +118,28 @@ const Filiais = (props) => {
 
     function handleInputChange(event) {
         const { name, value } = event.target;
-
+        switch (name) {
+            case 'cnpj':
+                setCnpj(cnpjMask(event.target.value));
+                break;
+            case 'cep':
+                setCep(cepMask(event.target.value));
+                break;
+            case 'numero':
+                setNum(numMask(event.target.value));
+                break;
+            case 'telefonefixo':
+                setTelefonefixo(telMask(event.target.value));
+                break;
+            case 'telefoneresponsavel':
+                setTelefoneresponsavel(telMask(event.target.value));
+                break;
+        };
         setFormData({ ...formData, [name]: value });
+     
+
     };
+    console.log(formData)
 
     async function handleFiliais(e) {
         e.preventDefault();
@@ -171,10 +195,10 @@ const Filiais = (props) => {
                                         <Input required type="select" name="select" id="cboClienteid" multiple={false}
                                             name="clienteid"
                                             onChange={handleInputChange}  >
-                                                <option value={undefined} defaultValue>Selecione...</option>
-                                                {clientes.map(cliente => (                                                
+                                            <option value={undefined} defaultValue>Selecione...</option>
+                                            {clientes.map(cliente => (
                                                 <option value={cliente.id}>{cliente.nomecliente}</option>
-                                                ))}   
+                                            ))}
                                         </Input>
                                     </Col>
                                     <Col md="3">
@@ -187,24 +211,25 @@ const Filiais = (props) => {
                                         <Label htmlFor="nomeResponsavel">Nome Responsável</Label>
                                         <Input type="text" required id="txtNomeResponsavel" placeholder="Digite o nome do responsável"
                                             name="nomeresponsavel"
-                                            onChange={handleInputChange} 
+                                            onChange={handleInputChange}
                                         />
                                     </Col>
                                 </FormGroup>
-                                <FormGroup row>    
+                                <FormGroup row>
                                     <Col md="3">
                                         <Label htmlFor="RazaoSocial">Razão Social</Label>
                                         <Input type="text" required id="txtRazaoSocial" placeholder="Digite a razão social"
                                             name="razaosocial"
-                                            onChange={handleInputChange}  />
+                                            onChange={handleInputChange} />
                                     </Col>
                                     <Col md="3">
                                         <Label htmlFor="cnpj">CNPJ</Label>
                                         <InputGroup>
                                             <Input type="text" required id="txtCnpj"
                                                 placeholder="Digite a CNPJ"
+                                                value={cnpj}
                                                 name="cnpj"
-                                                onChange={handleInputChange}  />
+                                                onChange={handleInputChange} />
                                         </InputGroup>
                                     </Col>
                                 </FormGroup>
@@ -215,9 +240,9 @@ const Filiais = (props) => {
                                             name="bandeiraid"
                                             onChange={handleInputChange} >
                                             <option value={undefined} defaultValue>Selecione...</option>
-                                                {bandeiras.map(bandeira=> (                                                
+                                            {bandeiras.map(bandeira => (
                                                 <option value={bandeira.id}>{bandeira.nomebandeira}</option>
-                                                ))}   
+                                            ))}
                                         </Input>
                                     </Col>
                                     <Col md="3">
@@ -230,8 +255,9 @@ const Filiais = (props) => {
                                         <Label htmlFor="cep">CEP</Label>
                                         <InputGroup>
                                             <Input id="txtCep" size="16" required type="text" placeholder="00000-000"
+                                                value={cep}
                                                 name="cep"
-                                                onChange={handleInputChange}  />
+                                                onChange={handleInputChange} />
                                             <InputGroupAddon addonType="append">
                                                 <Button type="button" color="secondary fa fa-truck"></Button>
                                             </InputGroupAddon>
@@ -245,35 +271,36 @@ const Filiais = (props) => {
                                             <Input type="text" required id="txtLogradouro"
                                                 placeholder="Digite o Logradouro"
                                                 name="logradouro"
-                                                onChange={handleInputChange}  />
+                                                onChange={handleInputChange} />
                                         </InputGroup>
                                     </Col>
                                     <Col md="3">
                                         <Label htmlFor="bairro">Bairro</Label>
                                         <Input type="text" required id="txtBairro" placeholder="Digite o Bairro"
                                             name="bairro"
-                                            onChange={handleInputChange} 
+                                            onChange={handleInputChange}
                                         />
                                     </Col>
                                     <Col md="3">
                                         <Label htmlFor="cidade">Cidade</Label>
                                         <Input type="text" required id="txtCidade" placeholder="Digite a Cidade"
                                             name="cidade"
-                                            onChange={handleInputChange}  />
+                                            onChange={handleInputChange} />
                                     </Col>
                                 </FormGroup>
                                 <FormGroup row>
                                     <Col md="3">
                                         <Label htmlFor="numero">Número</Label>
                                         <Input type="text" required id="txtNumero" placeholder="Digite o Números"
+                                            value={num}
                                             name="numero"
                                             onChange={handleInputChange} />
                                     </Col>
                                     <Col md="3">
                                         <Label htmlFor="complemento">Complemento</Label>
                                         <Input type="text" id="txtComplemento" placeholder="Digite o Complemento"
-                                          name="complemento"
-                                          onChange={handleInputChange}  />
+                                            name="complemento"
+                                            onChange={handleInputChange} />
                                     </Col>
                                     <Col md="3">
                                         <Label htmlFor="estado">UF</Label>
@@ -321,8 +348,9 @@ const Filiais = (props) => {
                                         <Label htmlFor="telefoneFixo">Telefone Fixo</Label>
                                         <InputGroup>
                                             <Input type="text" id="txtTelefoneFixo" placeholder="(11) 9999-9999"
+                                                value={telefonefixo}
                                                 name="telefonefixo"
-                                                onChange={handleInputChange}  />
+                                                onChange={handleInputChange} />
                                             <InputGroupAddon addonType="append">
                                                 <Button type="button" color="secondary icon-phone"></Button>
                                             </InputGroupAddon>
@@ -332,8 +360,9 @@ const Filiais = (props) => {
                                         <Label htmlFor="telefoneResponsavel">Telefone Responsável</Label>
                                         <InputGroup>
                                             <Input type="text" id="txtTelefoneResponsavel" placeholder="(11) 9999-9999"
+                                                value={telefoneresponsavel}
                                                 name="telefoneresponsavel"
-                                                onChange={handleInputChange}  />
+                                                onChange={handleInputChange} />
                                             <InputGroupAddon addonType="append">
                                                 <Button type="button" color="secondary icon-phone"></Button>
                                             </InputGroupAddon>
@@ -345,23 +374,23 @@ const Filiais = (props) => {
                                         <Label htmlFor="horarioInicioSemana">Horario Início da semana</Label>
                                         <InputGroup>
                                             <Input type="time" required id="txtHorarioInicioSemana"
-                                               name="horarioiniciosemana"
-                                               onChange={handleInputChange}  />
-                                            
+                                                name="horarioiniciosemana"
+                                                onChange={handleInputChange} />
+
                                             <InputGroupAddon addonType="append">
-                                                <Button type="button" color= "secondary fa fa-clock-o"></Button>
+                                                <Button type="button" color="secondary fa fa-clock-o"></Button>
                                             </InputGroupAddon>
-                                        </InputGroup>         
+                                        </InputGroup>
                                     </Col>
                                     <Col md="3">
                                         <Label htmlFor="horarioInicioDomingo">Horario Início do Domingo</Label>
-                                       <InputGroup> 
+                                        <InputGroup>
                                             <Input type="time" required id="horarioInicioDomingo"
                                                 name="horarioiniciodomingo"
-                                                onChange={handleInputChange}  />
-                                                <InputGroupAddon addonType="append">
-                                                    <Button type="button" color= "secondary fa fa-clock-o"></Button>
-                                                </InputGroupAddon>    
+                                                onChange={handleInputChange} />
+                                            <InputGroupAddon addonType="append">
+                                                <Button type="button" color="secondary fa fa-clock-o"></Button>
+                                            </InputGroupAddon>
                                         </InputGroup>
                                     </Col>
                                     <Col md="3">
@@ -369,49 +398,49 @@ const Filiais = (props) => {
                                         <InputGroup>
                                             <Input type="time" required id="txtHorarioInicioSabado"
                                                 name="horarioiniciosabado"
-                                                onChange={handleInputChange}  />
+                                                onChange={handleInputChange} />
                                             <InputGroupAddon addonType="append">
-                                                        <Button type="button" color= "secondary fa fa-clock-o"></Button>
+                                                <Button type="button" color="secondary fa fa-clock-o"></Button>
                                             </InputGroupAddon>
-                                        </InputGroup>         
+                                        </InputGroup>
                                     </Col>
-                                 </FormGroup>
-                                 <FormGroup row>
+                                </FormGroup>
+                                <FormGroup row>
                                     <Col md="3">
                                         <Label htmlFor="horarioFimSemana">Horario Fim da semana</Label>
                                         <InputGroup>
                                             <Input type="time" required id="txtHorarioFimSemana"
                                                 name="horariofimsemana"
-                                                onChange={handleInputChange}  />
+                                                onChange={handleInputChange} />
                                             <InputGroupAddon addonType="append">
-                                                <Button type="button" color= "secondary fa fa-clock-o"></Button>
+                                                <Button type="button" color="secondary fa fa-clock-o"></Button>
                                             </InputGroupAddon>
-                                        </InputGroup>         
+                                        </InputGroup>
                                     </Col>
                                     <Col md="3">
                                         <Label htmlFor="horarioFimDomingo">Horario Fim do Domingo</Label>
                                         <InputGroup>
                                             <Input type="time" required id="txtHorarioFimDomgingo"
-                                               name="horariofimdomingo"
-                                               onChange={handleInputChange}  />
-                                                <InputGroupAddon addonType="append">
-                                                    <Button type="button" color= "secondary fa fa-clock-o"></Button>
-                                                </InputGroupAddon>
-                                        </InputGroup>    
+                                                name="horariofimdomingo"
+                                                onChange={handleInputChange} />
+                                            <InputGroupAddon addonType="append">
+                                                <Button type="button" color="secondary fa fa-clock-o"></Button>
+                                            </InputGroupAddon>
+                                        </InputGroup>
                                     </Col>
                                     <Col md="3">
                                         <Label htmlFor="horarioFimSabado">Horario Fim do Sábado</Label>
-                                        <InputGroup>    
+                                        <InputGroup>
                                             <Input type="time" required id="txtHorarioFimSabado"
                                                 name="horariofimsabado"
-                                                onChange={handleInputChange}  />
+                                                onChange={handleInputChange} />
                                             <InputGroupAddon addonType="append">
-                                                    <Button type="button" color= "secondary fa fa-clock-o"></Button>
-                                                </InputGroupAddon> 
-                                        </InputGroup>       
+                                                <Button type="button" color="secondary fa fa-clock-o"></Button>
+                                            </InputGroupAddon>
+                                        </InputGroup>
                                     </Col>
                                 </FormGroup>
-                                 {/*<FormGroup>
+                                {/*<FormGroup>
                                     <Col md="3">
                                         <Label check className="form-check-label" htmlFor="ativo">Ativo</Label>
                                         <AppSwitch id="rdAtivo" className={'switch-ativo'} label color={'success'} defaultChecked size={'sm'}

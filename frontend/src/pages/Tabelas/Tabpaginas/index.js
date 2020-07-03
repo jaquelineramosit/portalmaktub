@@ -63,7 +63,7 @@ export default function ListaPaginas() {
             name: 'Ações',
             sortable: true,
             right: true,
-            cell: row => <Link to={`paginas/${row.id}`} className="btn-sm btn-primary"><i className="fa fa-pencil fa-lg mr-1"></i>
+            cell: row => <Link to={`paginas/${row.id}?action=edit`} className="btn-sm btn-primary"><i className="fa fa-pencil fa-lg mr-1"></i>
             Editar</Link>
         },
     ];
@@ -76,7 +76,7 @@ export default function ListaPaginas() {
 
                             <i className="fa fa-align-justify"></i>Páginas
 
-                        <Link to={`paginas`} className="btn btn-secondary float-right">
+                        <Link to={`paginas?action=novo`} className="btn btn-secondary float-right">
                                 <i className="cui-file icons mr-1"></i>
                                                 Novo
                                             </Link>

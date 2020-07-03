@@ -16,7 +16,7 @@ const DisponibilidadeTecnico = (props) => {
     const [formData, setFormData] = useState({
         disponibilidadeId: 0,
         tecnicoId: 0,
-        ativo:'1'
+        ativo: '1'
     });
 
 

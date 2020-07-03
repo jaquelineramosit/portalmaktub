@@ -13,7 +13,7 @@ const Dadosbancarios = (props) => {
 
     const [tecnicos, setTecnicos] = useState([]);
     const [bancos, setBancos] = useState([]);
-    const [tipocontas, setTipoContas] = useState([]);  
+    const [tipocontas, setTipoContas] = useState([]);
     const usuarioId = localStorage.getItem('userId');
     const [formData, setFormData] = useState({
         tecnicoid: 0,
@@ -22,8 +22,9 @@ const Dadosbancarios = (props) => {
         agencia: '',
         conta: '',
         titularconta: '',
-        doctitular:'',
-        contapadrao: '1'
+        doctitular: '',
+        contapadrao: '1',
+        ativo: '1'
     });
 
     useEffect(() => {
@@ -53,8 +54,13 @@ const Dadosbancarios = (props) => {
                 document.getElementById('txtDocTitular').value = response.data.doctitular;
                 setFormData({
                     ...formData,
-                    nomeparceiro: response.data.nomeparceiro,
-                    descricao: response.data.descricao,
+                    tecnicoid: response.data.tecnicoid,
+                    bancoid: response.data.bancoid,
+                    tipocontaid: response.data.tipocontaid,
+                    agencia: response.data.agencia,
+                    conta: response.data.conta,
+                    titularconta: response.data.titularconta,
+                    doctitular: response.data.doctitular,
                 })
             });
         } else {
@@ -142,8 +148,8 @@ const Dadosbancarios = (props) => {
                                     <Col md="3">
                                         <Label htmlFor="tipoContaId">Tipo de Conta</Label>
                                         <Input required type="select" name="select" id="cboTipoContaId"
-                                           name="tipocontaid"
-                                           onChange={handleInputChange} >
+                                            name="tipocontaid"
+                                            onChange={handleInputChange} >
                                             <option value={undefined} defaultValue>Selecione...</option>
                                             {tipocontas.map(tipoconta => (
                                                 <option value={tipoconta.id}>{tipoconta.nometipoconta}</option>
@@ -157,15 +163,15 @@ const Dadosbancarios = (props) => {
                                         <Label htmlFor="agencia">Agência</Label>
                                         <InputGroup>
                                             <Input type="text" required id="txtAgencia" placeholder="Agência"
-                                               name="agencia"
-                                               onChange={handleInputChange}  />
+                                                name="agencia"
+                                                onChange={handleInputChange} />
                                         </InputGroup>
                                     </Col>
                                     <Col md="3">
                                         <Label htmlFor="conta">Conta</Label>
                                         <Input type="text" required id="txtConta" placeholder="Conta"
                                             name="conta"
-                                            onChange={handleInputChange} 
+                                            onChange={handleInputChange}
                                         />
                                     </Col>
                                     <Col md="3">
@@ -183,7 +189,7 @@ const Dadosbancarios = (props) => {
                                         <InputGroup>
                                             <Input id="txtDocTitular" required type="text"
                                                 name="doctitular"
-                                                onChange={handleInputChange}  />
+                                                onChange={handleInputChange} />
                                         </InputGroup>
                                     </Col>
                                 </FormGroup>

@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, CardFooter, Form } from 'reactstrap';
 import '../../../global.css';
 import api from '../../../../src/services/api';
@@ -14,7 +14,7 @@ const Tipotecnico = (props) => {
     const [formData, setFormData] = useState({
         nometipotecnico: '',
         desctipotecnico: '',
-        ativo:'1'
+        ativo: '1'
     });
 
     useEffect(() => {
@@ -94,16 +94,16 @@ const Tipotecnico = (props) => {
                                             name="nometipotecnico"
                                             onChange={handleInputChange} />
                                     </Col>
-                                </FormGroup>                
+                                </FormGroup>
                                 <FormGroup row>
                                     <Col md="8">
                                         <Label>Descrição</Label>
-                                        <Input type="textarea" rows="5"  placeholder="Descreva o Tipo de Técnico inserido" required id="txtDescricao"
+                                        <Input type="textarea" rows="5" placeholder="Descreva o Tipo de Técnico inserido" required id="txtDescricao"
                                             name="desctipotecnico"
                                             onChange={handleInputChange} />
                                     </Col>
                                 </FormGroup>
-                                 {/*<FormGroup>    
+                                {/*<FormGroup>    
                                  <Col md="1">
                                         <Label check className="form-check-label" htmlFor="ativo">Ativo</Label>
                                         <AppSwitch id="rdAtivo" className={'switch-ativo'}  label color={'success'} defaultChecked size={'sm'}
