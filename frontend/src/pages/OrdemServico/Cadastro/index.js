@@ -125,29 +125,32 @@ const Cadastroos = (props) => {
     function handleInputChange(event) {
         event.preventDefault();
 
-        setDataAtendimento(event.currentTarget.value);
-
-        var dataAtendimento = String(moment(event.currentTarget.value));
-
-        var date = new Date(dataAtendimento);
-
-        var diaNumero = date.getDay();
-        setDiaSemana(parseInt(diaNumero));
-
-        var diasDaSemana = new Array(7);
-        diasDaSemana[0] = "Domingo";
-        diasDaSemana[1] = "Segunda-feira";
-        diasDaSemana[2] = "Terça-feira";
-        diasDaSemana[3] = "Quarta-feira";
-        diasDaSemana[4] = "Quinta-feira";
-        diasDaSemana[5] = "Sexta-feira";
-        diasDaSemana[6] = "Sábado";
-
-        var nomeDiaDaSemana = diasDaSemana[date.getDay()];
-
-        setNomeDiaSemana(nomeDiaDaSemana);
-
         const { name, value } = event.target;
+
+        if ( name === 'dataatendimento' ) {
+            setDataAtendimento(value);
+
+            var dataAtendimento = String(moment(value));
+
+            var date = new Date(dataAtendimento);
+
+            var diaNumero = date.getDay();
+            setDiaSemana(parseInt(diaNumero));
+
+            var diasDaSemana = new Array(7);
+            diasDaSemana[0] = "Domingo";
+            diasDaSemana[1] = "Segunda-feira";
+            diasDaSemana[2] = "Terça-feira";
+            diasDaSemana[3] = "Quarta-feira";
+            diasDaSemana[4] = "Quinta-feira";
+            diasDaSemana[5] = "Sexta-feira";
+            diasDaSemana[6] = "Sábado";
+
+            var nomeDiaDaSemana = diasDaSemana[date.getDay()];
+
+            setNomeDiaSemana(nomeDiaDaSemana);
+        }        
+        
         switch (name) {
             case 'numeroos':
                 setNumos(numMask(event.target.value));
@@ -225,7 +228,7 @@ const Cadastroos = (props) => {
                                     <Col md="3">
                                         <Label htmlFor="numeroOs">Número da OS</Label>
                                         <Input type="text" required id="txtNumeroOs" placeholder="Numero OS"
-                                            value={numeroos}
+                                            // value={numeroos}
                                             name="numeroos"
                                             onChange={handleInputChange} />
                                     </Col>
@@ -246,7 +249,7 @@ const Cadastroos = (props) => {
                                         <Label htmlFor="dataatendimento">Data atendimento</Label>
                                         <InputGroup>
                                             <Input type="date" required id="txtDataAtendimento"
-                                                value={dataatendimento}
+                                                // value={dataatendimento}
                                                 name="dataatendimento"
                                                 onChange={handleInputChange} />
 
