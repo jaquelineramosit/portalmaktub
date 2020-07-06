@@ -56,7 +56,7 @@ export default function ListaParceiros() {
             name: 'Ações',
             sortable: true,
             right: true,
-            cell: row => <Link to={`parceiros/${row.id}`} className="btn-sm btn-primary"><i className="fa fa-pencil fa-lg mr-1"></i>
+            cell: row => <Link to={`parceiros/${row.id}?action=edit`} className="btn-sm btn-primary"><i className="fa fa-pencil fa-lg mr-1"></i>
             Editar</Link>
         },
     ];
@@ -68,7 +68,7 @@ export default function ListaParceiros() {
                         <CardHeader className="links">
 
                             <i className="fa fa-align-justify"></i>Parceiros
-                        <Link to={`parceiros`} className="btn btn-secondary float-right">
+                        <Link to={`parceiros?action=novo`} className="btn btn-secondary float-right">
                                 <i className="cui-file icons mr-1"></i>
                                                 Novo
                                             </Link>

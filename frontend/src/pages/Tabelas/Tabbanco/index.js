@@ -67,7 +67,7 @@ export default function ListaBanco() {
                         <CardHeader className="links">
 
                             <i className="fa fa-align-justify"></i>Bancos
-                            <Link to={`banco/action=novo`} className="banco btn btn-secondary float-right">
+                            <Link to={`banco?action=novo`} className="banco btn btn-secondary float-right">
                                 <i className="cui-file icons mr-1"></i>
                                                 Novo
                                             </Link>

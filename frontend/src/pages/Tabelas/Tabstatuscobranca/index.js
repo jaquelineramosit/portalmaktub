@@ -69,7 +69,7 @@ export default function ListaStatuscobranca() {
 
                             <i className="fa fa-align-justify"></i>Status Cobrança
 
-                        <Link to={`status-cobranca`} className="btn btn-secondary float-right">
+                        <Link to={`status-cobranca?action=novo`} className="btn btn-secondary float-right">
                                 <i className="cui-file icons mr-1"></i>
                                                 Novo
                                             </Link>

@@ -76,7 +76,7 @@ export default function ListaPermissaoacesso() {
             name: 'Ações',
             sortable: true,
             right: true,
-            cell: row => <Link to={`permissao-acesso/${row.id}`} className="btn-sm btn-primary"><i className="fa fa-pencil fa-lg mr-1"></i>
+            cell: row => <Link to={`permissao-acesso/${row.id}?action=edit`} className="btn-sm btn-primary"><i className="fa fa-pencil fa-lg mr-1"></i>
             Editar</Link>
         },
     ];
@@ -89,7 +89,7 @@ export default function ListaPermissaoacesso() {
 
                             <i className="fa fa-align-justify"></i>Permissão Acesso
 
-                        <Link to={`permissao-acesso`} className="btn btn-secondary float-right">
+                        <Link to={`permissao-acesso?action=novo`} className="btn btn-secondary float-right">
                                 <i className="cui-file icons mr-1"></i>
                                                 Novo
                                             </Link>

@@ -1,4 +1,4 @@
-import React, { useState,useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, CardFooter, Form } from 'reactstrap';
 import '../../../global.css';
 import api from '../../../../src/services/api';
@@ -11,10 +11,9 @@ const Tipoconta = (props) => {
     var tipocontaIdParam = props.match.params.id;
 
     const usuarioId = localStorage.getItem('userId');
-    const localId = localStorage.getItem('localId');
     const [formData, setFormData] = useState({
         nometipoconta: '',
-        localId: localId,
+        ativo: '1'
     });
 
     useEffect(() => {
@@ -92,7 +91,7 @@ const Tipoconta = (props) => {
                                         <Input type="text" required id="txtNomeTipoConta" placeholder="Digite o Tipo de Conta"
                                             name="nometipoconta"
                                             onChange={handleInputChange} />
-                                    </Col> 
+                                    </Col>
                                 </FormGroup>
                                 {/* <FormGroup>                                      
                                     <Col md="1">
@@ -101,7 +100,7 @@ const Tipoconta = (props) => {
                                         onChange={handleSwitch}
                                         />                                    
                                     </Col>                                
-                                </FormGroup>  */}                                            
+                                </FormGroup>  */}
                             </CardBody>
                             <CardFooter className="text-center">
                                 <Button type="submit" size="sm" color="success" className=" mr-3"><i className="fa fa-check"></i> Salvar</Button>

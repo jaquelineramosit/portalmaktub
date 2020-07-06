@@ -63,7 +63,7 @@ export default function ListaTipoconta() {
                         <CardHeader className="links">
 
                             <i className="fa fa-align-justify"></i>Tipo da Conta
-                            <Link to={`tipo-conta`} className="btn btn-secondary float-right">
+                            <Link to={`tipo-conta?action=novo`} className="btn btn-secondary float-right">
                                 <i className="cui-file icons mr-1"></i>
                                                 Novo
                                             </Link>

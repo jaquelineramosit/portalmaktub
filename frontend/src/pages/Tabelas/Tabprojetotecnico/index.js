@@ -56,7 +56,7 @@ export default function ListaProjetotecnico() {
             name: 'Ações',
             sortable: true,
             right: true,
-            cell: row => <Link to={`projeto-tecnico/${row.id}`} className="btn-sm btn-primary"><i className="fa fa-pencil fa-lg mr-1"></i>
+            cell: row => <Link to={`projeto-tecnico/${row.id}?action=edit`} className="btn-sm btn-primary"><i className="fa fa-pencil fa-lg mr-1"></i>
             Editar</Link>
         },
     ];
@@ -69,7 +69,7 @@ export default function ListaProjetotecnico() {
 
                             <i className="fa fa-align-justify"></i>Projeto x Técnico
 
-                        <Link to={`projeto-tecnico`} className="btn btn-secondary float-right">
+                        <Link to={`projeto-tecnico?action=novo`} className="btn btn-secondary float-right">
                                 <i className="cui-file icons mr-1"></i>
                                                 Novo
                                             </Link>

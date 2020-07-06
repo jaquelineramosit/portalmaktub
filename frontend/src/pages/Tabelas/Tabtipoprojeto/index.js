@@ -84,7 +84,7 @@ export default function ListaTipoprojeto() {
             name: 'Ações',
             sortable: true,
             right: true,
-            cell: row => <Link to={`tipo-projeto/${row.id}`} className="btn-sm btn-primary"><i className="fa fa-pencil fa-lg mr-1"></i>
+            cell: row => <Link to={`tipo-projeto/${row.id}?action=edit`} className="btn-sm btn-primary"><i className="fa fa-pencil fa-lg mr-1"></i>
             Editar</Link>
         },
     ];
@@ -97,7 +97,7 @@ export default function ListaTipoprojeto() {
 
                             <i className="fa fa-align-justify"></i> Tipo de Projeto
 
-                        <Link to={`tipo-projeto`} className="btn btn-secondary float-right">
+                        <Link to={`tipo-projeto?action=novo`} className="btn btn-secondary float-right">
                                 <i className="cui-file icons mr-1"></i>
                                                 Novo
                                             </Link>

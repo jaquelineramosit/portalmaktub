@@ -15,7 +15,7 @@ const Statusadiantamento = (props) => {
     const [formData, setFormData] = useState({
         status: '',
         descstatus: '',
-
+        ativo: '1'
     });
 
 

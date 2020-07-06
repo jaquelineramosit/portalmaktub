@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, CardFooter, Form } from 'reactstrap';
 import '../../../global.css';
 import api from '../../../../src/services/api';
@@ -11,11 +11,10 @@ const Disponibilidade = (props) => {
     var disponibilidadeIdParam = props.match.params.id;
 
     const usuarioId = localStorage.getItem('userId');
-    const localId = localStorage.getItem('localId');
     const [formData, setFormData] = useState({
         nomedisponibilidade: '',
         descricao: '',
-        localId: localId,
+        ativo: 1
     });
 
     useEffect(() => {
@@ -28,6 +27,7 @@ const Disponibilidade = (props) => {
                     ...formData,
                     nomedisponibilidade: response.data.nomedisponibilidade,
                     descricao: response.data.descricao,
+                    
                 })
             });
         } else {
@@ -94,23 +94,23 @@ const Disponibilidade = (props) => {
                                         <Input type="text" required id="txtDisponibilidade" placeholder="Digite a Disponibilidade"
                                             name="nomedisponibilidade"
                                             onChange={handleInputChange} />
-                                    </Col>                              
-                                </FormGroup>                
+                                    </Col>
+                                </FormGroup>
                                 <FormGroup row>
                                     <Col md="8">
                                         <Label>Descrição</Label>
-                                        <Input type="textarea" rows="5"  placeholder="Descreva o Tipo de Técnico inserido" id="txtDescricao"
+                                        <Input type="textarea" rows="5" placeholder="Descreva o Tipo de Técnico inserido" id="txtDescricao"
                                             name="descricao"
                                             onChange={handleInputChange} />
                                     </Col>
                                 </FormGroup>
-                                 {/*<FormGroup>
+                                {/*<FormGroup>
                                     <Col md="1">
                                         <Label check className="form-check-label" htmlFor="ativo1">Ativo</Label>
                                         <AppSwitch id="rdAtivo" className={'switch-ativo'}  label color={'success'} defaultChecked size={'sm'}
                                          onChange={handleSwitch} />                                    
                                     </Col>  
-                                 </FormGroup> */}   
+                                 </FormGroup> */}
                             </CardBody>
                             <CardFooter className="text-center">
                                 <Button type="submit" size="sm" color="success" className=" mr-3"><i className="fa fa-check"></i> Salvar</Button>

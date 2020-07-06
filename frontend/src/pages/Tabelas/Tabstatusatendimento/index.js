@@ -69,7 +69,7 @@ export default function ListaStatusatendimento() {
 
                             <i className="fa fa-align-justify"></i>Status Atendimento
 
-                        <Link to={`status-atendimento`} className="btn btn-secondary float-right">
+                        <Link to={`status-atendimento?action=novo`} className="btn btn-secondary float-right">
                                 <i className="cui-file icons mr-1"></i>
                                                 Novo
                                             </Link>
