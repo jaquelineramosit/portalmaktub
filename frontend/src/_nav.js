@@ -20,18 +20,18 @@ export default {
     },
     {
       name: 'Ordem de Serviço',
-      url: '/tab-ordemservico',
+      url: '/lista-ordem-servico',
       icon: 'icon-wrench',
     },
     {
       name: 'Movimentação de OS',
-      url: '/tab-movimentacaoso',
+      url: '/lista-movimentacao-os',
       icon: 'fa fa-arrows',
     },
     
     {
       name: 'Adiantamento de OS',
-      url: '/tab-adiantamentoos',
+      url: '/lista-adiantamento-os',
       icon: 'fa fa-share-square-o',
     },
     {
@@ -48,22 +48,22 @@ export default {
       children: [
         {
           name: 'Clientes',
-          url: '/tab-cliente',
+          url: '/lista-cliente',
           icon: 'fa fa-handshake-o',
         },
         {
           name: 'Filiais',
-          url: '/tab-filiais',
+          url: '/lista-filiais',
           icon: 'fa fa-handshake-o',
         },
         {
           name: 'Bandeira',
-          url: '/tab-bandeira',
+          url: '/lista-bandeira',
           icon: 'fa fa-handshake-o',
         },
         {
           name: 'Parceiros',
-          url: '/tab-parceiros',
+          url: '/lista-parceiros',
           icon: 'fa fa-handshake-o',
         },        
       ],
@@ -74,22 +74,22 @@ export default {
       children: [
         {
           name: 'Técnicos',
-          url: '/tab-tecnicos',
+          url: '/lista-tecnicos',
           icon: 'icon-support',
         },
         {
           name: 'Tipos de Técnicos',
-          url: '/tab-tipotecnicos',
+          url: '/lista-tipo-tecnicos',
           icon: 'icon-support',
         },
         {
           name: 'Disponibilidade',
-          url: '/tab-disponibilidade',
+          url: '/lista-disponibilidade',
           icon: 'icon-support',
         },
         {
           name: 'Dispon. Técnicos',
-          url: '/tab-disponibilidadetecnico',
+          url: '/lista-disponibilidade-tecnico',
           icon: 'icon-support',
         },                
       ],
@@ -100,17 +100,17 @@ export default {
       children: [
         {
           name: 'Tipo de Projeto',
-          url: '/tab-tipoprojeto',
+          url: '/lista-tipo-projeto',
           icon: 'icon-note',
         },
         {
           name: 'Projeto x Técnico',
-          url: '/tab-projetotecnico',
+          url: '/lista-projeto-tecnico',
           icon: 'icon-note',
         },
         {
           name: 'Ferramentas',
-          url: '/tab-ferramentas',
+          url: '/lista-ferramentas',
           icon: 'icon-note',
         },                       
       ],
@@ -121,17 +121,17 @@ export default {
       children: [
         {
           name: 'Dados Bancários',
-          url: '/tab-dadosbancarios',
+          url: '/lista-dados-bancarios',
           icon: 'fa fa-credit-card-alt',
         },
         {
           name: 'Bancos',
-          url: '/tab-banco',
+          url: '/lista-banco',
           icon: 'fa fa-credit-card-alt',
         },
         {
           name: 'Tipo de Conta',
-          url: '/tab-tipoconta',
+          url: '/lista-tipo-conta',
           icon: 'fa fa-credit-card-alt',
         },        
       ],
@@ -142,22 +142,22 @@ export default {
       children: [
         {
         name: 'Status Adiantamento',
-        url: '/tab-statusadiantamento',
+        url: '/lista-status-adiantamento',
         icon: 'fa fa-check-square-o',          
         },
         {
           name: 'Status Atendimento',
-          url: '/tab-statusatendimento',
+          url: '/lista-status-atendimento',
           icon: 'fa fa-check-square-o',          
         },        
         {
           name: 'Status Cobrança',
-          url: '/tab-statuscobranca',
+          url: '/lista-status-cobranca',
           icon: 'fa fa-check-square-o',
         },
         {
           name: 'Status Pagamento',
-          url: '/tab-statuspagamento',
+          url: '/lista-status-pagamento',
           icon: 'fa fa-check-square-o',
         },         
       ],
@@ -168,37 +168,37 @@ export default {
       children: [
         {
           name: 'Usuários',
-          url: '/tab-usuarios',
+          url: '/lista-usuarios',
           icon: 'fa fa-user-circle',
         },
         {
           name: 'Perfil de Acesso',
-          url: '/tab-perfisacesso',
+          url: '/lista-perfis-acesso',
           icon: 'fa fa-id-card',
         },
         {
           name: 'Permissão de Acesso',
-          url: '/tab-permissaoacesso',
+          url: '/lista-permissao-acesso',
           icon: 'fa fa-user-secret',
         },
         {
           name: 'Módulos',
-          url: '/tab-modulos',
+          url: '/lista-modulos',
           icon: 'fa fa-puzzle-piece',
         },
         {
           name: 'Páginas',
-          url: '/tab-paginas',
+          url: '/lista-paginas',
           icon: 'fa fa-window-maximize',
         },
         {
           name: 'Sub Páginas',
-          url: '/tab-subpaginas',
+          url: '/lista-sub-paginas',
           icon: 'fa fa-window-restore',
         },
         {
           name: 'Funções',
-          url: '/tab-funcoes',
+          url: '/lista-funcoes',
           icon: 'fa fa-code',
         },   
         {
