@@ -3,7 +3,7 @@ import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, 
 import '../../../global.css';
 import api from '../../../../src/services/api';
 
-const Pagamento = (props) => {
+const StatusPagamento = (props) => {
 
     var search = props.location.search;
     var params = new URLSearchParams(search);
@@ -125,4 +125,4 @@ const Pagamento = (props) => {
         </div>
     );
 }
-export default Pagamento;
+export default StatusPagamento;

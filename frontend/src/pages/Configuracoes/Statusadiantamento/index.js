@@ -3,7 +3,7 @@ import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, 
 import '../../../global.css';
 import api from '../../../../src/services/api';
 
-const Statusadiantamento = (props) => {
+const StatusAdiantamento = (props) => {
 
     var search = props.location.search;
     var params = new URLSearchParams(search);
@@ -131,4 +131,4 @@ const Statusadiantamento = (props) => {
         </div>
     );
 };
-export default Statusadiantamento;
+export default StatusAdiantamento;

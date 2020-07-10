@@ -3,7 +3,7 @@ import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, 
 import '../../../global.css';
 import api from '../../../../src/services/api';
 
-const Atendimento = (props) => {
+const StatusAtendimento = (props) => {
 
     var search = props.location.search;
     var params = new URLSearchParams(search);
@@ -127,4 +127,4 @@ const Atendimento = (props) => {
     );
 
 }
-export default Atendimento;
+export default StatusAtendimento;

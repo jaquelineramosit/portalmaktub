@@ -33,10 +33,10 @@ const Ferramentas = React.lazy(() => import('./pages/Configuracoes/Ferramentas')
 const Dadosbancarios = React.lazy(() => import('./pages/Configuracoes/Dadosbancarios'));
 const Banco = React.lazy(() => import('./pages/Configuracoes/Banco'));
 const Tipoconta = React.lazy(() => import('./pages/Configuracoes/Tipoconta'));
-const Statusadiantamento = React.lazy(() => import('./pages/Configuracoes/Statusadiantamento'));
-const Statusatendimento = React.lazy(() => import('./pages/Configuracoes/Statusatendimento'));
-const Statuscobranca = React.lazy(() => import('./pages/Configuracoes/Statuscobranca'));
-const Statuspagamento = React.lazy(() => import('./pages/Configuracoes/Statuspagamento'));
+const StatusAdiantamento = React.lazy(() => import('./pages/Configuracoes/StatusAdiantamento'));
+const StatusAtendimento = React.lazy(() => import('./pages/Configuracoes/StatusAtendimento'));
+const StatusCobranca = React.lazy(() => import('./pages/Configuracoes/StatusCobranca'));
+const StatusPagamento = React.lazy(() => import('./pages/Configuracoes/StatusPagamento'));
 
 
 // Ordem de serviços
@@ -46,34 +46,34 @@ const Adiantamentoos = React.lazy(() => import('./pages/OrdemServico/Adiantament
 
 
 // Tabelas
-const Tabcliente = React.lazy(() => import('./pages/Tabelas/Tabcliente'));
-const Tabfiliais = React.lazy(() => import('./pages/Tabelas/Tabfiliais'));
-const Tabbandeira = React.lazy(() => import('./pages/Tabelas/Tabbandeira'));
-const Tabparceiros = React.lazy(() => import('./pages/Tabelas/Tabparceiros'));
-const Tabtecnicos = React.lazy(() => import('./pages/Tabelas/Tabtecnicos'));
-const Tabtipotecnicos = React.lazy(() => import('./pages/Tabelas/Tabtipotecnicos'));
-const Tabdisponibilidade = React.lazy(() => import('./pages/Tabelas/Tabdisponibilidade'));
-const Tabdisponibilidadetecnico = React.lazy(() => import('./pages/Tabelas/Tabdisponibilidadetecnico'));
-const Tabtipoprojeto = React.lazy(() => import('./pages/Tabelas/Tabtipoprojeto'));
-const Tabprojetotecnico = React.lazy(() => import('./pages/Tabelas/Tabprojetotecnico'));
-const Tabferramentas = React.lazy(() => import('./pages/Tabelas/Tabferramentas'));
-const Tabdadosbancarios = React.lazy(() => import('./pages/Tabelas/Tabdadosbancarios'));
-const Tabbanco = React.lazy(() => import('./pages/Tabelas/Tabbanco'));
-const Tabtipoconta = React.lazy(() => import('./pages/Tabelas/Tabtipoconta'));
-const Tabstatusadiantamento = React.lazy(() => import('./pages/Tabelas/Tabstatusadiantamento'));
-const Tabstatusatendimento = React.lazy(() => import('./pages/Tabelas/Tabstatusatendimento'));
-const Tabstatuscobranca = React.lazy(() => import('./pages/Tabelas/Tabstatuscobranca'));
-const Tabstatuspagamento = React.lazy(() => import('./pages/Tabelas/Tabstatuspagamento'));
-const Tabordemservico = React.lazy(() => import('./pages/Tabelas/Tabordemservico'));
-const Tabmovimentacaoso = React.lazy(() => import('./pages/Tabelas/Tabmovimentacaoso'));
-const Tabadiantamentoos = React.lazy(() => import('./pages/Tabelas/Tabadiantamentoos'));
-const Tabusuarios = React.lazy(() => import('./pages/Tabelas/Tabusuarios'));
-const Tabpermissaoacesso = React.lazy(() => import('./pages/Tabelas/Tabpermissaoacesso'));
-const Tabperfisacesso = React.lazy(() => import('./pages/Tabelas/Tabperfisacesso'));
-const Tabmodulos = React.lazy(() => import('./pages/Tabelas/Tabmodulos'));
-const Tabpaginas = React.lazy(() => import('./pages/Tabelas/Tabpaginas'));
-const Tabsubpagina = React.lazy(() => import('./pages/Tabelas/Tabsubpagina'));
-const Tabfuncoes = React.lazy(() => import('./pages/Tabelas/Tabfuncoes'));
+const ListaCliente = React.lazy(() => import('./pages/Listas/ListaCliente'));
+const ListaFiliais = React.lazy(() => import('./pages/Listas/ListaFiliais'));
+const ListaBandeira = React.lazy(() => import('./pages/Listas/ListaBandeira'));
+const ListaParceiros = React.lazy(() => import('./pages/Listas/ListaParceiros'));
+const ListaTecnicos = React.lazy(() => import('./pages/Listas/ListaTecnicos'));
+const ListaTipoTecnicos = React.lazy(() => import('./pages/Listas/ListaTipoTecnicos'));
+const ListaDisponibilidade = React.lazy(() => import('./pages/Listas/ListaDisponibilidade'));
+const ListaDisponibilidadeTecnico = React.lazy(() => import('./pages/Listas/ListaDisponibilidadeTecnico'));
+const ListaTipoProjeto = React.lazy(() => import('./pages/Listas/ListaTipoProjeto'));
+const ListaProjetoTecnico = React.lazy(() => import('./pages/Listas/ListaProjetoTecnico'));
+const ListaFerramentas = React.lazy(() => import('./pages/Listas/ListaFerramentas'));
+const ListaDadosBancarios = React.lazy(() => import('./pages/Listas/ListaDadosBancarios'));
+const ListaBanco = React.lazy(() => import('./pages/Listas/ListaBanco'));
+const ListaTipoConta = React.lazy(() => import('./pages/Listas/ListaTipoConta'));
+const ListaStatusAdiantamento = React.lazy(() => import('./pages/Listas/ListaStatusAdiantamento'));
+const ListaStatusAtendimento = React.lazy(() => import('./pages/Listas/ListaStatusAtendimento'));
+const ListaStatusCobranca = React.lazy(() => import('./pages/Listas/ListaStatusCobranca'));
+const ListaStatusPagamento = React.lazy(() => import('./pages/Listas/ListaStatusPagamento'));
+const ListaOrdemServico = React.lazy(() => import('./pages/Listas/ListaOrdemServico'));
+const ListaMovimentacaoOS = React.lazy(() => import('./pages/Listas/ListaMovimentacaoOS'));
+const ListaAdiantamentoOS = React.lazy(() => import('./pages/Listas/ListaAdiantamentoOS'));
+const ListaUsuarios = React.lazy(() => import('./pages/Listas/ListaUsuarios'));
+const ListaPermissaoAcesso = React.lazy(() => import('./pages/Listas/ListaPermissaoAcesso'));
+const ListaPerfisAcesso = React.lazy(() => import('./pages/Listas/ListaPerfisAcesso'));
+const ListaModulo = React.lazy(() => import('./pages/Listas/ListaModulo'));
+const ListaPagina = React.lazy(() => import('./pages/Listas/ListaPagina'));
+const ListaSubPagina = React.lazy(() => import('./pages/Listas/ListaSubPagina'));
+const ListaFuncao = React.lazy(() => import('./pages/Listas/ListaFuncao'));
 const pageNum = 0;
 
 //Relatórios
@@ -86,8 +86,6 @@ const Reltecnicofaturado = React.lazy(() => import('./pages/Relatórios/Relatori
 const Relcustotecnico = React.lazy(() => import('./pages/Relatórios/Relatorio CustoxTecnico'));
 
 const routes = [
-
-
 
   // Dashboards
   { path: '/', exact: true, name: 'Home' },
@@ -144,14 +142,14 @@ const routes = [
   { path: '/banco/:id', name: 'Banco', component: Banco },
   { path: '/tipo-conta', exact:true, name: 'Tipo de Conta', component: Tipoconta },
   { path: '/tipo-conta/:id', name: 'Tipo de Conta', component: Tipoconta },
-  { path: '/status-adiantamento', exact:true, name: 'Status de adiantamento', component: Statusadiantamento },
-  { path: '/status-adiantamento/:id', name: 'Status de adiantamento', component: Statusadiantamento },
-  { path: '/status-atendimento', exact:true, name: 'Status de atendimento', component: Statusatendimento },
-  { path: '/status-atendimento/:id', name: 'Status de atendimento', component: Statusatendimento },
-  { path: '/status-cobranca', exact:true, name: 'Status de Cobranca', component: Statuscobranca },
-  { path: '/status-cobranca/:id', name: 'Status de Cobranca', component: Statuscobranca },
-  { path: '/status-pagamento', exact:true, name: 'Status de pagamento', component: Statuspagamento },
-  { path: '/status-pagamento/:id', name: 'Status de pagamento', component: Statuspagamento },
+  { path: '/status-adiantamento', exact:true, name: 'Status de adiantamento', component: StatusAdiantamento },
+  { path: '/status-adiantamento/:id', name: 'Status de adiantamento', component: StatusAdiantamento },
+  { path: '/status-atendimento', exact:true, name: 'Status de atendimento', component: StatusAtendimento },
+  { path: '/status-atendimento/:id', name: 'Status de atendimento', component: StatusAtendimento },
+  { path: '/status-cobranca', exact:true, name: 'Status de Cobranca', component: StatusCobranca },
+  { path: '/status-cobranca/:id', name: 'Status de Cobranca', component: StatusCobranca },
+  { path: '/status-pagamento', exact:true, name: 'Status de pagamento', component: StatusPagamento },
+  { path: '/status-pagamento/:id', name: 'Status de pagamento', component: StatusPagamento },
   
   
 
@@ -164,45 +162,45 @@ const routes = [
   { path: '/adiantamento-os', exact:true, name: 'Adiantamento de OS', component: Adiantamentoos },
   { path: '/adiantamento-os/:id', name: 'Adiantamento de OS', component: Adiantamentoos },
   
-  //Tabelas
-{ path: '/tab-cliente', name: 'Lista de Clientes', component: Tabcliente },
-{ path: '/tab-filiais', name: 'Lista de Filiais', component: Tabfiliais },
-{ path: '/tab-bandeira', name: 'Lista de Bandeiras', component: Tabbandeira },
-{ path: '/tab-parceiros', name: 'Lista de parceiros', component: Tabparceiros},
-{ path: '/tab-tecnicos', name: 'Lista de Técnicos', component: Tabtecnicos},
-{ path: '/tab-tipotecnicos', name: 'Lista de tipo de Técnicos', component: Tabtipotecnicos},
-{ path: '/tab-disponibilidade', name: 'Lista de Disponibilidade', component: Tabdisponibilidade},
-{ path: '/tab-disponibilidadetecnico', name: 'Lista de Disponibilidade de Técnico', component: Tabdisponibilidadetecnico},
-{ path: '/tab-tipoprojeto', name: 'Lista de tipo de Projeto', component: Tabtipoprojeto},
-{ path: '/tab-projetotecnico', name: 'Lista de Projeto X Técnico', component: Tabprojetotecnico},
-{ path: '/tab-ferramentas', name: 'Lista de Disponibilidade de Técnico', component: Tabferramentas},
-{ path: '/tab-dadosbancarios', name: 'Lista de Dados Bancários', component: Tabdadosbancarios},
-{ path: '/tab-banco', name: 'Lista de Banco', component: Tabbanco},
-{ path: '/tab-tipoconta', name: 'Lista de Tipo de Conta', component: Tabtipoconta},
-{ path: '/tab-statusadiantamento', name: 'Lista de Status de Adiantamento', component: Tabstatusadiantamento},
-{ path: '/tab-statusatendimento', name: 'Lista de  Status de Atendimento', component: Tabstatusatendimento},
-{ path: '/tab-statuscobranca', name: 'Lista de Status de Cobrança', component: Tabstatuscobranca},
-{ path: '/tab-statuspagamento', name: 'Lista de Status de pagamento', component: Tabstatuspagamento},
-{ path: '/tab-ordemservico', queryParams : { page: pageNum }, exact: true, name: 'Lista de Ordem de Serviço ', component: Tabordemservico},
-{ path: '/tab-movimentacaoso', name: 'Lista de Movimentação de OS', component: Tabmovimentacaoso},
-{ path: '/tab-adiantamentoos', name: 'Lista de Adiantamento de OS', component: Tabadiantamentoos},
-{ path: '/tab-usuarios', name: 'Lista de Usuários', component: Tabusuarios},
-{ path: '/tab-permissaoacesso', name: 'Lista de Permissão de Acesso', component: Tabpermissaoacesso},
-{ path: '/tab-perfisacesso', name: 'Lista de Perfil de Acesso', component: Tabperfisacesso},
-{ path: '/tab-modulos', name: 'Lista de Módulos', component: Tabmodulos},
-{ path: '/tab-paginas', name: 'Lista de Páginas', component: Tabpaginas},
-{ path: '/tab-subpaginas', name: 'Lista de Sub Páginas', component: Tabsubpagina},
-{ path: '/tab-funcoes', name: 'Lista de Funções', component: Tabfuncoes},
+  //Listas
+  { path: '/lista-cliente', name: 'Lista de Clientes', component: ListaCliente },
+  { path: '/lista-filiais', name: 'Lista de Filiais', component: ListaFiliais },
+  { path: '/lista-bandeira', name: 'Lista de Bandeiras', component: ListaBandeira },
+  { path: '/lista-parceiros', name: 'Lista de parceiros', component: ListaParceiros},
+  { path: '/lista-tecnicos', name: 'Lista de Técnicos', component: ListaTecnicos},
+  { path: '/lista-tipo-tecnicos', name: 'Lista de tipo de Técnicos', component: ListaTipoTecnicos},
+  { path: '/lista-disponibilidade', name: 'Lista de Disponibilidade', component: ListaDisponibilidade},
+  { path: '/lista-disponibilidade-tecnico', name: 'Lista de Disponibilidade de Técnico', component: ListaDisponibilidadeTecnico},
+  { path: '/lista-tipo-projeto', name: 'Lista de tipo de Projeto', component: ListaTipoProjeto},
+  { path: '/lista-projeto-tecnico', name: 'Lista de Projeto X Técnico', component: ListaProjetoTecnico},
+  { path: '/lista-ferramentas', name: 'Lista de Disponibilidade de Técnico', component: ListaFerramentas},
+  { path: '/lista-dados-bancarios', name: 'Lista de Dados Bancários', component: ListaDadosBancarios},
+  { path: '/lista-banco', name: 'Lista de Banco', component: ListaBanco},
+  { path: '/lista-tipo-conta', name: 'Lista de Tipo de Conta', component: ListaTipoConta},
+  { path: '/lista-status-adiantamento', name: 'Lista de Status de Adiantamento', component: ListaStatusAdiantamento},
+  { path: '/lista-status-atendimento', name: 'Lista de  Status de Atendimento', component: ListaStatusAtendimento},
+  { path: '/lista-status-cobranca', name: 'Lista de Status de Cobrança', component: ListaStatusCobranca},
+  { path: '/lista-status-pagamento', name: 'Lista de Status de pagamento', component: ListaStatusPagamento},
+  { path: '/lista-ordem-servico', queryParams : { page: pageNum }, exact: true, name: 'Lista de Ordem de Serviço ', component: ListaOrdemServico},
+  { path: '/lista-movimentacao-os', name: 'Lista de Movimentação de OS', component: ListaMovimentacaoOS},
+  { path: '/lista-adiantamento-os', name: 'Lista de Adiantamento de OS', component: ListaAdiantamentoOS},
+  { path: '/lista-usuarios', name: 'Lista de Usuários', component: ListaUsuarios},
+  { path: '/lista-permissao-acesso', name: 'Lista de Permissão de Acesso', component: ListaPermissaoAcesso},
+  { path: '/lista-perfis-acesso', name: 'Lista de Perfil de Acesso', component: ListaPerfisAcesso},
+  { path: '/lista-modulos', name: 'Lista de Módulos', component: ListaModulo},
+  { path: '/lista-paginas', name: 'Lista de Páginas', component: ListaPagina},
+  { path: '/lista-sub-paginas', name: 'Lista de Sub Páginas', component: ListaSubPagina},
+  { path: '/lista-funcoes', name: 'Lista de Funções', component: ListaFuncao},
 
   //Relatórios
-  { path: '/rel-projetoxsolicitacoes', name: 'Relatório de Projeto x Solicitações ', component: Relprojetosolicitacoes},
-  { path: '/rel-projetoxcliente', name: 'Relatório de Projeto x Cliente ', component: Relprojetocliente},
-  { path: '/rel-projetoxtecnico', name: 'Relatório de Projeto x Técnico ', component: Relprojetotecnico},
-  { path: '/rel-projetoxfaturado', name: 'Relatório de Projeto x Faturado ', component: Relprojetofaturado},
-  { path: '/rel-clientexfaturado', name: 'Relatório de Cliente x Faturado ', component: Relclientefaturado},
-  { path: '/rel-tecnicoxfaturado', name: 'Relatório de Técnico x Faturado ', component: Reltecnicofaturado},
-  { path: '/rel-tecnicoxfaturado', name: 'Relatório de Técnico x Faturado ', component: Reltecnicofaturado},
-  { path: '/rel-custoxtecnico', name: 'Relatório de Custo x Técnico ', component: Relcustotecnico},
+{ path: '/rel-projetoxsolicitacoes', name: 'Relatório de Projeto x Solicitações ', component: Relprojetosolicitacoes},
+{ path: '/rel-projetoxcliente', name: 'Relatório de Projeto x Cliente ', component: Relprojetocliente},
+{ path: '/rel-projetoxtecnico', name: 'Relatório de Projeto x Técnico ', component: Relprojetotecnico},
+{ path: '/rel-projetoxfaturado', name: 'Relatório de Projeto x Faturado ', component: Relprojetofaturado},
+{ path: '/rel-clientexfaturado', name: 'Relatório de Cliente x Faturado ', component: Relclientefaturado},
+{ path: '/rel-tecnicoxfaturado', name: 'Relatório de Técnico x Faturado ', component: Reltecnicofaturado},
+{ path: '/rel-tecnicoxfaturado', name: 'Relatório de Técnico x Faturado ', component: Reltecnicofaturado},
+{ path: '/rel-custoxtecnico', name: 'Relatório de Custo x Técnico ', component: Relcustotecnico},
 
 
 

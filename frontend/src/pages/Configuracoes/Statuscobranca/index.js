@@ -3,7 +3,7 @@ import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, 
 import '../../../global.css';
 import api from '../../../../src/services/api';
 
-const Cobranca = (props) => {
+const StatusCobranca = (props) => {
 
     var search = props.location.search;
     var params = new URLSearchParams(search);
@@ -124,4 +124,4 @@ const Cobranca = (props) => {
     );
 }
 
-export default Cobranca;
+export default StatusCobranca;
