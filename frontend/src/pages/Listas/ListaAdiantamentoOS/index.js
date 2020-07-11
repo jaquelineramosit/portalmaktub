@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardBody, CardHeader, Col, Row, Badge } from 'reactstrap';
 import api from '../../../services/api';
-import DataTable from 'react-data-table-component';
 import DataTableGenerica from  '../../../components/DataTableGenerica';
 import '../../../global.css';
 
@@ -113,19 +112,11 @@ export default function ListaAdiantamentoOS() {
                             </Link>
                         </CardHeader>
                         <CardBody>
-                            {/* <DataTableGen ></DataTableGen> */}
-                            <DataTable className=" mt-n3"
-                                title="Adiantamento de OS"
+                            <DataTableGenerica 
+                                data={data} 
                                 columns={columns}
-                                theme="solarized"
-                                data={data}
-                                striped={true}
-                                highlightOnHover={true}
-                                responsive={true}
-                                pagination={true}                                
-                                customStyles={customStyles}
-                                paginationComponentOptions={customRowsPerPageText}
-                            />
+                                title="Adiantamento de OS"
+                            />                            
                         </CardBody>
                     </Card>
                 </Col>

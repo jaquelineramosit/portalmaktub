@@ -4,7 +4,6 @@ import { Card, CardBody, CardHeader, Col, Row, Badge } from 'reactstrap';
 import api from '../../../services/api';
 import DataTable from 'react-data-table-component';
 
-
 export default function ListaOrdemServico(props) {
     const [ordemservico, setOrdemservico] = useState(['']);
     const [total, setTotal] = useState(0);
@@ -18,7 +17,7 @@ export default function ListaOrdemServico(props) {
         }).then(response => {
             setTotal(response.data);
         })
-    }, [1]);
+    }, [usuarioId]);
 
     useEffect(() => {
         api.get('ordem-servico', {
