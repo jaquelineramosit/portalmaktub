@@ -38,12 +38,8 @@ const TipoContaController = require('./controllers/Configuracao/TipoContaControl
 const TipoProjetoController = require('./controllers/Configuracao/TipoProjetoController');
 const TipoTecnicoController = require('./controllers/Configuracao/TipoTecnicoController');
 
-
-
-
-
-// //Dashboards
-// const Dashboardv1Controller = require('./controllers/Dashboards/Dashboardv1Controller');
+//Dashboards
+ const DashboardController = require('./controllers/Dashboard/DashboardController');
 // const Dashboardv2Controller = require('./controllers/Dashboards/Dashboardv2Controller');
 // const Dashboardv3Controller = require('./controllers/Dashboards/Dashboardv3Controller');
 
@@ -245,7 +241,7 @@ routes.post('/tipo-tecnico', TipoTecnicoController.create);
 routes.put('/tipo-tecnico/:id', TipoTecnicoController.update);
 
 //Dashboards
-// routes.get('/dashboardv1', Dashboardv1Controller.getAll);
+ routes.get('/dashboard-card-semanal/:statusatendimentoid', DashboardController.getValoresSemanais);
 // routes.get('/dashboardv1/:id', Dashboardv1Controller.getById);
 // routes.post('/dashboardv1', Dashboardv1Controller.create);
 // routes.put('/dashboardv1/:id', Dashboardv1Controller.update);

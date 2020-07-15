@@ -83,13 +83,13 @@ const cardChartOpts1 = {
 
 // Card Chart 2
 const cardChartData2 = {
-    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+    labels: ['January', 'February', 'March', 'April', 'May', 'June'],
     datasets: [
         {
             label: 'My First dataset',
             backgroundColor: brandSuccess,
             borderColor: 'rgba(255,255,255,.55)',
-            data: [1, 18, 9, 17, 34, 22, 11],
+            data: [1, 18, 9, 17, 34, 22],
         },
     ],
 };
@@ -141,13 +141,13 @@ const cardChartOpts2 = {
 
 // Card Chart 3
 const cardChartData3 = {
-    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+    labels: ['January', 'February', 'March', 'April', 'May', 'June'],
         datasets: [
         {
             label: 'My First dataset',
             backgroundColor: 'rgba(255,255,255,.2)',
             borderColor: 'rgba(255,255,255,.55)',
-            data: [78, 81, 80, 45, 34, 12, 40],
+            data: [78, 81, 80, 45, 34, 12],
         },
     ],
 };
@@ -185,13 +185,13 @@ const cardChartOpts3 = {
   
 // Card Chart 4
 const cardChartData4 = {
-    labels: ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+    labels: ['', '', '', '', '', ''],
         datasets: [
         {
             label: 'My First dataset',
             backgroundColor: 'rgba(255,255,255,.3)',
             borderColor: 'transparent',
-            data: [78, 81, 80, 45, 34, 12, 40, 75, 34, 89, 32, 68, 54, 72, 18, 98],
+            data: [78, 81, 80, 45, 34, 12],
         },
     ],
 };
@@ -259,10 +259,24 @@ class Dashboard extends Component {
         return (        
             
             <div className="animated fadeIn">
+                {/* cards */}
                 <Row>
+                    {/* card - Novas */}
                     <Col xs="12" sm="6" lg="3">
                         <Card className="text-white bg-info">
-                            <CardBody className="pb-0 pt-2">                                
+                            <CardBody className="pb-0 pt-2">                                                                
+                                <ButtonGroup className="float-right">
+                                    <ButtonDropdown id='card1' isOpen={this.state.card1} toggle={() => { this.setState({ card1: !this.state.card1 }); }}>
+                                        <DropdownToggle caret className="p-0" color="transparent">
+                                            <i className="icon-settings"></i>
+                                        </DropdownToggle>
+                                        <DropdownMenu right>
+                                            <DropdownItem>Semanal</DropdownItem>
+                                            <DropdownItem>Quinzenal</DropdownItem>
+                                            <DropdownItem>Mensal</DropdownItem>
+                                        </DropdownMenu>
+                                    </ButtonDropdown>
+                                </ButtonGroup>
                                 <div className="text-value">123</div>
                                 <div>Novas OS's</div>
                             </CardBody>
@@ -271,21 +285,22 @@ class Dashboard extends Component {
                             </div>
                         </Card>
                     </Col>
-
+                    
+                    {/* card - Concluidas */}
                     <Col xs="12" sm="6" lg="3">
                         <Card className="text-white bg-success">
                             <CardBody className="pb-0 pt-2">
                                 <ButtonGroup className="float-right">
-                                <Dropdown id='card2' isOpen={this.state.card2} toggle={() => { this.setState({ card2: !this.state.card2 }); }}>
-                                    <DropdownToggle className="p-0" color="transparent">
-                                    <i className="icon-location-pin"></i>
-                                    </DropdownToggle>
-                                    <DropdownMenu right>
-                                    <DropdownItem>Action</DropdownItem>
-                                    <DropdownItem>Another action</DropdownItem>
-                                    <DropdownItem>Something else here</DropdownItem>
-                                    </DropdownMenu>
-                                </Dropdown>
+                                    <ButtonDropdown id='card2' isOpen={this.state.card2} toggle={() => { this.setState({ card2: !this.state.card2 }); }}>
+                                        <DropdownToggle caret className="p-0" color="transparent">
+                                            <i className="icon-settings"></i>
+                                        </DropdownToggle>
+                                        <DropdownMenu right>
+                                            <DropdownItem>Semanal</DropdownItem>
+                                            <DropdownItem>Quinzenal</DropdownItem>
+                                            <DropdownItem>Mensal</DropdownItem>
+                                        </DropdownMenu>
+                                    </ButtonDropdown>
                                 </ButtonGroup>
                                 <div className="text-value">53%</div>
                                 <div>OS's Concluídas</div>
@@ -295,45 +310,47 @@ class Dashboard extends Component {
                             </div>
                         </Card>
                     </Col>
-
+                    
+                    {/* card - Em Execucao */}
                     <Col xs="12" sm="6" lg="3">
                         <Card className="text-white bg-warning">
                             <CardBody className="pb-0 pt-2">
                                 <ButtonGroup className="float-right">
-                                <Dropdown id='card3' isOpen={this.state.card3} toggle={() => { this.setState({ card3: !this.state.card3 }); }}>
-                                    <DropdownToggle caret className="p-0" color="transparent">
-                                    <i className="icon-settings"></i>
-                                    </DropdownToggle>
-                                    <DropdownMenu right>
-                                    <DropdownItem>Action</DropdownItem>
-                                    <DropdownItem>Another action</DropdownItem>
-                                    <DropdownItem>Something else here</DropdownItem>
-                                    </DropdownMenu>
-                                </Dropdown>
+                                    <ButtonDropdown id='card3' isOpen={this.state.card3} toggle={() => { this.setState({ card3: !this.state.card3 }); }}>
+                                        <DropdownToggle caret className="p-0" color="transparent">
+                                            <i className="icon-settings"></i>
+                                        </DropdownToggle>
+                                        <DropdownMenu right>
+                                            <DropdownItem>Semanal</DropdownItem>
+                                            <DropdownItem>Quinzenal</DropdownItem>
+                                            <DropdownItem>Mensal</DropdownItem>
+                                        </DropdownMenu>
+                                    </ButtonDropdown>
                                 </ButtonGroup>
                                 <div className="text-value">287</div>
-                                <div>OS's em Andamento</div>
+                                <div>OS's em Execução</div>
                             </CardBody>
                             <div className="chart-wrapper" style={{ height: '70px' }}>
                                 <Line data={cardChartData3} options={cardChartOpts3} height={70} />
                             </div>
                         </Card>
                     </Col>
-
+                    
+                    {/* card - Canceladas */}
                     <Col xs="12" sm="6" lg="3">
                         <Card className="text-white bg-danger">
                             <CardBody className="pb-0 pt-2">
                                 <ButtonGroup className="float-right">
-                                <ButtonDropdown id='card4' isOpen={this.state.card4} toggle={() => { this.setState({ card4: !this.state.card4 }); }}>
-                                    <DropdownToggle caret className="p-0" color="transparent">
-                                        <i className="icon-settings"></i>
-                                    </DropdownToggle>
-                                    <DropdownMenu right>
-                                        <DropdownItem>Action</DropdownItem>
-                                        <DropdownItem>Another action</DropdownItem>
-                                        <DropdownItem>Something else here</DropdownItem>
-                                    </DropdownMenu>
-                                </ButtonDropdown>
+                                    <ButtonDropdown id='card4' isOpen={this.state.card4} toggle={() => { this.setState({ card4: !this.state.card4 }); }}>
+                                        <DropdownToggle caret className="p-0" color="transparent">
+                                            <i className="icon-settings"></i>
+                                        </DropdownToggle>
+                                        <DropdownMenu right>
+                                            <DropdownItem>Semanal</DropdownItem>
+                                            <DropdownItem>Quinzenal</DropdownItem>
+                                            <DropdownItem>Mensal</DropdownItem>
+                                        </DropdownMenu>
+                                    </ButtonDropdown>
                                 </ButtonGroup>
                                 <div className="text-value">15</div>
                                 <div>OS's Canceladas</div>
@@ -344,6 +361,7 @@ class Dashboard extends Component {
                         </Card>
                     </Col>
                 </Row>
+                {/* Lista OS's */}
                 <Row>
                     <Col>
                         <Card>
@@ -456,7 +474,7 @@ class Dashboard extends Component {
                                             </td>
                                             <td>
                                                 <div className="text-center">
-                                                    <Badge color="warning">Em Andamento</Badge>
+                                                    <Badge color="warning">Em Execução</Badge>
                                                 </div>                                                
                                             </td>
                                             <td>
@@ -490,7 +508,7 @@ class Dashboard extends Component {
                                             </td>
                                             <td>
                                                 <div className="text-center">
-                                                    <Badge color="warning">Em Andamento</Badge>
+                                                    <Badge color="warning">Em Execução</Badge>
                                                 </div>                                                
                                             </td>
                                             <td>
@@ -646,7 +664,7 @@ class Dashboard extends Component {
                             </CardBody>
                         </Card>
                     </Col>
-                    </Row>
+                </Row>
             </div>     
         );    
     }
