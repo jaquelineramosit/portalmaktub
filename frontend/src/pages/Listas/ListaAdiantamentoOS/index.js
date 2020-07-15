@@ -11,6 +11,7 @@ export default function ListaAdiantamentoOS() {
     const [adiantamentoos, setAdiantamentoos] = useState([]);
     const [total, setTotal] = useState(0);
     const usuarioId = localStorage.getItem('userId');
+    
     //logica para pegar o total
     useEffect(() => {
         api.get('adiantamentoCount', {

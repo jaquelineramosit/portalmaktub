@@ -13,6 +13,7 @@ const RegisterController = require('./controllers/Acessos/RegisterController');
 
 //Atividades
 const OrdemServicoController = require('./controllers/OrdemServico/OrdemServicoController');
+const ListaOrdemServicoController = require('./controllers/OrdemServico/ListaOrdemServicoController');
 const MovimentacaoOsController = require('./controllers/OrdemServico/MovimentacaoOsController');
 const AdiantamentoOsController = require('./controllers/OrdemServico/AdiantamentoOsController');
 
@@ -105,6 +106,8 @@ routes.get('/ordem-servico', OrdemServicoController.getAll);
 routes.get('/ordem-servico/:id', OrdemServicoController.getById);
 routes.post('/ordem-servico', OrdemServicoController.create);
 routes.put('/ordem-servico/:id', OrdemServicoController.update);
+routes.get('/ordem-servico-lista', ListaOrdemServicoController.getAll);
+
 
 routes.get('/movimentacaoCount', MovimentacaoOsController.getCount);
 routes.get('/movimentacao-os', MovimentacaoOsController.getAll);

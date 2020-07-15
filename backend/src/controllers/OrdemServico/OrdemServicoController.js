@@ -80,47 +80,48 @@ module.exports = {
         return response.json({ id });
     },
     
-        async update (request, response) {
-            const   { id }   = request.params;
-            const  usuarioid  = request.headers.authorization;
-            const  dataultmodif = getDate();
-            
-            const { numeroos, datasolicitacao, dataatendimento, clientefilialid, tiposervicoid, 
-                descricaoservico, tecnicoid, observacaoos, datafechamento, horaentrada, 
-                horasaida, qtdehoras, horaextra, valorapagar, valorareceber, totalapagar, 
-                totalareceber, diadasemana, custoadicional, ativo } = request.body;
-    
-            await connection('ordemservico').where('id', id).update({
-                numeroos,
-                datasolicitacao,
-                dataatendimento,
-                clientefilialid,
-                tiposervicoid,
-                descricaoservico,
-                tecnicoid,
-                observacaoos,
-                datafechamento,
-                horaentrada,
-                horasaida,
-                qtdehoras,
-                horaextra,
-                valorapagar,
-                valorareceber,
-                totalapagar,
-                totalareceber,
-                diadasemana,
-                custoadicional,
-                ativo,
-                usuarioid,
-                dataultmodif
-            });           
+    async update (request, response) {
+        const   { id }   = request.params;
+        const  usuarioid  = request.headers.authorization;
+        const  dataultmodif = getDate();
+        
+        const { numeroos, datasolicitacao, dataatendimento, clientefilialid, tiposervicoid, 
+            descricaoservico, tecnicoid, observacaoos, datafechamento, horaentrada, 
+            horasaida, qtdehoras, horaextra, valorapagar, valorareceber, totalapagar, 
+            totalareceber, diadasemana, custoadicional, ativo } = request.body;
 
-            return response.status(204).send();
-        },
-        async getCount (request,response) {        
+        await connection('ordemservico').where('id', id).update({
+            numeroos,
+            datasolicitacao,
+            dataatendimento,
+            clientefilialid,
+            tiposervicoid,
+            descricaoservico,
+            tecnicoid,
+            observacaoos,
+            datafechamento,
+            horaentrada,
+            horasaida,
+            qtdehoras,
+            horaextra,
+            valorapagar,
+            valorareceber,
+            totalapagar,
+            totalareceber,
+            diadasemana,
+            custoadicional,
+            ativo,
+            usuarioid,
+            dataultmodif
+        });           
 
-            const [count] = await connection('ordemservico').count()
-            const { page = 1 } = request.query;
-            return response.json(count['count(*)']);        
-        }
-    };
+        return response.status(204).send();
+    },
+
+    async getCount (request,response) {        
+
+        const [count] = await connection('ordemservico').count()
+        const { page = 1 } = request.query;
+        return response.json(count['count(*)']);        
+    }
+};
