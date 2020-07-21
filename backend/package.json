@@ -15,7 +15,9 @@
     "dateformat": "^3.0.3",
     "express": "^4.17.1",
     "knex": "^0.20.13",
-    "mysql": "^2.18.1"
+    "momentjs": "^2.0.0",
+    "mysql": "^2.18.1",
+    "react-moment": "^0.9.7"
   },
   "devDependencies": {
     "nodemon": "^2.0.2"
