@@ -1,75 +1,83 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, CardFooter, Form } from 'reactstrap';
 import '../../../global.css';
+import { Redirect } from "react-router-dom";
 import api from '../../../../src/services/api';
 
-const Perfilacesso = (props) => {
+export default function Perfilacesso(props) {
+    const [redirect, setRedirect] = useState(false);
 
+    //parametros
     var search = props.location.search;
     var params = new URLSearchParams(search);
     var action = params.get('action');
     var perfilacessoIdParam = props.match.params.id;
-
     const usuarioId = localStorage.getItem('userId');
-    const [formData, setFormData] = useState({
-        nomeperfil:'',
-        descricao:'',
-        ativo: 1
-    });
+
+    const [nomeperfil, setNomeperfil] = useState('');
+    const [descricao, setDescricao] = useState('');
+    const [ativo, setAtivo] = useState(1);
+
 
     useEffect(() => {
         if (action === 'edit' && perfilacessoIdParam !== '') {
             api.get(`perfis-acesso/${perfilacessoIdParam}`).then(response => {
-                document.getElementById('txtPerfilAcesso').value = response.data.nomeperfil;
-                document.getElementById('txtDescricao').value = response.data.descricao;
-
-                setFormData({
-                    ...formData,
-                    nomeperfil: response.data.nomeperfil,
-                    descricao: response.data.descricao,
-
-                })
+                setNomeperfil(response.data.nomeperfil);
+                setDescricao(response.data.descricao);
+                response.data.ativo === 1 ? setAtivo(1) : setAtivo(0);
             });
         } else {
             return;
         }
-    }, [perfilacessoIdParam])
+    }, [perfilacessoIdParam]);
 
     function handleInputChange(event) {
-        const { name, value } = event.target;
+        var { name } = event.target;
 
-        setFormData({ ...formData, [name]: value });
+        if (name === 'ativo') {
+            if (ativo === 1) {
+                setAtivo(0);
+            } else {
+                setAtivo(1);
+            }
+        }
     };
 
-    async function handlePerfilAcesso(e) {
+    function handleReset() {
+        setRedirect(true);
+    };
+
+    async function handleStatus(e) {
         e.preventDefault();
 
-        const data = formData;
+        const data = {
+            nomeperfil,
+            descricao,
+            ativo
+        };
 
         if (action === 'edit') {
-
             try {
                 const response = await api.put(`/perfis-acesso/${perfilacessoIdParam}`, data, {
                     headers: {
-                        Authorization: 1,
+                        Authorization: 6,
                     }
                 });
                 alert(`Cadastro atualizado com sucesso.`);
+                setRedirect(true);
             } catch (err) {
-
                 alert('Erro na atualização, tente novamente.');
             }
-
         } else {
-
             if (action === 'novo') {
                 try {
                     const response = await api.post('perfis-acesso', data, {
                         headers: {
-                            Authorization: 1,
+                            Authorization: 6,
                         }
                     });
-                    alert(`Cadastro realizado com sucesso.`);
+                    alert('Cadastro realizado com sucesso.');
+                    setRedirect(true);
                 } catch (err) {
 
                     alert('Erro no cadastro, tente novamente.');
@@ -79,7 +87,8 @@ const Perfilacesso = (props) => {
     }
     return (
         <div className="animated fadeIn">
-            <Form onSubmit={handlePerfilAcesso}>
+            {redirect && <Redirect to="/lista-perfis-acesso" />}
+            <Form onSubmit={handleStatus} onReset={handleReset}>
                 <Row>
                     <Col xs="12" md="12">
                         <Card>
@@ -93,9 +102,8 @@ const Perfilacesso = (props) => {
                                         <Label htmlFor="nomePerfilAccesso">Nome do Perfil de Acesso</Label>
                                         <Input type="text" id="txtPerfilAcesso" multiple placeholder="Digite o nome do Perfil de Acesso"
                                             name="nomeperfil"
-                                            onChange={handleInputChange}
-
-                                        />
+                                            value={nomeperfil}
+                                            onChange={e => setNomeperfil(e.target.value)} />
                                     </Col>
                                 </FormGroup>
                                 <FormGroup row>
@@ -103,9 +111,8 @@ const Perfilacesso = (props) => {
                                         <Label htmlFor="descricao">Descrião</Label>
                                         <Input type="textarea" id="txtDescricao" multiple placeholder="Digite a Descrição"
                                             name="descricao"
-                                            onChange={handleInputChange}
-
-                                        />
+                                            value={descricao}
+                                            onChange={e => setDescricao(e.target.value)} />
                                     </Col>
                                 </FormGroup>
                                 {/*<FormGroup row>                                     
@@ -128,4 +135,3 @@ const Perfilacesso = (props) => {
         </div>
     );
 }
-export default Perfilacesso;

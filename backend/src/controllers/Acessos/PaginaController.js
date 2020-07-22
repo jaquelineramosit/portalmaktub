@@ -27,11 +27,11 @@ module.exports = {
         const  usuarioId  = request.headers.authorization;        
         const  dataUltModif = getDate();
 
-        const {moduloId, nomePagina, descricao, ativo } = request.body;
+        const {moduloid, nomepagina, descricao, ativo } = request.body;
         
         const [id] = await connection('pagina').insert({
-                moduloId,
-                nomePagina,
+                moduloid,
+                nomepagina,
                 descricao, 
                 ativo,
                 dataUltModif,
@@ -46,11 +46,11 @@ module.exports = {
             const  usuarioId  = request.headers.authorization;            
             const  dataUltModif = getDate();
 
-            const {moduloId, nomePagina, descricao, ativo } = request.body;
+            const {moduloid, nomepagina, descricao, ativo } = request.body;
     
             await connection('pagina').where('id', id).update({
-                moduloId,
-                nomePagina,
+                moduloid,
+                nomepagina,
                 descricao, 
                 ativo,
                 dataUltModif,

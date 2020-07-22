@@ -1,72 +1,80 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, InputGroup, InputGroupAddon, CardFooter, Form } from 'reactstrap';
 import '../../../global.css';
+import { Redirect } from "react-router-dom";
 import api from '../../../services/api';
 
-const Bandeira = (props) => {
+export default function Bandeira(props) {
+    const [redirect, setRedirect] = useState(false);
 
+    //parametros
     var search = props.location.search;
     var params = new URLSearchParams(search);
     var action = params.get('action');
-    var bandeiraIdParam = props.match.params.id;
-
+    var BandeiraIdParam = props.match.params.id;
     const usuarioId = localStorage.getItem('userId');
-    const [formData, setFormData] = useState({
-        nomebandeira: '',
-        ativo: '1'
-    });
+
+    const [nomebandeira, setBandeira] = useState('');
+    const [ativo, setAtivo] = useState(1);
+
 
     useEffect(() => {
-        if (action === 'edit' && bandeiraIdParam !== '') {
-            api.get(`bandeira/${bandeiraIdParam}`).then(response => {
-                document.getElementById('txtNomeBandeira').value = response.data.nomebandeira;
-
-                setFormData({
-                    ...formData,
-                    status: response.data.status,
-                    nomebandeira: response.data.nomebandeira,
-                })
+        if (action === 'edit' && BandeiraIdParam !== '') {
+            api.get(`bandeira/${BandeiraIdParam}`).then(response => {
+                setBandeira(response.data.nomebandeira);
+                response.data.ativo === 1 ? setAtivo(1) : setAtivo(0);
             });
         } else {
             return;
         }
-    }, [bandeiraIdParam])
+    }, [BandeiraIdParam]);
 
     function handleInputChange(event) {
-        const { name, value } = event.target;
+        var { name } = event.target;
 
-        setFormData({ ...formData, [name]: value });
+        if (name === 'ativo') {
+            if (ativo === 1) {
+                setAtivo(0);
+            } else {
+                setAtivo(1);
+            }
+        }
     };
 
-    async function handleTicket(e) {
+    function handleReset() {
+        setRedirect(true);
+    };
+
+    async function handleStatus(e) {
         e.preventDefault();
 
-        const data = formData;
+        const data = {
+            nomebandeira,
+            ativo
+        };
 
         if (action === 'edit') {
-
             try {
-                const response = await api.put(`/bandeira/${bandeiraIdParam}`, data, {
+                const response = await api.put(`/bandeira/${BandeiraIdParam}`, data, {
                     headers: {
-                        Authorization: 1,
+                        Authorization: 6,
                     }
                 });
                 alert(`Cadastro atualizado com sucesso.`);
+                setRedirect(true);
             } catch (err) {
-
                 alert('Erro na atualização, tente novamente.');
             }
-
         } else {
-
             if (action === 'novo') {
                 try {
                     const response = await api.post('bandeira', data, {
                         headers: {
-                            Authorization: 1,
+                            Authorization: 6,
                         }
                     });
-                    alert(`Cadastro realizado com sucesso.`);
+                    alert('Cadastro realizado com sucesso.');
+                    setRedirect(true);
                 } catch (err) {
 
                     alert('Erro no cadastro, tente novamente.');
@@ -74,9 +82,11 @@ const Bandeira = (props) => {
             }
         }
     }
+
     return (
         <div className="animated fadeIn">
-            <Form onSubmit={handleTicket}>
+             {redirect && <Redirect to="/lista-bandeira" />}
+             <Form onSubmit={handleStatus} onReset={handleReset}>
                 <Row>
                     <Col xs="12" md="12">
                         <Card>
@@ -91,7 +101,8 @@ const Bandeira = (props) => {
                                         <InputGroup>
                                             <Input type="text" required id="txtNomeBandeira" placeholder="Digite o nome da Bandeira"
                                                 name="nomebandeira"
-                                                onChange={handleInputChange} >
+                                                value={nomebandeira}
+                                                onChange={e => setBandeira(e.target.value)} >
                                             </Input>
                                             <InputGroupAddon addonType="append">
                                                 <Button type="button" color="secondary fa fa-flag"></Button>
@@ -118,4 +129,3 @@ const Bandeira = (props) => {
         </div>
     );
 }
-export default Bandeira;

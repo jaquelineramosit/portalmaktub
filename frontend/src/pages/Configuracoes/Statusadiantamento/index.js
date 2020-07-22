@@ -1,92 +1,96 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, CardFooter, Form } from 'reactstrap';
 import '../../../global.css';
+import { Redirect } from "react-router-dom";
 import api from '../../../../src/services/api';
 
-const StatusAdiantamento = (props) => {
+export default function StatusAdiantamento(props) {
+    const [redirect, setRedirect] = useState(false);
 
+    //parametros
     var search = props.location.search;
     var params = new URLSearchParams(search);
     var action = params.get('action');
-    var statusadiantamentoIdParam = props.match.params.id;
-
-
+    var statusIdParam = props.match.params.id;
     const usuarioId = localStorage.getItem('userId');
-    const [formData, setFormData] = useState({
-        status: '',
-        descstatus: '',
-        ativo: '1'
-    });
 
+    const [status, setStatusAdi] = useState('');
+    const [descstatus, setDescricao] = useState('');
+    const [ativo, setAtivo] = useState(1);
 
 
     useEffect(() => {
-        if (action === 'edit' && statusadiantamentoIdParam !== '') {
-
-            api.get(`/status-adiantamento/${statusadiantamentoIdParam}`).then(response => {
-                document.getElementById('txtStatus').value = response.data.status;
-                document.getElementById('txtDescstatus').value = response.data.descstatus;
-
-                setFormData({
-                    ...formData,
-                    status: response.data.status,
-                    descstatus: response.data.descstatus,
-
-                })
-
+        if (action === 'edit' && statusIdParam !== '') {
+            api.get(`status-adiantamento/${statusIdParam}`).then(response => {
+                setStatusAdi(response.data.status);
+                setDescricao(response.data.descstatus);
+                response.data.ativo === 1 ? setAtivo(1) : setAtivo(0);
             });
         } else {
             return;
         }
-
-    }, [statusadiantamentoIdParam])
+    }, [statusIdParam]);
 
     function handleInputChange(event) {
-        const { name, value } = event.target;
+        var { name } = event.target;
 
-        setFormData({ ...formData, [name]: value });
+        if (name === 'ativo') {
+            if (ativo === 1) {
+                setAtivo(0);
+            } else {
+                setAtivo(1);
+            }
+        }
     };
 
+    function handleReset() {
+        setRedirect(true);
+    };
 
-    async function handleStatusAdiantamento(e) {
+    async function handleStatus(e) {
         e.preventDefault();
 
-        const data = formData;
+        const data = {
+            status,
+            descstatus,
+            ativo
+        };
 
         if (action === 'edit') {
-
             try {
-                const response = await api.put(`/status-adiantamento/${statusadiantamentoIdParam}`, data, {
+                const response = await api.put(`/status-adiantamento/${statusIdParam}`, data, {
                     headers: {
-                        Authorization: 1,
+                        Authorization: 6,
                     }
                 });
                 alert(`Cadastro atualizado com sucesso.`);
+                setRedirect(true);
             } catch (err) {
-
                 alert('Erro na atualização, tente novamente.');
             }
-
         } else {
-
             if (action === 'novo') {
                 try {
                     const response = await api.post('status-adiantamento', data, {
                         headers: {
-                            Authorization: 1,
+                            Authorization: 6,
                         }
                     });
-                    alert(`Cadastro realizado com sucesso.`);
+                    alert('Cadastro realizado com sucesso.');
+                    setRedirect(true);
                 } catch (err) {
+
                     alert('Erro no cadastro, tente novamente.');
                 }
             }
         }
     }
 
+
     return (
         <div className="animated fadeIn">
-            <Form onSubmit={handleStatusAdiantamento}>
+            {redirect && <Redirect to="/lista-status-adiantamento" />}
+            <Form onSubmit={handleStatus} onReset={handleReset}>
                 <Row>
                     <Col xs="12" md="12">
                         <Card>
@@ -100,7 +104,8 @@ const StatusAdiantamento = (props) => {
                                         <Label htmlFor="status">Status de Adiantamento</Label>
                                         <Input type="text" required id="txtStatus" placeholder="Inisira o Status"
                                             name="status"
-                                            onChange={handleInputChange} />
+                                            value={status}
+                                            onChange={e => setStatusAdi(e.target.value)} />
                                     </Col>
                                 </FormGroup>
                                 <FormGroup row>
@@ -108,7 +113,8 @@ const StatusAdiantamento = (props) => {
                                         <Label>Descrição</Label>
                                         <Input type="textarea" rows="5" placeholder="Descreva o Status inserido" id="txtDescstatus"
                                             name="descstatus"
-                                            onChange={handleInputChange} />
+                                            value={descstatus}
+                                            onChange={e => setDescricao(e.target.value)} />
                                     </Col>
                                 </FormGroup>
                                 {/*<FormGroup row>
@@ -131,4 +137,3 @@ const StatusAdiantamento = (props) => {
         </div>
     );
 };
-export default StatusAdiantamento;
