@@ -10,13 +10,16 @@ module.exports = {
             .join('tipoprojeto', 'tipoprojeto.id', '=', 'ordemservico.tipoprojetoid')
             .join('tecnico', 'tecnico.id', '=', 'ordemservico.tecnicoid')
             .join('usuario', 'usuario.id', '=', 'ordemservico.usuarioid')
+            .join('movimentacaoos', 'movimentacaoos.ordemservicoid', '=', 'ordemservico.id')
+            .join('statusatendimento', 'statusatendimento.id', '=', 'movimentacaoos.statusatendimentoid')
             .select([
                 'ordemservico.*',
                 'cliente.nomecliente',
                 'clientefilial.nomefilial',
                 'tipoprojeto.nometipoprojeto',
                 'tecnico.nometecnico',
-                'usuario.nome'
+                'usuario.nome',
+                'statusatendimento.status'
             ])
             response.header('X-Total-Count', count['count(*)']);
     

@@ -7,19 +7,8 @@ import DataTable from 'react-data-table-component';
 
 export default function ListaBandeira() {
     const [bandeira, setBandeira] = useState([]);
-    const [total, setTotal] = useState(0);
     const usuarioId = localStorage.getItem('userId');
-    //logica para pegar o total
-    useEffect(() => {
-        api.get('bandeiraCount', {
-            headers: {
-                Authorization: 1,
-            }
-        }).then(response => {
-            setTotal(response.data);
-        })
-    }, [1]);
-
+    
     useEffect(() => {
         api.get('bandeira', {
             headers: {

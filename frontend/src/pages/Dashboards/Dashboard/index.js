@@ -1,12 +1,12 @@
-import React, {Component} from 'react';
+import React, {Component, Fragment, useEffect, useState} from 'react';
+import api from '../../../../src/services/api';
 import { Link } from 'react-router-dom';
 import { Bar, Line } from 'react-chartjs-2';
-import {Badge, ButtonDropdown, CardBody, CardHeader, CardTitle, DropdownMenu, DropdownItem, DropdownToggle, Progress,} from 'reactstrap';
+import { getStyle, hexToRgba } from '@coreui/coreui/dist/js/coreui-utilities';
+import { CustomTooltips } from '@coreui/coreui-plugin-chartjs-custom-tooltips';
+import {Badge, CardBody, CardHeader, } from 'reactstrap';
 import {        
-    ButtonGroup,
-    ButtonToolbar,
     Card,    
-    CardFooter,    
     Col,
     Dropdown,    
     Row,
@@ -15,640 +15,527 @@ import {
     OverlayTrigger
 } from 'react-bootstrap';
 
-import { CustomTooltips } from '@coreui/coreui-plugin-chartjs-custom-tooltips';
-import { getStyle, hexToRgba } from '@coreui/coreui/dist/js/coreui-utilities';
+export default function DashBoard() {
 
-const brandPrimary = getStyle('--primary')
-const brandSuccess = getStyle('--success')
-const brandInfo = getStyle('--info')
-const brandWarning = getStyle('--warning')
-const brandDanger = getStyle('--danger')
+    const usuarioId = localStorage.getItem('userId');
 
-const cardChartData1 = {
-    labels: ['January', 'February', 'March', 'April', 'May', 'June'],
-        datasets: [
-        {
-            label: 'Ordens de Serviços',
-            backgroundColor: brandInfo,
-            borderColor: 'rgba(255,255,255,.55)',
-            data: [65, 59, 84, 84, 51, 55],
-        },
-    ],
-};
+    const meses = [
+    
+        "",
+        "Janeiro",
+        "Fevereiro",
+        "Marco",
+        "Abril",
+        "Maio",
+        "Junho",
+        "Julho",
+        "Agosto",
+        "Setembro",
+        "Outubro",
+        "Novembro",
+        "Dezembro"
+    ]
 
-const cardChartOpts1 = {
-    tooltips: {
-        enabled: false,
-        custom: CustomTooltips
-    },
-    maintainAspectRatio: false,
-    legend: {
-        display: false,
-    },
-    scales: {
-        xAxes: [
+    const brandInfo = getStyle('--info')
+    const brandSuccess = getStyle('--success')
+
+    function renderTooltip(props) {
+        return (
+          <Tooltip id="os-tooltip" {...props}>
+            Ordem de Serviço
+          </Tooltip>
+        );
+    }
+
+
+    ////INICIO - Resultado Graficos
+    const [resultadoCard1, setResultadoCard1] = useState([]);
+    const [resultadoCard2, setResultadoCard2] = useState([]);
+    const [resultadoCard3, setResultadoCard3] = useState([]);
+    const [resultadoCard4, setResultadoCard4] = useState([]);
+    
+    useEffect(() => {
+        api.get('/dashboard-card-mensal/1').then(response => {
+            setResultadoCard1(response.data);           
+        })
+    }, []);
+
+    useEffect(() => {
+        api.get('/dashboard-card-mensal/5').then(response => {
+            setResultadoCard2(response.data);           
+        })
+    }, []);
+
+    useEffect(() => {
+        api.get('/dashboard-card-mensal/3').then(response => {
+            setResultadoCard3(response.data);           
+        })
+    }, []);
+
+    useEffect(() => {
+        api.get('/dashboard-card-mensal/6').then(response => {
+            setResultadoCard4(response.data);           
+        })
+    }, []);
+
+    ////FIM - Resultado Graficos
+
+    ////INICIO - Total Geral
+    const [totalCard1, setTotalCard1] = useState([]);
+    const [totalCard2, setTotalCard2] = useState([]);
+    const [totalCard3, setTotalCard3] = useState([]);
+    const [totalCard4, setTotalCard4] = useState([]);
+
+    useEffect(() => {
+        api.get('/dashboard-card-totalMensal/1').then(response => {
+            setTotalCard1(response.data);           
+        })
+    }, []);
+
+    useEffect(() => {
+        api.get('/dashboard-card-totalMensal/5').then(response => {
+            setTotalCard2(response.data);           
+        })
+    }, []);
+
+    useEffect(() => {
+        api.get('/dashboard-card-totalMensal/3').then(response => {
+            setTotalCard3(response.data);           
+        })
+    }, []);
+
+    useEffect(() => {
+        api.get('/dashboard-card-totalMensal/6').then(response => {
+            setTotalCard4(response.data);           
+        })
+    }, []);
+
+    ////FIM Total Geral
+
+    ////INICIO - Lista OS's
+    const [listaOrdemServico, setListaOrdemServico] = useState([]);
+
+    useEffect(() => {
+        api.get('/ordem-servico-lista').then(response => {
+            setListaOrdemServico(response.data);           
+        })
+    }, []);
+
+
+    ////FIM - Lista OS's
+    const dadosCard1 =
+    {
+        labels: resultadoCard1.map(total => `${meses[total.mes]} - ${total.ano}`),
+        datasets: 
+        [
             {
-            gridLines: {
-                color: 'transparent',
-                zeroLineColor: 'transparent',
-            },
-            ticks: {
-                fontSize: 2,
-                fontColor: 'transparent',
-            },
+                label: "OS's Novas",
+                backgroundColor: brandInfo,
+                borderColor: 'rgba(255,255,255,.55)',
+                data: resultadoCard1.map(total => total.totalMensal),               
+            }
+        ] 
+    }
 
-        }],
+    const dadosCardOpt1 = {
+    
+        tooltips: {
+            enabled: false,
+            custom: CustomTooltips
+        },
+        maintainAspectRatio: false,
+        legend: {
+            display: false,
+        },
+        scales: {
+            xAxes: [
+                {
+                gridLines: {
+                    color: 'transparent',
+                    zeroLineColor: 'transparent',
+                },
+                ticks: {
+                    fontSize: 2,
+                    fontColor: 'transparent',
+                },
+    
+            }],
+            yAxes: [
+                {
+                display: false,
+                ticks: {
+                    display: false,
+                    min: Math.min.apply(Math, dadosCard1.datasets[0].data) - 5,
+                    max: Math.max.apply(Math, dadosCard1.datasets[0].data) + 5,
+                },
+            }],
+        },
+        elements: {
+            line: {
+                borderWidth: 1,
+            },
+            point: {
+                radius: 4,
+                hitRadius: 10,
+                hoverRadius: 4,
+            },
+        }
+    }
+
+    // Card Chart 2
+    const dadosCard2 = {
+        labels: resultadoCard2.map(total => `${meses[total.mes]} - ${total.ano}`),
+        datasets: [
+            {
+                label: "OS's Concluídas",
+                backgroundColor: brandSuccess,
+                borderColor: 'rgba(255,255,255,.55)',
+                data: resultadoCard2.map(total => total.totalMensal), 
+            },
+        ],
+    };
+
+    const dadosCardOpt2 = {
+        tooltips: {
+            enabled: false,
+            custom: CustomTooltips
+        },
+        maintainAspectRatio: false,
+        legend: {
+            display: false,
+        },
+        scales: {
+            xAxes: [
+                {
+                gridLines: {
+                    color: 'transparent',
+                    zeroLineColor: 'transparent',
+                },
+                ticks: {
+                    fontSize: 2,
+                    fontColor: 'transparent',
+                },
+
+            }],
         yAxes: [
             {
-            display: false,
-            ticks: {
                 display: false,
-                min: Math.min.apply(Math, cardChartData1.datasets[0].data) - 5,
-                max: Math.max.apply(Math, cardChartData1.datasets[0].data) + 5,
+                ticks: {
+                    display: false,
+                    min: Math.min.apply(Math, dadosCard2.datasets[0].data) - 5,
+                    max: Math.max.apply(Math, dadosCard2.datasets[0].data) + 5,
+                },
+            }],
+        },
+        elements: {
+            line: {
+                tension: 0.00001,
+                borderWidth: 1,
             },
-        }],
-    },
-    elements: {
-        line: {
-            borderWidth: 1,
+            point: {
+                radius: 4,
+                hitRadius: 10,
+                hoverRadius: 4,
+            },
         },
-        point: {
-            radius: 4,
-            hitRadius: 10,
-            hoverRadius: 4,
-        },
-    }
-}
+    };
 
-
-// Card Chart 2
-const cardChartData2 = {
-    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-    datasets: [
-        {
-            label: 'My First dataset',
-            backgroundColor: brandSuccess,
-            borderColor: 'rgba(255,255,255,.55)',
-            data: [1, 18, 9, 17, 34, 22, 11],
-        },
-    ],
-};
-
-const cardChartOpts2 = {
-    tooltips: {
-        enabled: false,
-        custom: CustomTooltips
-    },
-    maintainAspectRatio: false,
-    legend: {
-        display: false,
-    },
-    scales: {
-        xAxes: [
+    // Card Chart 3
+    const dadosCard3 = {
+        labels: resultadoCard3.map(total => `${meses[total.mes]} - ${total.ano}`),
+            datasets: [
             {
-            gridLines: {
-                color: 'transparent',
-                zeroLineColor: 'transparent',
+                label: "OS's em Andamento",
+                backgroundColor: 'rgba(255,255,255,.2)',
+                borderColor: 'rgba(255,255,255,.55)',
+                data: resultadoCard3.map(total => total.totalMensal), 
             },
-            ticks: {
-                fontSize: 2,
-                fontColor: 'transparent',
-            },
+        ],
+    };
 
-        }],
-    yAxes: [
-        {
+    const dadosCardOpt3 = {
+        tooltips: {
+            enabled: false,
+            custom: CustomTooltips
+        },
+        maintainAspectRatio: false,
+        legend: {
             display: false,
-            ticks: {
+        },
+        scales: {
+            xAxes: [
+                {
                 display: false,
-                min: Math.min.apply(Math, cardChartData2.datasets[0].data) - 5,
-                max: Math.max.apply(Math, cardChartData2.datasets[0].data) + 5,
-            },
-        }],
-    },
-    elements: {
-        line: {
-            tension: 0.00001,
-            borderWidth: 1,
-        },
-        point: {
-            radius: 4,
-            hitRadius: 10,
-            hoverRadius: 4,
-        },
-    },
-};
-
-// Card Chart 3
-const cardChartData3 = {
-    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-        datasets: [
-        {
-            label: 'My First dataset',
-            backgroundColor: 'rgba(255,255,255,.2)',
-            borderColor: 'rgba(255,255,255,.55)',
-            data: [78, 81, 80, 45, 34, 12, 40],
-        },
-    ],
-};
-
-const cardChartOpts3 = {
-    tooltips: {
-        enabled: false,
-        custom: CustomTooltips
-    },
-    maintainAspectRatio: false,
-    legend: {
-        display: false,
-    },
-    scales: {
-        xAxes: [
-            {
-            display: false,
-        }],
-    yAxes: [
-        {
-            display: false,
-        }],
-    },
-    elements: {
-        line: {
-            borderWidth: 2,
-        },
-        point: {
-            radius: 0,
-            hitRadius: 10,
-            hoverRadius: 4,
-        },
-    },
-};
-  
-// Card Chart 4
-const cardChartData4 = {
-    labels: ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
-        datasets: [
-        {
-            label: 'My First dataset',
-            backgroundColor: 'rgba(255,255,255,.3)',
-            borderColor: 'transparent',
-            data: [78, 81, 80, 45, 34, 12, 40, 75, 34, 89, 32, 68, 54, 72, 18, 98],
-        },
-    ],
-};
-
-const cardChartOpts4 = {
-    tooltips: {
-        enabled: false,
-        custom: CustomTooltips
-    },
-    maintainAspectRatio: false,
-    legend: {
-        display: false,
-    },
-    scales: {
-        xAxes: [
-            {
-            display: false,
-            barPercentage: 0.6,
-        }],
+            }],
         yAxes: [
             {
+                display: false,
+            }],
+        },
+        elements: {
+            line: {
+                borderWidth: 2,
+            },
+            point: {
+                radius: 0,
+                hitRadius: 10,
+                hoverRadius: 4,
+            },
+        },
+    };
+
+    // Card Chart 4
+    const dadosCard4 = {
+        labels: resultadoCard4.map(total => `${meses[total.mes]} - ${total.ano}`),
+            datasets: [
+            {
+                label: "OS's Canceladas",
+                backgroundColor: 'rgba(255,255,255,.3)',
+                borderColor: 'transparent',
+                data: resultadoCard4.map(total => total.totalMensal), 
+            },
+        ],
+    };
+
+    const dadosCardOpt4 = {
+        tooltips: {
+            enabled: false,
+            custom: CustomTooltips
+        },
+        maintainAspectRatio: false,
+        legend: {
             display: false,
-        }],
-    },
-};
+        },
+        scales: {
+            xAxes: [
+                {
+                display: false,
+                barPercentage: 0.6,
+            }],
+            yAxes: [
+                {
+                display: false,
+            }],
+        },
+    };
 
-function renderTooltip(props) {
-    return (
-      <Tooltip id="os-tooltip" {...props}>
-        Ordem de Serviço
-      </Tooltip>
-    );
-  }
+    const [color, setColor]  = useState('');
 
-class Dashboard extends Component {
-    constructor(props) {
-        super(props);
-    
-        this.toggle = this.toggle.bind(this);
-        this.onRadioBtnClick = this.onRadioBtnClick.bind(this);
-    
-        this.state = {
-            dropdownOpen: false,
-            radioSelected: 2,
-        };
+    const BadgeStatus = (props) => {
+        const status = props.status;        
+        var color = "";
+        var textColor = "";
+        
+        switch (status) {
+            case "Novo":
+                color = "info";
+                textColor = "text-white";
+                break
+            case "Concluído":
+                color = "success"
+                break
+            case "Em Andamento":
+                color = "warning"
+                break
+            case "Cancelado":
+                color = "danger"
+                break
+            case "Agendado":
+                color = "light"
+                break     
+            case "Improdutivo":
+                color = "dark"
+                break   
+            }
+        return (
+            <Fragment>
+                <Badge className={textColor} color={color}>{status}</Badge>
+            </Fragment>
+        )
     }
 
-    //ordem-servico-lista
-    toggle() {
-        this.setState({
-            dropdownOpen: !this.state.dropdownOpen,
-        });
-    }
-
-    onRadioBtnClick(radioSelected) {
-        this.setState({
-            radioSelected: radioSelected,
-        });
-    }
-
-    loading = () => <div className="animated fadeIn pt-1 text-center">Loading...</div>
-
-    render() {
-
-        return (        
-            
-            <div className="animated fadeIn">
-                <Row>
-                    <Col xs="12" sm="6" lg="3">
-                        <Card className="text-white bg-info">
-                            <CardBody className="pb-0 pt-2">                                
-                                <div className="text-value">123</div>
-                                <div>Novas OS's</div>
-                            </CardBody>
-                            <div className="chart-wrapper mx-3" style={{ height: '70px' }}>
-                                <Line data={cardChartData1} options={cardChartOpts1} height={70} />
-                            </div>
-                        </Card>
-                    </Col>
-
-                    <Col xs="12" sm="6" lg="3">
-                        <Card className="text-white bg-success">
-                            <CardBody className="pb-0 pt-2">
-                                <ButtonGroup className="float-right">
-                                <Dropdown id='card2' isOpen={this.state.card2} toggle={() => { this.setState({ card2: !this.state.card2 }); }}>
-                                    <DropdownToggle className="p-0" color="transparent">
-                                    <i className="icon-location-pin"></i>
-                                    </DropdownToggle>
-                                    <DropdownMenu right>
-                                    <DropdownItem>Action</DropdownItem>
-                                    <DropdownItem>Another action</DropdownItem>
-                                    <DropdownItem>Something else here</DropdownItem>
-                                    </DropdownMenu>
-                                </Dropdown>
-                                </ButtonGroup>
-                                <div className="text-value">53%</div>
-                                <div>OS's Concluídas</div>
-                            </CardBody>
-                            <div className="chart-wrapper mx-3" style={{ height: '70px' }}>
-                                <Line data={cardChartData2} options={cardChartOpts2} height={70} />
-                            </div>
-                        </Card>
-                    </Col>
-
-                    <Col xs="12" sm="6" lg="3">
-                        <Card className="text-white bg-warning">
-                            <CardBody className="pb-0 pt-2">
-                                <ButtonGroup className="float-right">
-                                <Dropdown id='card3' isOpen={this.state.card3} toggle={() => { this.setState({ card3: !this.state.card3 }); }}>
+    const Cards = () => {  
+        return (
+            <Fragment>
+                {/* card - Novas */}
+                <Col xs="12" sm="6" lg="3">
+                    <Card className="text-white bg-info">
+                        <CardBody className="pb-0 pt-2">                                                                
+                            {/* <ButtonGroup className="float-right">
+                                <ButtonDropdown id='card1' isOpen={this.state.card1} toggle={() => { this.setState({ card1: !this.state.card1 }); }}>
                                     <DropdownToggle caret className="p-0" color="transparent">
-                                    <i className="icon-settings"></i>
+                                        <i className="icon-settings"></i>
                                     </DropdownToggle>
                                     <DropdownMenu right>
-                                    <DropdownItem>Action</DropdownItem>
-                                    <DropdownItem>Another action</DropdownItem>
-                                    <DropdownItem>Something else here</DropdownItem>
+                                        <DropdownItem>Semanal</DropdownItem>
+                                        <DropdownItem>Quinzenal</DropdownItem>
+                                        <DropdownItem>Mensal</DropdownItem>
                                     </DropdownMenu>
-                                </Dropdown>
-                                </ButtonGroup>
-                                <div className="text-value">287</div>
-                                <div>OS's em Andamento</div>
-                            </CardBody>
-                            <div className="chart-wrapper" style={{ height: '70px' }}>
-                                <Line data={cardChartData3} options={cardChartOpts3} height={70} />
-                            </div>
-                        </Card>
-                    </Col>
-
-                    <Col xs="12" sm="6" lg="3">
-                        <Card className="text-white bg-danger">
-                            <CardBody className="pb-0 pt-2">
-                                <ButtonGroup className="float-right">
+                                </ButtonDropdown>
+                            </ButtonGroup> */}
+                            <div className="text-value">{totalCard1.map(total => total.total)}</div>
+                            <div>Novas OS's</div>
+                        </CardBody>
+                        <div className="chart-wrapper mx-3" style={{ height: '70px' }}>
+                            <Line data={dadosCard1} options={dadosCardOpt1} height={70} />
+                        </div>
+                    </Card>
+                </Col>
+                
+                {/* card - Concluidas */}
+                <Col xs="12" sm="6" lg="3">
+                    <Card className="text-white bg-success">
+                        <CardBody className="pb-0 pt-2">
+                            {/* <ButtonGroup className="float-right">
+                                <ButtonDropdown id='card2' isOpen={this.state.card2} toggle={() => { this.setState({ card2: !this.state.card2 }); }}>
+                                    <DropdownToggle caret className="p-0" color="transparent">
+                                        <i className="icon-settings"></i>
+                                    </DropdownToggle>
+                                    <DropdownMenu right>
+                                        <DropdownItem>Semanal</DropdownItem>
+                                        <DropdownItem>Quinzenal</DropdownItem>
+                                        <DropdownItem>Mensal</DropdownItem>
+                                    </DropdownMenu>
+                                </ButtonDropdown>
+                            </ButtonGroup> */}
+                            <div className="text-value">{totalCard2.map(total => total.total)}</div>
+                            <div>OS's Concluídas</div>
+                        </CardBody>
+                        <div className="chart-wrapper mx-3" style={{ height: '70px' }}>
+                            <Line data={dadosCard2} options={dadosCardOpt2} height={70} />
+                        </div>
+                    </Card>
+                </Col>
+                
+                {/* card - Em Execucao */}
+                <Col xs="12" sm="6" lg="3">
+                    <Card className="text-white bg-warning">
+                        <CardBody className="pb-0 pt-2">
+                            {/* <ButtonGroup className="float-right">
+                                <ButtonDropdown id='card3' isOpen={this.state.card3} toggle={() => { this.setState({ card3: !this.state.card3 }); }}>
+                                    <DropdownToggle caret className="p-0" color="transparent">
+                                        <i className="icon-settings"></i>
+                                    </DropdownToggle>
+                                    <DropdownMenu right>
+                                        <DropdownItem>Semanal</DropdownItem>
+                                        <DropdownItem>Quinzenal</DropdownItem>
+                                        <DropdownItem>Mensal</DropdownItem>
+                                    </DropdownMenu>
+                                </ButtonDropdown>
+                            </ButtonGroup> */}
+                            <div className="text-value">{totalCard3.map(total => total.total)}</div>
+                            <div>OS's em Andamento</div>
+                        </CardBody>
+                        <div className="chart-wrapper" style={{ height: '70px' }}>
+                            <Line data={dadosCard3} options={dadosCardOpt3} height={70} />
+                        </div>
+                    </Card>
+                </Col>
+                
+                {/* card - Canceladas */}
+                <Col xs="12" sm="6" lg="3">
+                    <Card className="text-white bg-danger">
+                        <CardBody className="pb-0 pt-2">
+                            {/* <ButtonGroup className="float-right">
                                 <ButtonDropdown id='card4' isOpen={this.state.card4} toggle={() => { this.setState({ card4: !this.state.card4 }); }}>
                                     <DropdownToggle caret className="p-0" color="transparent">
                                         <i className="icon-settings"></i>
                                     </DropdownToggle>
                                     <DropdownMenu right>
-                                        <DropdownItem>Action</DropdownItem>
-                                        <DropdownItem>Another action</DropdownItem>
-                                        <DropdownItem>Something else here</DropdownItem>
+                                        <DropdownItem>Semanal</DropdownItem>
+                                        <DropdownItem>Quinzenal</DropdownItem>
+                                        <DropdownItem>Mensal</DropdownItem>
                                     </DropdownMenu>
                                 </ButtonDropdown>
-                                </ButtonGroup>
-                                <div className="text-value">15</div>
-                                <div>OS's Canceladas</div>
-                            </CardBody>
-                            <div className="chart-wrapper mx-3" style={{ height: '70px' }}>
-                                <Bar data={cardChartData4} options={cardChartOpts4} height={70} />
-                            </div>
-                        </Card>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col>
-                        <Card>
-                            <CardHeader>Últimas OS's</CardHeader>
-                            <CardBody className="p-1">                                
-                                <Table hover responsive className="table-outline mb-0 d-none d-sm-table">
-                                    <thead className="thead-light">
-                                        <tr>
-                                            <th className="text-center">
-                                                <OverlayTrigger
-                                                    placement="top"
-                                                    delay={{ show: 100, hide: 400 }}
-                                                    overlay={renderTooltip}
-                                                >
-                                                    <i className="icon-wrench"></i>
-                                                </OverlayTrigger>                                                
-                                            </th>
-                                            <th className="">Cliente / Filial</th>                                        
-                                            <th>Técnico</th>
-                                            <th className="text-center">Status</th>
-                                            <th>Projeto</th>
-                                            <th>Data</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td className="text-center">
-                                                <Link to={`/ordem-servico/${1}?action=edit`}>1</Link>
-                                            </td>
-                                            <td>
-                                                <div>
-                                                    <i className="fa fa-handshake-o mr-2" title="Clientes"></i>
-                                                    Cliente 1
-                                                </div>
-                                                <div className="small text-muted">
-                                                    <i className="fa fa-building mr-1" title="Clientes"></i>
-                                                    Casas Bahia Penha
-                                                </div>
-                                            </td>
-                                            <td>
-                                                João Paulo
-                                            </td>
-                                            <td>
-                                                <div className="text-center">
-                                                    <Badge color="success">Concluída</Badge>
-                                                </div>                                                
-                                            </td>
-                                            <td>
-                                                Instalação de SSD
-                                            </td>
-                                            <td>
-                                                <div className="small text-muted">                                              
-                                                    <strong>Atendimento:</strong> 01/08/2020
-                                                </div>
-                                                <div className="small text-muted">
-                                                <strong>Cadastro:</strong>01/03/2020
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td className="text-center">
-                                                <Link to={`/ordem-servico/${2}?action=edit`}>2</Link>
-                                            </td>
-                                            <td>
-                                                <div>
-                                                    <i className="fa fa-handshake-o mr-2" title="Clientes"></i>
-                                                    Cliente 2
-                                                </div>
-                                                <div className="small text-muted">
-                                                    <i className="fa fa-building mr-1" title="Clientes"></i>
-                                                    Casas Bahia Fortaleza
-                                                </div>
-                                            </td>
-                                            <td>
-                                                João Paulo
-                                            </td>
-                                            <td>
-                                                <div className="text-center">
-                                                    <Badge color="info" className="text-white">Nova</Badge>
-                                                </div>                                                
-                                            </td>
-                                            <td>
-                                                Instalação de SSD
-                                            </td>
-                                            <td>
-                                                <div className="small text-muted">                                              
-                                                    <strong>Atendimento:</strong> 01/08/2020
-                                                </div>
-                                                <div className="small text-muted">
-                                                <strong>Cadastro:</strong>01/03/2020
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td className="text-center">
-                                                <Link to={`/ordem-servico/${3}?action=edit`}>3</Link>
-                                            </td>
-                                            <td>
-                                                <div>
-                                                    <i className="fa fa-handshake-o mr-2" title="Clientes"></i>
-                                                    Cliente 3
-                                                </div>
-                                                <div className="small text-muted">
-                                                    <i className="fa fa-building mr-1" title="Clientes"></i>
-                                                    Casas Bahia Penha
-                                                </div>
-                                            </td>
-                                            <td>
-                                                João Paulo
-                                            </td>
-                                            <td>
-                                                <div className="text-center">
-                                                    <Badge color="warning">Em Andamento</Badge>
-                                                </div>                                                
-                                            </td>
-                                            <td>
-                                                Instalação de SSD
-                                            </td>
-                                            <td>
-                                                <div className="small text-muted">                                              
-                                                    <strong>Atendimento:</strong> 01/08/2020
-                                                </div>
-                                                <div className="small text-muted">
-                                                <strong>Cadastro:</strong>01/03/2020
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td className="text-center">
-                                                <Link to={`/ordem-servico/${4}?action=edit`}>4</Link>
-                                            </td>
-                                            <td>
-                                                <div>
-                                                    <i className="fa fa-handshake-o mr-2" title="Clientes"></i>
-                                                    Cliente 4
-                                                </div>
-                                                <div className="small text-muted">
-                                                    <i className="fa fa-building mr-1" title="Clientes"></i>
-                                                    Casas Bahia Penha
-                                                </div>
-                                            </td>
-                                            <td>
-                                                João Paulo
-                                            </td>
-                                            <td>
-                                                <div className="text-center">
-                                                    <Badge color="warning">Em Andamento</Badge>
-                                                </div>                                                
-                                            </td>
-                                            <td>
-                                                Instalação de SSD
-                                            </td>
-                                            <td>
-                                                <div className="small text-muted">                                              
-                                                    <strong>Atendimento:</strong> 01/08/2020
-                                                </div>
-                                                <div className="small text-muted">
-                                                <strong>Cadastro:</strong>01/03/2020
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td className="text-center">
-                                                <Link to={`/ordem-servico/${5}?action=edit`}>5</Link>
-                                            </td>
-                                            <td>
-                                                <div>
-                                                    <i className="fa fa-handshake-o mr-2" title="Clientes"></i>
-                                                    Cliente 1
-                                                </div>
-                                                <div className="small text-muted">
-                                                    <i className="fa fa-building mr-1" title="Clientes"></i>
-                                                    Casas Bahia Penha
-                                                </div>
-                                            </td>
-                                            <td>
-                                                João Paulo
-                                            </td>
-                                            <td>
-                                                <div className="text-center">
-                                                    <Badge color="success">Concluída</Badge>
-                                                </div>                                                
-                                            </td>
-                                            <td>
-                                                Instalação de SSD
-                                            </td>
-                                            <td>
-                                                <div className="small text-muted">                                              
-                                                    <strong>Atendimento:</strong> 01/08/2020
-                                                </div>
-                                                <div className="small text-muted">
-                                                <strong>Cadastro:</strong>01/03/2020
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td className="text-center">
-                                                <Link to={`/ordem-servico/${6}?action=edit`}>6</Link>
-                                            </td>
-                                            <td>
-                                                <div>
-                                                    <i className="fa fa-handshake-o mr-2" title="Clientes"></i>
-                                                    Cliente 1
-                                                </div>
-                                                <div className="small text-muted">
-                                                    <i className="fa fa-building mr-1" title="Clientes"></i>
-                                                    Casas Bahia Penha
-                                                </div>
-                                            </td>
-                                            <td>
-                                                João Paulo
-                                            </td>
-                                            <td>
-                                                <div className="text-center">
-                                                    <Badge color="danger">Cancelada</Badge>
-                                                </div>                                                
-                                            </td>
-                                            <td>
-                                                Instalação de SSD
-                                            </td>
-                                            <td>
-                                                <div className="small text-muted">                                              
-                                                    <strong>Atendimento:</strong> 01/08/2020
-                                                </div>
-                                                <div className="small text-muted">
-                                                <strong>Cadastro:</strong>01/03/2020
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td className="text-center">
-                                                <Link to={`/ordem-servico/${7}?action=edit`}>7</Link>
-                                            </td>
-                                            <td>
-                                                <div>
-                                                    <i className="fa fa-handshake-o mr-2" title="Clientes"></i>
-                                                    Cliente 7
-                                                </div>
-                                                <div className="small text-muted">
-                                                    <i className="fa fa-building mr-1" title="Clientes"></i>
-                                                    Casas Bahia Penha
-                                                </div>
-                                            </td>
-                                            <td>
-                                                João Paulo
-                                            </td>
-                                            <td>
-                                                <div className="text-center">
-                                                    <Badge color="info" className="text-white">Nova</Badge>
-                                                </div>                                                
-                                            </td>
-                                            <td>
-                                                Instalação de SSD
-                                            </td>
-                                            <td>
-                                                <div className="small text-muted">                                              
-                                                    <strong>Atendimento:</strong> 01/08/2020
-                                                </div>
-                                                <div className="small text-muted">
-                                                <strong>Cadastro:</strong>01/03/2020
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td className="text-center">
-                                                <Link to={`/ordem-servico/${1}?action=edit`}>1</Link>
-                                            </td>
-                                            <td>
-                                                <div>
-                                                    <i className="fa fa-handshake-o mr-2" title="Clientes"></i>
-                                                    Cliente 1
-                                                </div>
-                                                <div className="small text-muted">
-                                                    <i className="fa fa-building mr-1" title="Clientes"></i>
-                                                    Casas Bahia Penha
-                                                </div>
-                                            </td>
-                                            <td>
-                                                João Paulo
-                                            </td>
-                                            <td>
-                                                <div className="text-center">
-                                                    <Badge color="info" className="text-white">Nova</Badge>
-                                                </div>                                                
-                                            </td>
-                                            <td>
-                                                Instalação de SSD
-                                            </td>
-                                            <td>
-                                                <div className="small text-muted">                                              
-                                                    <strong>Atendimento: </strong> 01/08/2020
-                                                </div>
-                                                <div className="small text-muted">
-                                                <strong>Cadastro: </strong> 01/03/2020
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </Table>
-                            </CardBody>
-                        </Card>
-                    </Col>
-                    </Row>
-            </div>     
-        );    
+                            </ButtonGroup> */}
+                            <div className="text-value">{totalCard4.map(total => total.total)}</div>
+                            <div>OS's Canceladas</div>
+                        </CardBody>
+                        <div className="chart-wrapper mx-3" style={{ height: '70px' }}>
+                            <Bar data={dadosCard4} options={dadosCardOpt4} height={70} />
+                        </div>
+                    </Card>
+                </Col>
+    
+            </Fragment>
+    
+        )
     }
+
+    return (        
+        <div className="animated fadeIn">
+            {/* cards */}
+            <Row>
+                <Cards></Cards>
+            </Row>
+            {/* Lista OS's */}
+            <Row>
+                <Col>
+                    <Card>
+                        <CardHeader>Últimas OS's</CardHeader>
+                        <CardBody className="p-1">                                
+                            <Table key={`table`} hover responsive className="table-outline mb-0 d-none d-sm-table">
+                                <thead key={`tableheader`} className="thead-light">
+                                    <tr>
+                                        <th className="text-center">
+                                            <OverlayTrigger
+                                                placement="top"
+                                                delay={{ show: 100, hide: 400 }}
+                                                overlay={renderTooltip}
+                                            >
+                                                <i className="icon-wrench"></i>
+                                            </OverlayTrigger>                                                
+                                        </th>
+                                        <th className="">Cliente / Filial</th>                                        
+                                        <th>Técnico</th>
+                                        <th className="text-center">Status</th>
+                                        <th>Projeto</th>
+                                        <th>Data</th>
+                                    </tr>
+                                </thead>
+                                <tbody key={`tablebody`}>
+                                    {listaOrdemServico.map((ordemServico, index) => 
+                                    <tr key={`tr${ordemServico.id}_${index}`}>
+                                        <td className="text-center">
+                                            <Link key={`link${ordemServico.id}`} to={`/ordem-servico/${ordemServico.id}?action=edit`}>{ordemServico.id}</Link>
+                                        </td>
+                                        <td>
+                                            <div key={`cliente${ordemServico.id}`}>
+                                                <i className="fa fa-handshake-o mr-2" title="Clientes"></i>
+                                                {ordemServico.nomecliente}
+                                            </div>
+                                            <div key={`filial${ordemServico.id}`} className="small text-muted">
+                                                <i className="fa fa-building mr-1" title="Clientes"></i>
+                                                {ordemServico.nomefilial}
+                                            </div>
+                                        </td>
+                                        <td>
+                                            {ordemServico.nometecnico}
+                                        </td>
+                                        <td>
+                                            <div key={`status${ordemServico.id}`} className="text-center">
+                                                <BadgeStatus key={`badge${ordemServico.id}`} status={ordemServico.status}></BadgeStatus>
+                                            </div>                                                
+                                        </td>
+                                        <td>
+                                            Instalação de SSD
+                                        </td>
+                                        <td>
+                                            <div key={`dtAtendimento${ordemServico.id}`} className="small text-muted">                                              
+                                                <strong>Atendimento:</strong> 01/08/2020
+                                            </div>
+                                            <div key={`dtCadastro${ordemServico.id}`} className="small text-muted">
+                                            <strong>Cadastro:</strong>01/03/2020
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    )}                                    
+                                </tbody>
+                            </Table>
+                        </CardBody>
+                    </Card>
+                </Col>
+            </Row>
+        </div>     
+    );    
 }
-export default Dashboard;
