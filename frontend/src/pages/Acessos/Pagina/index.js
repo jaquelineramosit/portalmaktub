@@ -1,24 +1,38 @@
 import React, { useState, useEffect } from 'react';
-import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button,  CardFooter, Form } from 'reactstrap';
+import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, CardFooter, Form } from 'reactstrap';
 import '../../../global.css';
+import { Redirect } from "react-router-dom";
 import api from '../../../../src/services/api';
 
-const Paginas = (props) => {
+export default function Pagina(props) {
+    const [redirect, setRedirect] = useState(false);
 
+    //parametros
     var search = props.location.search;
     var params = new URLSearchParams(search);
     var action = params.get('action');
-    var paginasIdParam = props.match.params.id;
-
-    const [modulos, setModulos] = useState([]);
+    var bancoIdParam = props.match.params.id;
     const usuarioId = localStorage.getItem('userId');
-    const [formData, setFormData] = useState({
-        moduloId: 1,
-        nomePagina: '',
-        descricao: '',
-        ativo: 1
-    });
-    
+
+    const [moduloid, setModuloid] = useState('');
+    const [nomepagina, setNomepagina] = useState('');
+    const [descricao, setDescricao] = useState('');
+    const [modulos, setModulos] = useState([]);
+    const [ativo, setAtivo] = useState(1);
+
+
+    useEffect(() => {
+        if (action === 'edit' && bancoIdParam !== '') {
+            api.get(`paginas/${bancoIdParam}`).then(response => {
+                setModuloid(response.data.moduloid);
+                setNomepagina(response.data.nomepagina);
+                setDescricao(response.data.descricao);
+                response.data.ativo === 1 ? setAtivo(1) : setAtivo(0);
+            });
+        } else {
+            return;
+        }
+    }, [bancoIdParam]);
 
     useEffect(() => {
         api.get('modulos').then(response => {
@@ -26,67 +40,54 @@ const Paginas = (props) => {
         })
     }, [usuarioId]);
 
-
-    useEffect(() => {
-        if (action === 'edit' && paginasIdParam !== '') {
-            api.get(`paginas/${paginasIdParam}`).then(response => {
-                document.getElementById('cboModuloId').value = response.data.moduloid;
-                document.getElementById('txtNomePagina').value = response.data.nomepagina;
-                document.getElementById('txtDescricao').value = response.data.descricao;
-
-                setFormData({
-                    ...formData,
-                    moduloid: response.data.moduloid,
-                    nomepagina: response.data.nomepagina,
-                    descricao: response.data.descricao,
-                    
-                })
-                console.log(formData)
-            });
-        } else {
-            return;
-        }
-    }, [paginasIdParam])
-
-
-    
-
     function handleInputChange(event) {
-        const { name, value } = event.target;
+        var { name } = event.target;
 
-        setFormData({ ...formData, [name]: value });
+        if (name === 'ativo') {
+            if (ativo === 1) {
+                setAtivo(0);
+            } else {
+                setAtivo(1);
+            }
+        }
     };
 
-console.log(formData)
-    async function handlePagina(e) {
+    function handleReset() {
+        setRedirect(true);
+    };
+
+    async function handleStatus(e) {
         e.preventDefault();
 
-        const data = formData;
+        const data = {
+            moduloid,
+            nomepagina,
+            descricao,
+            ativo
+        };
 
         if (action === 'edit') {
-
             try {
-                const response = await api.put(`/paginas/${paginasIdParam}`, data, {
+                const response = await api.put(`/paginas/${bancoIdParam}`, data, {
                     headers: {
-                        Authorization: 1,
+                        Authorization: 6,
                     }
                 });
                 alert(`Cadastro atualizado com sucesso.`);
+                setRedirect(true);
             } catch (err) {
-
                 alert('Erro na atualização, tente novamente.');
             }
-
         } else {
-
             if (action === 'novo') {
                 try {
                     const response = await api.post('paginas', data, {
                         headers: {
-                            Authorization: 1,
+                            Authorization: 6,
                         }
                     });
-                    alert(`Cadastro realizado com sucesso.`);
+                    alert('Cadastro realizado com sucesso.');
+                    setRedirect(true);
                 } catch (err) {
 
                     alert('Erro no cadastro, tente novamente.');
@@ -94,9 +95,13 @@ console.log(formData)
             }
         }
     }
+
+
+
     return (
         <div className="animated fadeIn">
-            <Form onSubmit={handlePagina}>
+            {redirect && <Redirect to="/lista-paginas" />}
+            <Form onSubmit={handleStatus} onReset={handleReset}>
                 <Row>
                     <Col xs="12" md="12">
                         <Card>
@@ -110,7 +115,8 @@ console.log(formData)
                                         <Label htmlFor="moduloId">Qual o Módulo</Label>
                                         <Input type="select" required id="cboModuloId"
                                             name="moduloId"
-                                           onChange={handleInputChange}>
+                                            value={moduloid}
+                                            onChange={e => setModuloid(e.target.value)}>
                                             <option value={undefined} defaultValue>Selecione...</option>
                                             {modulos.map(modulo => (
                                                 <option value={modulo.id}>{modulo.nomemodulo}</option>
@@ -118,11 +124,11 @@ console.log(formData)
                                         </Input>
                                     </Col>
                                     <Col md="4">
-                                        <Label htmlFor="nomePagina">Nome da Página</Label>
+                                        <Label htmlFor="nomepagina">Nome da Página</Label>
                                         <Input type="text" id="txtNomePagina" multiple placeholder="Digite o nome da Página"
-                                            name="nomePagina"
-                                            onChange={handleInputChange} 
-                                        />
+                                            name="nomepagina"
+                                            value={nomepagina}
+                                            onChange={e => setNomepagina(e.target.value)} />
                                     </Col>
                                 </FormGroup>
                                 <FormGroup row>
@@ -130,8 +136,8 @@ console.log(formData)
                                         <Label htmlFor="descricao">Descrição</Label>
                                         <Input type="textarea" id="txtDescricao" multiple placeholder="Digite a Descrição"
                                             name="descricao"
-                                            onChange={handleInputChange} 
-                                        />
+                                            value={descricao}
+                                            onChange={e => setDescricao(e.target.value)} />
                                     </Col>
                                 </FormGroup>
                                 {/*<FormGroup row>                                     
@@ -155,4 +161,3 @@ console.log(formData)
         </div>
     );
 }
-export default Paginas;

@@ -1,75 +1,83 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, CardFooter, Form } from 'reactstrap';
 import '../../../global.css';
+import { Redirect } from "react-router-dom";
 import api from '../../../../src/services/api';
 
-const Banco = (props) => {
+export default function Banco(props) {
+    const [redirect, setRedirect] = useState(false);
 
+    //parametros
     var search = props.location.search;
     var params = new URLSearchParams(search);
     var action = params.get('action');
     var bancoIdParam = props.match.params.id;
-
-
     const usuarioId = localStorage.getItem('userId');
-    const [formData, setFormData] = useState({
-        codbanco: '',
-        nomebanco: '',
-        ativo: '1'
-    });
+
+    const [codbanco, setCodbanco] = useState('');
+    const [nomebanco, setNomebanco] = useState('');
+    const [ativo, setAtivo] = useState(1);
+
 
     useEffect(() => {
         if (action === 'edit' && bancoIdParam !== '') {
             api.get(`banco/${bancoIdParam}`).then(response => {
-                document.getElementById('txtCodBanco').value = response.data.codbanco;
-                document.getElementById('txtNomeBanco').value = response.data.nomebanco;
-
-                setFormData({
-                    ...formData,
-                    status: response.data.status,
-                    nomebanco: response.data.nomebanco,
-                })
+                setCodbanco(response.data.codbanco);
+                setNomebanco(response.data.nomebanco);
+                response.data.ativo === 1 ? setAtivo(1) : setAtivo(0);
             });
         } else {
             return;
         }
-    }, [bancoIdParam])
+    }, [bancoIdParam]);
 
     function handleInputChange(event) {
-        const { name, value } = event.target;
+        var { name } = event.target;
 
-        setFormData({ ...formData, [name]: value });
+        if (name === 'ativo') {
+            if (ativo === 1) {
+                setAtivo(0);
+            } else {
+                setAtivo(1);
+            }
+        }
     };
 
-    async function handleTicket(e) {
+    function handleReset() {
+        setRedirect(true);
+    };
+
+    async function handleStatus(e) {
         e.preventDefault();
 
-        const data = formData;
+        const data = {
+            codbanco,
+            nomebanco,
+            ativo
+        };
 
         if (action === 'edit') {
-
             try {
                 const response = await api.put(`/banco/${bancoIdParam}`, data, {
                     headers: {
-                        Authorization: 1,
+                        Authorization: 6,
                     }
                 });
                 alert(`Cadastro atualizado com sucesso.`);
+                setRedirect(true);
             } catch (err) {
-
                 alert('Erro na atualização, tente novamente.');
             }
-
         } else {
-
             if (action === 'novo') {
                 try {
                     const response = await api.post('banco', data, {
                         headers: {
-                            Authorization: 1,
+                            Authorization: 6,
                         }
                     });
-                    alert(`Cadastro realizado com sucesso.`);
+                    alert('Cadastro realizado com sucesso.');
+                    setRedirect(true);
                 } catch (err) {
 
                     alert('Erro no cadastro, tente novamente.');
@@ -78,9 +86,12 @@ const Banco = (props) => {
         }
     }
 
+
+
     return (
         <div className="animated fadeIn">
-            <Form onSubmit={handleTicket}>
+            {redirect && <Redirect to="/lista-banco" />}
+            <Form onSubmit={handleStatus} onReset={handleReset}>
                 <Row>
                     <Col xs="12" md="12">
                         <Card>
@@ -94,13 +105,15 @@ const Banco = (props) => {
                                         <Label htmlFor="codBanco">Código do Banco</Label>
                                         <Input type="text" required id="txtCodBanco" placeholder="Digite o Código do banco"
                                             name="codbanco"
-                                            onChange={handleInputChange} />
+                                            value={codbanco}
+                                            onChange={e => setCodbanco(e.target.value)} />
                                     </Col>
                                     <Col md="4">
                                         <Label htmlFor="codBanco">Nome do Banco</Label>
                                         <Input type="text" required id="txtNomeBanco" placeholder="Digite o Nome do Banco"
                                             name="nomebanco"
-                                            onChange={handleInputChange} />
+                                            value={nomebanco}
+                                            onChange={e => setNomebanco(e.target.value)} />
                                     </Col>
                                 </FormGroup>
                                 {/*<FormGroup>    
@@ -123,4 +136,3 @@ const Banco = (props) => {
         </div>
     );
 }
-export default Banco;

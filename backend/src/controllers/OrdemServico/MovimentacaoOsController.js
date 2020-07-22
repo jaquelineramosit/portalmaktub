@@ -68,26 +68,18 @@ module.exports = {
         const   { id }   = request.params;
         const  usuarioid  = request.headers.authorization;
         const  dataultmodif = getDate();
-        const { 
-            responsavelId, atividade, descricao, clienteId, contatoId, tipoatividadeId, dataatividade,
-            datainicio, datafim, temponotificacao, exibenotificacao, anexoId,  cancelada } = request.body;
+        const { ordemservicoid, statusatendimentoid, statuspagamentoid,
+            statuscobrancaid, observacao, ativo } = request.body;
 
         await connection('movimentacaoos').where('id', id).update({
-            responsavelId,
-            atividade,
-            descricao,
-            clienteId,
-            contatoId,
-            tipoatividadeId,
-            dataatividade,
-            datainicio,
-            datafim,
-            temponotificacao,
-            exibenotificacao,
-            anexoId,
-            cancelada,
-            dataUltModif,
-            usuarioId
+            ordemservicoid,
+            statusatendimentoid,
+            statuspagamentoid,
+            statuscobrancaid,
+            observacao,
+            ativo,
+            usuarioid,
+            dataultmodif
         });           
 
         return response.status(204).send();

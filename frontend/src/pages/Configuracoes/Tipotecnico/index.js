@@ -1,74 +1,83 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, CardFooter, Form } from 'reactstrap';
 import '../../../global.css';
+import { Redirect } from "react-router-dom";
 import api from '../../../../src/services/api';
 
-const Tipotecnico = (props) => {
+export default function Tipotecnico(props) {
+    const [redirect, setRedirect] = useState(false);
 
+    //parametros
     var search = props.location.search;
     var params = new URLSearchParams(search);
     var action = params.get('action');
-    var tipotecnicoIdParam = props.match.params.id;
-
+    var statusIdParam = props.match.params.id;
     const usuarioId = localStorage.getItem('userId');
-    const [formData, setFormData] = useState({
-        nometipotecnico: '',
-        desctipotecnico: '',
-        ativo: '1'
-    });
+
+    const [nometipotecnico, setNometecnico] = useState('');
+    const [desctipotecnico, setDesctipotecnico] = useState('');
+    const [ativo, setAtivo] = useState(1);
+
 
     useEffect(() => {
-        if (action === 'edit' && tipotecnicoIdParam !== '') {
-            api.get(`tipo-tecnico/${tipotecnicoIdParam}`).then(response => {
-                document.getElementById('txtNomeTipoTecnico').value = response.data.nometipotecnico;
-                document.getElementById('txtDescricao').value = response.data.desctipotecnico;
-
-                setFormData({
-                    ...formData,
-                    nometipotecnico: response.data.nometipotecnico,
-                    desctipotecnico: response.data.desctipotecnico,
-                })
+        if (action === 'edit' && statusIdParam !== '') {
+            api.get(`tipo-tecnico/${statusIdParam}`).then(response => {
+                setNometecnico(response.data.nometipotecnico);
+                setDesctipotecnico(response.data.desctipotecnico);
+                response.data.ativo === 1 ? setAtivo(1) : setAtivo(0);
             });
         } else {
             return;
         }
-    }, [tipotecnicoIdParam])
+    }, [statusIdParam]);
 
     function handleInputChange(event) {
-        const { name, value } = event.target;
+        var { name } = event.target;
 
-        setFormData({ ...formData, [name]: value });
+        if (name === 'ativo') {
+            if (ativo === 1) {
+                setAtivo(0);
+            } else {
+                setAtivo(1);
+            }
+        }
     };
 
-    async function handleTipoTecnico(e) {
+    function handleReset() {
+        setRedirect(true);
+    };
+
+    async function handleStatus(e) {
         e.preventDefault();
 
-        const data = formData;
+        const data = {
+            nometipotecnico,
+            desctipotecnico,
+            ativo
+        };
 
         if (action === 'edit') {
-
             try {
-                const response = await api.put(`/tipo-tecnico/${tipotecnicoIdParam}`, data, {
+                const response = await api.put(`/tipo-tecnico/${statusIdParam}`, data, {
                     headers: {
-                        Authorization: 1,
+                        Authorization: 6,
                     }
                 });
                 alert(`Cadastro atualizado com sucesso.`);
+                setRedirect(true);
             } catch (err) {
-
                 alert('Erro na atualização, tente novamente.');
             }
-
         } else {
-
             if (action === 'novo') {
                 try {
                     const response = await api.post('tipo-tecnico', data, {
                         headers: {
-                            Authorization: 1,
+                            Authorization: 6,
                         }
                     });
-                    alert(`Cadastro realizado com sucesso.`);
+                    alert('Cadastro realizado com sucesso.');
+                    setRedirect(true);
                 } catch (err) {
 
                     alert('Erro no cadastro, tente novamente.');
@@ -76,9 +85,11 @@ const Tipotecnico = (props) => {
             }
         }
     }
+
     return (
         <div className="animated fadeIn">
-            <Form onSubmit={handleTipoTecnico}>
+            {redirect && <Redirect to="/lista-tipo-tecnicos" />}
+            <Form onSubmit={handleStatus} onReset={handleReset}>
                 <Row>
                     <Col xs="12" md="12">
                         <Card>
@@ -92,7 +103,8 @@ const Tipotecnico = (props) => {
                                         <Label htmlFor="nomeTipoTecnico">Nome do Tipo de Técnico</Label>
                                         <Input type="text" required id="txtNomeTipoTecnico" placeholder="Digite o Tipo de Técnico"
                                             name="nometipotecnico"
-                                            onChange={handleInputChange} />
+                                            value={nometipotecnico}
+                                            onChange={e => setNometecnico(e.target.value)} />
                                     </Col>
                                 </FormGroup>
                                 <FormGroup row>
@@ -100,7 +112,8 @@ const Tipotecnico = (props) => {
                                         <Label>Descrição</Label>
                                         <Input type="textarea" rows="5" placeholder="Descreva o Tipo de Técnico inserido" required id="txtDescricao"
                                             name="desctipotecnico"
-                                            onChange={handleInputChange} />
+                                            value={desctipotecnico}
+                                            onChange={e => setDesctipotecnico(e.target.value)} />
                                     </Col>
                                 </FormGroup>
                                 {/*<FormGroup>    
@@ -123,4 +136,3 @@ const Tipotecnico = (props) => {
         </div>
     );
 }
-export default Tipotecnico;

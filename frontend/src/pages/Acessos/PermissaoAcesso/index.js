@@ -1,30 +1,30 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, CardFooter, Form } from 'reactstrap';
 import '../../../global.css';
+import { Redirect } from "react-router-dom";
 import api from '../../../../src/services/api';
 
-const Permissaoacesso = (props) => {
+export default function Permissaoacesso(props) {
+    const [redirect, setRedirect] = useState(false);
 
+    //parametros
     var search = props.location.search;
     var params = new URLSearchParams(search);
     var action = params.get('action');
-    var permissaoacessoIdParam = props.match.params.id;
+    var statusIdParam = props.match.params.id;
+    const usuarioId = localStorage.getItem('userId');
 
+    const [perfilacessoid, setPerfilacessoid] = useState('');
+    const [moduloid, setModuloid] = useState('');
+    const [paginaid, setPaginaid] = useState('');
+    const [subpaginaid, setSubpaginaid] = useState('');
+    const [funcaoid, setFuncaoid] = useState('');
     const [perfilacessos, setPerfilAcessos] = useState([]);
     const [modulos, setModulos] = useState([]);
     const [paginas, setPaginas] = useState([]);
     const [subpaginas, setSubPaginas] = useState([]);
     const [funcaos, setFuncaos] = useState([]);
-
-    const usuarioId = localStorage.getItem('userId');
-    const [formData, setFormData] = useState({
-        perfilacessoid: 1,
-        moduloid: 1,
-        paginaid: 1,
-        subpaginaid: 1,
-        funcaoid: 1,
-        ativo: 1
-    });
+    const [ativo, setAtivo] = useState(1);
 
     useEffect(() => {
         api.get('perfis-acesso').then(response => {
@@ -53,63 +53,70 @@ const Permissaoacesso = (props) => {
     }, [usuarioId]);
 
     useEffect(() => {
-        if (action === 'edit' && permissaoacessoIdParam !== '') {
-            api.get(`permissao-acesso/${permissaoacessoIdParam}`).then(response => {
-                document.getElementById('cboPerfilAcesso').value = response.data.perfilacessoid;
-                document.getElementById('cboModuloId').value = response.data.moduloid;
-                document.getElementById('cboPaginaId').value = response.data.paginaid;
-                document.getElementById('cboSubPaginaId').value = response.data.subpaginaid;
-                document.getElementById('cboFuncaoId').value = response.data.funcaoid;
-
-                setFormData({
-                    ...formData,
-                    perfilacessoid: response.data.perfilacessoid,
-                    moduloid: response.data.moduloid,
-                    paginaid: response.data.paginaid,
-                    subpaginaid: response.data.subpaginaid,
-                    funcaoid: response.data.funcaoid,
-                })
+        if (action === 'edit' && statusIdParam !== '') {
+            api.get(`permissao-acesso/${statusIdParam}`).then(response => {
+                setPerfilacessoid(response.data.perfilacessoid);
+                setModuloid(response.data.moduloid);
+                setPaginaid(response.data.paginaid);
+                setSubpaginaid(response.data.subpaginaid);
+                setFuncaoid(response.data.funcaoid);
+                response.data.ativo === 1 ? setAtivo(1) : setAtivo(0);
             });
         } else {
             return;
         }
-    }, [permissaoacessoIdParam])
+    }, [statusIdParam]);
 
     function handleInputChange(event) {
-        const { name, value } = event.target;
+        var { name } = event.target;
 
-        setFormData({ ...formData, [name]: value });
+        if (name === 'ativo') {
+            if (ativo === 1) {
+                setAtivo(0);
+            } else {
+                setAtivo(1);
+            }
+        }
     };
 
-    async function handlePermissaoAcesso(e) {
+    function handleReset() {
+        setRedirect(true);
+    };
+
+    async function handleStatus(e) {
         e.preventDefault();
 
-        const data = formData;
+        const data = {
+            perfilacessoid,
+            moduloid,
+            paginaid,
+            subpaginaid,
+            funcaoid,
+            ativo
+        };
 
         if (action === 'edit') {
-
             try {
-                const response = await api.put(`/permissao-acesso/${permissaoacessoIdParam}`, data, {
+                const response = await api.put(`/permissao-acesso/${statusIdParam}`, data, {
                     headers: {
-                        Authorization: 1,
+                        Authorization: 6,
                     }
                 });
                 alert(`Cadastro atualizado com sucesso.`);
+                setRedirect(true);
             } catch (err) {
-
                 alert('Erro na atualização, tente novamente.');
             }
-
         } else {
-
             if (action === 'novo') {
                 try {
                     const response = await api.post('permissao-acesso', data, {
                         headers: {
-                            Authorization: 1,
+                            Authorization: 6,
                         }
                     });
-                    alert(`Cadastro realizado com sucesso.`);
+                    alert('Cadastro realizado com sucesso.');
+                    setRedirect(true);
                 } catch (err) {
 
                     alert('Erro no cadastro, tente novamente.');
@@ -119,7 +126,8 @@ const Permissaoacesso = (props) => {
     }
     return (
         <div className="animated fadeIn">
-            <Form onSubmit={handlePermissaoAcesso}>
+            {redirect && <Redirect to="/lista-permissao-acesso" />}
+            <Form onSubmit={handleStatus} onReset={handleReset}>
                 <Row>
                     <Col xs="12" md="12">
                         <Card>
@@ -133,7 +141,8 @@ const Permissaoacesso = (props) => {
                                         <Label htmlFor="perfilAcessoId">Qual o Perfil de Acesso?</Label>
                                         <Input type="select" required id="cboPerfilAcesso"
                                             name="perfilacessoid"
-                                            onChange={handleInputChange} >
+                                            value={perfilacessoid}
+                                            onChange={e => setPerfilacessoid(e.target.value)}>
                                             <option value={undefined} defaultValue>Selecione...</option>
                                             {perfilacessos.map(perfilacesso => (
                                                 <option value={perfilacesso.id}>{perfilacesso.nomeperfil}</option>
@@ -144,8 +153,8 @@ const Permissaoacesso = (props) => {
                                         <Label htmlFor="moduloId">Qual o Módulo?</Label>
                                         <Input type="select" required id="cboModuloId"
                                             name="moduloid"
-                                            onChange={handleInputChange} >
-
+                                            value={moduloid}
+                                            onChange={e => setModuloid(e.target.value)}>
                                             <option value={undefined} defaultValue>Selecione...</option>
                                             {modulos.map(modulo => (
                                                 <option value={modulo.id}>{modulo.nomemodulo}</option>
@@ -158,8 +167,8 @@ const Permissaoacesso = (props) => {
                                         <Label htmlFor="paginaId">Qual a Página?</Label>
                                         <Input type="select" required id="cboPaginaId"
                                             name="paginaid"
-                                            onChange={handleInputChange} >
-
+                                            value={paginaid}
+                                            onChange={e => setPaginaid(e.target.value)}>
                                             <option value={undefined} defaultValue>Selecione...</option>
                                             {paginas.map(pagina => (
                                                 <option value={pagina.id}>{pagina.nomepagina}</option>
@@ -170,8 +179,8 @@ const Permissaoacesso = (props) => {
                                         <Label htmlFor="subPaginaId">Qual a Sub Página?</Label>
                                         <Input type="select" required id="cboSubPaginaId"
                                             name="subpaginaid"
-                                            onChange={handleInputChange} >
-
+                                            value={subpaginaid}
+                                            onChange={e => setSubpaginaid(e.target.value)}>
                                             <option value={undefined} defaultValue>Selecione...</option>
                                             {subpaginas.map(subpagina => (
                                                 <option value={subpagina.id}>{subpagina.nomesubpagina}</option>
@@ -184,8 +193,8 @@ const Permissaoacesso = (props) => {
                                         <Label htmlFor="funcaoId">Qual a Função?</Label>
                                         <Input type="select" required id="cboFuncaoId"
                                             name="funcaoid"
-                                            onChange={handleInputChange} >
-
+                                            value={funcaoid}
+                                            onChange={e => setFuncaoid(e.target.value)}>
                                             <option value={undefined} defaultValue>Selecione...</option>
                                             {funcaos.map(funcao => (
                                                 <option value={funcao.id}>{funcao.nomefuncao}</option>
@@ -214,4 +223,3 @@ const Permissaoacesso = (props) => {
         </div>
     );
 }
-export default Permissaoacesso;
