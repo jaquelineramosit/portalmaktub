@@ -8,6 +8,7 @@ export default function ListaOrdemServico(props) {
     const [ordemservico, setOrdemservico] = useState(['']);
     const [total, setTotal] = useState(0);
     const usuarioId = localStorage.getItem('userId');
+
     //logica para pegar o total
     useEffect(() => {
         api.get('ordemservicoCount', {
@@ -85,10 +86,10 @@ export default function ListaOrdemServico(props) {
                     <Card>
                         <CardHeader className="links">
                             <i className="fa fa-align-justify"></i> Ordem de Serviço
-                        <Link to={`ordem-servico?action=novo`} className="btn btn-secondary float-right">
+                            <Link to={`ordem-servico?action=novo`} className="btn btn-secondary float-right">
                                 <i className="cui-file icons mr-1"></i>
-                                                Novo
-                                            </Link>
+                                Novo
+                            </Link>
                         </CardHeader>
                         <CardBody  >
                             <DataTable className="mt-n3"
