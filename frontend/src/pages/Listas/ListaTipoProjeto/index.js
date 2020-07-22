@@ -33,22 +33,22 @@ export default function ListaTipoProjeto() {
 
     const columns = [
         {
-            name: '>Tipo de Projeto',
+            name: 'Tipo de Projeto',
             selector: 'nometipoprojeto',
             sortable: true,
 
 
         },
         {
-            name: 'Receita',
-            selector: 'receita',
+            name: 'Custo Tec',
+            selector: 'despesa',
             sortable: true,
             left: true,
 
         },
         {
-            name: 'Despesa',
-            selector: 'despesa',
+            name: 'Valor Cobrado',
+            selector: 'receita',
             sortable: true,
             left: true,
 
@@ -61,14 +61,14 @@ export default function ListaTipoProjeto() {
 
         },
         {
-            name: 'Valor',
-            selector: 'valorhoracobrado',
+            name: 'Valor cobrado hora extra',
+            selector: 'valorhoraextra',
             sortable: true,
             left: true,
 
         },
         {
-            name: 'Valor por Hora/Técnico',
+            name: 'Valor hora Técnico',
             selector: 'valorhoratecnico',
             sortable: true,
             left: true,

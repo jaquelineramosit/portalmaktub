@@ -136,7 +136,7 @@ const Filiais = (props) => {
                 break;
         };
         setFormData({ ...formData, [name]: value });
-     
+
 
     };
     console.log(formData)
@@ -266,10 +266,10 @@ const Filiais = (props) => {
                                 </FormGroup>
                                 <FormGroup row>
                                     <Col md="3">
-                                        <Label htmlFor="logradouro">Logradouro</Label>
+                                        <Label htmlFor="logradouro">Endereço</Label>
                                         <InputGroup>
                                             <Input type="text" required id="txtLogradouro"
-                                                placeholder="Digite o Logradouro"
+                                                placeholder="Digite o Endereço"
                                                 name="logradouro"
                                                 onChange={handleInputChange} />
                                         </InputGroup>

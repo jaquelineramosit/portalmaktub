@@ -39,13 +39,6 @@ export default function ListaStatusAtendimento() {
 
         },
         {
-            name: 'Descrição',
-            selector: 'descstatus',
-            sortable: true,
-            left: true,
-
-        },
-        {
             name: 'Status',
             sortable: true,
             left: true,

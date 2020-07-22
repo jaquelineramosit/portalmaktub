@@ -38,13 +38,6 @@ export default function ListaFerramenta() {
 
         },
         {
-            name: 'Descrição',
-            selector: 'descferramenta',
-            sortable: true,
-            left: true,
-
-        },
-        {
             name: 'Status',
             sortable: true,
             left: true,

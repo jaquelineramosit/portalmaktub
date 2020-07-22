@@ -19,7 +19,7 @@ export default function ListaTipoTecnicos() {
             setTotal(response.data);
         })
     }, [1]);
-   
+
     useEffect(() => {
         api.get('tipo-tecnico', {
             headers: {
@@ -37,13 +37,6 @@ export default function ListaTipoTecnicos() {
             selector: 'nometipotecnico',
             sortable: true,
 
-
-        },
-        {
-            name: 'Descrição',
-            selector: 'desctipotecnico',
-            sortable: true,
-            left: true,
 
         },
         {

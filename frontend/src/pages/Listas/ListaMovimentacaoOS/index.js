@@ -18,7 +18,7 @@ export default function ListaMovimentacaoOS() {
             setTotal(response.data);
         })
     }, [1]);
-   
+
     useEffect(() => {
         api.get('movimentacao-os', {
             headers: {
@@ -86,12 +86,6 @@ export default function ListaMovimentacaoOS() {
                         <CardHeader className="links">
 
                             <i className="fa fa-align-justify"></i>Movimentação de OS
-
-                        <Link to={`movimentacao-os?action=novo`} className="btn btn-secondary float-right">
-                                <i className="cui-file icons mr-1"></i>
-                                                Novo
-                                            </Link>
-
                         </CardHeader>
                         <CardBody>
                         <DataTable className="mt-n3"

@@ -13,16 +13,18 @@ const Tipoprojeto = (props) => {
 
     const [receita, setReceita] = useState();
     const [despesa, setDespesa] = useState();
-    const [valorhoracobrado, setValorhoracobrado] = useState();
+    const [valorhoraextra, setValorhoraextra] = useState();
     const [valorhoratecnico, setValorhoratecnico] = useState();
+    const [horadecimal, setHoradecimal] = useState();
     const usuarioId = localStorage.getItem('userId');
     const [formData, setFormData] = useState({
         nometipoprojeto: '',
         receita: '',
         despesa: '',
         horas: '',
-        valorhoracobrado: '',
+        valorhoraextra: '',
         valorhoratecnico: '',
+        horadecimal: '',
         ativo: '1'
     });
 
@@ -33,8 +35,9 @@ const Tipoprojeto = (props) => {
                 document.getElementById('txtReceita').value = response.data.receita;
                 document.getElementById('txtDespesa').value = response.data.despesa;
                 document.getElementById('txtHorastotal').value = response.data.horas;
-                document.getElementById('txtValorhora').value = response.data.valorhoracobrado;
+                document.getElementById('txtValorhora').value = response.data.valorhoraextra;
                 document.getElementById('txtValorhoraTecnico').value = response.data.valorhoratecnico;
+                document.getElementById('txtHoradecimal').value = response.data.horadecimal;
 
                 setFormData({
                     ...formData,
@@ -42,8 +45,9 @@ const Tipoprojeto = (props) => {
                     receita: response.data.receita,
                     despesa: response.data.despesa,
                     horas: response.data.horas,
-                    valorhoracobrado: response.data.valorhoracobrado,
+                    valorhoraextra: response.data.valorhoraextra,
                     valorhoratecnico: response.data.valorhoratecnico,
+                    horadecimal: response.data.horadecimal,
                 })
             });
         } else {
@@ -60,8 +64,8 @@ const Tipoprojeto = (props) => {
             case 'despesa':
                 setDespesa(reaisMask(event.target.value));
                 break;
-            case 'valorhoracobrado':
-                setValorhoracobrado(reaisMask(event.target.value));
+            case 'valorhoraextra':
+                setValorhoraextra(reaisMask(event.target.value));
                 break;
             case 'valorhoratecnico':
                 setValorhoratecnico(reaisMask(event.target.value));
@@ -143,7 +147,7 @@ const Tipoprojeto = (props) => {
                                 </FormGroup>
                                 <FormGroup row>
                                     <Col md="3">
-                                        <Label htmlFor="horas">Horas Total do projeto</Label>
+                                        <Label htmlFor="horas">Carga Horária do Projeto</Label>
                                         <InputGroup>
                                             <Input type="time" required id="txtHoras" required id="txtHorastotal"
                                                 name="horas"
@@ -154,11 +158,11 @@ const Tipoprojeto = (props) => {
                                         </InputGroup>
                                     </Col>
                                     <Col md="3">
-                                        <Label htmlFor="valorHoraCobrado">Valor hora Cobrado</Label>
+                                        <Label htmlFor="valorHoraExtra">Valor Hora Extra</Label>
                                         <InputGroup>
-                                            <Input type="text" required id="txtValorHoraCobrado" placeholder="R$00,00" required id="txtValorhora"
-                                                value={valorhoracobrado}
-                                                name="valorhoracobrado"
+                                            <Input type="text" required id="txtValorHoraExtra" placeholder="R$00,00" required id="txtValorhora"
+                                                value={valorhoraextra}
+                                                name="valorhoraextra"
                                                 onChange={handleInputChange} />
                                             <InputGroupAddon addonType="append">
                                                 <Button type="button" color="secondary fa fa-money"></Button>
@@ -178,7 +182,21 @@ const Tipoprojeto = (props) => {
                                         </InputGroup>
                                     </Col>
                                 </FormGroup>
-                                {/* <FormGroup>    
+                                <FormGroup row>
+                                <Col md="3">
+                                        <Label htmlFor="horaDecimal">Hora decimal</Label>
+                                        <InputGroup>
+                                            <Input id="txtHoraDecimal" required type="text" placeholder="0,00" required id="txtHoraDecimal"
+                                                value={horadecimal}
+                                                name="horadecimal"
+                                                onChange={handleInputChange} />
+                                            <InputGroupAddon addonType="append">
+                                                <Button type="button" color="secondary fa fa-money"></Button>
+                                            </InputGroupAddon>
+                                        </InputGroup>
+                                    </Col>
+                                 </FormGroup>
+                                {/* <FormGroup>
                                     <Col md="2">
                                         <Label check className="form-check-label" htmlFor="ativo1">Ativo</Label>
                                         <AppSwitch id="rdAtivo" className={'switch-ativo'} label color={'success'} defaultChecked size={'sm'}

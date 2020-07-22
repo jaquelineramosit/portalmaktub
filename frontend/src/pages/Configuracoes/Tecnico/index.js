@@ -105,7 +105,7 @@ const Tecnico = (props) => {
                 break;
         };
         setFormData({ ...formData, [name]: value });
-       
+
     }
     console.log(formData)
 
@@ -182,9 +182,9 @@ const Tecnico = (props) => {
                                 </FormGroup>
                                 <FormGroup row>
                                     <Col md="4">
-                                        <Label htmlFor="logradouro">Logradouro</Label>
+                                        <Label htmlFor="logradouro">Endereço</Label>
                                         <Input type="text" required id="txtLogradouro"
-                                            placeholder="Digite o Logradouro"
+                                            placeholder="Digite o Endereço"
                                             name="logradouro"
                                             onChange={handleInputChange} />
                                     </Col>
@@ -278,7 +278,7 @@ const Tecnico = (props) => {
                                         </Input>
                                     </Col>
                                 </FormGroup>
-                                {/* <FormGroup row>    
+                                {/* <FormGroup row>
                                     <Col md="2">
                                         <Label check className="form-check-label" htmlFor="ativo">Ativo</Label>
                                         <AppSwitch id="rdAtivo" className={'switch-ativo'} label color={'success'} defaultChecked size={'sm'}
