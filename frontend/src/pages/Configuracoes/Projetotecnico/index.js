@@ -1,23 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, CardFooter, Form } from 'reactstrap';
 import '../../../global.css';
+import { Redirect } from "react-router-dom";
 import api from '../../../../src/services/api';
 
-const Projetotecnico = (props) => {
+export default function Projetotecnico(props) {
+    const [redirect, setRedirect] = useState(false);
 
+    //parametros
     var search = props.location.search;
     var params = new URLSearchParams(search);
     var action = params.get('action');
-    var projtecnicoIdParam = props.match.params.id;
-
-    const [tipoprojetos, setTipoProjetos] = useState([]);
-    const [tecnicos, setTecnicos] = useState([]);
+    var dispotecIdParam = props.match.params.id;
     const usuarioId = localStorage.getItem('userId');
-    const [formData, setFormData] = useState({
-        tecnicoid: 1,
-        tipoprojetoid: 1,
-        ativo: '1'
-    });
+
+    const [tipoprojetoid, setTipoProjeto] = useState('');
+    const [tecnicoid, setTecnico] = useState('');
+    const [tipoprojetosid, setTipoProjetos] = useState([]);
+    const [tecnicosid, setTecnicos] = useState([]);
+
+    const [ativo, setAtivo] = useState(1);
+
     useEffect(() => {
         api.get('tecnico').then(response => {
             setTecnicos(response.data);
@@ -31,64 +34,64 @@ const Projetotecnico = (props) => {
     }, [usuarioId]);
 
     useEffect(() => {
-        if (action === 'edit' && projtecnicoIdParam !== '') {
-            api.get(`projeto-tecnico/${projtecnicoIdParam}`).then(response => {
-                document.getElementById('cboTécnicoId').value = response.data.tecnicoid;
-                document.getElementById('cboTipoProjetoId').value = response.tipoprojetoid;
-              
-
-
-                setFormData({
-                    ...formData,
-                    tecnicoid: response.data.tecnicoid,
-                    tipoprojetoid: response.data.tipoprojetoid,
-
-                })
-                
-
+        if (action === 'edit' && dispotecIdParam !== '') {
+            api.get(`projeto-tecnico/${dispotecIdParam}`).then(response => {
+                setTipoProjeto(response.data.tipoprojetoid);
+                setTecnico(response.data.tecnicoid);
+                response.data.ativo === 1 ? setAtivo(1) : setAtivo(0);
             });
         } else {
             return;
         }
-    }, [projtecnicoIdParam])
+    }, [dispotecIdParam]);
 
     function handleInputChange(event) {
-        const { name, value } = event.target;
+        var { name } = event.target;
 
-        setFormData({ ...formData, [name]: value });
+        if (name === 'ativo') {
+            if (ativo === 1) {
+                setAtivo(0);
+            } else {
+                setAtivo(1);
+            }
+        }
     };
-    console.log(formData)
 
+    function handleReset() {
+        setRedirect(true);
+    };
 
-    async function handleTicket(e) {
+    async function handleStatus(e) {
         e.preventDefault();
 
-        const data = formData;
+        const data = {
+            tipoprojetoid,
+            tecnicoid,
+            ativo
+        };
 
         if (action === 'edit') {
-
             try {
-                const response = await api.put(`/projeto-tecnico/${projtecnicoIdParam}`, data, {
+                const response = await api.put(`/projeto-tecnico/${dispotecIdParam}`, data, {
                     headers: {
-                        Authorization: 1,
+                        Authorization: 6,
                     }
                 });
                 alert(`Cadastro atualizado com sucesso.`);
+                setRedirect(true);
             } catch (err) {
-
                 alert('Erro na atualização, tente novamente.');
             }
-
         } else {
-
             if (action === 'novo') {
                 try {
                     const response = await api.post('projeto-tecnico', data, {
                         headers: {
-                            Authorization: 1,
+                            Authorization: 6,
                         }
                     });
-                    alert(`Cadastro realizado com sucesso.`);
+                    alert('Cadastro realizado com sucesso.');
+                    setRedirect(true);
                 } catch (err) {
 
                     alert('Erro no cadastro, tente novamente.');
@@ -97,9 +100,11 @@ const Projetotecnico = (props) => {
         }
     }
 
+
     return (
         <div className="animated fadeIn">
-            <Form onSubmit={handleTicket}>
+            {redirect && <Redirect to="/lista-projeto-tecnico" />}
+            <Form onSubmit={handleStatus} onReset={handleReset}>
                 <Row>
                     <Col xs="12" md="12">
                         <Card>
@@ -113,9 +118,10 @@ const Projetotecnico = (props) => {
                                         <Label htmlFor="tecnicoId">Técnico</Label>
                                         <Input type="select" required id="cboTécnicoId" multiple={false}
                                             name="tecnicoid"
-                                            onChange={handleInputChange}>
+                                            value={tecnicoid}
+                                            onChange={e => setTecnico(e.target.value)}>
                                             <option value={undefined} defaultValue>Selecione...</option>
-                                            {tecnicos.map(tecnico => (
+                                            {tecnicosid.map(tecnico => (
                                                 <option value={tecnico.id}>{tecnico.nometecnico}</option>
                                             ))}
                                         </Input>
@@ -124,9 +130,10 @@ const Projetotecnico = (props) => {
                                         <Label htmlFor="tipoTrojetoId">Tipo de Projeto</Label>
                                         <Input type="select" required id="cboTipoProjetoId" multiple={false} key
                                             name="tipoprojetoid"
-                                            onChange={handleInputChange}>
+                                            value={tipoprojetoid}
+                                            onChange={e => setTipoProjeto(e.target.value)}>
                                             <option value={undefined} defaultValue>Selecione...</option>
-                                            {tipoprojetos.map(tipoProjeto => (
+                                            {tipoprojetosid.map(tipoProjeto => (
                                                 <option value={tipoProjeto.id}>{tipoProjeto.nometipoprojeto}</option>
                                             ))}
                                         </Input>
@@ -152,4 +159,3 @@ const Projetotecnico = (props) => {
         </div>
     );
 }
-export default Projetotecnico;

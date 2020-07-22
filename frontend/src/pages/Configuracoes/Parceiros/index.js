@@ -1,74 +1,83 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, InputGroupAddon, CardFooter, Form, InputGroup } from 'reactstrap';
 import '../../../global.css';
+import { Redirect } from "react-router-dom";
 import api from '../../../../src/services/api';
 
-const Parceiros = (props) => {
+export default function StatusParceiro(props) {
+    const [redirect, setRedirect] = useState(false);
 
+    //parametros
     var search = props.location.search;
     var params = new URLSearchParams(search);
     var action = params.get('action');
-    var parceirosIdParam = props.match.params.id;
-
+    var statusIdParam = props.match.params.id;
     const usuarioId = localStorage.getItem('userId');
-    const [formData, setFormData] = useState({
-        nomeparceiro: '',
-        descricao: '',
-        ativo: '1'
-    });
+
+    const [nomeparceiro, setNomeparceiro] = useState('');
+    const [descricao, setDescricao] = useState('');
+    const [ativo, setAtivo] = useState(1);
+
 
     useEffect(() => {
-        if (action === 'edit' && parceirosIdParam !== '') {
-            api.get(`parceiro/${parceirosIdParam}`).then(response => {
-                document.getElementById('txtNomeParceiro').value = response.data.nomeparceiro;
-                document.getElementById('txtDescricao').value = response.data.descricao;
-
-                setFormData({
-                    ...formData,
-                    nomeparceiro: response.data.nomeparceiro,
-                    descricao: response.data.descricao,
-                })
+        if (action === 'edit' && statusIdParam !== '') {
+            api.get(`parceiro/${statusIdParam}`).then(response => {
+                setNomeparceiro(response.data.nomeparceiro);
+                setDescricao(response.data.descricao);
+                response.data.ativo === 1 ? setAtivo(1) : setAtivo(0);
             });
         } else {
             return;
         }
-    }, [parceirosIdParam])
+    }, [statusIdParam]);
 
     function handleInputChange(event) {
-        const { name, value } = event.target;
+        var { name } = event.target;
 
-        setFormData({ ...formData, [name]: value });
+        if (name === 'ativo') {
+            if (ativo === 1) {
+                setAtivo(0);
+            } else {
+                setAtivo(1);
+            }
+        }
     };
 
-    async function handleTicket(e) {
+    function handleReset() {
+        setRedirect(true);
+    };
+
+    async function handleParceiro(e) {
         e.preventDefault();
 
-        const data = formData;
+        const data = {
+            nomeparceiro,
+            descricao,
+            ativo
+        };
 
         if (action === 'edit') {
-
             try {
-                const response = await api.put(`/parceiro/${parceirosIdParam}`, data, {
+                const response = await api.put(`/parceiro/${statusIdParam}`, data, {
                     headers: {
-                        Authorization: 1,
+                        Authorization: 6,
                     }
                 });
                 alert(`Cadastro atualizado com sucesso.`);
+                setRedirect(true);
             } catch (err) {
-
                 alert('Erro na atualização, tente novamente.');
             }
-
         } else {
-
             if (action === 'novo') {
                 try {
                     const response = await api.post('parceiro', data, {
                         headers: {
-                            Authorization: 1,
+                            Authorization: 6,
                         }
                     });
-                    alert(`Cadastro realizado com sucesso.`);
+                    alert('Cadastro realizado com sucesso.');
+                    setRedirect(true);
                 } catch (err) {
 
                     alert('Erro no cadastro, tente novamente.');
@@ -76,9 +85,11 @@ const Parceiros = (props) => {
             }
         }
     }
+
     return (
         <div className="animated fadeIn">
-            <Form onSubmit={handleTicket}>
+            {redirect && <Redirect to="/lista-parceiros" />}
+            <Form onSubmit={handleParceiro} onReset={handleReset}>
                 <Row>
                     <Col xs="12" md="12">
                         <Card>
@@ -93,7 +104,8 @@ const Parceiros = (props) => {
                                         <InputGroup>
                                             <Input type="text" required id="txtNomeParceiro" placeholder="Digite o nome do Parceiro"
                                                 name="nomeparceiro"
-                                                onChange={handleInputChange} >
+                                                value={nomeparceiro}
+                                                onChange={e => setNomeparceiro(e.target.value)} >
                                             </Input>
                                             <InputGroupAddon addonType="append">
                                                 <Button type="button" color="secondary fa fa-handshake-o"></Button>
@@ -106,7 +118,8 @@ const Parceiros = (props) => {
                                         <Label>Descrição</Label>
                                         <Input type="textarea" required id="txtDescricao" rows="5" placeholder="Descreva o parceiro inserido"
                                             name="descricao"
-                                            onChange={handleInputChange} />
+                                            value={descricao}
+                                            onChange={e => setDescricao(e.target.value)} />
                                     </Col>
                                 </FormGroup>
                                 {/*<FormGroup>
@@ -129,4 +142,3 @@ const Parceiros = (props) => {
         </div>
     );
 }
-export default Parceiros;

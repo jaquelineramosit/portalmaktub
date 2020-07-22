@@ -1,97 +1,103 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, CardFooter, Form, } from 'reactstrap';
 import { AppSwitch } from '@coreui/react'
+import { Redirect } from "react-router-dom";
 import '../../../global.css';
 import api from '../../../../src/services/api';
 
-const Funcao = (props) => {
+export default function Funcao(props) {
+    const [redirect, setRedirect] = useState(false);
 
+    //parametros
     var search = props.location.search;
     var params = new URLSearchParams(search);
     var action = params.get('action');
     var funcaoIdParam = props.match.params.id;
-
-
-    const [subPaginas, setSubPaginas] = useState([]);
-    const [paginas, setPaginas] = useState([]);
     const usuarioId = localStorage.getItem('userId');
-    const [formData, setFormData] = useState({
-        subpaginaid: 1,
-        paginaid: 1,
-        nomefuncao: '',
-        descricao: '',
-        ativo: 1
-    });
+
+    const [subpaginaid, setSubpaginaid] = useState('');
+    const [paginaid, setPaginaid] = useState('');
+    const [nomefuncao, setNomefuncao] = useState('');
+    const [descricao, setDescricao] = useState('');
+    const [subpaginasid, setSubPaginasid] = useState([]);
+    const [paginasid, setPaginasid] = useState([]);
+    const [ativo, setAtivo] = useState(1);
 
     useEffect(() => {
         api.get('paginas').then(response => {
-            setPaginas(response.data);
+            setPaginasid(response.data);
         })
     }, [usuarioId]);
 
     useEffect(() => {
         api.get('sub-paginas').then(response => {
-            setSubPaginas(response.data);
+            setSubPaginasid(response.data);
         })
     }, [usuarioId]);
 
     useEffect(() => {
         if (action === 'edit' && funcaoIdParam !== '') {
             api.get(`funcao/${funcaoIdParam}`).then(response => {
-                document.getElementById('cboSubPaginaId').value = response.data.subpaginaid;
-                document.getElementById('cboPagina').value = response.data.paginaid;
-                document.getElementById('txtNomeFuncao').value = response.data.nomefuncao;
-                document.getElementById('txtDescricao').value = response.data.descricao;
-
-                setFormData({
-                    ...formData,
-                    subpaginaid: response.data.subpaginaid,
-                    paginaid: response.data.paginaid,
-                    nomefuncao: response.data.nomefuncao,
-                    descricao: response.data.descricao,
-
-                })
+                setSubpaginaid(response.data.subpaginaid);
+                setPaginaid(response.data.paginaid);
+                setNomefuncao(response.data.nomefuncao);
+                setDescricao(response.data.descricao);
+                response.data.ativo === 1 ? setAtivo(1) : setAtivo(0);
             });
         } else {
             return;
         }
-    }, [funcaoIdParam])
+    }, [funcaoIdParam]);
 
     function handleInputChange(event) {
-        const { name, value } = event.target;
+        var { name } = event.target;
 
-        setFormData({ ...formData, [name]: value });
+        if (name === 'ativo') {
+            if (ativo === 1) {
+                setAtivo(0);
+            } else {
+                setAtivo(1);
+            }
+        }
     };
-    console.log(formData)
-    async function handleFuncao(e) {
+
+    function handleReset() {
+        setRedirect(true);
+    };
+
+    async function handleStatus(e) {
         e.preventDefault();
 
-        const data = formData;
+        const data = {
+            subpaginaid,
+            paginaid,
+            nomefuncao,
+            descricao,
+            ativo
+        };
 
         if (action === 'edit') {
-
             try {
                 const response = await api.put(`/funcao/${funcaoIdParam}`, data, {
                     headers: {
-                        Authorization: 1,
+                        Authorization: 6,
                     }
                 });
                 alert(`Cadastro atualizado com sucesso.`);
+                setRedirect(true);
             } catch (err) {
-
                 alert('Erro na atualização, tente novamente.');
             }
-
         } else {
-
             if (action === 'novo') {
                 try {
                     const response = await api.post('funcao', data, {
                         headers: {
-                            Authorization: 1,
+                            Authorization: 6,
                         }
                     });
-                    alert(`Cadastro realizado com sucesso.`);
+                    alert('Cadastro realizado com sucesso.');
+                    setRedirect(true);
                 } catch (err) {
 
                     alert('Erro no cadastro, tente novamente.');
@@ -99,9 +105,11 @@ const Funcao = (props) => {
             }
         }
     }
+
     return (
         <div className="animated fadeIn">
-            <Form onSubmit={handleFuncao}>
+            {redirect && <Redirect to="/lista-funcoes" />}
+            <Form onSubmit={handleStatus} onReset={handleReset}>
                 <Row>
                     <Col xs="12" md="12">
                         <Card>
@@ -115,9 +123,10 @@ const Funcao = (props) => {
                                         <Label htmlFor="subPaginaId">Qual a Sub Página?</Label>
                                         <Input type="select" required id="cboSubPaginaId"
                                             name="subpaginaid"
-                                            onChange={handleInputChange}>
+                                            value={subpaginaid}
+                                            onChange={e => setSubpaginaid(e.target.value)}>
                                             <option value={undefined} defaultValue> Selecione...</option>
-                                            {subPaginas.map(subPagina => (
+                                            {subpaginasid.map(subPagina => (
                                                 <option value={subPagina.id}>{subPagina.nomesubpagina}</option>
                                             ))}
                                         </Input>
@@ -126,9 +135,10 @@ const Funcao = (props) => {
                                         <Label htmlFor="pagina">Qual a Página?</Label>
                                         <Input type="select" required name="select" id="cboPagina"
                                             name="paginaid"
-                                            onChange={handleInputChange}>
+                                            value={paginaid}
+                                            onChange={e => setPaginaid(e.target.value)}>
                                             <option value={undefined} defaultValue> Selecione...</option>
-                                            {paginas.map(pagina => (
+                                            {paginasid.map(pagina => (
                                                 <option value={pagina.id}>{pagina.nomepagina}</option>
                                             ))}
                                         </Input>
@@ -137,8 +147,8 @@ const Funcao = (props) => {
                                         <Label htmlFor="nomeFuncao">Nome da Função</Label>
                                         <Input type="text" id="txtNomeFuncao" multiple placeholder="Digite o nome da Função"
                                             name="nomefuncao"
-                                            onChange={handleInputChange}
-                                        />
+                                            value={nomefuncao}
+                                            onChange={e => setNomefuncao(e.target.value)} />
                                     </Col>
                                 </FormGroup>
                                 <FormGroup row>
@@ -146,8 +156,8 @@ const Funcao = (props) => {
                                         <Label htmlFor="descricao">Descrição</Label>
                                         <Input type="textarea" rows="5" id="txtDescricao" multiple placeholder="Digite a Descrição"
                                             name="descricao"
-                                            onChange={handleInputChange}
-                                        />
+                                            value={descricao}
+                                            onChange={e => setDescricao(e.target.value)} />
                                     </Col>
                                 </FormGroup>
                                 {/*<FormGroup row>                                     
@@ -171,4 +181,3 @@ const Funcao = (props) => {
         </div>
     );
 }
-export default Funcao;

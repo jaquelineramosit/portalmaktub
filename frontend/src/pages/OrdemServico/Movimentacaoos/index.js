@@ -1,112 +1,121 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, CardFooter, Form, } from 'reactstrap';
 import '../../../global.css';
+import { Redirect } from "react-router-dom";
 import api from '../../../../src/services/api';
 
-const Movimentacaoos = (props) => {
+export default function Movimentacaoos(props) {
+    const [redirect, setRedirect] = useState(false);
 
+    //parametros
     var search = props.location.search;
     var params = new URLSearchParams(search);
     var action = params.get('action');
-    var movimentacaoosIdParam = props.match.params.id;
-
-    const [ordemservicos, setOrdemServicos] = useState([]);
-    const [statusatendimentos, setStatusAtendimentos] = useState([]);
-    const [statuspagamentos, setStatusPagamentos] = useState([]);
-    const [statuscobrancas, setStatusCobrancas] = useState([]);
+    var movimentacaoIdParam = props.match.params.id;
     const usuarioId = localStorage.getItem('userId');
-    const [formData, setFormData] = useState({
-        ordemservicoid: 1,
-        statusatendimentoid: 1,
-        statuspagamentoid: 1,
-        statuscobrancaid: 1,
-        observacao: '',
-        ativo: 1
-    });
+
+    const [ordemservicoid, setOrdemServicoid] = useState('');
+    const [statusatendimentoid, setStatusAtendimentoid] = useState('');
+    const [statuspagamentoid, setStatusPagamentoid] = useState('');
+    const [statuscobrancaid, setStatusCobrancaid] = useState('');
+    const [observacao, setObservacao] = useState('');
+    const [ordemservicosid, setOrdemServicosid] = useState([]);
+    const [statusatendimentosid, setStatusAtendimentosid] = useState([]);
+    const [statuspagamentosid, setStatusPagamentosid] = useState([]);
+    const [statuscobrancasid, setStatusCobrancasid] = useState([]);
+    const [ativo, setAtivo] = useState(1);
+
     useEffect(() => {
         api.get('ordem-servico').then(response => {
-            setOrdemServicos(response.data);
+            setOrdemServicosid(response.data);
         })
     }, [usuarioId]);
 
     useEffect(() => {
         api.get('status-atendimento').then(response => {
-            setStatusAtendimentos(response.data);
+            setStatusAtendimentosid(response.data);
         })
     }, [usuarioId]);
 
     useEffect(() => {
         api.get('status-cobranca').then(response => {
-            setStatusCobrancas(response.data);
+            setStatusCobrancasid(response.data);
         })
     }, [usuarioId]);
 
     useEffect(() => {
         api.get('status-pagamento').then(response => {
-            setStatusPagamentos(response.data);
+            setStatusPagamentosid(response.data);
         })
     }, [usuarioId]);
 
+
+
     useEffect(() => {
-        if (action === 'edit' && movimentacaoosIdParam !== '') {
-            api.get(`movimentacao-os/${movimentacaoosIdParam}`).then(response => {
-                document.getElementById('cboOrdemServicoId').value = response.data.ordemservicoid;
-                document.getElementById('cboStatusAtendimentoId').value = response.data.statusatendimentoid;
-                document.getElementById('cboStatusCobrancaId').value = response.data.statuscobrancaid;
-                document.getElementById('cboStatuspPagamentoId').value = response.data.statuspagamentoid;
-                document.getElementById('txtObservacao').value = response.data.observacao;
-
-                setFormData({
-                    ...formData,
-                    ordemservicoid: response.data.ordemservicoid,
-                    statusatendimentoid: response.data.statusatendimentoid,
-                    statuscobrancaid: response.data.statuscobrancaid,
-                    statuspagamentoid: response.data.statuspagamentoid,
-                    observacao: response.data.observacao,
-
-                })
+        if (action === 'edit' && movimentacaoIdParam !== '') {
+            api.get(`movimentacao-os/${movimentacaoIdParam}`).then(response => {
+                setOrdemServicoid(response.data.ordemservicoid);
+                setStatusAtendimentoid(response.data.statusatendimentoid);
+                setStatusPagamentoid(response.data.statuspagamentoid);
+                setStatusCobrancaid(response.data.statuscobrancaid);
+                setObservacao(response.data.observacao);
+                response.data.ativo === 1 ? setAtivo(1) : setAtivo(0);
             });
         } else {
             return;
         }
-    }, [movimentacaoosIdParam])
+    }, [movimentacaoIdParam]);
 
     function handleInputChange(event) {
-        const { name, value } = event.target;
+        var { name } = event.target;
 
-        setFormData({ ...formData, [name]: value });
+        if (name === 'ativo') {
+            if (ativo === 1) {
+                setAtivo(0);
+            } else {
+                setAtivo(1);
+            }
+        }
     };
-    console.log(formData)
 
-    async function handleMovimentacaoos(e) {
+    function handleReset() {
+        setRedirect(true);
+    };
+
+    async function handleStatus(e) {
         e.preventDefault();
 
-        const data = formData;
+        const data = {
+            ordemservicoid,
+            statusatendimentoid,
+            statuspagamentoid,
+            statuscobrancaid,
+            observacao,
+            ativo
+        };
 
         if (action === 'edit') {
-
             try {
-                const response = await api.put(`/movimentacao-os/${movimentacaoosIdParam}`, data, {
+                const response = await api.put(`/movimentacao-os/${movimentacaoIdParam}`, data, {
                     headers: {
-                        Authorization: 1,
+                        Authorization: 6,
                     }
                 });
                 alert(`Cadastro atualizado com sucesso.`);
+                setRedirect(true);
             } catch (err) {
-
                 alert('Erro na atualização, tente novamente.');
             }
-
         } else {
-
             if (action === 'novo') {
                 try {
                     const response = await api.post('movimentacao-os', data, {
                         headers: {
-                            Authorization: 1,
+                            Authorization: 6,
                         }
                     });
-                    alert(`Cadastro realizado com sucesso.`);
+                    alert('Cadastro realizado com sucesso.');
+                    setRedirect(true);
                 } catch (err) {
 
                     alert('Erro no cadastro, tente novamente.');
@@ -114,9 +123,11 @@ const Movimentacaoos = (props) => {
             }
         }
     }
+
     return (
         <div className="animated fadeIn">
-            <Form onSubmit={handleMovimentacaoos}>
+            {redirect && <Redirect to="/lista-movimentacao-os" />}
+            <Form onSubmit={handleStatus} onReset={handleReset}>
                 <Row>
                     <Col xs="12" md="12">
                         <Card>
@@ -130,9 +141,10 @@ const Movimentacaoos = (props) => {
                                         <Label htmlFor="ordemServicoId">Ordem de Serviço</Label>
                                         <Input type="select" required name="select" id="cboOrdemServicoId" multiple={false}
                                             name="ordemservicoid"
-                                            onChange={handleInputChange}>
+                                            value={ordemservicoid}
+                                            onChange={e => setOrdemServicoid(e.target.value)}>
                                             <option value={undefined} defaultValue>Selecione...</option>
-                                            {ordemservicos.map(ordemservico => (
+                                            {ordemservicosid.map(ordemservico => (
                                                 <option key={ordemservico.id} value={ordemservico.id}>{ordemservico.numeroos}</option>
                                             ))}
                                         </Input>
@@ -141,9 +153,10 @@ const Movimentacaoos = (props) => {
                                         <Label htmlFor="statusAtendimentoId">Status Atendimento</Label>
                                         <Input type="select" required name="select" id="cboStatusAtendimentoId" multiple={false}
                                             name="statusatendimentoid"
-                                            onChange={handleInputChange}>
+                                            value={statusatendimentoid}
+                                            onChange={e => setStatusAtendimentoid(e.target.value)}>
                                             <option value={undefined} defaultValue>Selecione...</option>
-                                            {statusatendimentos.map(statusatendimento => (
+                                            {statusatendimentosid.map(statusatendimento => (
                                                 <option key={statusatendimento.id} value={statusatendimento.id}>{statusatendimento.status}</option>
                                             ))}
                                         </Input>
@@ -154,9 +167,10 @@ const Movimentacaoos = (props) => {
                                         <Label htmlFor="statusCobrancaId">Status Cobrança</Label>
                                         <Input type="select" required name="select" id="cboStatusCobrancaId" multiple={false}
                                             name="statuscobrancaid"
-                                            onChange={handleInputChange}>
+                                            value={statuscobrancaid}
+                                            onChange={e => setStatusCobrancaid(e.target.value)}>
                                             <option value={undefined} defaultValue>Selecione...</option>
-                                            {statuscobrancas.map(statuscobranca => (
+                                            {statuscobrancasid.map(statuscobranca => (
                                                 <option key={statuscobranca.id} value={statuscobranca.id}>{statuscobranca.status}</option>
                                             ))}
                                         </Input>
@@ -165,9 +179,10 @@ const Movimentacaoos = (props) => {
                                         <Label htmlFor="statusPagamentoId">Status Pagamento</Label>
                                         <Input type="select" required name="select" id="cboStatuspPagamentoId" multiple={false}
                                             name="statuspagamentoid"
-                                            onChange={handleInputChange}>
+                                            value={statuspagamentoid}
+                                            onChange={e => setStatusPagamentoid(e.target.value)}>
                                             <option value={undefined} defaultValue>Selecione...</option>
-                                            {statuspagamentos.map(statuspagamento => (
+                                            {statuspagamentosid.map(statuspagamento => (
                                                 <option key={statuspagamento.id} value={statuspagamento.id}>{statuspagamento.status}</option>
                                             ))}
                                         </Input>
@@ -178,7 +193,8 @@ const Movimentacaoos = (props) => {
                                         <Label>Observação</Label>
                                         <Input type="textarea" rows="5" placeholder="Digite a obsevação" required id="txtObservacao"
                                             name="observacao"
-                                            onChange={handleInputChange} />
+                                            value={observacao}
+                                            onChange={e => setObservacao(e.target.value)} />
                                     </Col>
                                 </FormGroup>
                                 {/*<FormGroup row>
@@ -200,4 +216,3 @@ const Movimentacaoos = (props) => {
         </div>
     );
 }
-export default Movimentacaoos;

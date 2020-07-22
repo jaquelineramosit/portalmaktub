@@ -1,24 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, CardFooter, Form, } from 'reactstrap';
 import '../../../global.css';
+import { Redirect } from "react-router-dom";
 import api from '../../../../src/services/api';
 
-const DisponibilidadeTecnico = (props) => {
+export default function DisponibilidadeTecnico(props) {
+    const [redirect, setRedirect] = useState(false);
 
+    //parametros
     var search = props.location.search;
     var params = new URLSearchParams(search);
     var action = params.get('action');
-    var dispotecnicoIdParam = props.match.params.id;
-
-    const [disponibilidades, setDisponibilidades] = useState([]);
-    const [tecnicos, setTecnicos] = useState([]);
+    var dispotecIdParam = props.match.params.id;
     const usuarioId = localStorage.getItem('userId');
-    const [formData, setFormData] = useState({
-        disponibilidadeId: 0,
-        tecnicoId: 0,
-        ativo: '1'
-    });
 
+    const [disponibilidadeId, setDisponibilidade] = useState('');
+    const [disponibilidadesId, setDisponibilidades] = useState([]);
+    const [tecnicoId, setTecnico] = useState('');
+    const [tecnicosId, setTecnicos] = useState([]);
+    const [ativo, setAtivo] = useState(1);
 
     useEffect(() => {
         api.get('disponibilidade').then(response => {
@@ -33,57 +33,64 @@ const DisponibilidadeTecnico = (props) => {
     }, [usuarioId]);
 
     useEffect(() => {
-        if (action === 'edit' && dispotecnicoIdParam !== '') {
-            api.get(`disponibilidade-tecnico/${dispotecnicoIdParam}`).then(response => {
-                document.getElementById('cboDisponibilidadeId').value = response.data.disponibilidadeId;
-                document.getElementById('cboTecnicoId').value = response.data.tecnicoId;
-
-                setFormData({
-                    ...formData,
-                    disponibilidadeId: response.data.disponibilidadeId,
-                    tecnicoId: response.data.tecnicoId,
-                })
+        if (action === 'edit' && dispotecIdParam !== '') {
+            api.get(`disponibilidade-tecnico/${dispotecIdParam}`).then(response => {
+                setDisponibilidade(response.data.disponibilidadeId);
+                setTecnico(response.data.tecnicoId);
+                response.data.ativo === 1 ? setAtivo(1) : setAtivo(0);
             });
         } else {
             return;
         }
-    }, [dispotecnicoIdParam])
+    }, [dispotecIdParam]);
 
     function handleInputChange(event) {
-        const { name, value } = event.target;
+        var { name } = event.target;
 
-        setFormData({ ...formData, [name]: value });
+        if (name === 'ativo') {
+            if (ativo === 1) {
+                setAtivo(0);
+            } else {
+                setAtivo(1);
+            }
+        }
     };
 
-    async function handleTicket(e) {
+    function handleReset() {
+        setRedirect(true);
+    };
+
+    async function handleStatus(e) {
         e.preventDefault();
 
-        const data = formData;
+        const data = {
+            disponibilidadeId,
+            tecnicoId,
+            ativo
+        };
 
         if (action === 'edit') {
-
             try {
-                const response = await api.put(`/disponibilidade-tecnico/${dispotecnicoIdParam}`, data, {
+                const response = await api.put(`/disponibilidade-tecnico/${dispotecIdParam}`, data, {
                     headers: {
-                        Authorization: 1,
+                        Authorization: 6,
                     }
                 });
                 alert(`Cadastro atualizado com sucesso.`);
+                setRedirect(true);
             } catch (err) {
-
                 alert('Erro na atualização, tente novamente.');
             }
-
         } else {
-
             if (action === 'novo') {
                 try {
                     const response = await api.post('disponibilidade-tecnico', data, {
                         headers: {
-                            Authorization: 1,
+                            Authorization: 6,
                         }
                     });
-                    alert(`Cadastro realizado com sucesso.`);
+                    alert('Cadastro realizado com sucesso.');
+                    setRedirect(true);
                 } catch (err) {
 
                     alert('Erro no cadastro, tente novamente.');
@@ -92,9 +99,11 @@ const DisponibilidadeTecnico = (props) => {
         }
     }
 
+
     return (
         <div className="animated fadeIn">
-            <Form onSubmit={handleTicket}>
+            {redirect && <Redirect to="/lista-disponibilidade-tecnico" />}
+            <Form onSubmit={handleStatus} onReset={handleReset}>
                 <Row>
                     <Col xs="12" md="12">
                         <Card>
@@ -108,9 +117,10 @@ const DisponibilidadeTecnico = (props) => {
                                         <Label htmlFor="disponibilidadeId">Disponibilidade</Label>
                                         <Input type="select" required name="select" id="cboDisponibilidadeId" multiple={false}
                                             name="disponibilidadeId"
-                                            onChange={handleInputChange} >
+                                            value={disponibilidadeId}
+                                            onChange={e => setDisponibilidade(e.target.value)} >
                                             <option value={undefined} defaultValue>Selecione...</option>
-                                            {disponibilidades.map(disponibilidade => (
+                                            {disponibilidadesId.map(disponibilidade => (
                                                 <option value={disponibilidade.id}>{disponibilidade.nomedisponibilidade}</option>
                                             ))}
                                         </Input>
@@ -119,9 +129,10 @@ const DisponibilidadeTecnico = (props) => {
                                         <Label htmlFor="tecnicoId">Técnico</Label>
                                         <Input type="select" required name="select" id="cboTecnicoId" multiple={false}
                                             name="tecnicoId"
-                                            onChange={handleInputChange}>
+                                            value={tecnicoId}
+                                            onChange={e => setTecnico(e.target.value)} >
                                             <option value={undefined} defaultValue>Selecione...</option>
-                                            {tecnicos.map(tecnico => (
+                                            {tecnicosId.map(tecnico => (
                                                 <option value={tecnico.id}>{tecnico.nometecnico}</option>
                                             ))}
                                         </Input>
@@ -147,4 +158,3 @@ const DisponibilidadeTecnico = (props) => {
         </div>
     );
 }
-export default DisponibilidadeTecnico;
