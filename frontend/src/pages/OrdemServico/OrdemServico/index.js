@@ -136,14 +136,14 @@ const OrdemServico = (props) => {
     const [openMulti, setOpenMulti] = useState([true, true]);
     const [open, setOpen] = useState(true);
 
-    //testar com o multiplo toggle
+    // //testar com o multiplo toggle
     const toggleMulti = (type) => {
         let newCollapse = collapseMulti.slice()
         switch (type) {
-          case "left":
+          case "clientes":
             newCollapse[0] = !collapseMulti[0];
             break;
-          case "right":
+          case "servicos":
             newCollapse[1] = !collapseMulti[1];
             break;
           case "both":
@@ -153,20 +153,22 @@ const OrdemServico = (props) => {
           default:
         }
         setCollapseMulti(newCollapse)
-      }
+    }
     
+    const IconOpenClose = (type) => {
 
-    const IconOpenClose = props => {
-
-        var tipo = props.tipo;
-        var iconUp = "fa fa-chevron-up";
+        let tipo = props.type;
+        let newCollapse = openMulti.slice();
+        let iconUp = "fa fa-chevron-up";
         
-        if(!open) {
+        if(!openMulti[0]) {
             iconUp = "fa fa-chevron-down"
         } 
         return(
             <Fragment>
-                <i className={iconUp}></i>
+                <Button className="card-header-action" onClick={()=>{toggleMulti('servicos')}}>
+                    <i className="fa fa-chevron-up"></i>
+                </Button>
             </Fragment>
         )
     }
@@ -336,11 +338,10 @@ const OrdemServico = (props) => {
                                 <i className="fa fa-handshake-o"></i>
                                 <strong>Cliente / Filial</strong>
                                 <div className="card-header-actions">
-                                    <Link to='/' className="card-header-action" onClick={toggleMulti('cliente')}>
-                                        {/* <small className="text-muted">docs</small> */}
-                                        {/* <i className="fa fa-chevron-up"></i> */}
-                                        <IconOpenClose isOpen={collapseMulti[0]}></IconOpenClose>
-                                    </Link>
+                                    {/* <Button className="card-header-action" onClick={()=>{toggleMulti('clientes')}}>                                       
+                                        abre
+                                    </Button> */}
+                                    <IconOpenClose isOpen={openMulti[0]}></IconOpenClose>
                                 </div>
                             </CardHeader>
                             <Collapse isOpen={collapseMulti[0]}>
@@ -372,7 +373,7 @@ const OrdemServico = (props) => {
                                                 >
                                                     <option value={undefined} defaultValue>Selecione...</option>
                                                     {clienteFiliais.map(clienteFilial => (
-                                                        <option value={clienteFilial.id}>{clienteFilial.nomefilial}</option>
+                                                        <option key={clienteFilial.id} value={clienteFilial.id}>{clienteFilial.nomefilial}</option>
                                                     ))}
                                                 </Input>
                                                 <InputGroupAddon addonType="append">
@@ -386,13 +387,9 @@ const OrdemServico = (props) => {
                                                 <Input type="text" name="select" id="txtBandeira" readOnly
                                                     name="txtBandeira"
                                                     onChange={handleInputChange} 
-                                                />
-                                                <InputGroupAddon addonType="append">
-                                                    <Button type="button" color="secondary fa fa-flag"></Button>
-                                                </InputGroupAddon>
+                                                />                                               
                                             </InputGroup>
-                                        </Col>
-                                        
+                                        </Col>                                        
                                     </FormGroup>
                                     <FormGroup row>
                                         <Col md="2">
@@ -405,7 +402,7 @@ const OrdemServico = (props) => {
                                             </InputGroup>
                                         </Col>
                                         <Col md="2">
-                                            <Label htmlFor="telefoneResponsavel">Telefone Responsável</Label>
+                                            <Label htmlFor="telefoneResponsavel">Tel. Responsável</Label>
                                             <InputGroup>
                                                 <Input type="text" id="txtTelefoneResponsavel" placeholder="(11) 9999-9999"
                                                     name="txtTelefoneResponsavel" readOnly
@@ -530,135 +527,134 @@ const OrdemServico = (props) => {
                                 </CardBody>
                             </Collapse>
                             <CardHeader>
-                               <i className="fa fa-handshake-o"></i>
+                                <i className="fa fa-clipboard"></i>
                                 <strong>Informações Do Serviço</strong>
                                 <div className="card-header-actions">
-                                    <Link to="/" className="card-header-action" onClick={toggleMulti('servico')}>
-                                        {/* <small className="text-muted">docs</small> */}
-                                        {/* <i className="fa fa-chevron-up"></i> */}
-                                        <IconOpenClose isOpen={collapseMulti[1]}></IconOpenClose>
-                                    </Link>
+                                    <Button className="card-header-action" onClick={()=>{toggleMulti('servicos')}}>
+                                        <i className="fa fa-chevron-up"></i>
+                                    </Button>
                                 </div>
                             </CardHeader>
-                            <CardBody>
-                                <FormGroup row>
-                                    <Col md="4">
-                                        <Label htmlFor="tiposervicoid">Tipo de Serviço</Label>
-                                        <InputGroup>
-                                            <Input required type="select" name="select" id="cboTipoServico"
-                                                name="tipoprojetoid"
-                                                onChange={handleInputChange}>
-                                                <option value={undefined} defaultValue>Selecione...</option>
-                                                {tipoProjeto.map(tipoProjeto => (
-                                                    <option value={tipoProjeto.id}>{tipoProjeto.nometipoprojeto}</option>
-                                                ))}
-                                            </Input>
-                                            <InputGroupAddon addonType="append">
-                                                <Button type="button" color="secondary icon-wrench"></Button>
-                                            </InputGroupAddon>
-                                        </InputGroup>
-                                    </Col>
-                                    <Col md="4">
-                                        <Label htmlFor="tecnicoId"> Técnico</Label>
-                                        <InputGroup>
-                                            <Input required type="select" name="select" id="cobTecnico"
-                                                name="tecnicoid"
-                                                onChange={handleInputChange} >
-                                                <option value={undefined} defaultValue>Selecione...</option>
-                                                {tecnicos.map(tecnico => (
-                                                    <option value={tecnico.id}>{tecnico.nometecnico}</option>
-                                                ))}
-                                            </Input>
-                                            <InputGroupAddon addonType="append">
-                                                <Button type="button" color="secondary  fa fa-user-md"></Button>
-                                            </InputGroupAddon>
-                                        </InputGroup>
-                                    </Col>
-                                </FormGroup>
-                                <FormGroup row>
-                                    <Col md="12">
-                                        <Label htmlFor="descricaoservico">Descrição do Serviço</Label>
-                                        <InputGroup>
-                                            <Input id="txtDescricaoServico" rows="5" required type="textarea" placeholder="Descrição do Serviço"
-                                                name="descricaoservico"
-                                                onChange={handleInputChange} />
-                                        </InputGroup>
-                                    </Col>
-                                </FormGroup>
-                                <FormGroup row>
-                                    <Col md="4">
-                                        <Label htmlFor="horaEntrada">Hora de Entrada</Label>
-                                        <InputGroup>
-                                            <Input type="time" required id="txtHoraEntrada"
-                                                placeholder="00:00:00"
-                                                name="horaentrada"
-                                                onChange={handleInputChange} />
-                                            <InputGroupAddon addonType="append">
-                                                <Button type="button" color="secondary fa fa-clock-o"></Button>
-                                            </InputGroupAddon>
-                                        </InputGroup>
-                                    </Col>
-                                    <Col md="4">
-                                        <Label htmlFor="horaSaida">Hora de Saída</Label>
-                                        <InputGroup>
-                                            <Input type="time" required name="time" id="txtHoraSaida"
-                                                name="horasaida"
-                                                onChange={handleInputChange} />
-                                            <InputGroupAddon addonType="append">
-                                                <Button type="button" color="secondary fa fa-clock-o"></Button>
-                                            </InputGroupAddon>
-                                        </InputGroup>
-                                    </Col>
-                                    <Col md="4">
-                                        <Label htmlFor="qtHoras">Quantidade de Horas</Label>
-                                        <InputGroup>
-                                            <Input type="text" id="txtqtdHoras" placeholder="00:00"
-                                                name="qtdehoras"
-                                                onChange={handleInputChange} />
-                                            <InputGroupAddon addonType="append">
-                                                <Button type="button" color="secondary fa fa-clock-o"></Button>
-                                            </InputGroupAddon>
-                                        </InputGroup>
-                                    </Col>
-                                </FormGroup>
-                                <FormGroup row>
-                                    <Col md="4">
-                                        <Label htmlFor="valorPpagar">Valor a Pagar</Label>
-                                        <InputGroup>
-                                            <Input type="text" id="txtValorPagar" placeholder="R$00,00"
-                                                value={valorapagar}
-                                                name="valorapagar"
-                                                onChange={handleInputChange} />
-                                            <InputGroupAddon addonType="append">
-                                                <Button type="button" color="secondary fa fa-money"></Button>
-                                            </InputGroupAddon>
-                                        </InputGroup>
-                                    </Col>
-                                    <Col md="4">
-                                        <Label htmlFor="valorReceber">Valor a Receber</Label>
-                                        <InputGroup>
-                                            <Input type="text" id="txtValorReceber" placeholder="R$00,00"
-                                                value={valorareceber}
-                                                name="valorareceber"
-                                                onChange={handleInputChange} />
-                                            <InputGroupAddon addonType="append">
-                                                <Button type="button" color="secondary fa fa-money"></Button>
-                                            </InputGroupAddon>
-                                        </InputGroup>
-                                    </Col>
-                                    <Col md="4">
-                                        <Label htmlFor="horaextra">Hora Extra</Label>
-                                        <InputGroup>
-                                            <Input type="text" id="txtHoraExtra" placeholder="00:00"
-                                                name="horaextra"
-                                                onChange={handleInputChange} />
-                                            <InputGroupAddon addonType="append">
-                                                <Button type="button" color="secondary fa fa-clock-o"></Button>
-                                            </InputGroupAddon>
-                                        </InputGroup>
-                                    </Col>
-                                </FormGroup>
-                                <FormGroup row>
+                            <Collapse isOpen={collapseMulti[1]}>                        
+                                <CardBody>
+                                    <FormGroup row>
+                                        <Col md="4">
+                                            <Label htmlFor="tiposervicoid">Tipo de Serviço</Label>
+                                            <InputGroup>
+                                                <Input required type="select" name="select" id="cboTipoServico"
+                                                    name="tipoprojetoid"
+                                                    onChange={handleInputChange}>
+                                                    <option value={undefined} defaultValue>Selecione...</option>
+                                                    {tipoProjeto.map(tipoProjeto => (
+                                                        <option key={tipoProjeto.id} value={tipoProjeto.id}>{tipoProjeto.nometipoprojeto}</option>
+                                                    ))}
+                                                </Input>
+                                                <InputGroupAddon addonType="append">
+                                                    <Button type="button" color="secondary icon-wrench"></Button>
+                                                </InputGroupAddon>
+                                            </InputGroup>
+                                        </Col>
+                                        <Col md="4">
+                                            <Label htmlFor="tecnicoId"> Técnico</Label>
+                                            <InputGroup>
+                                                <Input required type="select" name="select" id="cobTecnico"
+                                                    name="tecnicoid"
+                                                    onChange={handleInputChange} >
+                                                    <option value={undefined} defaultValue>Selecione...</option>
+                                                    {tecnicos.map(tecnico => (
+                                                        <option key={tecnico.id} value={tecnico.id}>{tecnico.nometecnico}</option>
+                                                    ))}
+                                                </Input>
+                                                <InputGroupAddon addonType="append">
+                                                    <Button type="button" color="secondary  fa fa-user-md"></Button>
+                                                </InputGroupAddon>
+                                            </InputGroup>
+                                        </Col>
+                                    </FormGroup>
+                                    <FormGroup row>
+                                        <Col md="12">
+                                            <Label htmlFor="descricaoservico">Descrição do Serviço</Label>
+                                            <InputGroup>
+                                                <Input id="txtDescricaoServico" rows="5" required type="textarea" placeholder="Descrição do Serviço"
+                                                    name="descricaoservico"
+                                                    onChange={handleInputChange} />
+                                            </InputGroup>
+                                        </Col>
+                                    </FormGroup>
+                                    <FormGroup row>
+                                        <Col md="4">
+                                            <Label htmlFor="horaEntrada">Hora de Entrada</Label>
+                                            <InputGroup>
+                                                <Input type="time" required id="txtHoraEntrada"
+                                                    placeholder="00:00:00"
+                                                    name="horaentrada"
+                                                    onChange={handleInputChange} />
+                                                <InputGroupAddon addonType="append">
+                                                    <Button type="button" color="secondary fa fa-clock-o"></Button>
+                                                </InputGroupAddon>
+                                            </InputGroup>
+                                        </Col>
+                                        <Col md="4">
+                                            <Label htmlFor="horaSaida">Hora de Saída</Label>
+                                            <InputGroup>
+                                                <Input type="time" required name="time" id="txtHoraSaida"
+                                                    name="horasaida"
+                                                    onChange={handleInputChange} />
+                                                <InputGroupAddon addonType="append">
+                                                    <Button type="button" color="secondary fa fa-clock-o"></Button>
+                                                </InputGroupAddon>
+                                            </InputGroup>
+                                        </Col>
+                                        <Col md="4">
+                                            <Label htmlFor="qtHoras">Quantidade de Horas</Label>
+                                            <InputGroup>
+                                                <Input type="text" id="txtqtdHoras" placeholder="00:00"
+                                                    name="qtdehoras"
+                                                    onChange={handleInputChange} />
+                                                <InputGroupAddon addonType="append">
+                                                    <Button type="button" color="secondary fa fa-clock-o"></Button>
+                                                </InputGroupAddon>
+                                            </InputGroup>
+                                        </Col>
+                                    </FormGroup>
+                                    <FormGroup row>
+                                        <Col md="4">
+                                            <Label htmlFor="valorPpagar">Valor a Pagar</Label>
+                                            <InputGroup>
+                                                <Input type="text" id="txtValorPagar" placeholder="R$00,00"
+                                                    value={valorapagar}
+                                                    name="valorapagar"
+                                                    onChange={handleInputChange} />
+                                                <InputGroupAddon addonType="append">
+                                                    <Button type="button" color="secondary fa fa-money"></Button>
+                                                </InputGroupAddon>
+                                            </InputGroup>
+                                        </Col>
+                                        <Col md="4">
+                                            <Label htmlFor="valorReceber">Valor a Receber</Label>
+                                            <InputGroup>
+                                                <Input type="text" id="txtValorReceber" placeholder="R$00,00"
+                                                    value={valorareceber}
+                                                    name="valorareceber"
+                                                    onChange={handleInputChange} />
+                                                <InputGroupAddon addonType="append">
+                                                    <Button type="button" color="secondary fa fa-money"></Button>
+                                                </InputGroupAddon>
+                                            </InputGroup>
+                                        </Col>
+                                        <Col md="4">
+                                            <Label htmlFor="horaextra">Hora Extra</Label>
+                                            <InputGroup>
+                                                <Input type="text" id="txtHoraExtra" placeholder="00:00"
+                                                    name="horaextra"
+                                                    onChange={handleInputChange} />
+                                                <InputGroupAddon addonType="append">
+                                                    <Button type="button" color="secondary fa fa-clock-o"></Button>
+                                                </InputGroupAddon>
+                                            </InputGroup>
+                                        </Col>
+                                    </FormGroup>
+                                    <FormGroup row>
                                     <Col md="4">
                                         <Label htmlFor="totalpagar">Total a pagar</Label>
                                         <InputGroup>
@@ -696,9 +692,8 @@ const OrdemServico = (props) => {
                                         </InputGroup>
                                     </Col>
                                 </FormGroup>
-
-
-                            </CardBody>
+                                </CardBody>
+                            </Collapse>  
                             <CardFooter className="text-center">
                                 <Button type="submit" size="sm" color="success" className=" mr-3"><i className="fa fa-check"></i> Salvar</Button>
                                 <Button type="reset" size="sm" color="danger" className="ml-3"><i className="fa fa-ban "></i> Cancelar</Button>
