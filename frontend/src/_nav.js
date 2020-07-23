@@ -28,7 +28,7 @@ export default {
       url: '/lista-movimentacao-os',
       icon: 'fa fa-arrows',
     },
-    
+
     {
       name: 'Adiantamento de OS',
       url: '/lista-adiantamento-os',
@@ -43,7 +43,7 @@ export default {
       },
     },
     {
-      name: 'Clientes',
+      name: 'Cadastro Clientes',
       icon: 'fa fa-handshake-o',
       children: [
         {
@@ -65,11 +65,11 @@ export default {
           name: 'Parceiros',
           url: '/lista-parceiros',
           icon: 'fa fa-handshake-o',
-        },        
+        },
       ],
     },
     {
-      name: 'Técnicos',
+      name: 'Cadastro Técnicos',
       icon: 'icon-support',
       children: [
         {
@@ -91,11 +91,11 @@ export default {
           name: 'Dispon. Técnicos',
           url: '/lista-disponibilidade-tecnico',
           icon: 'icon-support',
-        },                
+        },
       ],
     },
     {
-      name: 'Projetos',
+      name: 'Cadastro Projetos',
       icon: 'icon-note',
       children: [
         {
@@ -112,11 +112,11 @@ export default {
           name: 'Ferramentas',
           url: '/lista-ferramentas',
           icon: 'icon-note',
-        },                       
+        },
       ],
     },
     {
-      name: 'Dados Bancários',
+      name: 'Cadastros Bancários',
       icon: 'fa fa-credit-card-alt',
       children: [
         {
@@ -133,23 +133,23 @@ export default {
           name: 'Tipo de Conta',
           url: '/lista-tipo-conta',
           icon: 'fa fa-credit-card-alt',
-        },        
+        },
       ],
-    },    
+    },
     {
-      name: 'Status',      
+      name: 'Cadastro de Status',
       icon: 'fa fa-check-square-o',
       children: [
         {
         name: 'Status Adiantamento',
         url: '/lista-status-adiantamento',
-        icon: 'fa fa-check-square-o',          
+        icon: 'fa fa-check-square-o',
         },
         {
           name: 'Status Atendimento',
           url: '/lista-status-atendimento',
-          icon: 'fa fa-check-square-o',          
-        },        
+          icon: 'fa fa-check-square-o',
+        },
         {
           name: 'Status Cobrança',
           url: '/lista-status-cobranca',
@@ -159,11 +159,11 @@ export default {
           name: 'Status Pagamento',
           url: '/lista-status-pagamento',
           icon: 'fa fa-check-square-o',
-        },         
+        },
       ],
     },
     {
-      name: 'Acessos',      
+      name: 'Acessos',
       icon: 'fa fa-lock',
       children: [
         {
@@ -200,11 +200,11 @@ export default {
           name: 'Funções',
           url: '/lista-funcoes',
           icon: 'fa fa-code',
-        },   
+        },
         {
          },
-         
-      ], 
+
+      ],
     },
     {
       title: true,
@@ -232,29 +232,29 @@ export default {
           name: 'Projeto x Técnico',
           url: '/rel-projetoxtecnico',
           icon: 'fa fa-bar-chart',
-        },      
+        },
         {
           name: 'Projeto x Faturado',
           url: '/rel-projetoxfaturado',
           icon: 'fa fa-bar-chart',
-        },          
+        },
         {
           name: 'Cliente x Faturado',
           url: '/rel-clientexfaturado',
           icon: 'fa fa-bar-chart',
         },
-       
+
         {
           name: 'Técnico x Faturado',
           url: '/rel-tecnicoxfaturado',
           icon: 'fa fa-bar-chart',
-        },        
+        },
         {
           name: 'Custo x Técnico',
           url: '/rel-custoxtecnico',
           icon: 'fa fa-bar-chart',
-        },        
-       
+        },
+
       ],
     },
   ],

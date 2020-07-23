@@ -43,10 +43,10 @@ const Usuario = (props) => {
     });
 
   useEffect(() => {
-        api.get('perfis-acesso').then(response => {            
+        api.get('perfis-acesso').then(response => {
             setPerfilAcessos(response.data);
         })
-    }, [usuarioId]); 
+    }, [usuarioId]);
 
     useEffect(() => {
         if (action === 'edit' && usuarioIdParam !== '') {
@@ -152,7 +152,7 @@ console.log(formData)
                             Authorization: 1,
                         }
                     });
-                     alert(`Seu login de acesso: ${response.data.login}`);      
+                     alert(`Seu login de acesso: ${response.data.login}`);
                 } catch (err) {
 
                     alert('Erro no cadastro, tente novamente.');
@@ -223,8 +223,8 @@ console.log(formData)
                                         </InputGroup>
                                     </Col>
                                     <Col md="6">
-                                        <Label htmlFor="Logradouro">Logradouro</Label>
-                                        <Input type="text" required id="txtLogradouro" placeholder="Digite o Logradouro"
+                                        <Label htmlFor="Logradouro">Endereço</Label>
+                                        <Input type="text" required id="txtLogradouro" placeholder="Digite o Endereço"
                                             name="logradouro"
                                             onChange={handleInputChange}
                                         />
@@ -337,7 +337,7 @@ console.log(formData)
                                             <Label check className="form-check-label" htmlFor="ativo">Ativo</Label>
                                             <AppSwitch id="rdAtivo" className={'switch-ativo'}  label color={'success'} defaultChecked size={'sm'}
                                             onChange={handleSwitch}
-                                            />                                    
+                                            />
                                 </Col>
                                 </FormGroup>*/}
                             </CardBody>

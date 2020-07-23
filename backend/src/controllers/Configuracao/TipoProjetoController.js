@@ -22,15 +22,16 @@ module.exports = {
         const  usuarioid  = request.headers.authorization;
         const  dataultmodif = getDate();
 
-        const { nometipoprojeto, receita, despesa, horas, valorhoracobrado, valorhoratecnico, ativo } = request.body;
+        const { nometipoprojeto, receita, despesa, horas, valorhoraextra, valorhoratecnico, horadecimal, ativo } = request.body;
         
         const [id] = await connection('tipoprojeto').insert({            
             nometipoprojeto,
             receita,
             despesa,
             horas,
-            valorhoracobrado,
+            valorhoraextra,
             valorhoratecnico,
+            horadecimal,
             ativo,
             usuarioid,
             dataultmodif
@@ -44,15 +45,16 @@ module.exports = {
         const  usuarioid  = request.headers.authorization;
         const  dataultmodif = getDate();
         
-        const { nometipoprojeto, receita, despesa, horas, valorhoracobrado, valorhoratecnico, ativo } = request.body;
+        const { nometipoprojeto, receita, despesa, horas, valorhoraextra, horadecimal, valorhoratecnico, ativo } = request.body;
 
         await connection('tipoprojeto').where('id', id).update({            
             nometipoprojeto,
             receita,
             despesa,
             horas,
-            valorhoracobrado,
+            valorhoraextra,
             valorhoratecnico,
+            horadecimal,
             ativo,
             usuarioid,
             dataultmodif

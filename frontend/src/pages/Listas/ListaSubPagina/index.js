@@ -46,13 +46,6 @@ export default function ListaSubPagina() {
 
         },
         {
-            name: 'Descrição',
-            selector: 'descricao',
-            sortable: true,
-            left: true,
-
-        },
-        {
             name: 'Status',
             sortable: true,
             left: true,
@@ -66,7 +59,7 @@ export default function ListaSubPagina() {
             Editar</Link>
         },
     ];
- 
+
     return (
         <div className="animated-fadeIn">
             <Row>

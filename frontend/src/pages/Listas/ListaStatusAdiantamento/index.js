@@ -41,13 +41,6 @@ export default function ListaStatusAdiantamento() {
 
         },
         {
-            name: 'Descrição',
-            selector: 'descstatus',
-            sortable: true,
-            left: true,
-
-        },
-        {
             name: 'Status',
             sortable: true,
             left: true,
@@ -85,7 +78,7 @@ export default function ListaStatusAdiantamento() {
                                 highlightOnHover={true}
                                 responsive={true}
                                 pagination={true}
-                                noHeader={true} 
+                                noHeader={true}
                             />
                         </CardBody>
                     </Card>

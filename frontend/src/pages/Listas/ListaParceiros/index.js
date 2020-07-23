@@ -40,13 +40,6 @@ export default function ListaParceiros() {
 
         },
         {
-            name: 'Descrição',
-            selector: 'descricao',
-            sortable: true,
-            left: true,
-
-        },
-        {
             name: 'Status',
             sortable: true,
             left: true,
