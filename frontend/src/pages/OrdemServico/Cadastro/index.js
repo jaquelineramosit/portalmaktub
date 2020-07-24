@@ -15,7 +15,6 @@ const Cadastroos = (props) => {
     var action = params.get('action');
     var cadosdIdParam = props.match.params.id;
 
-
     const [diadasemana, setDiaSemana] = useState(0);
     const [dataatendimento, setDataAtendimento] = useState();
     const [numeroos, setNumos] = useState();
@@ -24,7 +23,7 @@ const Cadastroos = (props) => {
     const [totalapagar, setTotalPagar] = useState();
     const [totalareceber, setTotalaReceber] = useState();
     const [custoadicional, setCustoAdicional] = useState();
-    const [nomediadasemana, setNomeDiaSemana] = useState('');
+    const [nomediadasemana, setNomeDiaSemana] = useState();
     const [clienteFiliais, setClienteFiliais] = useState([]);
     const [tipoProjeto, setTipoProjeto] = useState([]);
     const [tecnicos, setTecnicos] = useState([]);
@@ -68,6 +67,7 @@ const Cadastroos = (props) => {
             setTipoProjeto(response.data);
         })
     }, [usuarioId]);
+
     useEffect(() => {
         if (action === 'edit' && cadosdIdParam !== '') {
             api.get(`ordem-servico/${cadosdIdParam}`).then(response => {
@@ -89,8 +89,7 @@ const Cadastroos = (props) => {
                 document.getElementById('txtCrustoAdicional').value = response.data.custoadicional;
                 document.getElementById('txtDataSolicitacao').value = dateFormat(response.data.datasolicitacao, "yyyy-mm-dd");
                 document.getElementById('txtDataAtendimento').value = dateFormat(response.data.dataatendimento, "yyyy-mm-dd");
-
-
+                setNomeDiaSemana(getNameOfTheDay(response.data.diadasemana));
 
                 setFormData({
                     ...formData,
@@ -118,9 +117,21 @@ const Cadastroos = (props) => {
             return;
         }
     }, [cadosdIdParam])
-
-
     
+    function getNameOfTheDay(dayNumber) {
+        var diasDaSemana = new Array(7);
+        diasDaSemana[0] = "Domingo";
+        diasDaSemana[1] = "Segunda-feira";
+        diasDaSemana[2] = "Terça-feira";
+        diasDaSemana[3] = "Quarta-feira";
+        diasDaSemana[4] = "Quinta-feira";
+        diasDaSemana[5] = "Sexta-feira";
+        diasDaSemana[6] = "Sábado";
+
+        var nomeDiaDaSemana = diasDaSemana[dayNumber];
+
+        return nomeDiaDaSemana;
+    }
 
     function handleInputChange(event) {
         event.preventDefault();
@@ -175,7 +186,6 @@ const Cadastroos = (props) => {
 
         setFormData({ ...formData, [name]: value });
     };
-    console.log(formData)
 
     async function handleOs(e) {
         e.preventDefault();
