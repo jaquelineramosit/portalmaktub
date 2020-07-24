@@ -16,6 +16,7 @@ export default function Projetotecnico(props) {
 
     const [tipoprojetoid, setTipoProjeto] = useState('');
     const [tecnicoid, setTecnico] = useState('');
+    const [descricao, setDescricao] = useState('');
     const [tipoprojetosid, setTipoProjetos] = useState([]);
     const [tecnicosid, setTecnicos] = useState([]);
 
@@ -38,6 +39,7 @@ export default function Projetotecnico(props) {
             api.get(`projeto-tecnico/${dispotecIdParam}`).then(response => {
                 setTipoProjeto(response.data.tipoprojetoid);
                 setTecnico(response.data.tecnicoid);
+                setDescricao(response.data.descricao);
                 response.data.ativo === 1 ? setAtivo(1) : setAtivo(0);
             });
         } else {
@@ -67,6 +69,7 @@ export default function Projetotecnico(props) {
         const data = {
             tipoprojetoid,
             tecnicoid,
+            descricao,
             ativo
         };
 
@@ -139,6 +142,16 @@ export default function Projetotecnico(props) {
                                         </Input>
                                     </Col>
                                 </FormGroup>
+                                <FormGroup row>
+                                    <Col md="8">
+                                        <Label>Descrição</Label>
+                                        <Input type="textarea" rows="5" placeholder="Descreva o Tipo de Técnico inserido" id="txtDescrição"
+                                            name="descricao"
+                                            value={descricao}
+                                            onChange={e => setDescricao(e.target.value)} />
+                                    </Col>
+                                </FormGroup>
+
                                 {/* <FormGroup row>    
                                     <Col md="1">
                                         <Label check className="form-check-label" htmlFor="ativo">Ativo</Label>

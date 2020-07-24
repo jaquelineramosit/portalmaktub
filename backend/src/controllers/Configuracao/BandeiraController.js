@@ -3,10 +3,12 @@ const getDate = require('../../utils/getDate');
 module.exports = {
     async getAll (request, response) {
         const bandeira = await connection('bandeira')
-        .join('usuario', 'usuario.id', '=', 'bandeira.usuarioid') 
+        .leftJoin('usuario', 'usuario.id', '=', 'bandeira.usuarioid') 
+        .leftJoin('parceiro', 'parceiro.id', '=', 'bandeira.parceiroid') 
         .select([
             'bandeira.*', 
-            'usuario.nome'
+            'usuario.nome',
+            'parceiro.nomeparceiro'
         ]);
         
         return response.json(bandeira);
@@ -17,10 +19,12 @@ module.exports = {
 
         const bandeira = await connection('bandeira')
             .where('bandeira.id', id)
-            .join('usuario', 'usuario.id', '=', 'bandeira.usuarioid') 
+            .leftJoin('usuario', 'usuario.id', '=', 'bandeira.usuarioid') 
+            .leftJoin('parceiro', 'parceiro.id', '=', 'bandeira.parceiroid') 
             .select([
                 'bandeira.*', 
-                'usuario.nome'
+                'usuario.nome',
+                'parceiro.nomeparceiro'
             ])
             .first();
     
@@ -31,10 +35,12 @@ module.exports = {
         const  usuarioid  = request.headers.authorization;
         const  dataultmodif = getDate();
 
-        const { nomebandeira, ativo } = request.body;
+        const { parceiroid,nomebandeira, descricao, ativo } = request.body;
         
         const [id] = await connection('bandeira').insert({            
+            parceiroid,
             nomebandeira, 
+            descricao,
             ativo,
             dataultmodif,
             usuarioid
@@ -48,10 +54,12 @@ module.exports = {
         const  usuarioid  = request.headers.authorization;
         const  dataultmodif = getDate();
         
-        const { nomebandeira, ativo } = request.body;
+        const { parceiroid,nomebandeira, descricao, ativo } = request.body;
 
         await connection('bandeira').where('id', id).update({            
+            parceiroid,
             nomebandeira, 
+            descricao,
             ativo,
             dataultmodif,
             usuarioid

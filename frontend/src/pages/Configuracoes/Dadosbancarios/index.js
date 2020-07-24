@@ -206,7 +206,7 @@ export default function Dadosbancarios(props) {
                                     <Col md="3">
                                         <Label htmlFor="docTitular">Documento do Titular</Label>
                                         <InputGroup>
-                                            <Input id="txtDocTitular" required type="text"
+                                            <Input id="txtDocTitular" required type="text" placeholder="CPF ou CNPJ"
                                                 name="doctitular"
                                                 value={doctitular}
                                                 onChange={e => setDoctitular(e.target.value)} />

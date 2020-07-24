@@ -5,14 +5,19 @@ const getDate = require('../../utils/getDate');
 module.exports = {
     async getAll (request, response) {
         const usuarios = await connection('usuario')
-        .select('*')
+        .leftJoin('perfilacesso', 'perfilacesso.id', '=', 'usuario.perfilacessoid')
+        .select([
+            'usuario.*',
+            'perfilacesso.nomeperfil',
+        ]);
         return response.json(usuarios);
     },
     
     async getAtivo (request, response) {
         const clientes = await connection('usuario')
         .where('ativo', 1)
-        .select('*');
+        .select([
+        ]);
     
         return response.json(clientes);
     },
@@ -21,8 +26,12 @@ module.exports = {
         const { id }  = request.params;
 
         const usuario = await connection('usuario')
-            .where('id', id)
-            .select()
+            .where('usuario.id', id)
+            .leftJoin('perfilacesso', 'perfilacesso.id', '=', 'usuario.perfilacessoid')
+            .select([
+                'usuario.*',
+                'perfilacesso.nomeperfil',
+            ])
             .first();
     
         return response.json(usuario);
@@ -32,12 +41,13 @@ module.exports = {
         
         const  dataUltModif = getDate();
 
-        const { nome, sobrenome, dataNasc, logradouro, numero, complemento, bairro, cep, cidade, estado,
+        const { perfilacessoid, nome, sobrenome, dataNasc, logradouro, numero, complemento, bairro, cep, cidade, estado,
             telefone, celular, cpf, rg, genero, contatoemergencia, telefonecttoemergencia, email, login, senhaForm, ativo } = request.body;
                 
         const senha = getPassword(senhaForm);
 
         const [id] = await connection('usuario').insert({
+            perfilacessoid,
             nome,
             sobrenome, 
             dataNasc,
@@ -68,13 +78,14 @@ module.exports = {
     async update (request, response) {
         const { id } = request.params;
         
-        const { nome, sobrenome, dataNasc, logradouro, numero, complemento, bairro, cep, cidade, estado,
+        const { perfilacessoid, nome, sobrenome, dataNasc, logradouro, numero, complemento, bairro, cep, cidade, estado,
             telefone, celular, cpf, rg, genero, contatoemergencia, telefonecttoemergencia, email, login, senhaForm, ativo } = request.body;
 
         const  dataUltModif = getDate();
         const senha = getPassword(senhaForm);          
 
         await connection('usuario').where('id', id).update({
+            perfilacessoid,
             nome,
             sobrenome, 
             dataNasc,

@@ -40,13 +40,6 @@ export default function ListaTipoTecnicos() {
 
         },
         {
-            name: 'Descrição',
-            selector: 'desctipotecnico',
-            sortable: true,
-            left: true,
-
-        },
-        {
             name: 'Status',
             sortable: true,
             left: true,

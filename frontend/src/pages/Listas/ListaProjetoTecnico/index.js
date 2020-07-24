@@ -36,6 +36,7 @@ export default function ListaProjetoTecnico() {
             name: 'Tipo de Projeto',
             selector: 'nometipoprojeto',
             sortable: true,
+            width: '26%',
 
 
         },
@@ -44,6 +45,15 @@ export default function ListaProjetoTecnico() {
             selector: 'nometecnico',
             sortable: true,
             left: true,
+            width: '30%',
+
+        },
+        {
+            name: 'Descrição',
+            selector: 'descricao',
+            sortable: true,
+            left: true,
+            width: '17%',
 
         },
         {

@@ -26,9 +26,17 @@ export default function ListaBandeira() {
             name: 'Nome Bandeira',
             selector: 'nomebandeira',
             sortable: true,
-
+            width: '35%',
+        },
+        {
+            name: 'Parceiros',
+            selector: 'nomeparceiro',
+            sortable: true,
+            width: '34%',
+        
 
         },
+        
 
         {
             name: 'Status',

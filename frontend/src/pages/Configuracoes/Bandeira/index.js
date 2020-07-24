@@ -15,13 +15,24 @@ export default function Bandeira(props) {
     const usuarioId = localStorage.getItem('userId');
 
     const [nomebandeira, setBandeira] = useState('');
+    const [descricao, setDescricao] = useState('');
+    const [parceiroid, setParceiroid] = useState('');
+    const [parceirosid, setParceirosid] = useState([]);
     const [ativo, setAtivo] = useState(1);
 
+    useEffect(() => {
+        api.get('parceiro').then(response => {
+            setParceirosid(response.data);
+        })
+    }, [usuarioId]);
 
+    
     useEffect(() => {
         if (action === 'edit' && BandeiraIdParam !== '') {
             api.get(`bandeira/${BandeiraIdParam}`).then(response => {
                 setBandeira(response.data.nomebandeira);
+                setDescricao(response.data.descricao);
+                setParceiroid(response.data.parceiroid);
                 response.data.ativo === 1 ? setAtivo(1) : setAtivo(0);
             });
         } else {
@@ -50,6 +61,8 @@ export default function Bandeira(props) {
 
         const data = {
             nomebandeira,
+            descricao,
+            parceiroid,
             ativo
         };
 
@@ -85,8 +98,8 @@ export default function Bandeira(props) {
 
     return (
         <div className="animated fadeIn">
-             {redirect && <Redirect to="/lista-bandeira" />}
-             <Form onSubmit={handleStatus} onReset={handleReset}>
+            {redirect && <Redirect to="/lista-bandeira" />}
+            <Form onSubmit={handleStatus} onReset={handleReset}>
                 <Row>
                     <Col xs="12" md="12">
                         <Card>
@@ -108,6 +121,27 @@ export default function Bandeira(props) {
                                                 <Button type="button" color="secondary fa fa-flag"></Button>
                                             </InputGroupAddon>
                                         </InputGroup>
+                                    </Col>
+                                    <Col md="4">
+                                        <Label htmlFor="parceiroId">Parceiro</Label>
+                                        <Input required type="select" name="select" id="cboParceiroId"
+                                            name="parceiroid"
+                                            value={parceiroid}
+                                            onChange={e => setParceiroid(e.target.value)}>
+                                            <option value={undefined} defaultValue>Selecione...</option>
+                                            {parceirosid.map(parceiro => (
+                                                <option value={parceiro.id}>{parceiro.nomeparceiro}</option>
+                                            ))}
+                                        </Input>
+                                    </Col>
+                                </FormGroup>
+                                <FormGroup row>
+                                    <Col md="8">
+                                        <Label>Descrição</Label>
+                                        <Input type="textarea" rows="5" placeholder="Descreva o Tipo de Técnico inserido" id="txtDescrição"
+                                            name="descricao"
+                                            value={descricao}
+                                            onChange={e => setDescricao(e.target.value)} />
                                     </Col>
                                 </FormGroup>
                                 {/*} <FormGroup>    

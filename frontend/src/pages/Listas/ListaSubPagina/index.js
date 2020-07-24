@@ -32,24 +32,19 @@ export default function ListaSubPagina() {
 
     const columns = [
         {
-            name: 'Nome da Página',
-            selector: 'nomepagina',
-            sortable: true,
-
-
-        },
-        {
             name: 'Nome da Sub Página',
             selector: 'nomesubpagina',
             sortable: true,
             left: true,
+            width: '35%',
 
         },
         {
-            name: 'Descrição',
-            selector: 'descricao',
+            name: 'Nome da Página',
+            selector: 'nomepagina',
             sortable: true,
-            left: true,
+            width: '33%',
+
 
         },
         {

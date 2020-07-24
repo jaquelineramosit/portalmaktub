@@ -28,6 +28,8 @@ export default function Tecnico(props) {
     const [numero, setNumero] = useState('');
     const [rg, setRg] = useState('');
     const [cpf, setCpf] = useState('');
+    const [nomecontatoemergencial, setNomecontatoemergencial] = useState('');
+    const [telefonecttoemergencial, setTelefonecttoemergencial] = useState('');
     const [tipoTecnicosid, setTipoTecnicosid] = useState([]);
     const [ativo, setAtivo] = useState(1);
 
@@ -53,6 +55,8 @@ export default function Tecnico(props) {
                 setNumero(response.data.numero);
                 setRg(response.data.rg);
                 setCpf(response.data.cpf);
+                setNomecontatoemergencial(response.data.nomecontatoemergencial);
+                setTelefonecttoemergencial(response.data.telefonecttoemergencial);
                 response.data.ativo === 1 ? setAtivo(1) : setAtivo(0);
             });
         } else {
@@ -93,6 +97,8 @@ export default function Tecnico(props) {
             estado,
             telefonefixo,
             telefonecelular,
+            nomecontatoemergencial,
+            telefonecttoemergencial,
             ativo
         };
 
@@ -265,6 +271,30 @@ export default function Tecnico(props) {
                                             ))}
                                         </Input>
                                     </Col>
+                                </FormGroup>
+                                <FormGroup row>
+                                <Col md="4">
+                                        <Label htmlFor="Nome">Nome Contato Emergencial</Label>
+                                        <Input type="text" required id="txtNome" placeholder="Digite o Nome"
+                                            name="nomecontatoemergencial"
+                                            value={nomecontatoemergencial}
+                                            onChange={e => setNomecontatoemergencial(e.target.value)} />
+                                    </Col>
+
+                                    <Col md="4">
+                                        <Label htmlFor="TelefoneFixo">Telefone Emergencial</Label>
+                                        <InputGroup>
+                                            <Input type="text" id="txtTelefoneFixo" placeholder="(11) 9999-9999"
+                                                value={telefonecttoemergencial}
+                                                name="telefonecttoemergencial"
+                                                onChange={e => setTelefonecttoemergencial(telMask(e.target.value))} />
+                                            <InputGroupAddon addonType="append">
+                                                <Button type="button" color="secondary icon-phone"></Button>
+                                            </InputGroupAddon>
+                                        </InputGroup>
+
+                                    </Col>
+
                                 </FormGroup>
                                 {/* <FormGroup row>    
                                     <Col md="2">

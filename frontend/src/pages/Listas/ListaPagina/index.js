@@ -33,24 +33,19 @@ export default function ListaPagina() {
 
     const columns = [
         {
-            name: 'Módulo',
-            selector: 'nomemodulo',
-            sortable: true,
-
-
-        },
-        {
             name: 'Nome da Página',
             selector: 'nomepagina',
             sortable: true,
             left: true,
+            width: '60%',
 
         },
         {
-            name: 'Descrição',
-            selector: 'descricao',
+            name: 'Módulo',
+            selector: 'nomemodulo',
             sortable: true,
-            left: true,
+            width: '33%',
+
 
         },
         {
