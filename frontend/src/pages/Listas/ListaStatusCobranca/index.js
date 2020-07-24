@@ -19,7 +19,7 @@ export default function ListaStatusCobranca() {
             setTotal(response.data);
         })
     }, [1]);
-   
+
     useEffect(() => {
         api.get('status-cobranca', {
             headers: {
@@ -37,13 +37,6 @@ export default function ListaStatusCobranca() {
             selector: 'status',
             sortable: true,
 
-
-        },
-        {
-            name: 'Descrição',
-            selector: 'descstatus',
-            sortable: true,
-            left: true,
 
         },
         {

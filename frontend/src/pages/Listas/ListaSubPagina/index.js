@@ -61,7 +61,7 @@ export default function ListaSubPagina() {
             Editar</Link>
         },
     ];
- 
+
     return (
         <div className="animated-fadeIn">
             <Row>

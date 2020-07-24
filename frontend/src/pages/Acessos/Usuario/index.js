@@ -41,7 +41,7 @@ export default function Usuario(props) {
     const [perfilAcessos, setPerfilAcessos] = useState([]);
     const [ativo, setAtivo] = useState(1);
 
-    useEffect(() => {
+  useEffect(() => {
         api.get('perfis-acesso').then(response => {
             setPerfilAcessos(response.data);
         })
@@ -222,8 +222,8 @@ export default function Usuario(props) {
                                         </InputGroup>
                                     </Col>
                                     <Col md="6">
-                                        <Label htmlFor="Logradouro">Logradouro</Label>
-                                        <Input type="text" required id="txtLogradouro" placeholder="Digite o Logradouro"
+                                        <Label htmlFor="Logradouro">Endereço</Label>
+                                        <Input type="text" required id="txtLogradouro" placeholder="Digite o Endereço"
                                             name="logradouro"
                                             value={logradouro}
                                             onChange={e => setLogradouro(e.target.value)} />
@@ -364,7 +364,7 @@ export default function Usuario(props) {
                                             <Label check className="form-check-label" htmlFor="ativo">Ativo</Label>
                                             <AppSwitch id="rdAtivo" className={'switch-ativo'}  label color={'success'} defaultChecked size={'sm'}
                                             onChange={handleSwitch}
-                                            />                                    
+                                            />
                                 </Col>
                                 </FormGroup>*/}
                             </CardBody>

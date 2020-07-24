@@ -40,7 +40,7 @@ const StatusPagamento = React.lazy(() => import('./pages/Configuracoes/StatusPag
 
 
 // Ordem de serviços
-const OrdemServico = React.lazy(() => import('./pages/OrdemServico/Cadastro'));
+const OrdemServico = React.lazy(() => import('./pages/OrdemServico/OrdemServico'));
 const Movimentacaoos = React.lazy(() => import('./pages/OrdemServico/Movimentacaoos'));
 const Adiantamentoos = React.lazy(() => import('./pages/OrdemServico/Adiantamentoos'));
 
@@ -84,6 +84,8 @@ const Relprojetofaturado = React.lazy(() => import('./pages/Relatórios/Relatori
 const Relclientefaturado = React.lazy(() => import('./pages/Relatórios/Relatorio ClientexFaturado'));
 const Reltecnicofaturado = React.lazy(() => import('./pages/Relatórios/Relatorio TecnicoxFaturado'));
 const Relcustotecnico = React.lazy(() => import('./pages/Relatórios/Relatorio CustoxTecnico'));
+
+const Collapse = React.lazy(() => import('./pages/Configuracoes/Collapse'));
 
 const routes = [
 
@@ -151,7 +153,6 @@ const routes = [
   { path: '/status-pagamento', exact:true, name: 'Status de pagamento', component: StatusPagamento },
   { path: '/status-pagamento/:id', name: 'Status de pagamento', component: StatusPagamento },
   
-  
 
   //Ordem de serviço
 
@@ -202,7 +203,7 @@ const routes = [
 { path: '/rel-tecnicoxfaturado', name: 'Relatório de Técnico x Faturado ', component: Reltecnicofaturado},
 { path: '/rel-custoxtecnico', name: 'Relatório de Custo x Técnico ', component: Relcustotecnico},
 
-
+{ path: '/collapse', name: 'Collapse', component: Collapse },
 
 ];
 

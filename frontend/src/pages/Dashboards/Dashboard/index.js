@@ -352,7 +352,9 @@ export default function DashBoard() {
                 <Badge className={textColor} color={color}>{status}</Badge>
             </Fragment>
         )
-    }
+    } 
+
+    
 
     const Cards = () => {  
         return (

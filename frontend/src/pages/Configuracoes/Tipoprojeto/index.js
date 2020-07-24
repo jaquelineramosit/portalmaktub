@@ -19,8 +19,9 @@ export default function Tipoprojeto(props) {
     const [receita, setReceita] = useState('');
     const [despesa, setDespesa] = useState('');
     const [horas, setHoras] = useState('');
-    const [valorhoracobrado, setValorhoracobrado] = useState('');
+    const [valorhoraextra, setValorhoraextra] = useState('');
     const [valorhoratecnico, setValorhoratecnico] = useState('');
+    const [horadecimal, setHoradecimal] = useState('');
     const [ativo, setAtivo] = useState(1);
 
 
@@ -31,8 +32,9 @@ export default function Tipoprojeto(props) {
                 setReceita(response.data.receita);
                 setDespesa(response.data.despesa);
                 setHoras(response.data.horas);
-                setValorhoracobrado(response.data.valorhoracobrado);
+                setValorhoraextra(response.data.valorhoraextra);
                 setValorhoratecnico(response.data.valorhoratecnico);
+                setHoradecimal(response.data.horadecimal);
                 response.data.ativo === 1 ? setAtivo(1) : setAtivo(0);
             });
         } else {
@@ -65,8 +67,9 @@ export default function Tipoprojeto(props) {
             receita,
             despesa,
             horas,
-            valorhoracobrado,
+            valorhoraextra,
             valorhoratecnico,
+            horadecimal,
             ativo
         };
 
@@ -126,7 +129,7 @@ export default function Tipoprojeto(props) {
                                             value={despesa}
                                             name="despesa"
                                             onChange={e => setDespesa(reaisMask(e.target.value))} />
-                                        
+
                                     </Col>
                                     <Col md="3">
                                         <Label htmlFor="receita">Receita</Label>
@@ -138,7 +141,7 @@ export default function Tipoprojeto(props) {
                                 </FormGroup>
                                 <FormGroup row>
                                     <Col md="3">
-                                        <Label htmlFor="horas">Horas Total do projeto</Label>
+                                        <Label htmlFor="horas">Carga Horária do Projeto</Label>
                                         <InputGroup>
                                             <Input type="time" required id="txtHoras" required id="txtHorastotal"
                                                 name="horas"
@@ -150,12 +153,12 @@ export default function Tipoprojeto(props) {
                                         </InputGroup>
                                     </Col>
                                     <Col md="3">
-                                        <Label htmlFor="valorHoraCobrado">Valor hora Cobrado</Label>
+                                        <Label htmlFor="valorHoraExtra">Valor Hora Extra</Label>
                                         <InputGroup>
                                             <Input type="text" required id="txtValorHoraCobrado" placeholder="R$00,00" required id="txtValorhora"
-                                                value={valorhoracobrado}
+                                                value={valorhoraextra}
                                                 name="valorhoracobrado"
-                                                onChange={e => setValorhoracobrado(reaisMask(e.target.value))} />
+                                                onChange={e => setValorhoraextra(reaisMask(e.target.value))} />
                                             <InputGroupAddon addonType="append">
                                                 <Button type="button" color="secondary fa fa-money"></Button>
                                             </InputGroupAddon>
@@ -174,7 +177,21 @@ export default function Tipoprojeto(props) {
                                         </InputGroup>
                                     </Col>
                                 </FormGroup>
-                                {/* <FormGroup>    
+                                <FormGroup row>
+                                <Col md="3">
+                                        <Label htmlFor="horadecimal">Hora Decimal</Label>
+                                        <InputGroup>
+                                            <Input id="txtHoradecimal" required type="text" placeholder="R$00,00" required id="txtHoradecimal"
+                                                value={horadecimal}
+                                                name="horadecimal"
+                                                onChange={e => setValorhoratecnico(reaisMask(e.target.value))} />
+                                            <InputGroupAddon addonType="append">
+                                                <Button type="button" color="secondary fa fa-money"></Button>
+                                            </InputGroupAddon>
+                                        </InputGroup>
+                                    </Col>
+                                 </FormGroup>
+                                {/* <FormGroup>
                                     <Col md="2">
                                         <Label check className="form-check-label" htmlFor="ativo1">Ativo</Label>
                                         <AppSwitch id="rdAtivo" className={'switch-ativo'} label color={'success'} defaultChecked size={'sm'}

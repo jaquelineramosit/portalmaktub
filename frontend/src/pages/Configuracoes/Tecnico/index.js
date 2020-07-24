@@ -170,9 +170,9 @@ export default function Tecnico(props) {
                                 </FormGroup>
                                 <FormGroup row>
                                     <Col md="4">
-                                        <Label htmlFor="logradouro">Logradouro</Label>
+                                        <Label htmlFor="logradouro">Endereço</Label>
                                         <Input type="text" required id="txtLogradouro"
-                                            placeholder="Digite o Logradouro"
+                                            placeholder="Digite o Endereço"
                                             name="logradouro"
                                             value={logradouro}
                                             onChange={e => setLogradouro(e.target.value)} />

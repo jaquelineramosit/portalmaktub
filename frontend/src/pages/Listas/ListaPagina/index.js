@@ -37,7 +37,7 @@ export default function ListaPagina() {
             selector: 'nomepagina',
             sortable: true,
             left: true,
-            width: '60%',
+            width: '35%',
 
         },
         {

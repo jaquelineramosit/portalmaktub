@@ -19,7 +19,7 @@ export default function ListaTipoTecnicos() {
             setTotal(response.data);
         })
     }, [1]);
-   
+
     useEffect(() => {
         api.get('tipo-tecnico', {
             headers: {
