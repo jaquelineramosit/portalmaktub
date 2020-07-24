@@ -39,11 +39,12 @@ module.exports = {
         const  usuarioid  = request.headers.authorization;
         const  dataultmodif = getDate();
 
-        const { tecnicoid, tipoprojetoid, ativo } = request.body;
+        const { tecnicoid, tipoprojetoid,descricao,ativo } = request.body;
         
         const [id] = await connection('tipoprojetotecnico').insert({
             tecnicoid,
             tipoprojetoid, 
+            descricao,
             ativo,
             dataultmodif,
             usuarioid
@@ -57,11 +58,12 @@ module.exports = {
         const  usuarioid  = request.headers.authorization;
         const  dataultmodif = getDate();
         
-        const { tecnicoid, tipoprojetoid, ativo } = request.body;
+        const { tecnicoid, tipoprojetoid, descricao,ativo } = request.body;
 
         await connection('tipoprojetotecnico').where('id', id).update({
             tecnicoid,
             tipoprojetoid, 
+            descricao,
             ativo,
             dataultmodif,
             usuarioid

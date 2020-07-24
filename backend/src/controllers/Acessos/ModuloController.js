@@ -25,10 +25,10 @@ module.exports = {
         const  usuarioId  = request.headers.authorization;
         const  dataUltModif = getDate();
 
-        const { nomeModulo, descricao, ativo } = request.body;
+        const { nomemodulo, descricao, ativo } = request.body;
         
         const [id] = await connection('modulo').insert({
-                nomeModulo,
+                nomemodulo,
                 descricao, 
                 ativo,
                 dataUltModif,
@@ -42,10 +42,10 @@ module.exports = {
             const   { id }   = request.params;
             const  usuarioId  = request.headers.authorization;
             const  dataUltModif = getDate();
-            const { nomeModulo, descricao, ativo } = request.body;
+            const { nomemodulo, descricao, ativo } = request.body;
     
             await connection('modulo').where('id', id).update({
-                nomeModulo,
+                nomemodulo,
                 descricao, 
                 ativo,
                 dataUltModif,

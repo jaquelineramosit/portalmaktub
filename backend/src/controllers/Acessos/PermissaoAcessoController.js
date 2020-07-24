@@ -72,12 +72,12 @@ module.exports = {
             const  usuarioId  = request.headers.authorization;            
             const  dataUltModif = getDate();
 
-            const {perfilacessoId, moduloId, paginaId, descricao, ativo } = request.body;
+            const {perfilacessoid, moduloid, paginaid, descricao, ativo } = request.body;
     
             await connection('permissaoacesso').where('id', id).update({                
-                perfilacessoId,
-                moduloId,
-                paginaId,
+                perfilacessoid,
+                moduloid,
+                paginaid,
                 descricao, 
                 ativo,
                 dataUltModif,

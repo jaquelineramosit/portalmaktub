@@ -13,6 +13,7 @@ const RegisterController = require('./controllers/Acessos/RegisterController');
 
 //Atividades
 const OrdemServicoController = require('./controllers/OrdemServico/OrdemServicoController');
+const ListaOrdemServicoController = require('./controllers/OrdemServico/ListaOrdemServicoController');
 const MovimentacaoOsController = require('./controllers/OrdemServico/MovimentacaoOsController');
 const AdiantamentoOsController = require('./controllers/OrdemServico/AdiantamentoOsController');
 
@@ -37,12 +38,8 @@ const TipoContaController = require('./controllers/Configuracao/TipoContaControl
 const TipoProjetoController = require('./controllers/Configuracao/TipoProjetoController');
 const TipoTecnicoController = require('./controllers/Configuracao/TipoTecnicoController');
 
-
-
-
-
-// //Dashboards
-// const Dashboardv1Controller = require('./controllers/Dashboards/Dashboardv1Controller');
+//Dashboards
+ const DashboardController = require('./controllers/Dashboard/DashboardController');
 // const Dashboardv2Controller = require('./controllers/Dashboards/Dashboardv2Controller');
 // const Dashboardv3Controller = require('./controllers/Dashboards/Dashboardv3Controller');
 
@@ -105,6 +102,8 @@ routes.get('/ordem-servico', OrdemServicoController.getAll);
 routes.get('/ordem-servico/:id', OrdemServicoController.getById);
 routes.post('/ordem-servico', OrdemServicoController.create);
 routes.put('/ordem-servico/:id', OrdemServicoController.update);
+routes.get('/ordem-servico-lista', ListaOrdemServicoController.getAll);
+
 
 routes.get('/movimentacaoCount', MovimentacaoOsController.getCount);
 routes.get('/movimentacao-os', MovimentacaoOsController.getAll);
@@ -202,6 +201,7 @@ routes.put('/status-adiantamento/:id', StatusAdiantamentoController.update);
 routes.get('/statusatendimentoCount', StatusAtendimentoController.getCount);
 routes.get('/status-atendimento', StatusAtendimentoController.getAll);
 routes.get('/status-atendimento/:id', StatusAtendimentoController.getById);
+routes.get('/status-atendimento-id/:status', StatusAtendimentoController.getByStatus);
 routes.post('/status-atendimento', StatusAtendimentoController.create);
 routes.put('/status-atendimento/:id', StatusAtendimentoController.update);
 
@@ -242,7 +242,13 @@ routes.post('/tipo-tecnico', TipoTecnicoController.create);
 routes.put('/tipo-tecnico/:id', TipoTecnicoController.update);
 
 //Dashboards
-// routes.get('/dashboardv1', Dashboardv1Controller.getAll);
+ routes.get('/dashboard-card-semanal/:statusatendimentoid', DashboardController.getValoresSemanais);
+ routes.get('/dashboard-card-quinzenal/:statusatendimentoid', DashboardController.getValoresQuinzenais);
+ routes.get('/dashboard-card-mensal/:statusatendimentoid', DashboardController.getValoresMensais);
+ routes.get('/dashboard-card-totalSemanal/:statusatendimentoid', DashboardController.getTotalSemanal);
+ routes.get('/dashboard-card-totalQuinzenal/:statusatendimentoid', DashboardController.getTotalQuinzenal);
+ routes.get('/dashboard-card-totalMensal/:statusatendimentoid', DashboardController.getTotalMensal);
+ 
 // routes.get('/dashboardv1/:id', Dashboardv1Controller.getById);
 // routes.post('/dashboardv1', Dashboardv1Controller.create);
 // routes.put('/dashboardv1/:id', Dashboardv1Controller.update);

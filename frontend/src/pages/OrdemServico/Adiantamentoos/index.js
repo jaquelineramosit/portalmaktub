@@ -2,105 +2,106 @@ import React, { useState, useEffect } from 'react';
 import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, InputGroup, InputGroupAddon, CardFooter, Form } from 'reactstrap';
 import '../../../global.css';
 import { reaisMask } from '../../../mask'
+import { Redirect } from "react-router-dom";
 import api from '../../../../src/services/api';
 const dateFormat = require('dateformat');
 
-const Adiantamentoos = (props) => {
+export default function Adiantamentoos(props) {
+    const [redirect, setRedirect] = useState(false);
 
+    //parametros
     var search = props.location.search;
     var params = new URLSearchParams(search);
     var action = params.get('action');
-    var adiantamentoosIdParam = props.match.params.id;
-
-    const [valoradiantamento, setValorAdiantamento] = useState();
-    const [ordemservicos, setOrdemServicos] = useState([]);
-    const [statusAdiantamentos, setStatusAdiantamentos] = useState([]);
+    var adiantamentoIdParam = props.match.params.id;
     const usuarioId = localStorage.getItem('userId');
-    const [formData, setFormData] = useState({
-        ordemservicoid: 1,
-        valoradiantamento: '',
-        dataadiantamento: '',
-        dataquitacao: '',
-        statusadiantamentoid: 1,
-        ativo: 1
-    });
+
+    const [ordemservicoid, setOrdemservicoid] = useState('');
+    const [valoradiantamento, setValoradiantamento] = useState('');
+    const [dataadiantamento, setDataadiantamento] = useState('');
+    const [dataquitacao, setDataquitacao] = useState('');
+    const [statusadiantamentoid, setStatusadiantamentoid] = useState('');
+    const [ordemservicosid, setOrdemServicosid] = useState([]);
+    const [statusAdiantamentosid, setStatusAdiantamentosid] = useState([]);
+    const [ativo, setAtivo] = useState(1);
 
     useEffect(() => {
         api.get('ordem-servico').then(response => {
-            setOrdemServicos(response.data);
+            setOrdemServicosid(response.data);
         })
     }, [usuarioId]);
     useEffect(() => {
         api.get('status-adiantamento').then(response => {
-            setStatusAdiantamentos(response.data);
+            setStatusAdiantamentosid(response.data);
         })
     }, [usuarioId]);
 
+
     useEffect(() => {
-        if (action === 'edit' && adiantamentoosIdParam !== '') {
-            api.get(`adiantamento-os/${adiantamentoosIdParam}`).then(response => {
-                document.getElementById('cboOrdemServicoId').value = response.data.ordemservicoid;
-                document.getElementById('cboStatusAdiantamentoId').value = response.data.statusadiantamentoid;
-                document.getElementById('txtDataAdiantamento').value = dateFormat(response.data.dataadiantamento, "yyyy-mm-dd");
-                document.getElementById('txtDataquitacao').value = dateFormat(response.data.dataquitacao, "yyyy-mm-dd");
-                document.getElementById('txtValorAdiantamento').value = response.data.valoradiantamento; 
-
-                setFormData({
-                    ...formData,
-                    ordemservicoid: response.data.ordemservicoid,
-                    statusadiantamentoid: response.data.statusadiantamentoid,
-                    dataadiantamento: response.data.dataadiantamento,
-                    dataquitacao: response.data.dataquitacao,
-                    valoradiantamento: response.data.valoradiantamento,
-
-                })
+        if (action === 'edit' && adiantamentoIdParam !== '') {
+            api.get(`adiantamento-os/${adiantamentoIdParam}`).then(response => {
+                setOrdemservicoid(response.data.ordemservicoid);
+                setValoradiantamento(response.data.valoradiantamento);
+                setDataadiantamento(dateFormat(response.data.dataadiantamento, "yyyy-mm-dd"));
+                setDataquitacao(dateFormat(response.data.dataquitacao, "yyyy-mm-dd"));
+                setStatusadiantamentoid(response.data.statusadiantamentoid);
+                response.data.ativo === 1 ? setAtivo(1) : setAtivo(0);
             });
         } else {
             return;
         }
-    }, [adiantamentoosIdParam])
+    }, [adiantamentoIdParam]);
 
     function handleInputChange(event) {
-        const { name, value } = event.target;
-        switch (name) {
-            case 'valoradiantamento':
-                setValorAdiantamento(reaisMask(event.target.value));
-                break;
+        var { name } = event.target;
+
+        if (name === 'ativo') {
+            if (ativo === 1) {
+                setAtivo(0);
+            } else {
+                setAtivo(1);
+            }
         }
-
-        setFormData({ ...formData, [name]: value });
     };
-    console.log(formData)
 
-    async function handleAdiantamentoOs(e) {
+    function handleReset() {
+        setRedirect(true);
+    };
+
+    async function handleStatus(e) {
         e.preventDefault();
 
-        const data = formData;
+        const data = {
+            ordemservicoid,
+            valoradiantamento,
+            dataadiantamento,
+            dataquitacao,
+            statusadiantamentoid,
+            ativo
+        };
 
         if (action === 'edit') {
-
             try {
-                const response = await api.put(`/adiantamento-os/${adiantamentoosIdParam}`, data, {
+                const response = await api.put(`/adiantamento-os/${adiantamentoIdParam}`, data, {
                     headers: {
-                        Authorization: 1,
+                        Authorization: 6,
                     }
                 });
                 alert(`Cadastro atualizado com sucesso.`);
+                setRedirect(true);
             } catch (err) {
-
                 alert('Erro na atualização, tente novamente.');
             }
-
         } else {
-
             if (action === 'novo') {
                 try {
                     const response = await api.post('adiantamento-os', data, {
                         headers: {
-                            Authorization: 1,
+                            Authorization: 6,
                         }
                     });
-                    alert(`Cadastro realizado com sucesso.`);
+                    alert('Cadastro realizado com sucesso.');
+                    setRedirect(true);
                 } catch (err) {
 
                     alert('Erro no cadastro, tente novamente.');
@@ -109,9 +110,12 @@ const Adiantamentoos = (props) => {
         }
     }
 
+
+
     return (
         <div className="animated fadeIn">
-            <Form onSubmit={handleAdiantamentoOs}>
+            {redirect && <Redirect to="/lista-adiantamento-os" />}
+            <Form onSubmit={handleStatus} onReset={handleReset}>
                 <Row>
                     <Col xs="12" md="12">
                         <Card>
@@ -125,9 +129,10 @@ const Adiantamentoos = (props) => {
                                         <Label htmlFor="ordemServicoId">Ordem de Serviço</Label>
                                         <Input type="select" required name="select" id="cboOrdemServicoId" multiple={false}
                                             name="ordemservicoid"
-                                            onChange={handleInputChange}>
+                                            value={ordemservicoid}
+                                            onChange={e => setOrdemservicoid(e.target.value)}>
                                             <option value={undefined} defaultValue>Selecione...</option>
-                                            {ordemservicos.map(ordemservico => (
+                                            {ordemservicosid.map(ordemservico => (
                                                 <option value={ordemservico.id}>{ordemservico.numeroos}</option>
                                             ))}
                                         </Input>
@@ -136,9 +141,10 @@ const Adiantamentoos = (props) => {
                                         <Label htmlFor="statusAtendimentoId">Status do Adiantamento</Label>
                                         <Input type="select" required name="select" id="cboStatusAdiantamentoId" multiple={false}
                                             name="statusadiantamentoid"
-                                            onChange={handleInputChange}>
+                                            value={statusadiantamentoid}
+                                            onChange={e => setStatusadiantamentoid(e.target.value)}>
                                             <option value={undefined} defaultValue>Selecione...</option>
-                                            {statusAdiantamentos.map(statusAdiantamento => (
+                                            {statusAdiantamentosid.map(statusAdiantamento => (
                                                 <option value={statusAdiantamento.id}>{statusAdiantamento.status}</option>
                                             ))}
                                         </Input>
@@ -150,8 +156,8 @@ const Adiantamentoos = (props) => {
                                         <InputGroup>
                                             <Input type="date" required id="txtDataAdiantamento"
                                                 name="dataadiantamento"
-                                                onChange={handleInputChange} >
-                                            </Input>
+                                                value={dataadiantamento}
+                                                onChange={e => setDataadiantamento(e.target.value)} />
                                             <InputGroupAddon addonType="append">
                                                 <Button type="button" color="secondary  fa fa-calendar"></Button>
                                             </InputGroupAddon>
@@ -162,8 +168,8 @@ const Adiantamentoos = (props) => {
                                         <InputGroup>
                                             <Input type="date" required id="txtDataquitacao"
                                                 name="dataquitacao"
-                                                onChange={handleInputChange}>
-                                            </Input>
+                                                value={dataquitacao}
+                                                onChange={e => setDataquitacao(e.target.value)} />
                                             <InputGroupAddon addonType="append">
                                                 <Button type="button" color="secondary  fa fa-calendar"></Button>
                                             </InputGroupAddon>
@@ -177,8 +183,7 @@ const Adiantamentoos = (props) => {
                                             <Input type="text" required id="txtValorAdiantamento" placeholder="00,00"
                                                 value={valoradiantamento}
                                                 name="valoradiantamento"
-                                                onChange={handleInputChange} >
-                                            </Input>
+                                                onChange={e => setValoradiantamento(reaisMask(e.target.value))} />
                                             <InputGroupAddon addonType="append">
                                                 <Button type="button" color="secondary  fa fa-money"></Button>
                                             </InputGroupAddon>
@@ -203,4 +208,3 @@ const Adiantamentoos = (props) => {
         </div>
     );
 }
-export default Adiantamentoos;

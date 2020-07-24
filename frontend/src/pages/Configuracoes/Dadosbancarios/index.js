@@ -1,108 +1,120 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, InputGroup, CardFooter, Form } from 'reactstrap';
 import { AppSwitch } from '@coreui/react'
+import { Redirect } from "react-router-dom";
 import '../../../global.css';
 import api from '../../../../src/services/api';
 
-const Dadosbancarios = (props) => {
+export default function Dadosbancarios(props) {
+    const [redirect, setRedirect] = useState(false);
 
+    //parametros
     var search = props.location.search;
     var params = new URLSearchParams(search);
     var action = params.get('action');
     var dadosbancariosIdParam = props.match.params.id;
-
-    const [tecnicos, setTecnicos] = useState([]);
-    const [bancos, setBancos] = useState([]);
-    const [tipocontas, setTipoContas] = useState([]);
     const usuarioId = localStorage.getItem('userId');
-    const [formData, setFormData] = useState({
-        tecnicoid: 0,
-        bancoid: 0,
-        tipocontaid: 0,
-        agencia: '',
-        conta: '',
-        titularconta: '',
-        doctitular: '',
-        contapadrao: '1',
-        ativo: '1'
-    });
 
-    useEffect(() => {
-        api.get('tecnico').then(response => {
-            setTecnicos(response.data);
-        })
-    }, [usuarioId]);
-    useEffect(() => {
-        api.get('banco').then(response => {
-            setBancos(response.data);
-        })
-    }, [usuarioId]);
-    useEffect(() => {
-        api.get('tipo-conta').then(response => {
-            setTipoContas(response.data);
-        })
-    }, [usuarioId]);
+    const [tecnicoid, setTecnicoid] = useState('');
+    const [bancoid, setBancoid] = useState('');
+    const [tipocontaid, setTipoContaid] = useState('');
+    const [agencia, setAgencia] = useState('');
+    const [conta, setConta] = useState('');
+    const [titularconta, setTitularconta] = useState('');
+    const [doctitular, setDoctitular] = useState('');
+    const [bancosid, setBancosid] = useState([]);
+    const [tipocontasid, setTipoContasid] = useState([]);
+    const [tecnicosid, setTecnicosid] = useState([]);
+    const [contapadrao, setContapadrao] = useState(1);
+    const [ativo, setAtivo] = useState(1);
+
+
     useEffect(() => {
         if (action === 'edit' && dadosbancariosIdParam !== '') {
             api.get(`dados-bancarios/${dadosbancariosIdParam}`).then(response => {
-                document.getElementById('cboTecnicoId').value = response.data.tecnicoid;
-                document.getElementById('cboBancoId').value = response.data.bancoid;
-                document.getElementById('cboTipoContaId').value = response.data.tipocontaid;
-                document.getElementById('txtAgencia').value = response.data.agencia;
-                document.getElementById('txtConta').value = response.data.conta;
-                document.getElementById('txtTitularConta').value = response.data.titularconta;
-                document.getElementById('txtDocTitular').value = response.data.doctitular;
-                setFormData({
-                    ...formData,
-                    tecnicoid: response.data.tecnicoid,
-                    bancoid: response.data.bancoid,
-                    tipocontaid: response.data.tipocontaid,
-                    agencia: response.data.agencia,
-                    conta: response.data.conta,
-                    titularconta: response.data.titularconta,
-                    doctitular: response.data.doctitular,
-                })
+                setTecnicoid(response.data.tecnicoid);
+                setBancoid(response.data.bancoid);
+                setTipoContaid(response.data.tipocontaid);
+                setAgencia(response.data.agencia);
+                setConta(response.data.conta);
+                setTitularconta(response.data.titularconta);
+                setDoctitular(response.data.doctitular);
+                response.data.contapadrao === 1 ? setContapadrao(1) : setContapadrao(0);
             });
         } else {
             return;
         }
-    }, [dadosbancariosIdParam])
+    }, [dadosbancariosIdParam]);
+    useEffect(() => {
+        api.get('tecnico').then(response => {
+            setTecnicosid(response.data);
+        })
+    }, [usuarioId]);
+    useEffect(() => {
+        api.get('banco').then(response => {
+            setBancosid(response.data);
+        })
+    }, [usuarioId]);
+    useEffect(() => {
+        api.get('tipo-conta').then(response => {
+            setTipoContasid(response.data);
+        })
+    }, [usuarioId]);
 
     function handleInputChange(event) {
-        const { name, value } = event.target;
+        var { name } = event.target;
 
-        setFormData({ ...formData, [name]: value });
+        if (name === 'ativo') {
+            if (ativo === 1) {
+                setAtivo(0);
+            } else {
+                setAtivo(1);
+            }
+        }
     };
 
-    async function handleDadosBancarios(e) {
+
+    function handleReset() {
+        setRedirect(true);
+    };
+
+    async function handleStatus(e) {
         e.preventDefault();
 
-        const data = formData;
+        const data = {
+            tecnicoid,
+            bancoid,
+            tipocontaid,
+            agencia,
+            conta,
+            titularconta,
+            doctitular,
+            contapadrao: '1',
+            ativo
+        };
 
         if (action === 'edit') {
-
             try {
                 const response = await api.put(`/dados-bancarios/${dadosbancariosIdParam}`, data, {
                     headers: {
-                        Authorization: 1,
+                        Authorization: 6,
                     }
                 });
                 alert(`Cadastro atualizado com sucesso.`);
+                setRedirect(true);
             } catch (err) {
-
                 alert('Erro na atualização, tente novamente.');
             }
-
         } else {
-
             if (action === 'novo') {
                 try {
                     const response = await api.post('dados-bancarios', data, {
                         headers: {
-                            Authorization: 1,
+                            Authorization: 6,
                         }
                     });
-                    alert(`Cadastro realizado com sucesso.`);
+                    alert('Cadastro realizado com sucesso.');
+                    setRedirect(true);
                 } catch (err) {
 
                     alert('Erro no cadastro, tente novamente.');
@@ -110,9 +122,11 @@ const Dadosbancarios = (props) => {
             }
         }
     }
+
     return (
         <div className="animated fadeIn">
-            <Form onSubmit={handleDadosBancarios}>
+            {redirect && <Redirect to="/lista-dados-bancarios" />}
+            <Form onSubmit={handleStatus} onReset={handleReset}>
                 <Row>
                     <Col xs="12" md="12">
                         <Card>
@@ -126,9 +140,10 @@ const Dadosbancarios = (props) => {
                                         <Label htmlFor="tecnicoId">Técnico</Label>
                                         <Input required type="select" name="select" id="cboTecnicoId"
                                             name="tecnicoid"
-                                            onChange={handleInputChange} >
+                                            value={tecnicoid}
+                                            onChange={e => setTecnicoid(e.target.value)}>
                                             <option value={undefined} defaultValue>Selecione...</option>
-                                            {tecnicos.map(tecnico => (
+                                            {tecnicosid.map(tecnico => (
                                                 <option value={tecnico.id}>{tecnico.nometecnico}</option>
                                             ))}
 
@@ -138,9 +153,10 @@ const Dadosbancarios = (props) => {
                                         <Label htmlFor="bancoId">Banco</Label>
                                         <Input required type="select" name="select" id="cboBancoId"
                                             name="bancoid"
-                                            onChange={handleInputChange} >
+                                            value={bancoid}
+                                            onChange={e => setBancoid(e.target.value)}>
                                             <option value={undefined} defaultValue>Selecione...</option>
-                                            {bancos.map(banco => (
+                                            {bancosid.map(banco => (
                                                 <option value={banco.id}>{banco.nomebanco}</option>
                                             ))}
                                         </Input>
@@ -149,9 +165,10 @@ const Dadosbancarios = (props) => {
                                         <Label htmlFor="tipoContaId">Tipo de Conta</Label>
                                         <Input required type="select" name="select" id="cboTipoContaId"
                                             name="tipocontaid"
-                                            onChange={handleInputChange} >
+                                            value={tipocontaid}
+                                            onChange={e => setTipoContaid(e.target.value)} >
                                             <option value={undefined} defaultValue>Selecione...</option>
-                                            {tipocontas.map(tipoconta => (
+                                            {tipocontasid.map(tipoconta => (
                                                 <option value={tipoconta.id}>{tipoconta.nometipoconta}</option>
                                             ))}
 
@@ -164,22 +181,24 @@ const Dadosbancarios = (props) => {
                                         <InputGroup>
                                             <Input type="text" required id="txtAgencia" placeholder="Agência"
                                                 name="agencia"
-                                                onChange={handleInputChange} />
+                                                value={agencia}
+                                                onChange={e => setAgencia(e.target.value)} />
                                         </InputGroup>
                                     </Col>
                                     <Col md="3">
                                         <Label htmlFor="conta">Conta</Label>
                                         <Input type="text" required id="txtConta" placeholder="Conta"
                                             name="conta"
-                                            onChange={handleInputChange}
-                                        />
+                                            value={conta}
+                                            onChange={e => setConta(e.target.value)} />
                                     </Col>
                                     <Col md="3">
                                         <Label htmlFor="titularConta">Titular da Conta</Label>
                                         <InputGroup>
                                             <Input id="txtTitularConta" required type="text" placeholder="Insira o titular da conta"
                                                 name="titularconta"
-                                                onChange={handleInputChange} />
+                                                value={titularconta}
+                                                onChange={e => setTitularconta(e.target.value)} />
                                         </InputGroup>
                                     </Col>
                                 </FormGroup>
@@ -187,9 +206,10 @@ const Dadosbancarios = (props) => {
                                     <Col md="3">
                                         <Label htmlFor="docTitular">Documento do Titular</Label>
                                         <InputGroup>
-                                            <Input id="txtDocTitular" required type="text"
+                                            <Input id="txtDocTitular" required type="text" placeholder="CPF ou CNPJ"
                                                 name="doctitular"
-                                                onChange={handleInputChange} />
+                                                value={doctitular}
+                                                onChange={e => setDoctitular(e.target.value)} />
                                         </InputGroup>
                                     </Col>
                                 </FormGroup>
@@ -213,4 +233,3 @@ const Dadosbancarios = (props) => {
         </div>
     );
 }
-export default Dadosbancarios;

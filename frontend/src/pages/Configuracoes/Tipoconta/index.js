@@ -1,72 +1,81 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, CardFooter, Form } from 'reactstrap';
 import '../../../global.css';
+import { Redirect } from "react-router-dom";
 import api from '../../../../src/services/api';
 
-const Tipoconta = (props) => {
+export default function Tipoconta(props) {
+    const [redirect, setRedirect] = useState(false);
 
+    //parametros
     var search = props.location.search;
     var params = new URLSearchParams(search);
     var action = params.get('action');
     var tipocontaIdParam = props.match.params.id;
-
     const usuarioId = localStorage.getItem('userId');
-    const [formData, setFormData] = useState({
-        nometipoconta: '',
-        ativo: '1'
-    });
+
+    const [nometipoconta, setNometipoconta] = useState('');
+
+    const [ativo, setAtivo] = useState(1);
+
 
     useEffect(() => {
         if (action === 'edit' && tipocontaIdParam !== '') {
             api.get(`tipo-conta/${tipocontaIdParam}`).then(response => {
-                document.getElementById('txtNomeTipoConta').value = response.data.nometipoconta;
-
-                setFormData({
-                    ...formData,
-                    status: response.data.status,
-                    descstatus: response.data.descstatus,
-                })
+                setNometipoconta(response.data.nometipoconta);
+                response.data.ativo === 1 ? setAtivo(1) : setAtivo(0);
             });
         } else {
             return;
         }
-    }, [tipocontaIdParam])
+    }, [tipocontaIdParam]);
 
     function handleInputChange(event) {
-        const { name, value } = event.target;
+        var { name } = event.target;
 
-        setFormData({ ...formData, [name]: value });
+        if (name === 'ativo') {
+            if (ativo === 1) {
+                setAtivo(0);
+            } else {
+                setAtivo(1);
+            }
+        }
     };
 
-    async function handleTicket(e) {
+    function handleReset() {
+        setRedirect(true);
+    };
+
+    async function handleStatus(e) {
         e.preventDefault();
 
-        const data = formData;
+        const data = {
+            nometipoconta,
+            ativo
+        };
 
         if (action === 'edit') {
-
             try {
                 const response = await api.put(`/tipo-conta/${tipocontaIdParam}`, data, {
                     headers: {
-                        Authorization: 1,
+                        Authorization: 6,
                     }
                 });
                 alert(`Cadastro atualizado com sucesso.`);
+                setRedirect(true);
             } catch (err) {
-
                 alert('Erro na atualização, tente novamente.');
             }
-
         } else {
-
             if (action === 'novo') {
                 try {
                     const response = await api.post('tipo-conta', data, {
                         headers: {
-                            Authorization: 1,
+                            Authorization: 6,
                         }
                     });
-                    alert(`Cadastro realizado com sucesso.`);
+                    alert('Cadastro realizado com sucesso.');
+                    setRedirect(true);
                 } catch (err) {
 
                     alert('Erro no cadastro, tente novamente.');
@@ -74,9 +83,11 @@ const Tipoconta = (props) => {
             }
         }
     }
+
     return (
         <div className="animated fadeIn">
-            <Form onSubmit={handleTicket}>
+            {redirect && <Redirect to="/lista-tipo-conta" />}
+            <Form onSubmit={handleStatus} onReset={handleReset}>
                 <Row>
                     <Col xs="12" md="12">
                         <Card>
@@ -90,7 +101,8 @@ const Tipoconta = (props) => {
                                         <Label htmlFor="nomeTipoConta">Tipo de Conta</Label>
                                         <Input type="text" required id="txtNomeTipoConta" placeholder="Digite o Tipo de Conta"
                                             name="nometipoconta"
-                                            onChange={handleInputChange} />
+                                            value={nometipoconta}
+                                            onChange={e => setNometipoconta(e.target.value)} />
                                     </Col>
                                 </FormGroup>
                                 {/* <FormGroup>                                      
@@ -113,4 +125,3 @@ const Tipoconta = (props) => {
         </div>
     );
 }
-export default Tipoconta;

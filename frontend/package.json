@@ -47,6 +47,7 @@
     "react-router-config": "^5.1.1",
     "react-router-dom": "^5.2.0",
     "react-test-renderer": "^16.13.1",
+    "react-toastify": "^6.0.8",
     "reactstrap": "^8.4.1",
     "reactstrap-validation": "^1.0.0-beta.9",
     "recharts": "^1.8.5",
@@ -55,6 +56,7 @@
     "simple-line-icons": "^2.4.1",
     "styled-components": "^5.1.1",
     "timeformat": "0.0.1",
+    "validator": "^13.1.1",
     "yup": "^0.29.1"
   },
   "devDependencies": {

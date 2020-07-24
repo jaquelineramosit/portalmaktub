@@ -1,87 +1,92 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, CardFooter, Form, } from 'reactstrap';
 import '../../../global.css';
+import { Redirect } from "react-router-dom";
 import api from '../../../../src/services/api';
 
+export default function Subpagina(props) {
+    const [redirect, setRedirect] = useState(false);
 
-const Subpagina = (props) => {
-
+    //parametros
     var search = props.location.search;
     var params = new URLSearchParams(search);
     var action = params.get('action');
-    var subpaginaIdParam = props.match.params.id;
-
-    const [paginas, setPaginas] = useState([]);
+    var statusIdParam = props.match.params.id;
     const usuarioId = localStorage.getItem('userId');
-    const [formData, setFormData] = useState({
-        paginaid: 1,
-        nomesubpagina: '',
-        descricao: '',
-        ativo: 1
-    });
+
+    const [paginaid, setPaginaid] = useState('');
+    const [nomesubpagina, setNomesubpagina] = useState('');
+    const [descricao, setDescricao] = useState('');
+    const [paginasid, setPaginasid] = useState([]);
+    const [ativo, setAtivo] = useState(1);
 
     useEffect(() => {
         api.get('paginas').then(response => {
-            setPaginas(response.data);
+            setPaginasid(response.data);
         })
     }, [usuarioId]);
 
-    
     useEffect(() => {
-        if (action === 'edit' && subpaginaIdParam !== '') {
-            api.get(`sub-paginas/${subpaginaIdParam}`).then(response => {
-                document.getElementById('cboPagina').value = response.data.paginaid;
-                document.getElementById('txtNomeSubPagina').value = response.data.nomesubpagina;
-                document.getElementById('txtDescricao').value = response.data.descricao;
-
-                setFormData({
-                    ...formData,
-                    paginaid: response.data.paginaid,
-                    nomesubpagina: response.data.nomesubpagina,
-                    descricao: response.data.descricao,
-
-                })
+        if (action === 'edit' && statusIdParam !== '') {
+            api.get(`sub-paginas/${statusIdParam}`).then(response => {
+                setPaginaid(response.data.paginaid);
+                setNomesubpagina(response.data.nomesubpagina);
+                setDescricao(response.data.descricao);
+                response.data.ativo === 1 ? setAtivo(1) : setAtivo(0);
             });
         } else {
             return;
         }
-    }, [subpaginaIdParam])
+    }, [statusIdParam]);
 
     function handleInputChange(event) {
-        const { name, value } = event.target;
+        var { name } = event.target;
 
-        setFormData({ ...formData, [name]: value });
+        if (name === 'ativo') {
+            if (ativo === 1) {
+                setAtivo(0);
+            } else {
+                setAtivo(1);
+            }
+        }
     };
 
-    async function handleSubPagina(e) {
+    function handleReset() {
+        setRedirect(true);
+    };
+
+    async function handleStatus(e) {
         e.preventDefault();
 
-        const data = formData;
+        const data = {
+            paginaid,
+            nomesubpagina,
+            descricao,
+            ativo
+        };
 
         if (action === 'edit') {
-
             try {
-                const response = await api.put(`/sub-paginas/${subpaginaIdParam}`, data, {
+                const response = await api.put(`/sub-paginas/${statusIdParam}`, data, {
                     headers: {
-                        Authorization: 1,
+                        Authorization: 6,
                     }
                 });
                 alert(`Cadastro atualizado com sucesso.`);
+                setRedirect(true);
             } catch (err) {
-
                 alert('Erro na atualização, tente novamente.');
             }
-
         } else {
-
             if (action === 'novo') {
                 try {
                     const response = await api.post('sub-paginas', data, {
                         headers: {
-                            Authorization: 1,
+                            Authorization: 6,
                         }
                     });
-                    alert(`Cadastro realizado com sucesso.`);
+                    alert('Cadastro realizado com sucesso.');
+                    setRedirect(true);
                 } catch (err) {
 
                     alert('Erro no cadastro, tente novamente.');
@@ -89,9 +94,11 @@ const Subpagina = (props) => {
             }
         }
     }
+
     return (
         <div className="animated fadeIn">
-            <Form onSubmit={handleSubPagina}>
+            {redirect && <Redirect to="/lista-sub-paginas" />}
+            <Form onSubmit={handleStatus} onReset={handleReset}>
                 <Row>
                     <Col xs="12" md="12">
                         <Card>
@@ -105,19 +112,20 @@ const Subpagina = (props) => {
                                         <Label htmlFor="pagina">Qual a Página?</Label>
                                         <Input type="select" required name="select" id="cboPagina"
                                             name="paginaid"
-                                            onChange={handleInputChange} >
+                                            value={paginaid}
+                                            onChange={e => setPaginaid(e.target.value)}>
                                             <option value={undefined} defaultValue>Selecione...</option>
-                                            {paginas.map(pagina => (
+                                            {paginasid.map(pagina => (
                                                 <option value={pagina.id}>{pagina.nomepagina}</option>
                                             ))}
                                         </Input>
                                     </Col>
                                     <Col md="4">
-                                        <Label htmlFor="nomeSubPagina">Nome da Su Página</Label>
+                                        <Label htmlFor="nomeSubPagina">Nome da SubPágina</Label>
                                         <Input type="text" id="txtNomeSubPagina" multiple placeholder="Digite o nome da Sub Página"
                                             name="nomesubpagina"
-                                            onChange={handleInputChange}
-                                        />
+                                            value={nomesubpagina}
+                                            onChange={e => setNomesubpagina(e.target.value)} />
                                     </Col>
                                 </FormGroup>
                                 <FormGroup row>
@@ -125,8 +133,8 @@ const Subpagina = (props) => {
                                         <Label htmlFor="descricao">Descrião</Label>
                                         <Input type="textarea" id="txtDescricao" multiple placeholder="Digite a Descrição"
                                             name="descricao"
-                                            onChange={handleInputChange}
-                                        />
+                                            value={descricao}
+                                            onChange={e => setDescricao(e.target.value)} />
                                     </Col>
                                 </FormGroup>
                                 {/*<FormGroup row>                                     
@@ -150,4 +158,3 @@ const Subpagina = (props) => {
         </div>
     );
 }
-export default Subpagina;

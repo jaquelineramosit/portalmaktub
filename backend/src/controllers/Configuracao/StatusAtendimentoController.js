@@ -11,6 +11,21 @@ module.exports = {
     
         return response.json(statusatendimento);
     },
+    
+    async getByStatus (request, response) {
+        const  { status }  = request.params;
+
+        const statusatendimento = await connection('statusatendimento')
+            .where('statusatendimento.status', status)
+            .join('usuario', 'usuario.id', '=', 'statusatendimento.usuarioid')   
+            .select([
+                'statusatendimento.*',            
+                'usuario.nome'
+            ])
+            .first();
+    
+        return response.json(statusatendimento);
+    },
 
     async getById (request, response) {
         const  { id }  = request.params;

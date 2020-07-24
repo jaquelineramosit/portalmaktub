@@ -1,143 +1,129 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, InputGroup, InputGroupAddon, CardFooter, Form } from 'reactstrap';
 import '../../../global.css';
+import { Redirect } from "react-router-dom";
 import { cpfMask, rgMask, telMask, celMask, cepMask, numMask } from '../../../mask'
 import api from '../../../../src/services/api';
 
-const Tecnico = (props) => {
+export default function Tecnico(props) {
+    const [redirect, setRedirect] = useState(false);
 
+    //parametros
     var search = props.location.search;
     var params = new URLSearchParams(search);
     var action = params.get('action');
-    var tecnicoIdParam = props.match.params.id;
-
-    const [telefoneFixo, setTelefonefixo] = useState();
-    const [telefoneCelular, setTelefonecelular] = useState();
-    const [cep, setCep] = useState();
-    const [num, setNum] = useState();
-    const [rg, setRg] = useState();
-    const [cpf, setCpf] = useState();
-    const [tipoTecnicos, setTipoTecnicos] = useState([]);
+    var statusIdParam = props.match.params.id;
     const usuarioId = localStorage.getItem('userId');
-    const [formData, setFormData] = useState({
-        tipotecnicoid: 0,
-        nometecnico: '',
-        rg: '',
-        cpf: '',
-        logradouro: '',
-        numero: '',
-        complemento: '',
-        bairro: '',
-        cep: '',
-        cidade: '',
-        estado: '',
-        telefonefixo: '',
-        telefonecelular: '',
-        ativo: '1'
-    });
 
+    const [tipotecnicoid, setTipotecnicoid] = useState('');
+    const [nometecnico, setNometecnico] = useState('');
+    const [logradouro, setLogradouro] = useState('');
+    const [complemento, setComplemento] = useState('');
+    const [bairro, setBairro] = useState('');
+    const [cidade, setCidade] = useState('');
+    const [estado, setEstado] = useState('');
+    const [telefonefixo, setTelefonefixo] = useState('');
+    const [telefonecelular, setTelefonecelular] = useState('');
+    const [cep, setCep] = useState('');
+    const [numero, setNumero] = useState('');
+    const [rg, setRg] = useState('');
+    const [cpf, setCpf] = useState('');
+    const [nomecontatoemergencial, setNomecontatoemergencial] = useState('');
+    const [telefonecttoemergencial, setTelefonecttoemergencial] = useState('');
+    const [tipoTecnicosid, setTipoTecnicosid] = useState([]);
+    const [ativo, setAtivo] = useState(1);
 
     useEffect(() => {
         api.get('tipo-tecnico').then(response => {
-            setTipoTecnicos(response.data);
+            setTipoTecnicosid(response.data);
         })
     }, [usuarioId]);
 
     useEffect(() => {
-        if (action === 'edit' && tecnicoIdParam !== '') {
-            api.get(`tecnico/${tecnicoIdParam}`).then(response => {
-                document.getElementById('txtNomeTecnico').value = response.data.nometecnico;
-                document.getElementById('txtRg').value = response.data.rg;
-                document.getElementById('txtCpf').value = response.data.cpf;
-                document.getElementById('txtLogradouro').value = response.data.logradouro;
-                document.getElementById('txtBairro').value = response.data.bairro;
-                document.getElementById('txtCep').value = response.data.cep;
-                document.getElementById('txtNumero').value = response.data.numero;
-                document.getElementById('txtComplemento').value = response.data.complemento;
-                document.getElementById('txtCidade').value = response.data.cidade;
-                document.getElementById('cboEstado').value = response.data.estado;
-                document.getElementById('txtTelefoneFixo').value = response.data.telefonefixo;
-                document.getElementById('txtTelefoneCelular').value = response.data.telefonecelular;
-                document.getElementById('cboTipoTecnicoId').value = response.data.tipotecnicoid;
-
-                setFormData({
-                    ...formData,
-                    nometecnico: response.data.nometecnico,
-                    rg: response.data.rg,
-                    cpf: response.data.cpf,
-                    logradouro: response.data.logradouro,
-                    bairro: response.data.bairro,
-                    cep: response.data.cep,
-                    numero: response.data.numero,
-                    complemento: response.data.complemento,
-                    cidade: response.data.cidade,
-                    estado: response.data.estado,
-                    telefonefixo: response.data.telefonefixo,
-                    telefonecelular: response.data.telefonecelular,
-                    tipotecnicoid: response.data.tipotecnicoid,
-                })
+        if (action === 'edit' && statusIdParam !== '') {
+            api.get(`tecnico/${statusIdParam}`).then(response => {
+                setTipotecnicoid(response.data.tipotecnicoid);
+                setNometecnico(response.data.nometecnico);
+                setLogradouro(response.data.logradouro);
+                setComplemento(response.data.complemento);
+                setBairro(response.data.bairro);
+                setCidade(response.data.cidade);
+                setEstado(response.data.estado);
+                setTelefonefixo(response.data.telefonefixo);
+                setTelefonecelular(response.data.telefonecelular);
+                setCep(response.data.cep);
+                setNumero(response.data.numero);
+                setRg(response.data.rg);
+                setCpf(response.data.cpf);
+                setNomecontatoemergencial(response.data.nomecontatoemergencial);
+                setTelefonecttoemergencial(response.data.telefonecttoemergencial);
+                response.data.ativo === 1 ? setAtivo(1) : setAtivo(0);
             });
         } else {
             return;
         }
-    }, [tecnicoIdParam])
+    }, [statusIdParam]);
 
     function handleInputChange(event) {
-        const { name, value } = event.target;
-        switch (name) {
-            case 'cpf':
-                setCpf(cpfMask(event.target.value));
-                break;
-            case 'rg':
-                setRg(rgMask(event.target.value));
-                break;
-            case 'cep':
-                setCep(cepMask(event.target.value));
-                break;
-            case 'numero':
-                setNum(numMask(event.target.value));
-                break;
-            case 'telefonefixo':
-                setTelefonefixo(telMask(event.target.value));
-                break;
-            case 'telefonecelular':
-                setTelefonecelular(celMask(event.target.value));
-                break;
-        };
-        setFormData({ ...formData, [name]: value });
-       
-    }
-    console.log(formData)
+        var { name } = event.target;
 
-    async function handleTecnico(e) {
+        if (name === 'ativo') {
+            if (ativo === 1) {
+                setAtivo(0);
+            } else {
+                setAtivo(1);
+            }
+        }
+    };
+
+    function handleReset() {
+        setRedirect(true);
+    };
+
+    async function handleStatus(e) {
         e.preventDefault();
 
-        const data = formData;
+        const data = {
+            tipotecnicoid,
+            nometecnico,
+            rg,
+            cpf,
+            logradouro,
+            numero,
+            complemento,
+            bairro,
+            cep,
+            cidade,
+            estado,
+            telefonefixo,
+            telefonecelular,
+            nomecontatoemergencial,
+            telefonecttoemergencial,
+            ativo
+        };
 
         if (action === 'edit') {
-
             try {
-                const response = await api.put(`/tecnico/${tecnicoIdParam}`, data, {
+                const response = await api.put(`/tecnico/${statusIdParam}`, data, {
                     headers: {
-                        Authorization: 1,
+                        Authorization: 6,
                     }
                 });
                 alert(`Cadastro atualizado com sucesso.`);
+                setRedirect(true);
             } catch (err) {
-
                 alert('Erro na atualização, tente novamente.');
             }
-
         } else {
-
             if (action === 'novo') {
                 try {
                     const response = await api.post('tecnico', data, {
                         headers: {
-                            Authorization: 1,
+                            Authorization: 6,
                         }
                     });
-                    alert(`Cadastro realizado com sucesso.`);
+                    alert('Cadastro realizado com sucesso.');
+                    setRedirect(true);
                 } catch (err) {
 
                     alert('Erro no cadastro, tente novamente.');
@@ -145,9 +131,12 @@ const Tecnico = (props) => {
             }
         }
     }
+
     return (
         <div className="animated fadeIn">
-            <Form onSubmit={handleTecnico}>
+            {redirect && <Redirect to="/lista-tecnicos" />}
+            <Form onSubmit={handleStatus} onReset={handleReset}>
+
                 <Row>
                     <Col xs="12" md="12">
                         <Card>
@@ -161,38 +150,39 @@ const Tecnico = (props) => {
                                         <Label htmlFor="nomeTecnico">Nome Técnico</Label>
                                         <Input type="text" required id="txtNomeTecnico" placeholder="Digite o nome do Técnico"
                                             name="nometecnico"
-                                            onChange={handleInputChange} />
+                                            value={nometecnico}
+                                            onChange={e => setNometecnico(e.target.value)} />
                                     </Col>
                                     <Col md="3">
                                         <Label htmlFor="rg">RG</Label>
                                         <Input type="text" required id="txtRg" placeholder="Digite o RG do Técnico"
                                             value={rg}
                                             name="rg"
-                                            onChange={handleInputChange}
-
-                                        />
+                                            onChange={e => setRg(rgMask(e.target.value))} />
                                     </Col>
                                     <Col md="3">
                                         <Label htmlFor="cpf">CPF</Label>
                                         <Input type="text" required id="txtCpf" placeholder="Digite o CPF do Técnico"
                                             name="cpf"
                                             value={cpf}
-                                            onChange={handleInputChange} />
+                                            onChange={e => setCpf(cpfMask(e.target.value))} />
                                     </Col>
                                 </FormGroup>
                                 <FormGroup row>
                                     <Col md="4">
-                                        <Label htmlFor="logradouro">Logradouro</Label>
+                                        <Label htmlFor="logradouro">Endereço</Label>
                                         <Input type="text" required id="txtLogradouro"
-                                            placeholder="Digite o Logradouro"
+                                            placeholder="Digite o Endereço"
                                             name="logradouro"
-                                            onChange={handleInputChange} />
+                                            value={logradouro}
+                                            onChange={e => setLogradouro(e.target.value)} />
                                     </Col>
                                     <Col md="3">
                                         <Label htmlFor="bairro">Bairro</Label>
                                         <Input type="text" required id="txtBairro" placeholder="Digite o Bairro"
                                             name="bairro"
-                                            onChange={handleInputChange} />
+                                            value={bairro}
+                                            onChange={e => setBairro(e.target.value)} />
                                     </Col>
                                     <Col md="3">
                                         <Label htmlFor="cep">CEP</Label>
@@ -200,7 +190,7 @@ const Tecnico = (props) => {
                                             <Input id="txtCep" size="16" required type="text" placeholder="00000-000"
                                                 value={cep}
                                                 name="cep"
-                                                onChange={handleInputChange} />
+                                                onChange={e => setCep(cepMask(e.target.value))} />
                                             <InputGroupAddon addonType="append">
                                                 <Button type="button" color="secondary fa fa-truck"></Button>
                                             </InputGroupAddon>
@@ -211,27 +201,30 @@ const Tecnico = (props) => {
                                     <Col md="3">
                                         <Label htmlFor="numero">Número</Label>
                                         <Input type="text" required id="txtNumero" placeholder="Digite apenas Números"
-                                            value={num}
+                                            value={numero}
                                             name="numero"
-                                            onChange={handleInputChange} />
+                                            onChange={e => setNumero(numMask(e.target.value))} />
                                     </Col>
                                     <Col md="3">
                                         <Label htmlFor="complemento">Complemento</Label>
                                         <Input type="text" id="txtComplemento" placeholder="Digite o Complemento"
                                             name="complemento"
-                                            onChange={handleInputChange} />
+                                            value={complemento}
+                                            onChange={e => setComplemento(e.target.value)} />
                                     </Col>
                                     <Col md="3">
                                         <Label htmlFor="cidade">Cidade</Label>
                                         <Input type="text" required id="txtCidade" placeholder="Digite a Cidade"
                                             name="cidade"
-                                            onChange={handleInputChange} />
+                                            value={cidade}
+                                            onChange={e => setCidade(e.target.value)} />
                                     </Col>
                                     <Col md="2">
                                         <Label htmlFor="estado">UF</Label>
                                         <Input type="select" required name="select" id="cboEstado" multiple={false}
                                             name="estado"
-                                            onChange={handleInputChange}>
+                                            value={estado}
+                                            onChange={e => setEstado(e.target.value)}>
                                             <option value={undefined}>Selecione...</option>
                                             <option value="1">São Paulo</option>
                                             <option value="2">Rio de Janeiro</option>
@@ -246,9 +239,9 @@ const Tecnico = (props) => {
                                         <Label htmlFor="telefoneFixo">Telefone Fixo</Label>
                                         <InputGroup>
                                             <Input type="text" id="txtTelefoneFixo" placeholder="(11) 9999-9999"
-                                                value={telefoneFixo}
+                                                value={telefonefixo}
                                                 name="telefonefixo"
-                                                onChange={handleInputChange} />
+                                                onChange={e => setTelefonefixo(telMask(e.target.value))} />
                                             <InputGroupAddon addonType="append">
                                                 <Button type="button" color="secondary icon-phone"></Button>
                                             </InputGroupAddon>
@@ -258,9 +251,9 @@ const Tecnico = (props) => {
                                         <Label htmlFor="telefoneCelular">Telefone Celular</Label>
                                         <InputGroup>
                                             <Input type="text" id="txtTelefoneCelular" placeholder="(11) 9999-9999"
-                                                value={telefoneCelular}
+                                                value={telefonecelular}
                                                 name="telefonecelular"
-                                                onChange={handleInputChange} />
+                                                onChange={e => setTelefonecelular(celMask(e.target.value))} />
                                             <InputGroupAddon addonType="append">
                                                 <Button type="button" color="secondary icon-phone"></Button>
                                             </InputGroupAddon>
@@ -270,13 +263,38 @@ const Tecnico = (props) => {
                                         <Label htmlFor="tipoTecnicoId">Tipo do Técnico</Label>
                                         <Input type="select" required name="select" id="cboTipoTecnicoId"
                                             name="tipotecnicoid"
-                                            onChange={handleInputChange}>
+                                            value={tipotecnicoid}
+                                            onChange={e => setTipotecnicoid(e.target.value)}>
                                             <option value={undefined} defaultValue>Selecione...</option>
-                                            {tipoTecnicos.map(tipoTecnico => (
+                                            {tipoTecnicosid.map(tipoTecnico => (
                                                 <option value={tipoTecnico.id}>{tipoTecnico.nometipotecnico}</option>
                                             ))}
                                         </Input>
                                     </Col>
+                                </FormGroup>
+                                <FormGroup row>
+                                <Col md="4">
+                                        <Label htmlFor="Nome">Nome Contato Emergencial</Label>
+                                        <Input type="text" required id="txtNome" placeholder="Digite o Nome"
+                                            name="nomecontatoemergencial"
+                                            value={nomecontatoemergencial}
+                                            onChange={e => setNomecontatoemergencial(e.target.value)} />
+                                    </Col>
+
+                                    <Col md="4">
+                                        <Label htmlFor="TelefoneFixo">Telefone Emergencial</Label>
+                                        <InputGroup>
+                                            <Input type="text" id="txtTelefoneFixo" placeholder="(11) 9999-9999"
+                                                value={telefonecttoemergencial}
+                                                name="telefonecttoemergencial"
+                                                onChange={e => setTelefonecttoemergencial(telMask(e.target.value))} />
+                                            <InputGroupAddon addonType="append">
+                                                <Button type="button" color="secondary icon-phone"></Button>
+                                            </InputGroupAddon>
+                                        </InputGroup>
+
+                                    </Col>
+
                                 </FormGroup>
                                 {/* <FormGroup row>    
                                     <Col md="2">
@@ -297,4 +315,3 @@ const Tecnico = (props) => {
         </div>
     );
 }
-export default Tecnico;
