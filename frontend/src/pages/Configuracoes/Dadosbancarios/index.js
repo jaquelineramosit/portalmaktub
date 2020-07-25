@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, InputGroup, CardFooter, Form } from 'reactstrap';
-import { AppSwitch } from '@coreui/react'
-import { Redirect } from "react-router-dom";
+import { AppSwitch } from 'react'
+import { Redirect } from 'react-router-dom';
 import '../../../global.css';
-import api from '../../../../src/services/api';
+import api from '../../../services/api';
 
-export default function Dadosbancarios(props) {
+export default function DadosBancarios(props) {
     const [redirect, setRedirect] = useState(false);
 
     //parametros

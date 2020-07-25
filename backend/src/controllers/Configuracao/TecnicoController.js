@@ -2,15 +2,25 @@ const connection = require('../../database/connection');
 const getDate = require('../../utils/getDate');
 module.exports = {
     async getAll(request, response) {
-        const tecnico = await connection('tecnico')
+        const { tipoProjetoId } = request.query;
+
+        const tecnico = await connection('tecnico')            
             .join('usuario', 'usuario.id', '=', 'tecnico.usuarioid')
             .join('tipotecnico', 'tipotecnico.id', '=', 'tecnico.tipotecnicoid')
+            .join('tipoprojetotecnico', 'tipoprojetotecnico.tecnicoid', '=', 'tecnico.id')
+            .modify(function(queryBuilder) {
+                if ( tipoProjetoId && tipoProjetoId !== 'Selecione...' ) {
+                    queryBuilder.where('tipoprojetotecnico.tipoprojetoid', tipoProjetoId);
+                }
+            })
             .select([
                 'tecnico.*',
+                'tipotecnico.id as tipotecnicoid',
                 'tipotecnico.nometipotecnico',
-                'tipotecnico.desctipotecnico',
-                'usuario.nome'
-            ]);
+                'tipotecnico.desctipotecnico', 
+                'usuario.nome'       
+            ])
+            .distinct();
 
         return response.json(tecnico);
     },
