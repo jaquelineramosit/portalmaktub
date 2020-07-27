@@ -27,12 +27,13 @@ module.exports = {
         
         const ordemservico = await connection('ordemservico')
             .where('ordemservico.id', id)
-            .join('clientefilial', 'clientefilial.id', '=', 'ordemservico.clientefilialid')
+            .join('clientefilial', 'clientefilial.id', '=', 'ordemservico.clientefilialid')            
             .join('tipoprojeto', 'tipoprojeto.id', '=', 'ordemservico.tipoprojetoid')
             .join('tecnico', 'tecnico.id', '=', 'ordemservico.tecnicoid')
-            .join('usuario', 'usuario.id', '=', 'ordemservico.usuarioid')
+            .join('usuario', 'usuario.id', '=', 'ordemservico.usuarioid')            
             .select([
                 'ordemservico.*',
+                'clientefilial.clienteid',
                 'clientefilial.nomefilial',
                 'tipoprojeto.nometipoprojeto',
                 'tecnico.nometecnico',

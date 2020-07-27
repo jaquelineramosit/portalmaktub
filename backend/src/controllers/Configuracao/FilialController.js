@@ -2,10 +2,17 @@ const connection = require('../../database/connection');
 const getDate = require('../../utils/getDate');
 module.exports = {
     async getAll (request, response) {
+        const { clienteId } = request.query;
+
         const clientefilial = await connection('clientefilial')
         .join('bandeira', 'bandeira.id', '=', 'clientefilial.bandeiraid')  
         .join('cliente', 'cliente.id', '=', 'clientefilial.clienteid')  
         .join('usuario', 'usuario.id', '=', 'clientefilial.usuarioid')
+        .modify(function(queryBuilder) {
+            if ( clienteId && clienteId !== 'Selecione...' ) {
+                queryBuilder.where('clientefilial.clienteid', clienteId);
+            }
+        })
         .select([
             'clientefilial.*',
             'bandeira.nomebandeira',

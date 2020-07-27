@@ -1,57 +1,76 @@
 import React, { useState, useEffect, Component, Fragment } from 'react';
 import { Row, Collapse, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, InputGroup, InputGroupAddon, CardFooter, Form } from 'reactstrap';
-import { Link } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import '../../../global.css';
 import { numMask, reaisMask } from '../../../mask'
 import api from '../../../services/api';
 import moment from 'moment';
 const dateFormat = require('dateformat');
+let clienteFilialIdInicial;
+let clienteIdInicial;
+let tipoProjetoIdInicial;
 
 const OrdemServico = (props) => {
+    const [redirect, setRedirect] = useState(false);
 
     var search = props.location.search;
     var params = new URLSearchParams(search);
     var action = params.get('action');
     var cadosdIdParam = props.match.params.id;
+    const usuarioId = localStorage.getItem('userId');
 
-    const [diadasemana, setDiaSemana] = useState(0);
-    const [dataatendimento, setDataAtendimento] = useState();
-    const [numeroos, setNumos] = useState();
-    const [valorapagar, setValorPagar] = useState();
-    const [valorareceber, setValorReceber] = useState();
-    const [totalapagar, setTotalPagar] = useState();
-    const [totalareceber, setTotalaReceber] = useState();
-    const [custoadicional, setCustoAdicional] = useState();
-    const [nomediadasemana, setNomeDiaSemana] = useState('');
-    const [clientes, setClientes] = useState([]);
+    // informacoes OS
+    const [numeroos, setNumeroos] = useState('');
+    const [datasolicitacao, setDatasolicitacao] = useState('');
+    const [dataatendimento, setDataAtendimento] = useState('');
+    const [clienteid, setClienteid] = useState('');
+    const [clientefilialid, setClientefilialid] = useState('');
+    const [tipoprojetoid, setTipoprojetoid] = useState('');
+    const [descricaoservico, setDescricaoservico] = useState('');
+    const [tecnicoid, setTecnicoid] = useState('');
+    const [observacaoos, setObservacaoos] = useState('');
+    const [datafechamento, setDatafechamento] = useState('');    
+    const [nomediasemana, setNomediasemana] = useState('');
+    const [horaentrada, setHoraentrada] = useState('');
+    const [horasaida, setHorasaida] = useState('');
+    const [totalapagar, setTotalapagar] = useState('');
+    const [totalareceber, setTotalareceber] = useState('');
+    const [diadasemana, setDiadasemana] = useState(0);
+    const [custoadicional, setCustoadicional] = useState('');
+    const [ativo, setAtivo] = useState(1);
+
+    // informacoes servico
+    const [qtdehoras, setQtdehoras] = useState('');
+    const [horaextra, setHoraextra] = useState('');
+    const [valorapagar, setValorapagar] = useState('');
+    const [valorareceber, setValorareceber] = useState('');    
+
+    // informacoes filial
+    const [dadosFilial, setDadosFilial] = useState({
+        nomebandeira : '',
+        telefonefixo : '',
+        telefoneresponsavel : '',
+        ced : '',
+        cep : '',
+        logradouro : '',
+        numero : '',
+        complemento : '',
+        bairro : '',
+        estado : '',
+        cidade : '',
+        horarioiniciosemana : '00:00',
+        horarioiniciosabado : '00:00',
+        horarioiniciodomingo : '00:00',
+        horariofimsemana : '00:00',
+        horariofimsabado : '00:00',
+        horariofimdomingo : '00:00'
+    });
+
+    //combos dinamicos
     const [clienteFiliais, setClienteFiliais] = useState([]);
+    const [clientes, setClientes] = useState([]);
     const [tipoProjeto, setTipoProjeto] = useState([]);
     const [tecnicos, setTecnicos] = useState([]);
-    const usuarioId = localStorage.getItem('userId');
-    const [formData, setFormData] = useState({
-        numeroos: '',
-        datasolicitacao: '',
-        dataatendimento: '',
-        clientefilialid: 1,
-        tipoprojetoid: 1,
-        descricaoservico: '',
-        tecnicoid: 1,
-        observacaoos: '',
-        datafechamento: '',
-        horaentrada: '',
-        horasaida: '',
-        qtdehoras: '',
-        horaextra: '',
-        valorapagar: '',
-        valorareceber: '',
-        totalapagar: '',
-        totalareceber: '',
-        diadasemana: '',
-        custoadicional: '',
-        telefonefixo: '',
-        telefoneresponsavel: '',
-        ativo: 1,
-    });
 
     useEffect(() => {
         api.get('clientes').then(response => {
@@ -76,61 +95,62 @@ const OrdemServico = (props) => {
             setTipoProjeto(response.data);
         })
     }, [usuarioId]);
+
     useEffect(() => {
         if (action === 'edit' && cadosdIdParam !== '') {
             api.get(`ordem-servico/${cadosdIdParam}`).then(response => {
-                document.getElementById('txtNumeroOs').value = response.data.numeroos;
-                document.getElementById('txtDiasemana').value = response.data.diadasemana;
-                document.getElementById('cboClienteFilial').value = response.data.clientefilialid;
-                document.getElementById('cboTipoServico').value = response.data.tipoprojetoid;
-                document.getElementById('cobTecnico').value = response.data.tecnicoid;
-                //document.getElementById('txtObservacaoOs').value = response.data.observacaoos;
-                document.getElementById('txtDescricaoServico').value = response.data.descricaoservico;
-                document.getElementById('txtHoraEntrada').value = response.data.horaentrada;
-                document.getElementById('txtHoraSaida').value = response.data.horasaida;
-                document.getElementById('txtqtdHoras').value = response.data.qtdehoras;
-                document.getElementById('txtValorPagar').value = response.data.valorapagar;
-                document.getElementById('txtValorReceber').value = response.data.valorareceber;
-                document.getElementById('txtHoraExtra').value = response.data.horaextra;
-                document.getElementById('txtTotalPagar').value = response.data.totalapagar;
-                document.getElementById('txtTotalReceber').value = response.data.totalareceber;
-                document.getElementById('txtCustoAdicional').value = response.data.custoadicional;
-                document.getElementById('txtTelefoneFixo').value = response.data.telefonefixo;
-                document.getElementById('txtTelefoneResponsavel').value = response.data.telefoneresponsavel;
-                document.getElementById('txtDataSolicitacao').value = dateFormat(response.data.datasolicitacao, "yyyy-mm-dd");
+                setNumeroos(response.data.numeroos);
+                setDatasolicitacao(dateFormat(response.data.datasolicitacao, "yyyy-mm-dd"));
+                setDataAtendimento(dateFormat(response.data.dataatendimento, "yyyy-mm-dd"));
+                setNomediasemana(getDateNameOfWeekDay(response.data.dataatendimento));
+                setClienteid(response.data.clienteid);
+                clienteIdInicial = response.data.clienteid;
+                setClientefilialid(response.data.clientefilialid);
+                clienteFilialIdInicial = response.data.clientefilialid;
+                setTipoprojetoid(response.data.tipoprojetoid);
+                tipoProjetoIdInicial = response.data.tipoprojetoid;                
+                setDescricaoservico(response.data.descricaoservico);
+                setTotalapagar(response.data.totalapagar);
+                setTotalareceber(response.data.totalareceber);
+                setCustoadicional(response.data.custoadicional);
+                setObservacaoos(response.data.observacaoos);
+                setDatafechamento(response.data.datafechamento);
+                setHoraentrada(response.data.horaentrada);
+                setTecnicoid(response.data.tecnicoid);
+                setHorasaida(response.data.horasaida);                
+                setTipoprojetoid(response.data.tipoprojetoid);
+                setTecnicoid(response.data.tecnicoid);
+                setDescricaoservico(response.data.descricaoservico);
+                response.data.ativo === 1 ? setAtivo(1) : setAtivo(0);
                 document.getElementById('txtDataAtendimento').value = dateFormat(response.data.dataatendimento, "yyyy-mm-dd");
-                setNomeDiaSemana(getNameOfTheDay(response.data.diadasemana));
 
+                api.get(`filiais?clienteId=${clienteIdInicial}`).then(response => {
+                    setClienteFiliais(response.data);
+                });
 
+                api.get(`filiais/${clienteFilialIdInicial}`).then(response => {
+                    setDadosFilial(response.data);
+                });
 
-                setFormData({
-                    ...formData,
-                    numeroos: response.data.numeroos,
-                    datasolicitacao: response.data.datasolicitacao,
-                    dataatendimento: response.data.dataatendimento,
-                    diadasemana: response.data.diadasemana,
-                    clientefilialid: response.data.clientefilialid,
-                    tipoprojetoid: response.data.tipoprojetoid,
-                    tecnicoid: response.data.tecnicoid,
-                    observacaoos: response.data.observacaoos,
-                    descricaoservico: response.data.descricaoservico,
-                    horaentrada: response.data.horaentrada,
-                    horasaida: response.data.horasaida,
-                    qtdehoras: response.data.qtdehoras,
-                    valorapagar: response.data.valorapagar,
-                    valorareceber: response.data.valorareceber,
-                    totalapagar: response.data.totalapagar,
-                    totalareceber: response.data.totalareceber,
-                    custoadicional: response.data.custoadicional,
-                    horaextra: response.data.horaextra,
-                    telefonefixo: response.data.telefonefixo,
-                    telefoneresponsavel: response.data.telefoneresponsavel,
-                })
+                api.get(`tecnico?tipoProjetoId=${tipoProjetoIdInicial}`).then(response => {
+                    setTecnicos(response.data);
+                });
+
+                api.get(`tipo-projeto/${tipoProjetoIdInicial}`).then(response => {
+                    setQtdehoras(response.data.horas);
+                    setHoraextra(response.data.valorhoraextra);
+                    setValorapagar(response.data.despesa);
+                    setValorareceber(response.data.receita);                    
+                });
             });
         } else {
             return;
         }
-    }, [cadosdIdParam])
+    }, [cadosdIdParam]);
+
+    function handleReset() {
+        setRedirect(true);
+    };
 
     const [collapseMulti, setCollapseMulti] = useState([true, true])
     const [openMulti, setOpenMulti] = useState([true, true]);
@@ -173,7 +193,43 @@ const OrdemServico = (props) => {
         )
     }
 
-    function getNameOfTheDay(dayNumber) {
+    function zerarDadosFilial() {
+        setDadosFilial({
+            nomebandeira : '',
+            telefonefixo : '',
+            telefoneresponsavel : '',
+            ced : '',
+            cep : '',
+            logradouro : '',
+            numero : '',
+            complemento : '',
+            bairro : '',
+            estado : '',
+            cidade : '',
+            horarioiniciosemana : '00:00',
+            horarioiniciosabado : '00:00',
+            horarioiniciodomingo : '00:00',
+            horariofimsemana : '00:00',
+            horariofimsabado : '00:00',
+            horariofimdomingo : '00:00'
+        });
+    }
+
+    function zeraDadosServico(){
+        setQtdehoras('');
+        setHoraextra('');
+        setValorapagar('');
+        setValorareceber('');
+    }
+
+    function getDateNameOfWeekDay(data) {
+        var data = String(moment(data));
+
+        var date = new Date(data);
+
+        var diaNumero = date.getDay();
+        setDiadasemana(parseInt(diaNumero));
+
         var diasDaSemana = new Array(7);
         diasDaSemana[0] = "Domingo";
         diasDaSemana[1] = "Segunda-feira";
@@ -183,7 +239,7 @@ const OrdemServico = (props) => {
         diasDaSemana[5] = "Sexta-feira";
         diasDaSemana[6] = "Sábado";
 
-        var nomeDiaDaSemana = diasDaSemana[dayNumber];
+        var nomeDiaDaSemana = diasDaSemana[date.getDay()];
 
         return nomeDiaDaSemana;
     }
@@ -193,60 +249,104 @@ const OrdemServico = (props) => {
 
         const { name, value } = event.target;
 
-        if (name === 'dataatendimento') {
-            if ('dataatendimento' != "") {
-                setDataAtendimento(value);
-
-                var dataAtendimento = String(moment(value));
-
-                var date = new Date(dataAtendimento);
-
-                var diaNumero = date.getDay();
-                setDiaSemana(parseInt(diaNumero));
-
-                var diasDaSemana = new Array(7);
-                diasDaSemana[0] = "Domingo";
-                diasDaSemana[1] = "Segunda-feira";
-                diasDaSemana[2] = "Terça-feira";
-                diasDaSemana[3] = "Quarta-feira";
-                diasDaSemana[4] = "Quinta-feira";
-                diasDaSemana[5] = "Sexta-feira";
-                diasDaSemana[6] = "Sábado";
-
-                var nomeDiaDaSemana = diasDaSemana[date.getDay()];
-
-                setNomeDiaSemana(nomeDiaDaSemana);
-            }
-        }
         switch (name) {
+            case 'dataatendimento':
+                if ('dataatendimento' != "") {
+                    setDataAtendimento(value);
+                    let nomeDiaDaSemana = getDateNameOfWeekDay(value);
+                    setNomediasemana(nomeDiaDaSemana);
+                } 
+                break;
             case 'numeroos':
-                setNumos(numMask(event.target.value));
+                setNumeroos(numMask(event.target.value));
                 break;
             case 'valorapagar':
-                setValorPagar(reaisMask(event.target.value));
+                setValorapagar(reaisMask(event.target.value));
                 break;
             case 'valorareceber':
-                setValorReceber(reaisMask(event.target.value));
+                setValorareceber(reaisMask(event.target.value));
                 break;
             case 'totalapagar':
-                setTotalPagar(reaisMask(event.target.value));
+                setTotalapagar(reaisMask(event.target.value));
                 break;
             case 'totalareceber':
-                setTotalaReceber(reaisMask(event.target.value));
+                setTotalareceber(reaisMask(event.target.value));
                 break;
             case 'custoadicional':
-                setCustoAdicional(reaisMask(event.target.value));
+                setCustoadicional(reaisMask(event.target.value));
                 break;
-
+            case 'clientefilialid':
+                if( value !== 'Selecione...' ) {
+                    setClientefilialid(value);
+                    api.get(`filiais/${value}`).then(response => {
+                        setDadosFilial(response.data);
+                    });
+                } else {
+                    setClientefilialid('');
+                    zerarDadosFilial();
+                }
+                break;
+            case 'clienteid':
+                if( value !== 'Selecione...' ) {
+                    setClienteid(value);
+                    setClientefilialid('');
+                    api.get(`filiais?clienteId=${value}`).then(response => {
+                        setClienteFiliais(response.data);                        
+                        zerarDadosFilial();
+                    });
+                } else {
+                    setClienteFiliais([]);
+                    setClienteid('');
+                    zerarDadosFilial();
+                }                
+                break;
+            case 'tipoprojetoid':
+                if( value !== 'Selecione...' ) {
+                    setTipoprojetoid(value);
+                    setTecnicoid('');
+                    api.get(`tecnico?tipoProjetoId=${value}`).then(response => {
+                        setTecnicos(response.data);
+                    });
+                    api.get(`tipo-projeto/${value}`).then(response => {
+                        setQtdehoras(response.data.horas);
+                        setHoraextra(response.data.valorhoraextra);
+                        setValorapagar(response.data.despesa);
+                        setValorareceber(response.data.receita);                    
+                    });
+                } else {
+                    setTipoprojetoid('');
+                    setTecnicoid('');
+                    setTecnicos([]);
+                    zeraDadosServico();
+                }
         }
-
-        setFormData({ ...formData, [name]: value });
     };
 
     async function handleOs(e) {
         e.preventDefault();
 
-        const data = formData;
+        const data = {
+            numeroos,
+            datasolicitacao,
+            dataatendimento,
+            clientefilialid,
+            tipoprojetoid,
+            descricaoservico,
+            tecnicoid,
+            observacaoos,
+            datafechamento,
+            horaentrada,
+            horasaida,
+            qtdehoras,
+            horaextra,
+            valorapagar,
+            valorareceber,
+            totalapagar,
+            totalareceber,
+            diadasemana,
+            custoadicional,
+            ativo
+        };
 
         if (action === 'edit') {
 
@@ -257,6 +357,7 @@ const OrdemServico = (props) => {
                     }
                 });
                 alert(`Cadastro atualizado com sucesso.`);
+                setRedirect(true);
             } catch (err) {
 
                 alert('Erro na atualização, tente novamente.');
@@ -272,8 +373,8 @@ const OrdemServico = (props) => {
                         }
                     });
                     alert(`Cadastro realizado com sucesso.`);
+                    setRedirect(true);
                 } catch (err) {
-
                     alert('Erro no cadastro, tente novamente.');
                 }
             }
@@ -281,23 +382,25 @@ const OrdemServico = (props) => {
     }
     return (
         <div className="animated fadeIn">
-            <Form onSubmit={handleOs}>
+            { redirect && <Redirect to="/lista-ordem-servico" /> }
+            <Form onSubmit={handleOs} onReset={handleReset}>
                 <Row>
                     <Col xs="12" md="12">
                         <Card>
                             <CardHeader>
                                 <i className="icon-wrench"></i>
                                 <strong>Ordem de Serviço</strong>
-                                <small> nova</small>
+                                {action === 'novo' ? <small> nova</small> : <small> editar</small>}
                             </CardHeader>
                             <CardBody className="border-bottom">
                                 <FormGroup row>
                                     <Col md="4">
                                         <Label htmlFor="numeroOs">Número da OS</Label>
                                         <Input type="text" required id="txtNumeroOs" placeholder="Numero OS"
-                                            // value={numeroos}
+                                            value={numeroos}
                                             name="numeroos"
-                                            onChange={handleInputChange} />
+                                            onChange={e => setNumeroos(e.target.value)}
+                                        />
                                     </Col>
                                 </FormGroup>
                                 <FormGroup row>
@@ -305,8 +408,10 @@ const OrdemServico = (props) => {
                                         <Label htmlFor="dataSolicitacao">Data da Solicitação</Label>
                                         <InputGroup>
                                             <Input type="date" required id="txtDataSolicitacao"
+                                                value={datasolicitacao}
                                                 name="datasolicitacao"
-                                                onChange={handleInputChange} />
+                                                onChange={e => setDatasolicitacao(e.target.value)}
+                                            />
                                             <InputGroupAddon addonType="append">
                                                 <Button type="button" color="secondary  fa fa-calendar fa-lg"></Button>
                                             </InputGroupAddon>
@@ -316,9 +421,10 @@ const OrdemServico = (props) => {
                                         <Label htmlFor="dataatendimento">Data atendimento</Label>
                                         <InputGroup>
                                             <Input type="date" required id="txtDataAtendimento"
-                                                // value={dataatendimento}
+                                                value={dataatendimento}
                                                 name="dataatendimento"
-                                                onChange={handleInputChange} />
+                                                onChange={handleInputChange}
+                                            />
 
                                             <InputGroupAddon addonType="append">
                                                 <Button type="button" color="secondary  fa fa-calendar fa-lg"></Button>
@@ -328,8 +434,8 @@ const OrdemServico = (props) => {
                                     <Col md="4">
                                         <Label htmlFor="didasemana">Dia Da semana</Label>
                                         <Input type="text" required id="txtDiasemana" disabled
-                                            value={nomediadasemana}
-                                        // onChange={e => setDiaSemana(e.target.value)}
+                                            name="nomediasemana"
+                                            value={nomediasemana}
                                         />
                                     </Col>
                                 </FormGroup>
@@ -350,7 +456,8 @@ const OrdemServico = (props) => {
                                         <Col md="4">
                                             <Label htmlFor="clienteId">Cliente</Label>
                                             <InputGroup>
-                                                <Input type="select" name="select" id="cboCliente"
+                                                <Input type="select" id="cboCliente"
+                                                    value={clienteid}
                                                     name="clienteid"
                                                     onChange={handleInputChange} 
                                                 >
@@ -367,7 +474,8 @@ const OrdemServico = (props) => {
                                         <Col md="4">
                                             <Label htmlFor="clienteFilialId">Filial do Cliente</Label>
                                             <InputGroup>
-                                                <Input required type="select" name="select" id="cboClienteFilial"
+                                                <Input required type="select" id="cboClienteFilial"
+                                                    value={clientefilialid}
                                                     name="clientefilialid"
                                                     onChange={handleInputChange} 
                                                 >
@@ -384,9 +492,9 @@ const OrdemServico = (props) => {
                                         <Col md="4">
                                             <Label htmlFor="bandeiraId">Bandeira</Label>
                                             <InputGroup>
-                                                <Input type="text" name="select" id="txtBandeira" readOnly
-                                                    name="txtBandeira"
-                                                    onChange={handleInputChange} 
+                                                <Input type="text" id="txtBandeira" readOnly
+                                                    value={dadosFilial.nomebandeira}
+                                                    name="nomebandeira"
                                                 />                                               
                                             </InputGroup>
                                         </Col>                                        
@@ -395,38 +503,42 @@ const OrdemServico = (props) => {
                                         <Col md="2">
                                             <Label htmlFor="telefoneFixo">Telefone Fixo</Label>
                                             <InputGroup>
-                                                <Input type="text" id="txtTelefoneFixo" placeholder="(11) 9999-9999"
-                                                    name="txtTelefoneFixo" readOnly
-                                                    onChange={handleInputChange} />
-                                                
+                                                <Input type="text" id="txtTelefoneFixo" readOnly
+                                                    value={dadosFilial.telefonefixo}
+                                                    name="telefonefixo"                                                    
+                                                />
                                             </InputGroup>
                                         </Col>
                                         <Col md="2">
                                             <Label htmlFor="telefoneResponsavel">Tel. Responsável</Label>
                                             <InputGroup>
-                                                <Input type="text" id="txtTelefoneResponsavel" placeholder="(11) 9999-9999"
-                                                    name="txtTelefoneResponsavel" readOnly
-                                                    onChange={handleInputChange} />
+                                                <Input type="text" id="txtTelefoneResponsavel" readOnly
+                                                    value={dadosFilial.telefoneresponsavel}
+                                                    name="telefoneresponsavel"
+                                                />
                                                 
                                             </InputGroup>
                                         </Col>
                                         <Col md="2">
                                             <Label htmlFor="lblCed">CED</Label>
-                                            <Input type="text" required id="txtCed"
-                                                name="ced" readOnly
-                                                onChange={handleInputChange} />
+                                            <Input type="text" readOnly required id="txtCed"
+                                                value={dadosFilial.ced}
+                                                name="ced" 
+                                            />
                                         </Col>
                                         <Col md="2">
                                             <Label htmlFor="lblCep">CEP</Label>
-                                            <Input type="text" required id="txtCep"
-                                                name="cep" readOnly
-                                                onChange={handleInputChange} />
+                                            <Input type="text" readOnly required id="txtCep"
+                                                value={dadosFilial.cep}
+                                                name="cep"
+                                            />
                                         </Col>
                                         <Col md="4">
                                             <Label htmlFor="lblLogradouro">Logradouro</Label>
                                             <InputGroup>
-                                                <Input required type="text" name="txtLogradouro" id="txtLogradouro"
-                                                    onChange={handleInputChange} readOnly
+                                                <Input required type="text" readOnly id="txtLogradouro"
+                                                    value={dadosFilial.logradouro}                                                    
+                                                    name="logradouro"
                                                 />
                                                 </InputGroup>
                                         </Col>
@@ -436,9 +548,9 @@ const OrdemServico = (props) => {
                                         <Col md="2">
                                             <Label htmlFor="lblNumero">Nº</Label>
                                             <InputGroup>
-                                                <Input type="text" name="select" id="txtNumero" readOnly
-                                                    name="txtNumero"
-                                                    onChange={handleInputChange} 
+                                                <Input type="text" id="txtNumero" readOnly
+                                                    value={dadosFilial.numero}
+                                                    name="numero"
                                                 />
                                             </InputGroup>
                                         </Col>
@@ -446,55 +558,61 @@ const OrdemServico = (props) => {
                                             <Label htmlFor="lblComplemento">Complemento</Label>
                                             <InputGroup>
                                                 <Input type="text" id="txtComplemento" readOnly
-                                                    name="txtComplemento"
-                                                    onChange={handleInputChange} 
+                                                    value={dadosFilial.complemento}
+                                                    name="complemento"
                                                 />
                                             </InputGroup>
                                         </Col>
                                         <Col md="2">
                                             <Label htmlFor="lblBairro">Bairro</Label>
-                                            <Input type="text" required id="txtBairro"
-                                                name="txtBairro" readOnly
-                                                onChange={handleInputChange} />
+                                            <Input type="text" required id="txtBairro" readOnly
+                                                value={dadosFilial.bairro}
+                                                name="bairro"
+                                            />
                                         </Col>
                                         <Col md="2">
                                             <Label htmlFor="lblEstado">Estado</Label>
                                             <InputGroup>
-                                                <Input required type="text" name="txtEstado" id="txtEstado"
-                                                    onChange={handleInputChange} readOnly
+                                                <Input required type="text" id="txtEstado" readOnly
+                                                    value={dadosFilial.estado}
+                                                    name="estado"                                                     
                                                 />
                                             </InputGroup>
                                         </Col>
                                         <Col md="4">
                                             <Label htmlFor="lblCidade">Cidade</Label>
-                                            <Input type="text" required id="txtCidade"
-                                                name="txtCidade" readOnly
-                                                onChange={handleInputChange} />
+                                            <Input type="text" required id="txtCidade" readOnly
+                                                value={dadosFilial.cidade}
+                                                name="cidade"
+                                            />
                                         </Col>
                                         </FormGroup>                           
                                     <FormGroup row>
                                         <Col md="4">
                                             <Label htmlFor="lblHorarioInicioSemana">Horario Início da semana</Label>
                                             <InputGroup>
-                                                <Input type="time" required id="txtHorarioInicioSemana"
-                                                    name="txtHorarioInicioSemana" readOnly
-                                                    onChange={handleInputChange} />
-                                            </InputGroup>
-                                        </Col>
-                                        <Col md="4">
-                                            <Label htmlFor="lblHorarioInicioDomingo">Horario Início do Domingo</Label>
-                                            <InputGroup>
-                                                <Input type="time" required id="txtHorarioInicioDomingo"
-                                                    name="txtHorarioInicioDomingo" readOnly
-                                                    onChange={handleInputChange} />
+                                                <Input type="time" required id="txtHorarioInicioSemana" readOnly
+                                                    value={dadosFilial.horarioiniciosemana}
+                                                    name="horarioiniciosemana"
+                                                />
                                             </InputGroup>
                                         </Col>
                                         <Col md="4">
                                             <Label htmlFor="lblHorarioInicioSabado">Horario Início do Sábado</Label>
                                             <InputGroup>
-                                                <Input type="time" required id="txtHorarioInicioSabado"
-                                                    name="txtHorarioInicioSabado" readOnly
-                                                    onChange={handleInputChange} />
+                                                <Input type="time" required id="txtHorarioInicioSabado" readOnly
+                                                    value={dadosFilial.horarioiniciosabado}
+                                                    name="horarioiniciosabado"
+                                                />
+                                            </InputGroup>
+                                        </Col>
+                                        <Col md="4">
+                                            <Label htmlFor="lblHorarioInicioSabado">Horario Início do Domingo</Label>
+                                            <InputGroup>
+                                                <Input type="time" required id="txtHorarioInicioDomingo" readOnly
+                                                    value={dadosFilial.horarioiniciodomingo}
+                                                    name="horarioiniciodomingo"
+                                                />
                                             </InputGroup>
                                         </Col>
                                     </FormGroup>
@@ -502,25 +620,28 @@ const OrdemServico = (props) => {
                                         <Col md="4">
                                             <Label htmlFor="lblHorarioFimSemana">Horario Fim da semana</Label>
                                             <InputGroup>
-                                                <Input type="time" required id="txtHorarioFimSemana"
-                                                    name="txtHorarioFimSemana" readOnly
-                                                    onChange={handleInputChange} />
+                                                <Input type="time" required id="txtHorarioFimSemana" readOnly
+                                                    value={dadosFilial.horariofimsemana}
+                                                    name="horariofimsemana"
+                                                />
+                                            </InputGroup>
+                                        </Col>
+                                        <Col md="4">
+                                            <Label htmlFor="lblHorarioFimSabado">Horario Fim do Sábado</Label>
+                                            <InputGroup>
+                                                <Input type="time" required id="txtHorarioFimSabado" readOnly
+                                                    value={dadosFilial.horariofimsabado}
+                                                    name="horariofimsabado"
+                                                />
                                             </InputGroup>
                                         </Col>
                                         <Col md="4">
                                             <Label htmlFor="lblHorarioFimDomingo">Horario Fim do Domingo</Label>
                                             <InputGroup>
-                                                <Input type="time" required id="txtHorarioFimDomingo"
-                                                    name="txtHorarioFimDomingo" readOnly
-                                                    onChange={handleInputChange} />
-                                                </InputGroup>
-                                        </Col>
-                                        <Col md="4">
-                                            <Label htmlFor="lblHorarioFimSabado">Horario Fim do Sábado</Label>
-                                            <InputGroup>
-                                                <Input type="time" required id="txtHorarioFimSabado"
-                                                    name="txtHorarioFimSabado" readOnly
-                                                    onChange={handleInputChange} />
+                                                <Input type="time" required id="txtHorarioFimDomingo" readOnly
+                                                    value={dadosFilial.horariofimdomingo}
+                                                    name="horariofimdomingo"
+                                                />
                                             </InputGroup>
                                         </Col>
                                     </FormGroup>
@@ -541,12 +662,13 @@ const OrdemServico = (props) => {
                                         <Col md="4">
                                             <Label htmlFor="tiposervicoid">Tipo de Serviço</Label>
                                             <InputGroup>
-                                                <Input required type="select" name="select" id="cboTipoServico"
+                                                <Input required type="select" id="cboTipoServico"
+                                                    value={tipoprojetoid}
                                                     name="tipoprojetoid"
                                                     onChange={handleInputChange}>
                                                     <option value={undefined} defaultValue>Selecione...</option>
                                                     {tipoProjeto.map(tipoProjeto => (
-                                                        <option key={tipoProjeto.id} value={tipoProjeto.id}>{tipoProjeto.nometipoprojeto}</option>
+                                                        <option key={`tipoProjeto${tipoProjeto.id}`} value={tipoProjeto.id}>{tipoProjeto.nometipoprojeto}</option>
                                                     ))}
                                                 </Input>
                                                 <InputGroupAddon addonType="append">
@@ -557,12 +679,13 @@ const OrdemServico = (props) => {
                                         <Col md="4">
                                             <Label htmlFor="tecnicoId"> Técnico</Label>
                                             <InputGroup>
-                                                <Input required type="select" name="select" id="cobTecnico"
+                                                <Input required type="select" id="cobTecnico"
+                                                    value={tecnicoid}
                                                     name="tecnicoid"
-                                                    onChange={handleInputChange} >
+                                                    onChange={e => setTecnicoid(e.target.value)} >
                                                     <option value={undefined} defaultValue>Selecione...</option>
                                                     {tecnicos.map(tecnico => (
-                                                        <option key={tecnico.id} value={tecnico.id}>{tecnico.nometecnico}</option>
+                                                        <option key={`tecnicoid${tecnico.id}`} value={tecnico.id}>{tecnico.nometecnico}</option>
                                                     ))}
                                                 </Input>
                                                 <InputGroupAddon addonType="append">
@@ -576,8 +699,10 @@ const OrdemServico = (props) => {
                                             <Label htmlFor="descricaoservico">Descrição do Serviço</Label>
                                             <InputGroup>
                                                 <Input id="txtDescricaoServico" rows="5" required type="textarea" placeholder="Descrição do Serviço"
+                                                    value={descricaoservico}
                                                     name="descricaoservico"
-                                                    onChange={handleInputChange} />
+                                                    onChange={e => setDescricaoservico(e.target.value)}
+                                                />
                                             </InputGroup>
                                         </Col>
                                     </FormGroup>
@@ -587,8 +712,10 @@ const OrdemServico = (props) => {
                                             <InputGroup>
                                                 <Input type="time" required id="txtHoraEntrada"
                                                     placeholder="00:00:00"
+                                                    value={horaentrada}
                                                     name="horaentrada"
-                                                    onChange={handleInputChange} />
+                                                    onChange={e => setHoraentrada(e.target.value)}
+                                                />
                                                 <InputGroupAddon addonType="append">
                                                     <Button type="button" color="secondary fa fa-clock-o"></Button>
                                                 </InputGroupAddon>
@@ -598,8 +725,10 @@ const OrdemServico = (props) => {
                                             <Label htmlFor="horaSaida">Hora de Saída</Label>
                                             <InputGroup>
                                                 <Input type="time" required name="time" id="txtHoraSaida"
+                                                    value={horasaida}
                                                     name="horasaida"
-                                                    onChange={handleInputChange} />
+                                                    onChange={e => setHorasaida(e.target.value)}
+                                                />
                                                 <InputGroupAddon addonType="append">
                                                     <Button type="button" color="secondary fa fa-clock-o"></Button>
                                                 </InputGroupAddon>
@@ -609,8 +738,10 @@ const OrdemServico = (props) => {
                                             <Label htmlFor="qtHoras">Quantidade de Horas</Label>
                                             <InputGroup>
                                                 <Input type="text" id="txtqtdHoras" placeholder="00:00"
+                                                    value={qtdehoras}
                                                     name="qtdehoras"
-                                                    onChange={handleInputChange} />
+                                                    onChange={e => setQtdehoras(e.target.value)}
+                                                />
                                                 <InputGroupAddon addonType="append">
                                                     <Button type="button" color="secondary fa fa-clock-o"></Button>
                                                 </InputGroupAddon>
@@ -624,7 +755,8 @@ const OrdemServico = (props) => {
                                                 <Input type="text" id="txtValorPagar" placeholder="R$00,00"
                                                     value={valorapagar}
                                                     name="valorapagar"
-                                                    onChange={handleInputChange} />
+                                                    onChange={e => setValorapagar(e.target.value)}
+                                                />
                                                 <InputGroupAddon addonType="append">
                                                     <Button type="button" color="secondary fa fa-money"></Button>
                                                 </InputGroupAddon>
@@ -636,7 +768,7 @@ const OrdemServico = (props) => {
                                                 <Input type="text" id="txtValorReceber" placeholder="R$00,00"
                                                     value={valorareceber}
                                                     name="valorareceber"
-                                                    onChange={handleInputChange} />
+                                                    onChange={e => setValorareceber(e.target.value)} />
                                                 <InputGroupAddon addonType="append">
                                                     <Button type="button" color="secondary fa fa-money"></Button>
                                                 </InputGroupAddon>
@@ -646,8 +778,10 @@ const OrdemServico = (props) => {
                                             <Label htmlFor="horaextra">Hora Extra</Label>
                                             <InputGroup>
                                                 <Input type="text" id="txtHoraExtra" placeholder="00:00"
+                                                    value={horaextra}
                                                     name="horaextra"
-                                                    onChange={handleInputChange} />
+                                                    onChange={e => setHoraextra(e.target.value)}
+                                                />
                                                 <InputGroupAddon addonType="append">
                                                     <Button type="button" color="secondary fa fa-clock-o"></Button>
                                                 </InputGroupAddon>
@@ -661,7 +795,8 @@ const OrdemServico = (props) => {
                                             <Input type="text" id="txtTotalPagar" placeholder="R$00,00"
                                                 value={totalapagar}
                                                 name="totalapagar"
-                                                onChange={handleInputChange} />
+                                                onChange={e => setTotalapagar(e.target.value)}
+                                            />
                                             <InputGroupAddon addonType="append">
                                                 <Button type="button" color="secondary fa fa-money"></Button>
                                             </InputGroupAddon>
@@ -673,7 +808,8 @@ const OrdemServico = (props) => {
                                             <Input type="text" id="txtTotalReceber" placeholder="R$00,00"
                                                 value={totalareceber}
                                                 name="totalareceber"
-                                                onChange={handleInputChange} />
+                                                onChange={e => setTotalareceber(e.target.value)}
+                                            />
                                             <InputGroupAddon addonType="append">
                                                 <Button type="button" color="secondary fa fa-money"></Button>
                                             </InputGroupAddon>
@@ -685,7 +821,7 @@ const OrdemServico = (props) => {
                                             <Input type="text" id="txtCustoAdicional" placeholder="R$00,00"
                                                 value={custoadicional}
                                                 name="custoadicional"
-                                                onChange={handleInputChange} />
+                                                onChange={e => setCustoadicional(e.target.value)} />
                                             <InputGroupAddon addonType="append">
                                                 <Button type="button" color="secondary fa fa-money"></Button>
                                             </InputGroupAddon>

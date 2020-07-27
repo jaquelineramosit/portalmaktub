@@ -24,15 +24,15 @@ const Filiais = React.lazy(() => import('./pages/Configuracoes/Filiais'));
 const Bandeira = React.lazy(() => import('./pages/Configuracoes/Bandeira'));
 const Parceiros = React.lazy(() => import('./pages/Configuracoes/Parceiros'));
 const Tecnico = React.lazy(() => import('./pages/Configuracoes/Tecnico'));
-const Tipotecnico = React.lazy(() => import('./pages/Configuracoes/Tipotecnico'));
+const TipoTecnico = React.lazy(() => import('./pages/Configuracoes/TipoTecnico'));
 const Disponibilidade = React.lazy(() => import('./pages/Configuracoes/Disponibilidade'));
-const Disponibilidadetecnico = React.lazy(() => import('./pages/Configuracoes/Disponibilidadetecnico'));
-const Tipoprojeto = React.lazy(() => import('./pages/Configuracoes/Tipoprojeto'));
+const DisponibilidadeDeTecnico = React.lazy(() => import('./pages/Configuracoes/DisponibilidadeDeTecnico'));
+const Tipoprojeto = React.lazy(() => import('./pages/Configuracoes/TipoProjeto'));
 const Projetotecnico = React.lazy(() => import('./pages/Configuracoes/Projetotecnico'));
 const Ferramentas = React.lazy(() => import('./pages/Configuracoes/Ferramentas'));
-const Dadosbancarios = React.lazy(() => import('./pages/Configuracoes/Dadosbancarios'));
+const DadosBancarios = React.lazy(() => import('./pages/Configuracoes/DadosBancarios'));
 const Banco = React.lazy(() => import('./pages/Configuracoes/Banco'));
-const Tipoconta = React.lazy(() => import('./pages/Configuracoes/Tipoconta'));
+const TipoConta = React.lazy(() => import('./pages/Configuracoes/TipoConta'));
 const StatusAdiantamento = React.lazy(() => import('./pages/Configuracoes/StatusAdiantamento'));
 const StatusAtendimento = React.lazy(() => import('./pages/Configuracoes/StatusAtendimento'));
 const StatusCobranca = React.lazy(() => import('./pages/Configuracoes/StatusCobranca'));
@@ -126,24 +126,24 @@ const routes = [
   { path: '/parceiros/:id', name: 'Parceiros', component: Parceiros },
   { path: '/tecnico', exact:true, name: 'Tecnico', component: Tecnico },
   { path: '/tecnico/:id', name: 'Tecnico', component: Tecnico },
-  { path: '/tipo-tecnico', exact:true, name: 'Tipo do Tecnico', component: Tipotecnico },
-  { path: '/tipo-tecnico/:id', name: 'Tipo do Tecnico', component: Tipotecnico },
+  { path: '/tipo-tecnico', exact:true, name: 'Tipo do Tecnico', component: TipoTecnico },
+  { path: '/tipo-tecnico/:id', name: 'Tipo do Tecnico', component: TipoTecnico },
   { path: '/disponibilidade', exact:true, name: 'disponibilidade', component: Disponibilidade },
   { path: '/disponibilidade/:id', name: 'disponibilidade', component: Disponibilidade },
-  { path: '/disponibilidade-tecnico', exact:true, name: 'Disponibilidade do tecnico', component: Disponibilidadetecnico },
-  { path: '/disponibilidade-tecnico/:id', name: 'Disponibilidade do tecnico', component: Disponibilidadetecnico },
+  { path: '/disponibilidade-tecnico', exact:true, name: 'Disponibilidade do tecnico', component: DisponibilidadeDeTecnico },
+  { path: '/disponibilidade-tecnico/:id', name: 'Disponibilidade do tecnico', component: DisponibilidadeDeTecnico },
   { path: '/tipo-projeto', exact:true, name: 'Tipo de Projeto', component: Tipoprojeto },
   { path: '/tipo-projeto/:id', name: 'Tipo de Projeto', component: Tipoprojeto },
   { path: '/projeto-tecnico', exact:true, name: 'Projeto X Tecnico', component: Projetotecnico },
   { path: '/projeto-tecnico/:id', name: 'Projeto X Tecnico', component: Projetotecnico },
   { path: '/ferramentas', exact:true, name: 'Ferramentas', component: Ferramentas },
   { path: '/ferramentas/:id', name: 'Ferramentas', component: Ferramentas },
-  { path: '/dados-bancarios', exact:true, name: 'Dados bancarios', component: Dadosbancarios },
-  { path: '/dados-bancarios/:id', name: 'Dados bancarios', component: Dadosbancarios },
+  { path: '/dados-bancarios', exact:true, name: 'Dados bancarios', component: DadosBancarios },
+  { path: '/dados-bancarios/:id', name: 'Dados bancarios', component: DadosBancarios },
   { path: '/banco', exact:true,  name: 'Banco', component: Banco },
   { path: '/banco/:id', name: 'Banco', component: Banco },
-  { path: '/tipo-conta', exact:true, name: 'Tipo de Conta', component: Tipoconta },
-  { path: '/tipo-conta/:id', name: 'Tipo de Conta', component: Tipoconta },
+  { path: '/tipo-conta', exact:true, name: 'Tipo de Conta', component: TipoConta },
+  { path: '/tipo-conta/:id', name: 'Tipo de Conta', component: TipoConta },
   { path: '/status-adiantamento', exact:true, name: 'Status de adiantamento', component: StatusAdiantamento },
   { path: '/status-adiantamento/:id', name: 'Status de adiantamento', component: StatusAdiantamento },
   { path: '/status-atendimento', exact:true, name: 'Status de atendimento', component: StatusAtendimento },
