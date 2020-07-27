@@ -19,6 +19,7 @@ export default function ListaOrdemServico(props) {
             setTotal(response.data);
         })
     }, [usuarioId]);
+    
 
     useEffect(() => {
         api.get('ordem-servico', {
@@ -42,6 +43,18 @@ export default function ListaOrdemServico(props) {
         {
             name: 'Filial',
             selector: 'nomefilial',
+            sortable: true,
+
+        },
+        {
+            name: 'Cliente',
+            selector: 'nomecliente',
+            sortable: true,
+
+        },
+        {
+            name: 'Data Solicitação',
+            selector: 'datasolicitacao',
             sortable: true,
 
         },
