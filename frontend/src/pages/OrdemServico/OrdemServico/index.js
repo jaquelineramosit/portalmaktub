@@ -9,6 +9,12 @@ const dateFormat = require('dateformat');
 let clienteFilialIdInicial;
 let clienteIdInicial;
 let tipoProjetoIdInicial;
+let valorFimInicial;
+let valorInicioInicial;
+let totalPagarInicial;
+let totalReceberInicial;
+let qdeHoras = 0;
+let qdeHorasExtra = 0;
 
 const OrdemServico = (props) => {
     const [redirect, setRedirect] = useState(false);
@@ -31,10 +37,11 @@ const OrdemServico = (props) => {
     const [observacaoos, setObservacaoos] = useState('');
     const [datafechamento, setDatafechamento] = useState('');    
     const [nomediasemana, setNomediasemana] = useState('');
+    const [horadecimal, setHoraDecimal] = useState(0);
     const [horaentrada, setHoraentrada] = useState('');
     const [horasaida, setHorasaida] = useState('');
-    const [totalapagar, setTotalapagar] = useState('');
-    const [totalareceber, setTotalareceber] = useState('');
+    const [totalapagar, setTotalapagar] = useState(0);
+    const [totalareceber, setTotalareceber] = useState(0);
     const [diadasemana, setDiadasemana] = useState(0);
     const [custoadicional, setCustoadicional] = useState('');
     const [ativo, setAtivo] = useState(1);
@@ -116,8 +123,10 @@ const OrdemServico = (props) => {
                 setObservacaoos(response.data.observacaoos);
                 setDatafechamento(response.data.datafechamento);
                 setHoraentrada(response.data.horaentrada);
+                valorInicioInicial = new Date("2020-08-29 " + response.data.horaentrada).getHours();
                 setTecnicoid(response.data.tecnicoid);
-                setHorasaida(response.data.horasaida);                
+                setHorasaida(response.data.horasaida);   
+                valorFimInicial = new Date("2020-08-29 " + response.data.horasaida).getHours();          
                 setTipoprojetoid(response.data.tipoprojetoid);
                 setTecnicoid(response.data.tecnicoid);
                 setDescricaoservico(response.data.descricaoservico);
@@ -140,8 +149,24 @@ const OrdemServico = (props) => {
                     setQtdehoras(response.data.horas);
                     setHoraextra(response.data.valorhoraextra);
                     setValorapagar(response.data.despesa);
-                    setValorareceber(response.data.receita);                    
-                });
+                    totalPagarInicial = response.data.despesa;
+                    setValorareceber(response.data.receita);    
+                    totalReceberInicial = response.data.receita;
+                    setHoraDecimal(response.data.horadecimal);  
+                    
+                    qdeHoras = valorFimInicial - valorInicioInicial;
+                    qdeHorasExtra =   parseInt(qdeHoras) - parseInt(response.data.horas);
+
+                    if( qdeHorasExtra  > 0 ) {
+                        totalPagarInicial = (response.data.horadecimal * parseInt(qdeHorasExtra)) + totalPagarInicial;
+                        totalReceberInicial = (response.data.horadecimal * parseInt(qdeHorasExtra)) + totalReceberInicial;
+                    }
+
+                    setTotalapagar(totalPagarInicial);
+                    setTotalareceber(totalReceberInicial);
+
+                });  
+                
             });
         } else {
             return;
@@ -151,6 +176,19 @@ const OrdemServico = (props) => {
     function handleReset() {
         setRedirect(true);
     };
+
+    function TotaisPagarReceber() {
+        qdeHoras = valorFimInicial - valorInicioInicial;
+        qdeHorasExtra =  parseInt(qtdehoras) - parseInt(qdeHoras);
+
+        if( qdeHorasExtra  > 0 ) {
+            totalPagarInicial = (horadecimal * parseInt(qdeHorasExtra)) + totalPagarInicial;
+            totalReceberInicial = (horadecimal * parseInt(qdeHorasExtra)) + totalReceberInicial;
+        }
+
+        setTotalapagar(totalPagarInicial);
+        setTotalareceber(totalReceberInicial);
+    }
 
     const [collapseMulti, setCollapseMulti] = useState([true, true])
     const [openMulti, setOpenMulti] = useState([true, true]);
@@ -220,6 +258,8 @@ const OrdemServico = (props) => {
         setHoraextra('');
         setValorapagar('');
         setValorareceber('');
+        setTotalareceber('');
+        setTotalapagar('');
     }
 
     function getDateNameOfWeekDay(data) {
@@ -309,9 +349,13 @@ const OrdemServico = (props) => {
                     });
                     api.get(`tipo-projeto/${value}`).then(response => {
                         setQtdehoras(response.data.horas);
+                        qdeHoras = response.data.horas;
                         setHoraextra(response.data.valorhoraextra);
                         setValorapagar(response.data.despesa);
-                        setValorareceber(response.data.receita);                    
+                        totalPagarInicial = response.data.despesa;
+                        setValorareceber(response.data.receita);    
+                        totalReceberInicial = response.data.receita;
+                        TotaisPagarReceber();
                     });
                 } else {
                     setTipoprojetoid('');
@@ -319,6 +363,17 @@ const OrdemServico = (props) => {
                     setTecnicos([]);
                     zeraDadosServico();
                 }
+                break;
+            case 'horaentrada':
+                setHoraentrada(value);
+                valorInicioInicial = new Date("2020-08-29 " + value).getHours();
+                TotaisPagarReceber();
+                break;
+            case 'horasaida':
+                setHorasaida(value);
+                valorFimInicial = new Date("2020-08-29 " + value).getHours();
+                TotaisPagarReceber();
+                break;
         }
     };
 
@@ -714,7 +769,7 @@ const OrdemServico = (props) => {
                                                     placeholder="00:00:00"
                                                     value={horaentrada}
                                                     name="horaentrada"
-                                                    onChange={e => setHoraentrada(e.target.value)}
+                                                    onChange={handleInputChange}
                                                 />
                                                 <InputGroupAddon addonType="append">
                                                     <Button type="button" color="secondary fa fa-clock-o"></Button>
@@ -727,7 +782,7 @@ const OrdemServico = (props) => {
                                                 <Input type="time" required name="time" id="txtHoraSaida"
                                                     value={horasaida}
                                                     name="horasaida"
-                                                    onChange={e => setHorasaida(e.target.value)}
+                                                    onChange={handleInputChange}
                                                 />
                                                 <InputGroupAddon addonType="append">
                                                     <Button type="button" color="secondary fa fa-clock-o"></Button>
@@ -737,10 +792,10 @@ const OrdemServico = (props) => {
                                         <Col md="4">
                                             <Label htmlFor="qtHoras">Quantidade de Horas</Label>
                                             <InputGroup>
-                                                <Input type="text" id="txtqtdHoras" placeholder="00:00"
+                                                <Input type="text" id="txtqtdHoras" readOnly
                                                     value={qtdehoras}
                                                     name="qtdehoras"
-                                                    onChange={e => setQtdehoras(e.target.value)}
+                                                    // onChange={handleInputChange}
                                                 />
                                                 <InputGroupAddon addonType="append">
                                                     <Button type="button" color="secondary fa fa-clock-o"></Button>
@@ -792,10 +847,9 @@ const OrdemServico = (props) => {
                                     <Col md="4">
                                         <Label htmlFor="totalpagar">Total a pagar</Label>
                                         <InputGroup>
-                                            <Input type="text" id="txtTotalPagar" placeholder="R$00,00"
+                                            <Input type="text" id="txtTotalPagar" readOnly
                                                 value={totalapagar}
                                                 name="totalapagar"
-                                                onChange={e => setTotalapagar(e.target.value)}
                                             />
                                             <InputGroupAddon addonType="append">
                                                 <Button type="button" color="secondary fa fa-money"></Button>
@@ -805,10 +859,9 @@ const OrdemServico = (props) => {
                                     <Col md="4">
                                         <Label htmlFor="totalreceber">Total a Receber</Label>
                                         <InputGroup>
-                                            <Input type="text" id="txtTotalReceber" placeholder="R$00,00"
+                                            <Input type="text" id="txtTotalReceber" readOnly
                                                 value={totalareceber}
                                                 name="totalareceber"
-                                                onChange={e => setTotalareceber(e.target.value)}
                                             />
                                             <InputGroupAddon addonType="append">
                                                 <Button type="button" color="secondary fa fa-money"></Button>
