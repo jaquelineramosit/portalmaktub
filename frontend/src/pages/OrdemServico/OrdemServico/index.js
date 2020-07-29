@@ -300,18 +300,18 @@ const OrdemServico = (props) => {
             case 'numeroos':
                 setNumeroos(numMask(event.target.value));
                 break;
-            case 'valorapagar':
-                setValorapagar(reaisMask(event.target.value));
-                break;
-            case 'valorareceber':
-                setValorareceber(reaisMask(event.target.value));
-                break;
-            case 'totalapagar':
-                setTotalapagar(reaisMask(event.target.value));
-                break;
-            case 'totalareceber':
-                setTotalareceber(reaisMask(event.target.value));
-                break;
+            // case 'valorapagar':
+            //     setValorapagar(reaisMask(event.target.value));
+            //     break;
+            // case 'valorareceber':
+            //     setValorareceber(reaisMask(event.target.value));
+            //     break;
+            // case 'totalapagar':
+            //     setTotalapagar(reaisMask(event.target.value));
+            //     break;
+            // case 'totalareceber':
+            //     setTotalareceber(reaisMask(event.target.value));
+            //     break;
             case 'custoadicional':
                 setCustoadicional(reaisMask(event.target.value));
                 break;
