@@ -26,18 +26,33 @@ const DefaultAside = React.lazy(() => import('./DefaultAside'));
 const DefaultFooter = React.lazy(() => import('./DefaultFooter'));
 const DefaultHeader = React.lazy(() => import('./DefaultHeader'));
 
+const logado = localStorage.getItem('logado');
+
+// const checkLogin = () => {
+//   //const logado = localStorage.getItem('logado');
+//   if(logado === false || logado === null) {
+//     this.props.history.push('/logon');
+//   }
+// }
+
 class DefaultLayout extends Component {
 
   loading = () => <div className="animated fadeIn pt-1 text-center">Loading...</div>
 
-  signOut(e) {
-    e.preventDefault()
-    this.props.history.push('/login')
-  }
+  // signOut(e) {
+  //   localStorage.clear(); //limpa todo o local storage
+  //   console.log("entrou aqui");
+  //   e.preventDefault();
+  //   this.props.history.push('/logon');
+    
+  // }
 
   render() {
+
     return (
       <div className="app">
+        {/* {console.log(logado)}
+        {logado === false || logado === null && <Redirect to='/logon' />} */}
         <AppHeader fixed>
           <Suspense  fallback={this.loading()}>
             <DefaultHeader onLogout={e=>this.signOut(e)}/>

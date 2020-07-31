@@ -3,7 +3,7 @@ import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, 
 import { reaisMask } from '../../../mask'
 import { Redirect } from "react-router-dom";
 import '../../../global.css';
-import api from '../../../../src/services/api';
+import api from '../../../services/api';
 
 export default function Tipoprojeto(props) {
     const [redirect, setRedirect] = useState(false);

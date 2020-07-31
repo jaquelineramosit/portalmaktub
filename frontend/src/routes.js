@@ -28,7 +28,7 @@ const TipoTecnico = React.lazy(() => import('./pages/Configuracoes/TipoTecnico')
 const Disponibilidade = React.lazy(() => import('./pages/Configuracoes/Disponibilidade'));
 const DisponibilidadeDeTecnico = React.lazy(() => import('./pages/Configuracoes/DisponibilidadeDeTecnico'));
 const Tipoprojeto = React.lazy(() => import('./pages/Configuracoes/TipoProjeto'));
-const Projetotecnico = React.lazy(() => import('./pages/Configuracoes/Projetotecnico'));
+const Projetotecnico = React.lazy(() => import('./pages/Configuracoes/ProjetoTecnico'));
 const Ferramentas = React.lazy(() => import('./pages/Configuracoes/Ferramentas'));
 const DadosBancarios = React.lazy(() => import('./pages/Configuracoes/DadosBancarios'));
 const Banco = React.lazy(() => import('./pages/Configuracoes/Banco'));
@@ -88,7 +88,7 @@ const Relcustotecnico = React.lazy(() => import('./pages/Relatórios/Relatorio C
 const Collapse = React.lazy(() => import('./pages/Configuracoes/Collapse'));
 
 const routes = [
-
+  
   // Dashboards
   { path: '/', exact: true, name: 'Home' },
   { path: '/dashboard', name: 'Dashboard', component: Dashboard },

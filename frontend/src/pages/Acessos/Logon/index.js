@@ -1,9 +1,10 @@
-import React, { Component, useState } from 'react';
+import React, { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { Button, Card, CardBody, CardGroup, Col, Container, Form, Input, InputGroup, InputGroupAddon, InputGroupText, Row } from 'reactstrap';
 import './style.css';
 import ImgLogon from '../../../assets/img/logon.jpg';
 import api from '../../../../src/services/api';
+import toaster from '../../../components/Toaster';
 
 export default function Logon() {
          
@@ -22,12 +23,14 @@ export default function Logon() {
 
             try {
                 const response = await api.post('/logon', data);
+                localStorage.setItem('logado', true);
                 localStorage.setItem('userId', response.data.id);
                 localStorage.setItem('nomeUsuario', response.data.nome);
-                history.push('/dashboardv1');
+                toaster.exibeMensagem('logon-success', `Bem vindo(a) ${response.data.nome}!`) 
+                history.push('/dashboard');
 
             } catch (err) {
-                alert('Usuário e/ou senha inválido(s). Tente novamente.');
+                toaster.exibeMensagem('logon-error', 'Usuário e/ou senha inválido(s). Tente novamente.')                
             }
         }
 

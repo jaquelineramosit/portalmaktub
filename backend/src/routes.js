@@ -39,7 +39,8 @@ const TipoProjetoController = require('./controllers/Configuracao/TipoProjetoCon
 const TipoTecnicoController = require('./controllers/Configuracao/TipoTecnicoController');
 
 //Dashboards
- const DashboardController = require('./controllers/Dashboard/DashboardController');
+const DashboardController = require('./controllers/Dashboard/DashboardController');
+const UltimoNumeroOs = require('./controllers/OrdemServico/UltimoNumeroOs');
 // const Dashboardv2Controller = require('./controllers/Dashboards/Dashboardv2Controller');
 // const Dashboardv3Controller = require('./controllers/Dashboards/Dashboardv3Controller');
 
@@ -102,8 +103,9 @@ routes.get('/ordem-servico', OrdemServicoController.getAll);
 routes.get('/ordem-servico/:id', OrdemServicoController.getById);
 routes.post('/ordem-servico', OrdemServicoController.create);
 routes.put('/ordem-servico/:id', OrdemServicoController.update);
-routes.get('/ordem-servico-lista', ListaOrdemServicoController.getAll);
-
+routes.get('/ordem-servico-lista/:rows', ListaOrdemServicoController.getAllLimitRows);
+routes.get('/ordem-servico-ultimo', UltimoNumeroOs.getLastNumeroOs);
+//routes.get('/ordem-servico-teste', OrdemServicoController.getTeste);
 
 routes.get('/movimentacaoCount', MovimentacaoOsController.getCount);
 routes.get('/movimentacao-os', MovimentacaoOsController.getAll);
@@ -116,6 +118,7 @@ routes.get('/adiantamento-os', AdiantamentoOsController.getAll);
 routes.get('/adiantamento-os/:id', AdiantamentoOsController.getById);
 routes.post('/adiantamento-os', AdiantamentoOsController.create);
 routes.put('/adiantamento-os/:id', AdiantamentoOsController.update);
+routes.get('/adiantamento-os-ultimo', UltimoNumeroOs.getLastNumeroAdiantamentoOs);
 
 // Configuração
 routes.get('/bancoCount', BancoController.getCount);

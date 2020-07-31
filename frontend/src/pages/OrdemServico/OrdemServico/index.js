@@ -153,8 +153,6 @@ const OrdemServico = (props) => {
     };
 
     const [collapseMulti, setCollapseMulti] = useState([true, true])
-    const [openMulti, setOpenMulti] = useState([true, true]);
-    const [open, setOpen] = useState(true);
 
     // //testar com o multiplo toggle
     const toggleMulti = (type) => {
@@ -175,19 +173,19 @@ const OrdemServico = (props) => {
         setCollapseMulti(newCollapse)
     }
     
-    const IconOpenClose = (type) => {
+    const IconOpenClose = (prop) => {
 
-        let tipo = props.type;
-        let newCollapse = openMulti.slice();
-        let iconUp = "fa fa-chevron-up";
+        let tipo = prop.type;
+        let isOpen = prop.isOpen;
+        let iconUp = "fa fa-chevron-down";
         
-        if(!openMulti[0]) {
-            iconUp = "fa fa-chevron-down"
+        if(isOpen) {
+            iconUp = "fa fa-chevron-up"
         } 
         return(
             <Fragment>
-                <Button className="card-header-action" onClick={()=>{toggleMulti('servicos')}}>
-                    <i className="fa fa-chevron-up"></i>
+                <Button className="card-header-action" onClick={()=>{toggleMulti(tipo)}}>
+                    <i className={iconUp}></i>
                 </Button>
             </Fragment>
         )
@@ -326,7 +324,6 @@ const OrdemServico = (props) => {
         e.preventDefault();
 
         const data = {
-            numeroos,
             datasolicitacao,
             dataatendimento,
             clientefilialid,
@@ -396,7 +393,7 @@ const OrdemServico = (props) => {
                                 <FormGroup row>
                                     <Col md="4">
                                         <Label htmlFor="numeroOs">Número da OS</Label>
-                                        <Input type="text" required id="txtNumeroOs" placeholder="Numero OS"
+                                        <Input type="text" required id="txtNumeroOs" placeholder="" readOnly
                                             value={numeroos}
                                             name="numeroos"
                                             onChange={e => setNumeroos(e.target.value)}
@@ -444,10 +441,10 @@ const OrdemServico = (props) => {
                                 <i className="fa fa-handshake-o"></i>
                                 <strong>Cliente / Filial</strong>
                                 <div className="card-header-actions">
-                                    {/* <Button className="card-header-action" onClick={()=>{toggleMulti('clientes')}}>                                       
-                                        abre
+                                    <IconOpenClose type='clientes' isOpen={collapseMulti[0]}></IconOpenClose>
+                                    {/* <Button className="card-header-action" onClick={()=>{toggleMulti('clientes')}}>
+                                        <i className="fa fa-chevron-up"></i>
                                     </Button> */}
-                                    <IconOpenClose isOpen={openMulti[0]}></IconOpenClose>
                                 </div>
                             </CardHeader>
                             <Collapse isOpen={collapseMulti[0]}>
@@ -649,18 +646,19 @@ const OrdemServico = (props) => {
                             </Collapse>
                             <CardHeader>
                                 <i className="fa fa-clipboard"></i>
-                                <strong>Informações Do Serviço</strong>
+                                <strong>Informações do Projeto</strong>
                                 <div className="card-header-actions">
-                                    <Button className="card-header-action" onClick={()=>{toggleMulti('servicos')}}>
+                                    <IconOpenClose type='servicos' isOpen={collapseMulti[1]}></IconOpenClose>
+                                    {/* <Button className="card-header-action" onClick={()=>{toggleMulti('servicos')}}>
                                         <i className="fa fa-chevron-up"></i>
-                                    </Button>
+                                    </Button> */}
                                 </div>
                             </CardHeader>
                             <Collapse isOpen={collapseMulti[1]}>                        
                                 <CardBody>
                                     <FormGroup row>
                                         <Col md="4">
-                                            <Label htmlFor="tiposervicoid">Tipo de Serviço</Label>
+                                            <Label htmlFor="tiposervicoid">Tipo de Projeto</Label>
                                             <InputGroup>
                                                 <Input required type="select" id="cboTipoServico"
                                                     value={tipoprojetoid}
@@ -696,7 +694,7 @@ const OrdemServico = (props) => {
                                     </FormGroup>
                                     <FormGroup row>
                                         <Col md="12">
-                                            <Label htmlFor="descricaoservico">Descrição do Serviço</Label>
+                                            <Label htmlFor="descricaoservico">Descrição do Projeto</Label>
                                             <InputGroup>
                                                 <Input id="txtDescricaoServico" rows="5" required type="textarea" placeholder="Descrição do Serviço"
                                                     value={descricaoservico}
