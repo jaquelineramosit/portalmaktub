@@ -4,7 +4,7 @@ import '../../../global.css';
 import { Redirect } from "react-router-dom";
 import api from '../../../services/api';
 
-export default function Projetotecnico(props) {
+export default function ProjetoTecnico(props) {
     const [redirect, setRedirect] = useState(false);
 
     //parametros

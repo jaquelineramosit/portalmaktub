@@ -39,13 +39,13 @@ class DefaultLayout extends Component {
 
   loading = () => <div className="animated fadeIn pt-1 text-center">Loading...</div>
 
-  // signOut(e) {
-  //   localStorage.clear(); //limpa todo o local storage
-  //   console.log("entrou aqui");
-  //   e.preventDefault();
-  //   this.props.history.push('/logon');
+  signOut(e) {
+    localStorage.clear(); //limpa todo o local storage
+    console.log("entrou aqui");
+    e.preventDefault();
+    this.props.history.push('/logon');
     
-  // }
+  }
 
   render() {
 

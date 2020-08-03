@@ -129,11 +129,12 @@ export default function Movimentacaoos(props) {
             {redirect && <Redirect to="/lista-movimentacao-os" />}
             <Form onSubmit={handleStatus} onReset={handleReset}>
                 <Row>
-                    <Col xs="12" md="12">
+                    <Col md="9">
                         <Card>
                             <CardHeader>
+                                <i className="icon-wrench"></i>
                                 <strong>Movimentação de OS</strong>
-                                <small> novo</small>
+                                {action === 'novo' ? <small> nova</small> : <small> editar</small>}
                             </CardHeader>
                             <CardBody>
                                 <FormGroup row>
@@ -149,6 +150,9 @@ export default function Movimentacaoos(props) {
                                             ))}
                                         </Input>
                                     </Col>
+                                    
+                                </FormGroup>
+                                <FormGroup row>
                                     <Col md="4">
                                         <Label htmlFor="statusAtendimentoId">Status Atendimento</Label>
                                         <Input type="select" required name="select" id="cboStatusAtendimentoId" multiple={false}
@@ -161,8 +165,6 @@ export default function Movimentacaoos(props) {
                                             ))}
                                         </Input>
                                     </Col>
-                                </FormGroup>
-                                <FormGroup row>
                                     <Col md="4">
                                         <Label htmlFor="statusCobrancaId">Status Cobrança</Label>
                                         <Input type="select" required name="select" id="cboStatusCobrancaId" multiple={false}
@@ -188,8 +190,8 @@ export default function Movimentacaoos(props) {
                                         </Input>
                                     </Col>
                                 </FormGroup>
-                                <FormGroup>
-                                    <Col md="8">
+                                <FormGroup row>
+                                    <Col md="12">
                                         <Label>Observação</Label>
                                         <Input type="textarea" rows="5" placeholder="Digite a obsevação" required id="txtObservacao"
                                             name="observacao"
@@ -209,6 +211,18 @@ export default function Movimentacaoos(props) {
                                 <Button type="submit" size="sm" color="success" className=" mr-3"><i className="fa fa-check"></i> Salvar</Button>
                                 <Button type="reset" size="sm" color="danger" className="ml-3"><i className="fa fa-ban "></i> Cancelar</Button>
                             </CardFooter>
+                        </Card>
+                    </Col>
+                    <Col md="3">
+                        <Card>
+                            <CardHeader>
+                                <strong>Timeline</strong>                                
+                            </CardHeader>
+                            <CardBody>
+                                <FormGroup row>
+
+                                </FormGroup>
+                            </CardBody>
                         </Card>
                     </Col>
                 </Row>

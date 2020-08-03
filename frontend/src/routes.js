@@ -28,7 +28,7 @@ const TipoTecnico = React.lazy(() => import('./pages/Configuracoes/TipoTecnico')
 const Disponibilidade = React.lazy(() => import('./pages/Configuracoes/Disponibilidade'));
 const DisponibilidadeDeTecnico = React.lazy(() => import('./pages/Configuracoes/DisponibilidadeDeTecnico'));
 const Tipoprojeto = React.lazy(() => import('./pages/Configuracoes/TipoProjeto'));
-const Projetotecnico = React.lazy(() => import('./pages/Configuracoes/ProjetoTecnico'));
+const ProjetoTecnico = React.lazy(() => import('./pages/Configuracoes/ProjetoTecnico'));
 const Ferramentas = React.lazy(() => import('./pages/Configuracoes/Ferramentas'));
 const DadosBancarios = React.lazy(() => import('./pages/Configuracoes/DadosBancarios'));
 const Banco = React.lazy(() => import('./pages/Configuracoes/Banco'));
@@ -134,12 +134,12 @@ const routes = [
   { path: '/disponibilidade-tecnico/:id', name: 'Disponibilidade do tecnico', component: DisponibilidadeDeTecnico },
   { path: '/tipo-projeto', exact:true, name: 'Tipo de Projeto', component: Tipoprojeto },
   { path: '/tipo-projeto/:id', name: 'Tipo de Projeto', component: Tipoprojeto },
-  { path: '/projeto-tecnico', exact:true, name: 'Projeto X Tecnico', component: Projetotecnico },
-  { path: '/projeto-tecnico/:id', name: 'Projeto X Tecnico', component: Projetotecnico },
+  { path: '/projeto-tecnico', exact:true, name: 'Projeto X Tecnico', component: ProjetoTecnico },
+  { path: '/projeto-tecnico/:id', name: 'Projeto X Tecnico', component: ProjetoTecnico },
   { path: '/ferramentas', exact:true, name: 'Ferramentas', component: Ferramentas },
   { path: '/ferramentas/:id', name: 'Ferramentas', component: Ferramentas },
-  { path: '/dados-bancarios', exact:true, name: 'Dados bancarios', component: DadosBancarios },
-  { path: '/dados-bancarios/:id', name: 'Dados bancarios', component: DadosBancarios },
+  { path: '/dados-bancarios', exact:true, name: 'Dados Bancarios', component: DadosBancarios },
+  { path: '/dados-bancarios/:id', name: 'Dados Bancarios', component: DadosBancarios },
   { path: '/banco', exact:true,  name: 'Banco', component: Banco },
   { path: '/banco/:id', name: 'Banco', component: Banco },
   { path: '/tipo-conta', exact:true, name: 'Tipo de Conta', component: TipoConta },
@@ -194,16 +194,16 @@ const routes = [
   { path: '/lista-funcoes', name: 'Lista de Funções', component: ListaFuncao},
 
   //Relatórios
-{ path: '/rel-projetoxsolicitacoes', name: 'Relatório de Projeto x Solicitações ', component: Relprojetosolicitacoes},
-{ path: '/rel-projetoxcliente', name: 'Relatório de Projeto x Cliente ', component: Relprojetocliente},
-{ path: '/rel-projetoxtecnico', name: 'Relatório de Projeto x Técnico ', component: Relprojetotecnico},
-{ path: '/rel-projetoxfaturado', name: 'Relatório de Projeto x Faturado ', component: Relprojetofaturado},
-{ path: '/rel-clientexfaturado', name: 'Relatório de Cliente x Faturado ', component: Relclientefaturado},
-{ path: '/rel-tecnicoxfaturado', name: 'Relatório de Técnico x Faturado ', component: Reltecnicofaturado},
-{ path: '/rel-tecnicoxfaturado', name: 'Relatório de Técnico x Faturado ', component: Reltecnicofaturado},
-{ path: '/rel-custoxtecnico', name: 'Relatório de Custo x Técnico ', component: Relcustotecnico},
+  { path: '/rel-projetoxsolicitacoes', name: 'Relatório de Projeto x Solicitações ', component: Relprojetosolicitacoes},
+  { path: '/rel-projetoxcliente', name: 'Relatório de Projeto x Cliente ', component: Relprojetocliente},
+  { path: '/rel-projetoxtecnico', name: 'Relatório de Projeto x Técnico ', component: Relprojetotecnico},
+  { path: '/rel-projetoxfaturado', name: 'Relatório de Projeto x Faturado ', component: Relprojetofaturado},
+  { path: '/rel-clientexfaturado', name: 'Relatório de Cliente x Faturado ', component: Relclientefaturado},
+  { path: '/rel-tecnicoxfaturado', name: 'Relatório de Técnico x Faturado ', component: Reltecnicofaturado},
+  { path: '/rel-tecnicoxfaturado', name: 'Relatório de Técnico x Faturado ', component: Reltecnicofaturado},
+  { path: '/rel-custoxtecnico', name: 'Relatório de Custo x Técnico ', component: Relcustotecnico},
 
-{ path: '/collapse', name: 'Collapse', component: Collapse },
+  { path: '/collapse', name: 'Collapse', component: Collapse },
 
 ];
 
