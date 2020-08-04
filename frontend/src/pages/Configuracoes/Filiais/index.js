@@ -164,12 +164,13 @@ export default function Filiais(props) {
 
     return (
         <div className="animated fadeIn">
-            {redirect && <Redirect to="/lista-filiais"/>}
+            {redirect && <Redirect to="/lista-filiais" />}
             <Form onSubmit={handleStatus} onReset={handleReset}>
                 <Row>
                     <Col xs="12" md="12">
                         <Card>
                             <CardHeader>
+                                <i className="fa fa-building"></i>
                                 <strong>Filial</strong>
                                 <small> nova</small>
                             </CardHeader>
@@ -188,13 +189,20 @@ export default function Filiais(props) {
                                         </Input>
                                     </Col>
                                     <Col md="3">
+                                        <Label htmlFor="RazaoSocial">Razão Social</Label>
+                                        <Input type="text" required id="txtRazaoSocial" placeholder="Digite a razão social"
+                                            name="razaosocial"
+                                            value={razaosocial}
+                                            onChange={e => setRazaosocial(e.target.value)} />
+                                    </Col>
+                                    <Col md="3">
                                         <Label htmlFor="nomeFilial">Nome Filial</Label>
                                         <Input type="text" required id="txtNomeFilial" placeholder="Digite o nome da filial"
                                             name="nomefilial"
                                             value={nomefilial}
                                             onChange={e => setNomefilial(e.target.value)} />
                                     </Col>
-                                    <Col md="3">
+                                    <Col md="2">
                                         <Label htmlFor="nomeResponsavel">Nome Responsável</Label>
                                         <Input type="text" required id="txtNomeResponsavel" placeholder="Digite o nome do responsável"
                                             name="nomeresponsavel"
@@ -203,13 +211,6 @@ export default function Filiais(props) {
                                     </Col>
                                 </FormGroup>
                                 <FormGroup row>
-                                    <Col md="3">
-                                        <Label htmlFor="RazaoSocial">Razão Social</Label>
-                                        <Input type="text" required id="txtRazaoSocial" placeholder="Digite a razão social"
-                                            name="razaosocial"
-                                            value={razaosocial}
-                                            onChange={e => setRazaosocial(e.target.value)} />
-                                    </Col>
                                     <Col md="3">
                                         <Label htmlFor="cnpj">CNPJ</Label>
                                         <InputGroup>
@@ -220,8 +221,6 @@ export default function Filiais(props) {
                                                 onChange={e => setCnpj(cnpjMask(e.target.value))} />
                                         </InputGroup>
                                     </Col>
-                                </FormGroup>
-                                <FormGroup row>
                                     <Col md="3">
                                         <Label htmlFor="bandeiraId">Bandeira</Label>
                                         <Input required type="select" name="select" id="cboBandeiraId" multiple={false}
@@ -234,14 +233,24 @@ export default function Filiais(props) {
                                             ))}
                                         </Input>
                                     </Col>
-                                    <Col md="3">
+                                    <Col md="2">
                                         <Label htmlFor="ced">CED</Label>
                                         <Input type="text" required id="txtCed"
                                             name="ced"
                                             value={ced}
                                             onChange={e => setCed(e.target.value)} />
                                     </Col>
-                                    <Col md="3">
+                                </FormGroup>
+                            </CardBody>
+                        </Card>
+                        <CardHeader>
+                            <i className="fa fa-map-marker"></i>
+                            <strong>Endereço</strong>
+                        </CardHeader>
+                        <Card>
+                            <CardBody>
+                                <FormGroup row>
+                                    <Col md="2">
                                         <Label htmlFor="cep">CEP</Label>
                                         <InputGroup>
                                             <Input id="txtCep" size="16" required type="text" placeholder="00000-000"
@@ -249,12 +258,10 @@ export default function Filiais(props) {
                                                 name="cep"
                                                 onChange={e => setCep(cepMask(e.target.value))} />
                                             <InputGroupAddon addonType="append">
-                                                <Button type="button" color="secondary fa fa-truck"></Button>
+                                                <spam class="btn btn-secondary disabled fa fa-truck"></spam>
                                             </InputGroupAddon>
                                         </InputGroup>
                                     </Col>
-                                </FormGroup>
-                                <FormGroup row>
                                     <Col md="3">
                                         <Label htmlFor="logradouro">Endereço</Label>
                                         <InputGroup>
@@ -346,7 +353,7 @@ export default function Filiais(props) {
                                                 name="telefonefixo"
                                                 onChange={e => setTelefonefixo(telMask(e.target.value))} />
                                             <InputGroupAddon addonType="append">
-                                                <Button type="button" color="secondary icon-phone"></Button>
+                                                <spam class="btn btn-secondary disabled icon-phone"></spam>
                                             </InputGroupAddon>
                                         </InputGroup>
                                     </Col>
@@ -358,11 +365,19 @@ export default function Filiais(props) {
                                                 name="telefoneresponsavel"
                                                 onChange={e => setTelefoneresponsavel(telMask(e.target.value))} />
                                             <InputGroupAddon addonType="append">
-                                                <Button type="button" color="secondary icon-phone"></Button>
+                                                <spam class="btn btn-secondary disabled icon-phone"></spam>
                                             </InputGroupAddon>
                                         </InputGroup>
                                     </Col>
                                 </FormGroup>
+                            </CardBody>
+                        </Card>
+                        <CardHeader>
+                            <i className="fa fa-clock-o"></i>
+                            <strong>Horários</strong>
+                        </CardHeader>
+                        <Card>
+                            <CardBody>
                                 <FormGroup row>
                                     <Col md="3">
                                         <Label htmlFor="horarioInicioSemana">Horario Início da semana</Label>
@@ -372,7 +387,7 @@ export default function Filiais(props) {
                                                 value={horarioiniciosemana}
                                                 onChange={e => setHorarioiniciosemana(e.target.value)} />
                                             <InputGroupAddon addonType="append">
-                                                <Button type="button" color="secondary fa fa-clock-o"></Button>
+                                                <spam class="btn btn-secondary disabled fa fa-clock-o"></spam>
                                             </InputGroupAddon>
                                         </InputGroup>
                                     </Col>
@@ -384,7 +399,7 @@ export default function Filiais(props) {
                                                 value={horarioiniciodomingo}
                                                 onChange={e => setHorarioiniciodomingo(e.target.value)} />
                                             <InputGroupAddon addonType="append">
-                                                <Button type="button" color="secondary fa fa-clock-o"></Button>
+                                                <spam class="btn btn-secondary disabled fa fa-clock-o"></spam>
                                             </InputGroupAddon>
                                         </InputGroup>
                                     </Col>
@@ -396,7 +411,7 @@ export default function Filiais(props) {
                                                 value={horarioiniciosabado}
                                                 onChange={e => setHorarioiniciosabado(e.target.value)} />
                                             <InputGroupAddon addonType="append">
-                                                <Button type="button" color="secondary fa fa-clock-o"></Button>
+                                                <spam class="btn btn-secondary disabled fa fa-clock-o"></spam>
                                             </InputGroupAddon>
                                         </InputGroup>
                                     </Col>
@@ -410,7 +425,7 @@ export default function Filiais(props) {
                                                 value={horariofimsemana}
                                                 onChange={e => setHorariofimsemana(e.target.value)} />
                                             <InputGroupAddon addonType="append">
-                                                <Button type="button" color="secondary fa fa-clock-o"></Button>
+                                                <spam class="btn btn-secondary disabled fa fa-clock-o"></spam>
                                             </InputGroupAddon>
                                         </InputGroup>
                                     </Col>
@@ -422,7 +437,7 @@ export default function Filiais(props) {
                                                 value={horariofimdomingo}
                                                 onChange={e => setHorariofimdomingo(e.target.value)} />
                                             <InputGroupAddon addonType="append">
-                                                <Button type="button" color="secondary fa fa-clock-o"></Button>
+                                                <spam class="btn btn-secondary disabled fa fa-clock-o"></spam>
                                             </InputGroupAddon>
                                         </InputGroup>
                                     </Col>
@@ -434,7 +449,7 @@ export default function Filiais(props) {
                                                 value={horariofimsabado}
                                                 onChange={e => setHorariofimsabado(e.target.value)} />
                                             <InputGroupAddon addonType="append">
-                                                <Button type="button" color="secondary fa fa-clock-o"></Button>
+                                                <spam class="btn btn-secondary disabled fa fa-clock-o"></spam>
                                             </InputGroupAddon>
                                         </InputGroup>
                                     </Col>

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Card, CardBody, CardHeader, Col, Row, Badge } from 'reactstrap';
 import '../../../global.css';
 import api from '../../../services/api';
-import DataTable from 'react-data-table-component';
+import DataTableGenerica from '../../../components/DataTableGenerica';
 
 
 export default function ListaCliente() {
@@ -30,7 +30,7 @@ export default function ListaCliente() {
             setClientes(response.data);
         })
     }, [usuarioId]);
-   
+
     const data = clientes;
 
     const columns = [
@@ -65,8 +65,7 @@ export default function ListaCliente() {
             name: 'Ações',
             sortable: true,
             right: true,
-            cell: row => <Link to={`clientes/${row.id}?action=edit`} className="btn-sm btn-primary"><i className="fa fa-pencil fa-lg mr-1"></i>
-            Editar</Link>
+            cell: row => <Link to={`clientes/${row.id}?action=edit`} className="btn-sm btn-primary"><i className="fa fa-pencil fa-lg mr-1"></i></Link>
         },
     ];
 
@@ -78,19 +77,14 @@ export default function ListaCliente() {
                         <CardHeader className="links">
                             <i className="fa fa-align-justify"></i> Clientes
                         <Link to={`clientes?action=novo`} className="btn btn-secondary float-right">
-                                <i className="cui-file icons mr-1"></i>
-                            Novo
-                        </Link>
+                                <i className="fa fa-plus-circle fa-lg"></i>
+                            </Link>
                         </CardHeader>
                         <CardBody>
-                            <DataTable className="mt-n3"
-                                title="Clientes"
-                                columns={columns}
+                            <DataTableGenerica
                                 data={data}
-                                striped={true}
-                                highlightOnHover={true}
-                                responsive={true}
-                                pagination={true}
+                                columns={columns}
+                                title="Clientes"
                             />
                         </CardBody>
                     </Card>

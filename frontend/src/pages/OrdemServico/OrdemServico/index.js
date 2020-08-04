@@ -29,7 +29,7 @@ const OrdemServico = (props) => {
     const [descricaoservico, setDescricaoservico] = useState('');
     const [tecnicoid, setTecnicoid] = useState('');
     const [observacaoos, setObservacaoos] = useState('');
-    const [datafechamento, setDatafechamento] = useState('');    
+    const [datafechamento, setDatafechamento] = useState('');
     const [nomediasemana, setNomediasemana] = useState('');
     const [horaentrada, setHoraentrada] = useState('');
     const [horasaida, setHorasaida] = useState('');
@@ -43,27 +43,27 @@ const OrdemServico = (props) => {
     const [qtdehoras, setQtdehoras] = useState('');
     const [horaextra, setHoraextra] = useState('');
     const [valorapagar, setValorapagar] = useState('');
-    const [valorareceber, setValorareceber] = useState('');    
+    const [valorareceber, setValorareceber] = useState('');
 
     // informacoes filial
     const [dadosFilial, setDadosFilial] = useState({
-        nomebandeira : '',
-        telefonefixo : '',
-        telefoneresponsavel : '',
-        ced : '',
-        cep : '',
-        logradouro : '',
-        numero : '',
-        complemento : '',
-        bairro : '',
-        estado : '',
-        cidade : '',
-        horarioiniciosemana : '00:00',
-        horarioiniciosabado : '00:00',
-        horarioiniciodomingo : '00:00',
-        horariofimsemana : '00:00',
-        horariofimsabado : '00:00',
-        horariofimdomingo : '00:00'
+        nomebandeira: '',
+        telefonefixo: '',
+        telefoneresponsavel: '',
+        ced: '',
+        cep: '',
+        logradouro: '',
+        numero: '',
+        complemento: '',
+        bairro: '',
+        estado: '',
+        cidade: '',
+        horarioiniciosemana: '00:00',
+        horarioiniciosabado: '00:00',
+        horarioiniciodomingo: '00:00',
+        horariofimsemana: '00:00',
+        horariofimsabado: '00:00',
+        horariofimdomingo: '00:00'
     });
 
     //combos dinamicos
@@ -108,7 +108,7 @@ const OrdemServico = (props) => {
                 setClientefilialid(response.data.clientefilialid);
                 clienteFilialIdInicial = response.data.clientefilialid;
                 setTipoprojetoid(response.data.tipoprojetoid);
-                tipoProjetoIdInicial = response.data.tipoprojetoid;                
+                tipoProjetoIdInicial = response.data.tipoprojetoid;
                 setDescricaoservico(response.data.descricaoservico);
                 setTotalapagar(response.data.totalapagar);
                 setTotalareceber(response.data.totalareceber);
@@ -117,7 +117,7 @@ const OrdemServico = (props) => {
                 setDatafechamento(response.data.datafechamento);
                 setHoraentrada(response.data.horaentrada);
                 setTecnicoid(response.data.tecnicoid);
-                setHorasaida(response.data.horasaida);                
+                setHorasaida(response.data.horasaida);
                 setTipoprojetoid(response.data.tipoprojetoid);
                 setTecnicoid(response.data.tecnicoid);
                 setDescricaoservico(response.data.descricaoservico);
@@ -140,7 +140,7 @@ const OrdemServico = (props) => {
                     setQtdehoras(response.data.horas);
                     setHoraextra(response.data.valorhoraextra);
                     setValorapagar(response.data.despesa);
-                    setValorareceber(response.data.receita);                    
+                    setValorareceber(response.data.receita);
                 });
             });
         } else {
@@ -160,33 +160,33 @@ const OrdemServico = (props) => {
     const toggleMulti = (type) => {
         let newCollapse = collapseMulti.slice()
         switch (type) {
-          case "clientes":
-            newCollapse[0] = !collapseMulti[0];
-            break;
-          case "servicos":
-            newCollapse[1] = !collapseMulti[1];
-            break;
-          case "both":
-            newCollapse[0] = !collapseMulti[0];
-            newCollapse[1] = !collapseMulti[1];
-            break;
-          default:
+            case "clientes":
+                newCollapse[0] = !collapseMulti[0];
+                break;
+            case "servicos":
+                newCollapse[1] = !collapseMulti[1];
+                break;
+            case "both":
+                newCollapse[0] = !collapseMulti[0];
+                newCollapse[1] = !collapseMulti[1];
+                break;
+            default:
         }
         setCollapseMulti(newCollapse)
     }
-    
+
     const IconOpenClose = (type) => {
 
         let tipo = props.type;
         let newCollapse = openMulti.slice();
         let iconUp = "fa fa-chevron-up";
-        
-        if(!openMulti[0]) {
+
+        if (!openMulti[0]) {
             iconUp = "fa fa-chevron-down"
-        } 
-        return(
+        }
+        return (
             <Fragment>
-                <Button className="card-header-action" onClick={()=>{toggleMulti('servicos')}}>
+                <Button className="card-header-action" onClick={() => { toggleMulti('servicos') }}>
                     <i className="fa fa-chevron-up"></i>
                 </Button>
             </Fragment>
@@ -195,27 +195,27 @@ const OrdemServico = (props) => {
 
     function zerarDadosFilial() {
         setDadosFilial({
-            nomebandeira : '',
-            telefonefixo : '',
-            telefoneresponsavel : '',
-            ced : '',
-            cep : '',
-            logradouro : '',
-            numero : '',
-            complemento : '',
-            bairro : '',
-            estado : '',
-            cidade : '',
-            horarioiniciosemana : '00:00',
-            horarioiniciosabado : '00:00',
-            horarioiniciodomingo : '00:00',
-            horariofimsemana : '00:00',
-            horariofimsabado : '00:00',
-            horariofimdomingo : '00:00'
+            nomebandeira: '',
+            telefonefixo: '',
+            telefoneresponsavel: '',
+            ced: '',
+            cep: '',
+            logradouro: '',
+            numero: '',
+            complemento: '',
+            bairro: '',
+            estado: '',
+            cidade: '',
+            horarioiniciosemana: '00:00',
+            horarioiniciosabado: '00:00',
+            horarioiniciodomingo: '00:00',
+            horariofimsemana: '00:00',
+            horariofimsabado: '00:00',
+            horariofimdomingo: '00:00'
         });
     }
 
-    function zeraDadosServico(){
+    function zeraDadosServico() {
         setQtdehoras('');
         setHoraextra('');
         setValorapagar('');
@@ -255,7 +255,7 @@ const OrdemServico = (props) => {
                     setDataAtendimento(value);
                     let nomeDiaDaSemana = getDateNameOfWeekDay(value);
                     setNomediasemana(nomeDiaDaSemana);
-                } 
+                }
                 break;
             case 'numeroos':
                 setNumeroos(numMask(event.target.value));
@@ -276,7 +276,7 @@ const OrdemServico = (props) => {
                 setCustoadicional(reaisMask(event.target.value));
                 break;
             case 'clientefilialid':
-                if( value !== 'Selecione...' ) {
+                if (value !== 'Selecione...') {
                     setClientefilialid(value);
                     api.get(`filiais/${value}`).then(response => {
                         setDadosFilial(response.data);
@@ -287,21 +287,21 @@ const OrdemServico = (props) => {
                 }
                 break;
             case 'clienteid':
-                if( value !== 'Selecione...' ) {
+                if (value !== 'Selecione...') {
                     setClienteid(value);
                     setClientefilialid('');
                     api.get(`filiais?clienteId=${value}`).then(response => {
-                        setClienteFiliais(response.data);                        
+                        setClienteFiliais(response.data);
                         zerarDadosFilial();
                     });
                 } else {
                     setClienteFiliais([]);
                     setClienteid('');
                     zerarDadosFilial();
-                }                
+                }
                 break;
             case 'tipoprojetoid':
-                if( value !== 'Selecione...' ) {
+                if (value !== 'Selecione...') {
                     setTipoprojetoid(value);
                     setTecnicoid('');
                     api.get(`tecnico?tipoProjetoId=${value}`).then(response => {
@@ -311,7 +311,7 @@ const OrdemServico = (props) => {
                         setQtdehoras(response.data.horas);
                         setHoraextra(response.data.valorhoraextra);
                         setValorapagar(response.data.despesa);
-                        setValorareceber(response.data.receita);                    
+                        setValorareceber(response.data.receita);
                     });
                 } else {
                     setTipoprojetoid('');
@@ -382,7 +382,7 @@ const OrdemServico = (props) => {
     }
     return (
         <div className="animated fadeIn">
-            { redirect && <Redirect to="/lista-ordem-servico" /> }
+            {redirect && <Redirect to="/lista-ordem-servico" />}
             <Form onSubmit={handleOs} onReset={handleReset}>
                 <Row>
                     <Col xs="12" md="12">
@@ -413,7 +413,7 @@ const OrdemServico = (props) => {
                                                 onChange={e => setDatasolicitacao(e.target.value)}
                                             />
                                             <InputGroupAddon addonType="append">
-                                                <Button type="button" color="secondary  fa fa-calendar fa-lg"></Button>
+                                                <spam class="btn btn-secondary disabled fa fa-calendar fa-lg"></spam>
                                             </InputGroupAddon>
                                         </InputGroup>
                                     </Col>
@@ -427,7 +427,7 @@ const OrdemServico = (props) => {
                                             />
 
                                             <InputGroupAddon addonType="append">
-                                                <Button type="button" color="secondary  fa fa-calendar fa-lg"></Button>
+                                                <spam class="btn btn-secondary disabled fa fa-calendar fa-lg"></spam>
                                             </InputGroupAddon>
                                         </InputGroup>
                                     </Col>
@@ -459,7 +459,7 @@ const OrdemServico = (props) => {
                                                 <Input type="select" id="cboCliente"
                                                     value={clienteid}
                                                     name="clienteid"
-                                                    onChange={handleInputChange} 
+                                                    onChange={handleInputChange}
                                                 >
                                                     <option value={undefined} defaultValue>Selecione...</option>
                                                     {clientes.map(cliente => (
@@ -467,7 +467,7 @@ const OrdemServico = (props) => {
                                                     ))}
                                                 </Input>
                                                 <InputGroupAddon addonType="append">
-                                                    <Button type="button" color="secondary fa fa-handshake-o"></Button>
+                                                    <spam class="btn btn-secondary disabled fa fa-handshake-o"></spam>
                                                 </InputGroupAddon>
                                             </InputGroup>
                                         </Col>
@@ -477,7 +477,7 @@ const OrdemServico = (props) => {
                                                 <Input required type="select" id="cboClienteFilial"
                                                     value={clientefilialid}
                                                     name="clientefilialid"
-                                                    onChange={handleInputChange} 
+                                                    onChange={handleInputChange}
                                                 >
                                                     <option value={undefined} defaultValue>Selecione...</option>
                                                     {clienteFiliais.map(clienteFilial => (
@@ -485,7 +485,7 @@ const OrdemServico = (props) => {
                                                     ))}
                                                 </Input>
                                                 <InputGroupAddon addonType="append">
-                                                    <Button type="button" color="secondary  fa fa-building-o"></Button>
+                                                    <spam class="btn btn-secondary disabled fa fa-building-o "></spam>
                                                 </InputGroupAddon>
                                             </InputGroup>
                                         </Col>
@@ -495,9 +495,9 @@ const OrdemServico = (props) => {
                                                 <Input type="text" id="txtBandeira" readOnly
                                                     value={dadosFilial.nomebandeira}
                                                     name="nomebandeira"
-                                                />                                               
+                                                />
                                             </InputGroup>
-                                        </Col>                                        
+                                        </Col>
                                     </FormGroup>
                                     <FormGroup row>
                                         <Col md="2">
@@ -505,7 +505,7 @@ const OrdemServico = (props) => {
                                             <InputGroup>
                                                 <Input type="text" id="txtTelefoneFixo" readOnly
                                                     value={dadosFilial.telefonefixo}
-                                                    name="telefonefixo"                                                    
+                                                    name="telefonefixo"
                                                 />
                                             </InputGroup>
                                         </Col>
@@ -516,14 +516,14 @@ const OrdemServico = (props) => {
                                                     value={dadosFilial.telefoneresponsavel}
                                                     name="telefoneresponsavel"
                                                 />
-                                                
+
                                             </InputGroup>
                                         </Col>
                                         <Col md="2">
                                             <Label htmlFor="lblCed">CED</Label>
                                             <Input type="text" readOnly required id="txtCed"
                                                 value={dadosFilial.ced}
-                                                name="ced" 
+                                                name="ced"
                                             />
                                         </Col>
                                         <Col md="2">
@@ -537,12 +537,12 @@ const OrdemServico = (props) => {
                                             <Label htmlFor="lblLogradouro">Logradouro</Label>
                                             <InputGroup>
                                                 <Input required type="text" readOnly id="txtLogradouro"
-                                                    value={dadosFilial.logradouro}                                                    
+                                                    value={dadosFilial.logradouro}
                                                     name="logradouro"
                                                 />
-                                                </InputGroup>
+                                            </InputGroup>
                                         </Col>
-                                        
+
                                     </FormGroup>
                                     <FormGroup row>
                                         <Col md="2">
@@ -575,7 +575,7 @@ const OrdemServico = (props) => {
                                             <InputGroup>
                                                 <Input required type="text" id="txtEstado" readOnly
                                                     value={dadosFilial.estado}
-                                                    name="estado"                                                     
+                                                    name="estado"
                                                 />
                                             </InputGroup>
                                         </Col>
@@ -586,7 +586,7 @@ const OrdemServico = (props) => {
                                                 name="cidade"
                                             />
                                         </Col>
-                                        </FormGroup>                           
+                                    </FormGroup>
                                     <FormGroup row>
                                         <Col md="4">
                                             <Label htmlFor="lblHorarioInicioSemana">Horario Início da semana</Label>
@@ -651,12 +651,12 @@ const OrdemServico = (props) => {
                                 <i className="fa fa-clipboard"></i>
                                 <strong>Informações Do Serviço</strong>
                                 <div className="card-header-actions">
-                                    <Button className="card-header-action" onClick={()=>{toggleMulti('servicos')}}>
+                                    <Button className="card-header-action" onClick={() => { toggleMulti('servicos') }}>
                                         <i className="fa fa-chevron-up"></i>
                                     </Button>
                                 </div>
                             </CardHeader>
-                            <Collapse isOpen={collapseMulti[1]}>                        
+                            <Collapse isOpen={collapseMulti[1]}>
                                 <CardBody>
                                     <FormGroup row>
                                         <Col md="4">
@@ -672,7 +672,7 @@ const OrdemServico = (props) => {
                                                     ))}
                                                 </Input>
                                                 <InputGroupAddon addonType="append">
-                                                    <Button type="button" color="secondary icon-wrench"></Button>
+                                                    <spam class="btn btn-secondary disabled fa icon-wrench"></spam>
                                                 </InputGroupAddon>
                                             </InputGroup>
                                         </Col>
@@ -689,7 +689,7 @@ const OrdemServico = (props) => {
                                                     ))}
                                                 </Input>
                                                 <InputGroupAddon addonType="append">
-                                                    <Button type="button" color="secondary  fa fa-user-md"></Button>
+                                                    <spam class="btn btn-secondary disabled fa fa-user-md"></spam>
                                                 </InputGroupAddon>
                                             </InputGroup>
                                         </Col>
@@ -717,7 +717,7 @@ const OrdemServico = (props) => {
                                                     onChange={e => setHoraentrada(e.target.value)}
                                                 />
                                                 <InputGroupAddon addonType="append">
-                                                    <Button type="button" color="secondary fa fa-clock-o"></Button>
+                                                    <spam class="btn btn-secondary disabled fa fa-clock-o"></spam>
                                                 </InputGroupAddon>
                                             </InputGroup>
                                         </Col>
@@ -730,7 +730,7 @@ const OrdemServico = (props) => {
                                                     onChange={e => setHorasaida(e.target.value)}
                                                 />
                                                 <InputGroupAddon addonType="append">
-                                                    <Button type="button" color="secondary fa fa-clock-o"></Button>
+                                                    <spam class="btn btn-secondary disabled fa fa-clock-o"></spam>
                                                 </InputGroupAddon>
                                             </InputGroup>
                                         </Col>
@@ -743,7 +743,7 @@ const OrdemServico = (props) => {
                                                     onChange={e => setQtdehoras(e.target.value)}
                                                 />
                                                 <InputGroupAddon addonType="append">
-                                                    <Button type="button" color="secondary fa fa-clock-o"></Button>
+                                                    <spam class="btn btn-secondary disabled fa fa-clock-o"></spam>
                                                 </InputGroupAddon>
                                             </InputGroup>
                                         </Col>
@@ -758,7 +758,7 @@ const OrdemServico = (props) => {
                                                     onChange={e => setValorapagar(e.target.value)}
                                                 />
                                                 <InputGroupAddon addonType="append">
-                                                    <Button type="button" color="secondary fa fa-money"></Button>
+                                                    <spam class="btn btn-secondary disabled fa fa-money"></spam>
                                                 </InputGroupAddon>
                                             </InputGroup>
                                         </Col>
@@ -770,7 +770,7 @@ const OrdemServico = (props) => {
                                                     name="valorareceber"
                                                     onChange={e => setValorareceber(e.target.value)} />
                                                 <InputGroupAddon addonType="append">
-                                                    <Button type="button" color="secondary fa fa-money"></Button>
+                                                    <spam class="btn btn-secondary disabled fa fa-money"></spam>
                                                 </InputGroupAddon>
                                             </InputGroup>
                                         </Col>
@@ -783,53 +783,53 @@ const OrdemServico = (props) => {
                                                     onChange={e => setHoraextra(e.target.value)}
                                                 />
                                                 <InputGroupAddon addonType="append">
-                                                    <Button type="button" color="secondary fa fa-clock-o"></Button>
+                                                    <spam class="btn btn-secondary disabled fa fa-clock-o"></spam>
                                                 </InputGroupAddon>
                                             </InputGroup>
                                         </Col>
                                     </FormGroup>
                                     <FormGroup row>
-                                    <Col md="4">
-                                        <Label htmlFor="totalpagar">Total a pagar</Label>
-                                        <InputGroup>
-                                            <Input type="text" id="txtTotalPagar" placeholder="R$00,00"
-                                                value={totalapagar}
-                                                name="totalapagar"
-                                                onChange={e => setTotalapagar(e.target.value)}
-                                            />
-                                            <InputGroupAddon addonType="append">
-                                                <Button type="button" color="secondary fa fa-money"></Button>
-                                            </InputGroupAddon>
-                                        </InputGroup>
-                                    </Col>
-                                    <Col md="4">
-                                        <Label htmlFor="totalreceber">Total a Receber</Label>
-                                        <InputGroup>
-                                            <Input type="text" id="txtTotalReceber" placeholder="R$00,00"
-                                                value={totalareceber}
-                                                name="totalareceber"
-                                                onChange={e => setTotalareceber(e.target.value)}
-                                            />
-                                            <InputGroupAddon addonType="append">
-                                                <Button type="button" color="secondary fa fa-money"></Button>
-                                            </InputGroupAddon>
-                                        </InputGroup>
-                                    </Col>
-                                    <Col md="4">
-                                        <Label htmlFor="custoAdicional">Custo Adicional</Label>
-                                        <InputGroup>
-                                            <Input type="text" id="txtCustoAdicional" placeholder="R$00,00"
-                                                value={custoadicional}
-                                                name="custoadicional"
-                                                onChange={e => setCustoadicional(e.target.value)} />
-                                            <InputGroupAddon addonType="append">
-                                                <Button type="button" color="secondary fa fa-money"></Button>
-                                            </InputGroupAddon>
-                                        </InputGroup>
-                                    </Col>
-                                </FormGroup>
+                                        <Col md="4">
+                                            <Label htmlFor="totalpagar">Total a pagar</Label>
+                                            <InputGroup>
+                                                <Input type="text" id="txtTotalPagar" placeholder="R$00,00"
+                                                    value={totalapagar}
+                                                    name="totalapagar"
+                                                    onChange={e => setTotalapagar(e.target.value)}
+                                                />
+                                                <InputGroupAddon addonType="append">
+                                                    <spam class="btn btn-secondary disabled fa fa-money"></spam>
+                                                </InputGroupAddon>
+                                            </InputGroup>
+                                        </Col>
+                                        <Col md="4">
+                                            <Label htmlFor="totalreceber">Total a Receber</Label>
+                                            <InputGroup>
+                                                <Input type="text" id="txtTotalReceber" placeholder="R$00,00"
+                                                    value={totalareceber}
+                                                    name="totalareceber"
+                                                    onChange={e => setTotalareceber(e.target.value)}
+                                                />
+                                                <InputGroupAddon addonType="append">
+                                                    <spam class="btn btn-secondary disabled fa fa-money"></spam>
+                                                </InputGroupAddon>
+                                            </InputGroup>
+                                        </Col>
+                                        <Col md="4">
+                                            <Label htmlFor="custoAdicional">Custo Adicional</Label>
+                                            <InputGroup>
+                                                <Input type="text" id="txtCustoAdicional" placeholder="R$00,00"
+                                                    value={custoadicional}
+                                                    name="custoadicional"
+                                                    onChange={e => setCustoadicional(e.target.value)} />
+                                                <InputGroupAddon addonType="append">
+                                                    <spam class="btn btn-secondary disabled fa fa-money"></spam>
+                                                </InputGroupAddon>
+                                            </InputGroup>
+                                        </Col>
+                                    </FormGroup>
                                 </CardBody>
-                            </Collapse>  
+                            </Collapse>
                             <CardFooter className="text-center">
                                 <Button type="submit" size="sm" color="success" className=" mr-3"><i className="fa fa-check"></i> Salvar</Button>
                                 <Button type="reset" size="sm" color="danger" className="ml-3"><i className="fa fa-ban "></i> Cancelar</Button>

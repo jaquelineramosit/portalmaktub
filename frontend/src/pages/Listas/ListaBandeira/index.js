@@ -3,12 +3,12 @@ import { Link } from 'react-router-dom';
 import { Card, CardBody, CardHeader, Col, Row, Badge } from 'reactstrap';
 import '../../../global.css';
 import api from '../../../services/api';
-import DataTable from 'react-data-table-component';
+import DataTableGenerica from '../../../components/DataTableGenerica';
 
 export default function ListaBandeira() {
     const [bandeira, setBandeira] = useState([]);
     const usuarioId = localStorage.getItem('userId');
-    
+
     useEffect(() => {
         api.get('bandeira', {
             headers: {
@@ -33,10 +33,10 @@ export default function ListaBandeira() {
             selector: 'nomeparceiro',
             sortable: true,
             width: '34%',
-        
+
 
         },
-        
+
 
         {
             name: 'Status',
@@ -48,8 +48,7 @@ export default function ListaBandeira() {
             name: 'Ações',
             sortable: true,
             right: true,
-            cell: row => <Link to={`bandeira/${row.id}?action=edit`} className="btn-sm btn-primary"><i className="fa fa-pencil fa-lg mr-1"></i>
-            Editar</Link>
+            cell: row => <Link to={`bandeira/${row.id}?action=edit`} className="btn-sm btn-primary"><i className="fa fa-pencil fa-lg mr-1"></i></Link>
         },
     ];
 
@@ -63,20 +62,15 @@ export default function ListaBandeira() {
                             <i className="fa fa-align-justify"></i>Bandeira
 
                             <Link to={`bandeira?action=novo`} className="btn btn-secondary float-right">
-                                <i className="cui-file icons mr-1"></i>
-                                                    Novo
-                                                </Link>
+                                <i className="fa fa-plus-circle fa-lg"></i>
+                            </Link>
 
                         </CardHeader>
                         <CardBody>
-                            <DataTable className="mt-n3"
-                                title="Bandeiras"
-                                columns={columns}
+                            <DataTableGenerica
                                 data={data}
-                                striped={true}
-                                highlightOnHover={true}
-                                responsive={true}
-                                pagination={true}
+                                columns={columns}
+                                title="Bandeiras"
                             />
                         </CardBody>
                     </Card>
