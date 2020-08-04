@@ -1,6 +1,7 @@
 const knex = require('knex');
 const connection = require('../../database/connection');
 const { request } = require('express');
+const knexfile = require('../../../knexfile');
 
 module.exports = {
 

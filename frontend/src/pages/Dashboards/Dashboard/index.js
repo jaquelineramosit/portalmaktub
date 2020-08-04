@@ -5,6 +5,7 @@ import { Bar, Line } from 'react-chartjs-2';
 import { getStyle, hexToRgba } from '@coreui/coreui/dist/js/coreui-utilities';
 import { CustomTooltips } from '@coreui/coreui-plugin-chartjs-custom-tooltips';
 import {Badge, CardBody, CardHeader, } from 'reactstrap';
+import { FaChartLine} from 'react-icons/fa'
 import {        
     Card,    
     Col,
@@ -46,7 +47,6 @@ export default function DashBoard() {
           </Tooltip>
         );
     }
-
 
     ////INICIO - Resultado Graficos
     const [resultadoCard1, setResultadoCard1] = useState([]);
@@ -116,7 +116,7 @@ export default function DashBoard() {
     const [listaOrdemServico, setListaOrdemServico] = useState([]);
 
     useEffect(() => {
-        api.get('/ordem-servico-lista').then(response => {
+        api.get('/ordem-servico-lista/10').then(response => {
             setListaOrdemServico(response.data);           
         })
     }, []);
@@ -181,7 +181,6 @@ export default function DashBoard() {
             },
         }
     }
-
     // Card Chart 2
     const dadosCard2 = {
         labels: resultadoCard2.map(total => `${meses[total.mes]} - ${total.ano}`),
@@ -194,7 +193,6 @@ export default function DashBoard() {
             },
         ],
     };
-
     const dadosCardOpt2 = {
         tooltips: {
             enabled: false,
@@ -239,7 +237,6 @@ export default function DashBoard() {
             },
         },
     };
-
     // Card Chart 3
     const dadosCard3 = {
         labels: resultadoCard3.map(total => `${meses[total.mes]} - ${total.ano}`),
@@ -252,7 +249,6 @@ export default function DashBoard() {
             },
         ],
     };
-
     const dadosCardOpt3 = {
         tooltips: {
             enabled: false,
@@ -283,7 +279,6 @@ export default function DashBoard() {
             },
         },
     };
-
     // Card Chart 4
     const dadosCard4 = {
         labels: resultadoCard4.map(total => `${meses[total.mes]} - ${total.ano}`),
@@ -296,7 +291,6 @@ export default function DashBoard() {
             },
         ],
     };
-
     const dadosCardOpt4 = {
         tooltips: {
             enabled: false,
@@ -318,9 +312,7 @@ export default function DashBoard() {
             }],
         },
     };
-
     const [color, setColor]  = useState('');
-
     const BadgeStatus = (props) => {
         const status = props.status;        
         var color = "";
@@ -353,8 +345,6 @@ export default function DashBoard() {
             </Fragment>
         )
     } 
-
-    
 
     const Cards = () => {  
         return (
@@ -463,7 +453,6 @@ export default function DashBoard() {
     
         )
     }
-
     return (        
         <div className="animated fadeIn">
             {/* cards */}
@@ -474,7 +463,13 @@ export default function DashBoard() {
             <Row>
                 <Col>
                     <Card>
-                        <CardHeader>Últimas OS's</CardHeader>
+                        <CardHeader className="links">
+                            <FaChartLine /> Últimas OS's
+                            <Link to={`ordem-servico?action=novo`} className="btn-sm btn-secondary float-right">
+                                <i className="cui-file icons mr-1"></i>
+                                Novo
+                            </Link>
+                        </CardHeader>                       
                         <CardBody className="p-1">                                
                             <Table key={`table`} hover responsive className="table-outline mb-0 d-none d-sm-table">
                                 <thead key={`tableheader`} className="thead-light">

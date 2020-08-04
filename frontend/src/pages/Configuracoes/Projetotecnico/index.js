@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, CardFooter, Form } from 'reactstrap';
 import '../../../global.css';
 import { Redirect } from "react-router-dom";
-import api from '../../../../src/services/api';
+import api from '../../../services/api';
 
-export default function Projetotecnico(props) {
+export default function ProjetoTecnico(props) {
     const [redirect, setRedirect] = useState(false);
 
     //parametros

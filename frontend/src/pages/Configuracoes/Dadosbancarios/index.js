@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, AppSwitch } from 'react';
 import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, InputGroup, CardFooter, Form } from 'reactstrap';
-import { AppSwitch } from 'react'
 import { Redirect } from 'react-router-dom';
 import '../../../global.css';
 import api from '../../../services/api';

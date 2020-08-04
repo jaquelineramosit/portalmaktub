@@ -2,7 +2,9 @@ const connection = require('../../database/connection');
 const getDate = require('../../utils/getDate');
 
 module.exports = {
-    async getAll (request, response) {
+    async getAllLimitRows (request, response) {
+        const rows  = request.params.rows; 
+        
         const [count] = await connection('ordemservico').count();
         const ordemservico = await connection('ordemservico')        
             .join('clientefilial', 'clientefilial.id', '=', 'ordemservico.clientefilialid')
@@ -20,7 +22,8 @@ module.exports = {
                 'tecnico.nometecnico',
                 'usuario.nome',
                 'statusatendimento.status'
-            ])
+            ]).distinct()
+            .limit(rows);
             response.header('X-Total-Count', count['count(*)']);
     
         return response.json(ordemservico);
