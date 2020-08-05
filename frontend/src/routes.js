@@ -86,6 +86,7 @@ const Reltecnicofaturado = React.lazy(() => import('./pages/Relatórios/Relatori
 const Relcustotecnico = React.lazy(() => import('./pages/Relatórios/Relatorio CustoxTecnico'));
 
 const Collapse = React.lazy(() => import('./pages/Configuracoes/Collapse'));
+const TesteMultiSelect = React.lazy(() => import('./pages/testeMultiSelect'));
 
 const routes = [
   
@@ -204,6 +205,7 @@ const routes = [
   { path: '/rel-custoxtecnico', name: 'Relatório de Custo x Técnico ', component: Relcustotecnico},
 
   { path: '/collapse', name: 'Collapse', component: Collapse },
+  { path: '/teste-mult-select', name: 'Teste Multi Select', component: TesteMultiSelect },
 
 ];
 

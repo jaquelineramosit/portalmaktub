@@ -5,20 +5,6 @@ const ultimoNumeroOs = require('../OrdemServico/UltimoNumeroOs');
 
 module.exports = {
 
-    // async getTeste (request, response) {
-
-    //     // const teste = ultimoNumeroOs.getLastNumeroOs(request, response);
-    //     // console.log(ultimoNumeroOs.getLastNumeroOs);
-    //     // console.log(teste);
-
-    //     const teste = ultimoNumeroOs.LastNumeroOs();
-    //     console.log(teste);
-
-
-    //     return response.json(teste);
-
-    // },
-
     async getAll (request, response) {
         const [count] = await connection('ordemservico').count();
         const ordemservico = await connection('ordemservico')
@@ -79,32 +65,8 @@ module.exports = {
         const { datasolicitacao, dataatendimento, clientefilialid, tipoprojetoid, 
                 descricaoservico, tecnicoid, observacaoos, datafechamento, horaentrada, 
                 horasaida, qtdehoras, horaextra, valorapagar, valorareceber, totalapagar, 
-                totalareceber, diadasemana, custoadicional, ativo } = request.body;                        
-        const [ordemServicoId] = await connection('ordemservico').insert({            
-            numeroos,
-            datasolicitacao,
-            dataatendimento,
-            clientefilialid,
-            tipoprojetoid,
-            descricaoservico,
-            tecnicoid,
-            observacaoos,
-            datafechamento,
-            horaentrada,
-            horasaida,
-            qtdehoras,
-            horaextra,
-            valorapagar,
-            valorareceber,
-            totalapagar,
-            totalareceber,
-            diadasemana,
-            custoadicional,
-            ativo,
-            usuarioid,
-            dataultmodif
-        })
-
+                totalareceber, diadasemana, custoadicional, ativo } = request.body;  
+                                
         //////////////////////////////////////////////////////////////////////////////////////////////
         //SEPARAR EM FUNÇÃO
         //Regra de negócio: {
@@ -120,47 +82,68 @@ module.exports = {
         const statuspagamentoid = 4 //statuspagamentoid: [4] não executado
         const statuscobrancaid = 6 //statuscobrancaid: [6] não faturado
         const observacao = "";
-        console.log(statusatendimentoid);
 
-        // var Promise = require('bluebird');
-        knex.transaction(function(trx) {
-            knex('movimentacaoos').transacting(trx).insert({
-                ordemServicoId,
-                statusatendimentoid,
-                statuspagamentoid,
-                statuscobrancaid,
-                observacao,
-                ativo,
-                usuarioid,
-                dataultmodif
+        const objetoRetorno = 
+            knex.transaction(function(trx) {
+                return knex('ordemservico').transacting(trx).insert({
+                    numeroos,
+                    datasolicitacao,
+                    dataatendimento,
+                    clientefilialid,
+                    tipoprojetoid,
+                    descricaoservico,
+                    tecnicoid,
+                    observacaoos,
+                    datafechamento,
+                    horaentrada,
+                    horasaida,
+                    qtdehoras,
+                    horaextra,
+                    valorapagar,
+                    valorareceber,
+                    totalapagar,
+                    totalareceber,
+                    diadasemana,
+                    custoadicional,
+                    ativo,
+                    usuarioid,
+                    dataultmodif            
+                }).then(function(ordemServicoId){ 
+                    if(ordemServicoId[0]) {                    
+                        return knex('movimentacaoos').transacting(trx).insert({
+                            ordemServicoId,
+                            statusatendimentoid,
+                            statuspagamentoid,
+                            statuscobrancaid,
+                            observacao,
+                            ativo,
+                            usuarioid,
+                            dataultmodif
+                        }) .then(function(movimentacaoOsId) {     
+                            console.log("movimentacaoOsId[0]");
+                            console.log(movimentacaoOsId[0]);                   
+                            if(movimentacaoOsId[0]) {
+                                trx.commit;
+                                return [{ ordemServicoId: ordemServicoId[0], numeroos:  numeroos, movimentacaoOsId: movimentacaoOsId[0]}];
+                            } else {
+                                trx.rollback;
+                            }                            
+                        })
+                    } else {
+                        trx.rollback;
+                    }       
+                })            
+                .catch(trx.rollback);
             })
             .then(function(resp) {
-                var id = resp[0];
-                return someExternalMethod(id, trx);
+                return response.json(resp);
             })
-            .then(trx.commit)
-            .catch(trx.rollback);
-        })
-        .then(function(resp) {
-            console.log('Transaction complete.');
-        })
-        .catch(function(err) {
-            console.error(err);
-        });
-
-        // const [movimentacaoOsId] = await connection('movimentacaoos').insert({
-        //     ordemServicoId,
-        //     statusatendimentoid,
-        //     statuspagamentoid,
-        //     statuscobrancaid,
-        //     observacao,
-        //     ativo,
-        //     usuarioid,
-        //     dataultmodif
-        // })
+            .catch(function(err) {
+                console.error(err);
+            });
+    
         //FIM ////////////////////////////////////////////////////////////////////////////////////////
-        return response.json({ ordemServicoId }, { numeroos}, { movimentacaoOsId});
-        //////////////////////////////////////////////////////////////////////////////////////////////
+
     },
     
     async update (request, response) {
