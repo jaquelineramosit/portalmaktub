@@ -7,6 +7,7 @@ import api from '../../../services/api';
 import moment from 'moment';
 import NumberFormat from 'react-number-format';
 import { connect } from 'formik';
+import { number } from 'prop-types';
 const dateFormat = require('dateformat');
 let clienteFilialIdInicial = '';
 let clienteIdInicial = '';
@@ -177,8 +178,8 @@ const OrdemServico = (props) => {
                     } else {
                         console.log(custoAdicionalInicial);
                         setHoraextra(0);
-                        setTotalapagar(valorPagarInicial);
-                        setTotalareceber(valorReceberInicial);
+                        setTotalapagar(valorPagarInicial + custoAdicionalInicial);
+                        setTotalareceber(valorReceberInicial + custoAdicionalInicial);
                     }
                 });
             });
@@ -195,10 +196,13 @@ const OrdemServico = (props) => {
         console.log('entrou');
 
         qdeHoras = valorFimInicial - valorInicioInicial;
-        qdeHorasExtra =  qdeHoras - horasProjeto;
+        qdeHorasExtra =  qdeHoras - qtdehoras;
 
         console.log('qdeHoras');
         console.log(qdeHoras);
+
+        console.log('horasProjeto');
+        console.log(qtdehoras);
 
         console.log('qdeHorasExtra');
         console.log(qdeHorasExtra);
@@ -209,8 +213,8 @@ const OrdemServico = (props) => {
             setTotalareceber((horadecimal * qdeHorasExtra) + valorReceberInicial + Number(custoAdicionalInicial));
         } else {
             setHoraextra(0);
-            setTotalapagar(valorPagarInicial);
-            setTotalareceber(valorReceberInicial);
+            setTotalapagar(valorPagarInicial + Number(custoAdicionalInicial));
+            setTotalareceber(valorReceberInicial + Number(custoAdicionalInicial));
         }
     }
 
