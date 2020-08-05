@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Badge, Card, CardBody, CardHeader, Col, Row } from 'reactstrap';
 import api from '../../../services/api';
-import DataTable from 'react-data-table-component';
+import DataTableGenerica from '../../../components/DataTableGenerica';
 
 export default function ListaSubPagina() {
     const [subpaginas, setSubpaginas] = useState([]);
@@ -57,8 +57,7 @@ export default function ListaSubPagina() {
             name: 'Ações',
             sortable: true,
             right: true,
-            cell: row => <Link to={`sub-paginas/${row.id}?action=edit`} className="btn-sm btn-primary"><i className="fa fa-pencil fa-lg mr-1"></i>
-            Editar</Link>
+            cell: row => <Link to={`sub-paginas/${row.id}?action=edit`} className="btn-sm btn-primary"><i className="fa fa-pencil fa-lg mr-1"></i></Link>
         },
     ];
 
@@ -72,20 +71,15 @@ export default function ListaSubPagina() {
                             <i className="fa fa-align-justify"></i>Sub Páginas
 
                         <Link to={`sub-paginas?action=novo`} className="btn btn-secondary float-right">
-                                <i className="cui-file icons mr-1"></i>
-                                                Novo
-                                            </Link>
+                                <i className="fa fa-plus-circle fa-lg"></i>
+                            </Link>
 
                         </CardHeader>
                         <CardBody>
-                            <DataTable className="mt-n3"
-                                title="Sub Páginas"
-                                columns={columns}
+                            <DataTableGenerica
                                 data={data}
-                                striped={true}
-                                highlightOnHover={true}
-                                responsive={true}
-                                pagination={true}
+                                columns={columns}
+                                title="Sub Páginas"
                             />
                         </CardBody>
                     </Card>

@@ -62,8 +62,7 @@ export default function ListaFuncao() {
             name: 'Ações',
             sortable: true,
             right: true,
-            cell: row => <Link to={`funcao/${row.id}?action=edit`} className="btn-sm btn-primary"><i className="fa fa-pencil fa-lg mr-1"></i>
-            Editar</Link>
+            cell: row => <Link to={`funcao/${row.id}?action=edit`} className="btn-sm btn-primary"><i className="fa fa-pencil fa-lg mr-1"></i></Link>
         },
     ];
     console.log(columns)

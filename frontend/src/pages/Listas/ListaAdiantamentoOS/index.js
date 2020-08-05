@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardBody, CardHeader, Col, Row, Badge } from 'reactstrap';
 import api from '../../../services/api';
-import DataTableGenerica from  '../../../components/DataTableGenerica';
+import DataTableGenerica from '../../../components/DataTableGenerica';
 import '../../../global.css';
 
 
@@ -11,7 +11,7 @@ export default function ListaAdiantamentoOS() {
     const [adiantamentoos, setAdiantamentoos] = useState([]);
     const [total, setTotal] = useState(0);
     const usuarioId = localStorage.getItem('userId');
-    
+
     //logica para pegar o total
     useEffect(() => {
         api.get('adiantamentoCount', {
@@ -40,7 +40,7 @@ export default function ListaAdiantamentoOS() {
         {
             name: 'Ordem de Serviço',
             selector: 'numeroos',
-            sortable: true,            
+            sortable: true,
         },
         {
             name: 'Valor de Adiantamento',
@@ -79,23 +79,22 @@ export default function ListaAdiantamentoOS() {
             name: 'Ações',
             sortable: true,
             right: true,
-            cell: row => <Link to={`adiantamento-os/${row.id}?action=edit`} className="btn-sm btn-primary"><i className="fa fa-pencil fa-lg mr-1"></i>
-            Editar</Link>
+            cell: row => <Link to={`adiantamento-os/${row.id}?action=edit`} className="btn-sm btn-primary"><i className="fa fa-pencil fa-lg mr-1"></i></Link>
         },
     ];
 
     const customStyles = {
         headCells: {
-            style: {              
-                fontWeight: 'bold',              
+            style: {
+                fontWeight: 'bold',
             },
         },
     };
 
     const customRowsPerPageText = {
-        rowsPerPageText: 'Linhas por página:', 
-        rangeSeparatorText: 'de', 
-        noRowsPerPage: false, 
+        rowsPerPageText: 'Linhas por página:',
+        rangeSeparatorText: 'de',
+        noRowsPerPage: false,
         selectAllRowsItem: false,
         selectAllRowsItemText: 'Todos'
     }
@@ -108,16 +107,15 @@ export default function ListaAdiantamentoOS() {
                         <CardHeader className="links">
                             <i className="fa fa-align-justify"></i> Adiantamento de OS
                             <Link to={`adiantamento-os?action=novo`} className="btn btn-secondary float-right">
-                                <i className="cui-file icons mr-1"></i>
-                                Novo
+                                <i className="fa fa-plus-circle fa-lg"></i>
                             </Link>
                         </CardHeader>
                         <CardBody>
-                            <DataTableGenerica 
-                                data={data} 
+                            <DataTableGenerica
+                                data={data}
                                 columns={columns}
                                 title="Adiantamento de OS"
-                            />                            
+                            />
                         </CardBody>
                     </Card>
                 </Col>

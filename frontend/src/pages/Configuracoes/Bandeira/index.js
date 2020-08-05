@@ -26,7 +26,7 @@ export default function Bandeira(props) {
         })
     }, [usuarioId]);
 
-    
+
     useEffect(() => {
         if (action === 'edit' && BandeiraIdParam !== '') {
             api.get(`bandeira/${BandeiraIdParam}`).then(response => {
@@ -118,7 +118,7 @@ export default function Bandeira(props) {
                                                 onChange={e => setBandeira(e.target.value)} >
                                             </Input>
                                             <InputGroupAddon addonType="append">
-                                                <Button type="button" color="secondary fa fa-flag"></Button>
+                                            <spam class="btn btn-secondary disabled fa fa-flag"></spam>
                                             </InputGroupAddon>
                                         </InputGroup>
                                     </Col>

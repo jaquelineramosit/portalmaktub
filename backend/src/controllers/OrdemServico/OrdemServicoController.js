@@ -63,7 +63,7 @@ module.exports = {
         //////////////////////////////////////////////////////////////////////////////////////////////
 
         const { datasolicitacao, dataatendimento, clientefilialid, tipoprojetoid, 
-                descricaoservico, tecnicoid, observacaoos, datafechamento, horaentrada, 
+                descricaoservico, tecnicoid, observacaoos, horaentrada, 
                 horasaida, qtdehoras, horaextra, valorapagar, valorareceber, totalapagar, 
                 totalareceber, diadasemana, custoadicional, ativo } = request.body;  
                                 
@@ -152,7 +152,7 @@ module.exports = {
         const dataultmodif = getDate();
         
         const { datasolicitacao, dataatendimento, clientefilialid, tiposervicoid, 
-            descricaoservico, tecnicoid, observacaoos, datafechamento, horaentrada, 
+            descricaoservico, tecnicoid, observacaoos, horaentrada, 
             horasaida, qtdehoras, horaextra, valorapagar, valorareceber, totalapagar, 
             totalareceber, diadasemana, custoadicional, ativo } = request.body;
 
@@ -165,7 +165,6 @@ module.exports = {
             descricaoservico,
             tecnicoid,
             observacaoos,
-            datafechamento,
             horaentrada,
             horasaida,
             qtdehoras,

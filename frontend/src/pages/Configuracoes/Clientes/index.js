@@ -1,13 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect} from 'react';
 import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, InputGroup, InputGroupAddon, CardFooter, Form } from 'reactstrap';
 import '../../../global.css';
 import { Redirect } from "react-router-dom";
 import { telMask, cepMask, numMask, cnpjMask, celMask, cpfMask } from '../../../mask'
 import api from '../../../../src/services/api';
+import axios from 'axios';
+
 
 export default function Cliente(props) {
+    
     const [redirect, setRedirect] = useState(false);
-
+     
     //parametros
     var search = props.location.search;
     var params = new URLSearchParams(search);
@@ -31,6 +34,9 @@ export default function Cliente(props) {
     const [cnpj, setCnpj] = useState('');
     const [parceiroid, setParceiroid] = useState('');
     const [parceirosid, setParceirosid] = useState([]);
+    const [ufs, setUfs] = useState([]);
+    const [selectedUf , setSelectedUf] = useState('0');
+    const [cities, setCities] = useState([]);
     const [ativo, setAtivo] = useState(1);
 
     useEffect(() => {
@@ -39,6 +45,31 @@ export default function Cliente(props) {
         })
     }, [usuarioId]);
 
+    useEffect(() => {
+        axios.get('https://servicodados.ibge.gov.br/api/v1/localidades/estados').then(response => {
+            const ufInitials = response.data.map(uf => uf.sigla);
+            setUfs(ufInitials);
+        });
+
+    }, []);
+
+    useEffect(() => {
+        if(selectedUf === '0'){
+            return;
+        }
+        axios.get(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${selectedUf}/municipios`).then(response => {
+            const cityNames = response.data.map(city => city.nome);
+            setCities(cityNames);
+        });
+
+    },[selectedUf]);
+
+    function handleSelectUf(event){
+        const uf = event.target.value;
+
+        setSelectedUf(uf); 
+        
+    }
 
 
     useEffect(() => {
@@ -142,18 +173,28 @@ export default function Cliente(props) {
                     <Col xs="12" md="12">
                         <Card>
                             <CardHeader>
+                                <i className="fa fa-handshake-o"></i>
                                 <strong>Cliente</strong>
                                 <small> novo</small>
                             </CardHeader>
                             <CardBody>
                                 <FormGroup row>
-                                    <Col md="3">
+                                    <Col md="4">
                                         <Label htmlFor="nomeCliente">Nome Cliente</Label>
                                         <Input type="text" required id="txtNomeCliente" placeholder="Digite o nome do Cliente"
                                             name="nomecliente"
                                             value={nomecliente}
                                             onChange={e => setNomecliente(e.target.value)} />
                                     </Col>
+                                    <Col md="4">
+                                        <Label htmlFor="razaoSocial">Razão Social</Label>
+                                        <Input type="text" required id="txtRazaoSocial" placeholder="Digite o nome do Cliente"
+                                            name="razaosocial"
+                                            value={razaosocial}
+                                            onChange={e => setRazaosocial(e.target.value)} />
+                                    </Col>
+                                </FormGroup>
+                                <FormGroup row>
                                     <Col md="3">
                                         <Label htmlFor="nomeResponsavel">Nome Responsável</Label>
                                         <Input type="text" required id="txtNomeResponsavel" placeholder="Digite o Nome do responsável"
@@ -162,6 +203,16 @@ export default function Cliente(props) {
                                             onChange={e => setNomeresponsavel(e.target.value)} />
                                     </Col>
                                     <Col md="3">
+                                        <Label htmlFor="cnpj">CNPJ</Label>
+                                        <InputGroup>
+                                            <Input type="text" required id="txtCnpj"
+                                                placeholder="Digite a CNPJ"
+                                                value={cnpj}
+                                                name="cnpj"
+                                                onChange={e => setCnpj(cnpjMask(e.target.value))} />
+                                        </InputGroup>
+                                    </Col>
+                                    <Col md="2">
                                         <Label htmlFor="parceiroId">Parceiro</Label>
                                         <Input required type="select" name="select" id="cboParceiroId"
                                             name="parceiroid"
@@ -176,24 +227,64 @@ export default function Cliente(props) {
                                 </FormGroup>
                                 <FormGroup row>
                                     <Col md="3">
-                                        <Label htmlFor="razaoSocial">Razão Social</Label>
-                                        <Input type="text" required id="txtRazaoSocial" placeholder="Digite o nome do Cliente"
-                                            name="razaosocial"
-                                            value={razaosocial}
-                                            onChange={e => setRazaosocial(e.target.value)} />
+                                        <Label htmlFor="telefonefixo">Telefone Fixo</Label>
+                                        <InputGroup>
+                                            <Input type="text" id="txtTelefoneFixo" placeholder="(11) 9999-9999"
+                                                value={telefonefixo}
+                                                name="telefonefixo"
+                                                onChange={e => setTelefonefixo(telMask(e.target.value))} />
+                                            <InputGroupAddon addonType="append">
+                                                <spam class="btn btn-secondary disabled icon-phone"></spam>
+                                            </InputGroupAddon>
+                                        </InputGroup>
                                     </Col>
                                     <Col md="3">
-                                        <Label htmlFor="cnpj">CNPJ</Label>
+                                        <Label htmlFor="telefoneCelular">Telefone Celular</Label>
                                         <InputGroup>
-                                            <Input type="text" required id="txtCnpj"
-                                                placeholder="Digite a CNPJ"
-                                                value={cnpj}
-                                                name="cnpj"
-                                                onChange={e => setCnpj(cnpjMask(e.target.value))} />
+                                            <Input type="text" id="txtTelefoneCelular" placeholder="(11) 9999-9999" cnpjMask="true"
+                                                value={telefonecelular}
+                                                name="telefonecelular"
+                                                onChange={e => setTelefonecelular(celMask(e.target.value))} />
+                                            <InputGroupAddon addonType="append">
+                                                <spam class="btn btn-secondary disabled icon-phone"></spam>
+                                            </InputGroupAddon>
+                                        </InputGroup>
+                                    </Col>
+                                    <Col md="3">
+                                        <Label htmlFor="telefoneResponsavel">Telefone Responsável</Label>
+                                        <InputGroup>
+                                            <Input type="text" id="txtTelefoneResponsavel" placeholder="(11) 9999-9999"
+                                                value={telefoneresponsavel}
+                                                name="telefoneresponsavel"
+                                                onChange={e => setTelefoneresponsavel(telMask(e.target.value))} />
+                                            <InputGroupAddon addonType="append">
+                                                <spam class="btn btn-secondary disabled icon-phone"></spam>
+                                            </InputGroupAddon>
                                         </InputGroup>
                                     </Col>
                                 </FormGroup>
+                            </CardBody>
+                        </Card>
+                        <CardHeader>
+                            <i className="fa fa-map-marker"></i>
+                            <strong>Endereço</strong>
+                        </CardHeader>
+                        <Card>
+                            <CardBody>
                                 <FormGroup row>
+                                    <Col md="3">
+                                        <Label htmlFor="cep">CEP</Label>
+                                        <InputGroup>
+                                            <Input id="txtCep" size="16" required type="text" placeholder="00000-000"
+                                                value={cep}
+                                                name="cep"
+                                                onChange={e => setCep(cepMask(e.target.value))} />
+                                            <InputGroupAddon addonType="append">
+                                                <spam class="btn btn-secondary disabled fa fa-truck"></spam>
+                                            </InputGroupAddon>
+                                        </InputGroup>
+                                    </Col>
+
                                     <Col md="3">
                                         <Label htmlFor="logradouro">Endereço</Label>
                                         <Input type="text" required id="txtLogradouro"
@@ -209,13 +300,6 @@ export default function Cliente(props) {
                                             value={bairro}
                                             onChange={e => setBairro(e.target.value)} />
                                     </Col>
-                                    <Col md="3">
-                                        <Label htmlFor="cep">CEP</Label>
-                                        <Input id="txtCep" size="16" required type="text" placeholder="00000-000"
-                                            value={cep}
-                                            name="cep"
-                                            onChange={e => setCep(cepMask(e.target.value))} />
-                                    </Col>
                                 </FormGroup>
                                 <FormGroup row>
                                     <Col md="2">
@@ -225,48 +309,6 @@ export default function Cliente(props) {
                                             name="numero"
                                             onChange={e => setNumero(numMask(e.target.value))} />
                                     </Col>
-                                    <Col md="2">
-                                        <Label htmlFor="cidade">Cidade</Label>
-                                        <Input type="text" required id="txtCidade" placeholder="Digite a Cidade"
-                                            name="cidade"
-                                            value={cidade}
-                                            onChange={e => setCidade(e.target.value)} />
-                                    </Col>
-                                    <Col md="2">
-                                        <Label htmlFor="estado">UF</Label>
-                                        <Input type="select" required name="select" id="cboEstado"
-                                            name="estado"
-                                            value={estado}
-                                            onChange={e => setEstado(e.target.value)} >
-                                            <option value={undefined}>Selecione...</option>
-                                            <option value="SP">São Paulo</option>
-                                            <option value="RJ">Rio de Janeiro</option>
-                                            <option value="MG">Minas Gerais</option>
-                                            <option value="PR">Paraná</option>
-                                            <option value="AC">Acre</option>
-                                            <option value="Al">Alagoas</option>
-                                            <option value="AP">Amapá</option>
-                                            <option value="AM">Amazonas</option>
-                                            <option value="BH">Bahia</option>
-                                            <option value="CE">Ceará</option>
-                                            <option value="DF">Distrito Federal</option>
-                                            <option value="GO">Goiás</option>
-                                            <option value="DF">Distrito Federal</option>
-                                            <option value="MA">Maranhão</option>
-                                            <option value="MG">Mato Grosso</option>
-                                            <option value="MT">Mato Grosso do Sul</option>
-                                            <option value="PA">Pará</option>
-                                            <option value="PB">Paraíba</option>
-                                            <option value="PE">Pernambuco</option>
-                                            <option value="PI">Piau</option>
-                                            <option value="RN">Rio Grande do Norte</option>
-                                            <option value="RS">Rio Grande do Sul</option>
-                                            <option value="RR">Rondônia</option>
-                                            <option value="SC">Santa Catarina</option>
-                                            <option value="SE">Sergipe</option>
-                                            <option value="TO">Tocantins</option>
-                                        </Input>
-                                    </Col>
                                     <Col md="3">
                                         <Label htmlFor="complemento">Complemento</Label>
                                         <Input type="text" id="txtComplemento" placeholder="Digite o Complemento"
@@ -274,43 +316,29 @@ export default function Cliente(props) {
                                             value={complemento}
                                             onChange={e => setComplemento(e.target.value)} />
                                     </Col>
-                                </FormGroup>
-                                <FormGroup row>
-                                    <Col md="3">
-                                        <Label htmlFor="telefonefixo">Telefone Fixo</Label>
-                                        <InputGroup>
-                                            <Input type="text" id="txtTelefoneFixo" placeholder="(11) 9999-9999"
-                                                value={telefonefixo}
-                                                name="telefonefixo"
-                                                onChange={e => setTelefonefixo(telMask(e.target.value))} />
-                                            <InputGroupAddon addonType="append">
-                                                <Button type="button" color="secondary icon-phone"></Button>
-                                            </InputGroupAddon>
-                                        </InputGroup>
+                                    <Col md="2">
+                                        <Label htmlFor="estado">UF</Label>
+                                        <Input type="select" required name="select" id="cboEstado"
+                                            name="estado"
+                                            value={selectedUf}
+                                            onChange={handleSelectUf } >
+                                            <option value="0">UF</option>
+                                            {ufs.map(uf => (
+                                                <option key={uf} value={uf}>{uf}</option>
+                                            ))}
+                                        </Input>
                                     </Col>
-                                    <Col md="3">
-                                        <Label htmlFor="telefoneCelular">Telefone Celular</Label>
-                                        <InputGroup>
-                                            <Input type="text" id="txtTelefoneCelular" placeholder="(11) 9999-9999" cnpjMask="true"
-                                                value={telefonecelular}
-                                                name="telefonecelular"
-                                                onChange={e => setTelefonecelular(celMask(e.target.value))} />
-                                            <InputGroupAddon addonType="append">
-                                                <Button type="button" color="secondary icon-phone"></Button>
-                                            </InputGroupAddon>
-                                        </InputGroup>
-                                    </Col>
-                                    <Col md="3">
-                                        <Label htmlFor="telefoneResponsavel">Telefone Responsável</Label>
-                                        <InputGroup>
-                                            <Input type="text" id="txtTelefoneResponsavel" placeholder="(11) 9999-9999"
-                                                value={telefoneresponsavel}
-                                                name="telefoneresponsavel"
-                                                onChange={e => setTelefoneresponsavel(telMask(e.target.value))} />
-                                            <InputGroupAddon addonType="append">
-                                                <Button type="button" color="secondary icon-phone"></Button>
-                                            </InputGroupAddon>
-                                        </InputGroup>
+                                    <Col md="2">
+                                        <Label htmlFor="cidade">Cidade</Label>
+                                        <Input type="select" required id="txtCidade" placeholder="Digite a Cidade"
+                                            name="cidade"
+                                            value={cidade}
+                                            onChange={e => setCidade(e.target.value)}>
+                                                 <option value="0">Cidades</option>
+                                            {cities.map(city => (
+                                                <option key={city} value={city}>{city}</option>
+                                            ))}
+                                    </Input>
                                     </Col>
                                 </FormGroup>
                                 {/*<FormGroup>
@@ -323,6 +351,7 @@ export default function Cliente(props) {
 
                                 </FormGroup>*/}
                             </CardBody>
+
                             <CardFooter className="text-center">
                                 <Button type="submit" size="sm" color="success" className=" mr-3"><i className="fa fa-check"></i> Salvar</Button>
                                 <Button type="reset" size="sm" color="danger" className="ml-3"><i className="fa fa-ban "></i> Cancelar</Button>

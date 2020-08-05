@@ -261,7 +261,7 @@ export default function Tipoprojeto(props) {
                                                 value={horas}
                                                 onChange={e => setHoras((e.target.value))} />
                                             <InputGroupAddon addonType="append">
-                                                <Button type="button" color="secondary fa fa-clock-o"></Button>
+                                                <spam class="btn btn-secondary disabled fa fa-clock-o"></spam>
                                             </InputGroupAddon>
                                         </InputGroup>
                                     </Col>
@@ -273,7 +273,7 @@ export default function Tipoprojeto(props) {
                                                 name="valorhoracobrado"
                                                 onChange={e => setValorhoraextra(reaisMask(e.target.value))} />
                                             <InputGroupAddon addonType="append">
-                                                <Button type="button" color="secondary fa fa-money"></Button>
+                                                <spam class="btn btn-secondary disabled fa fa-money"></spam>
                                             </InputGroupAddon>
                                         </InputGroup>
                                     </Col>
@@ -285,7 +285,7 @@ export default function Tipoprojeto(props) {
                                                 name="valorhoratecnico"
                                                 onChange={e => setValorhoratecnico(reaisMask(e.target.value))} />
                                             <InputGroupAddon addonType="append">
-                                                <Button type="button" color="secondary fa fa-money"></Button>
+                                                <spam class="btn btn-secondary disabled fa fa-money"></spam>
                                             </InputGroupAddon>
                                         </InputGroup>
                                     </Col>
@@ -299,11 +299,11 @@ export default function Tipoprojeto(props) {
                                                 name="horadecimal"
                                                 onChange={e => setValorhoratecnico(reaisMask(e.target.value))} />
                                             <InputGroupAddon addonType="append">
-                                                <Button type="button" color="secondary fa fa-money"></Button>
+                                                <spam class="btn btn-secondary disabled fa fa-money"></spam>
                                             </InputGroupAddon>
                                         </InputGroup>
                                     </Col>
-                                 </FormGroup>
+                                </FormGroup>
                                 {/* <FormGroup>
                                     <Col md="2">
                                         <Label check className="form-check-label" htmlFor="ativo1">Ativo</Label>

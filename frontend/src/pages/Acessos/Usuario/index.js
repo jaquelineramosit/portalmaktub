@@ -41,7 +41,7 @@ export default function Usuario(props) {
     const [perfilAcessos, setPerfilAcessos] = useState([]);
     const [ativo, setAtivo] = useState(1);
 
-  useEffect(() => {
+    useEffect(() => {
         api.get('perfis-acesso').then(response => {
             setPerfilAcessos(response.data);
         })
@@ -163,6 +163,7 @@ export default function Usuario(props) {
                     <Col xs="12" md="12">
                         <Card>
                             <CardHeader>
+                                <i className="fa fa-user-circle-o"></i>
                                 <strong>Usuário</strong>
                                 <small> novo</small>
                             </CardHeader>
@@ -191,10 +192,9 @@ export default function Usuario(props) {
                                                 value={dataNasc}
                                                 onChange={e => setDatanasc(e.target.value)} />
                                             <InputGroupAddon addonType="append">
-                                                <Button type="button" color="secondary  fa fa-calendar"></Button>
+                                                <spam class="btn btn-secondary disabled fa fa-calendar"></spam>
                                             </InputGroupAddon>
-                                        </InputGroup>
-
+                                        </InputGroup> 
                                     </Col>
                                     <Col md="2">
                                         <Label htmlFor="Genero">Genero</Label>
@@ -209,7 +209,80 @@ export default function Usuario(props) {
                                     </Col>
                                 </FormGroup>
                                 <FormGroup row>
+                                    <Col md="4">
+                                        <Label htmlFor="RG">Documento RG</Label>
+                                        <Input type="text" id="txtRG" placeholder="Digite o número do RG"
+                                            value={rg}
+                                            name="rg"
+                                            onChange={e => setRg(rgMask(e.target.value))} />
+                                    </Col>
+                                    <Col md="4">
+                                        <Label htmlFor="Cpf">CPF</Label>
+                                        <Input type="text" required id="txtCpf" placeholder="Digite o número do CPF"
+                                            value={cpf}
+                                            name="cpf"
+                                            onChange={e => setCpf(cpfMask(e.target.value))} />
+                                    </Col>
                                     <Col md="2">
+                                        <Label htmlFor="TelefoneFixo">Telefone Fixo</Label>
+                                        <InputGroup>
+                                            <Input type="text" id="txtTelefoneFixo" placeholder="(11) 9999-9999"
+                                                value={telefone}
+                                                name="telefone"
+                                                onChange={e => setTelefone(telMask(e.target.value))} />
+                                            <InputGroupAddon addonType="append">
+                                                <spam class="btn btn-secondary disabled icon-phone"></spam>
+                                            </InputGroupAddon>
+                                        </InputGroup>
+
+                                    </Col>
+                                    <Col md="2">
+                                        <Label htmlFor="Celular">Celular</Label>
+                                        <InputGroup>
+                                            <Input type="text" required id="txtCelular" placeholder="(11) 99999-9999"
+                                                value={celular}
+                                                name="celular"
+                                                onChange={e => setCelular(celMask(e.target.value))} />
+                                            <InputGroupAddon addonType="append">
+                                                <spam class="btn btn-secondary disabled icon-screen-smartphone"></spam>
+                                            </InputGroupAddon>
+                                        </InputGroup>
+                                    </Col>
+                                </FormGroup>
+                                <FormGroup row>
+                                    <Col md="4">
+                                        <Label htmlFor="Nome">Nome Contato Emergencial</Label>
+                                        <Input type="text" required id="txtNome" placeholder="Digite o Nome"
+                                            name="contatoemergencia"
+                                            value={contatoemergencia}
+                                            onChange={e => setContatoemergencial(e.target.value)} />
+                                    </Col>
+
+                                    <Col md="4">
+                                        <Label htmlFor="TelefoneFixo">Celular Emergencial</Label>
+                                        <InputGroup>
+                                            <Input type="text" id="txtTelefoneFixo" placeholder="(11) 9999-9999"
+                                                value={telefonecttoemergencia}
+                                                name="telefonecttoemergencia"
+                                                onChange={e => settelefonecttoemergencia(celMask(e.target.value))} />
+                                            <InputGroupAddon addonType="append">
+                                                <spam class="btn btn-secondary disabled icon-screen-smartphone"></spam>
+                                            </InputGroupAddon>
+                                        </InputGroup>
+
+                                    </Col>
+
+                                </FormGroup>
+                            </CardBody>
+                        </Card>
+                        <CardHeader>
+                            <i className="fa fa-map-marker"></i>
+                            <strong>Endereço</strong>
+                        </CardHeader>
+                        <Card>
+                            <CardBody>
+                                <FormGroup row>
+                                    <Col md="3">
                                         <Label htmlFor="Cep">CEP</Label>
                                         <InputGroup>
                                             <Input id="txtCep" size="16" required type="text" placeholder="00000-000"
@@ -217,11 +290,11 @@ export default function Usuario(props) {
                                                 name="cep"
                                                 onChange={e => setCep(cepMask(e.target.value))} />
                                             <InputGroupAddon addonType="append">
-                                                <Button type="button" color="secondary fa fa-truck"></Button>
+                                                <spam class="btn btn-secondary disabled fa fa-truck"></spam>
                                             </InputGroupAddon>
                                         </InputGroup>
                                     </Col>
-                                    <Col md="6">
+                                    <Col md="4">
                                         <Label htmlFor="Logradouro">Endereço</Label>
                                         <Input type="text" required id="txtLogradouro" placeholder="Digite o Endereço"
                                             name="logradouro"
@@ -235,7 +308,7 @@ export default function Usuario(props) {
                                             name="numero"
                                             onChange={e => setNum(numMask(e.target.value))} />
                                     </Col>
-                                    <Col md="2">
+                                    <Col md="3">
                                         <Label htmlFor="Complemento">Complemento</Label>
                                         <Input type="text" id="txtComplemento" placeholder="Digite o Complemento"
                                             name="complemento"
@@ -293,70 +366,6 @@ export default function Usuario(props) {
                                             <option value="TO">Tocantins</option>
                                         </Input>
                                     </Col>
-                                </FormGroup>
-                                <FormGroup row>
-                                    <Col md="4">
-                                        <Label htmlFor="RG">Documento RG</Label>
-                                        <Input type="text" id="txtRG" placeholder="Digite o número do RG"
-                                            value={rg}
-                                            name="rg"
-                                            onChange={e => setRg(rgMask(e.target.value))} />
-                                    </Col>
-                                    <Col md="4">
-                                        <Label htmlFor="Cpf">CPF</Label>
-                                        <Input type="text" required id="txtCpf" placeholder="Digite o número do CPF"
-                                            value={cpf}
-                                            name="cpf"
-                                            onChange={e => setCpf(cpfMask(e.target.value))} />
-                                    </Col>
-                                    <Col md="2">
-                                        <Label htmlFor="TelefoneFixo">Telefone Fixo</Label>
-                                        <InputGroup>
-                                            <Input type="text" id="txtTelefoneFixo" placeholder="(11) 9999-9999"
-                                                value={telefone}
-                                                name="telefone"
-                                                onChange={e => setTelefone(telMask(e.target.value))} />
-                                            <InputGroupAddon addonType="append">
-                                                <Button type="button" color="secondary icon-phone"></Button>
-                                            </InputGroupAddon>
-                                        </InputGroup>
-
-                                    </Col>
-                                    <Col md="2">
-                                        <Label htmlFor="Celular">Celular</Label>
-                                        <InputGroup>
-                                            <Input type="text" required id="txtCelular" placeholder="(11) 99999-9999"
-                                                value={celular}
-                                                name="celular"
-                                                onChange={e => setCelular(celMask(e.target.value))} />
-                                            <InputGroupAddon addonType="append">
-                                                <Button type="button" color="secondary icon-screen-smartphone"></Button>
-                                            </InputGroupAddon>
-                                        </InputGroup>
-                                    </Col>
-                                </FormGroup>
-                                <FormGroup row>
-                                <Col md="4">
-                                        <Label htmlFor="Nome">Nome Contato Emergencial</Label>
-                                        <Input type="text" required id="txtNome" placeholder="Digite o Nome"
-                                            name="contatoemergencia"
-                                            value={contatoemergencia}
-                                            onChange={e => setContatoemergencial(e.target.value)} />
-                                    </Col>
-
-                                    <Col md="4">
-                                        <Label htmlFor="TelefoneFixo">Celular Emergencial</Label>
-                                        <InputGroup>
-                                            <Input type="text" id="txtTelefoneFixo" placeholder="(11) 9999-9999"
-                                                value={telefonecttoemergencia}
-                                                name="telefonecttoemergencia"
-                                                onChange={e => settelefonecttoemergencia(celMask(e.target.value))} />
-                                            <InputGroupAddon addonType="append">
-                                                <Button type="button" color="secondary icon-phone"></Button>
-                                            </InputGroupAddon>
-                                        </InputGroup>
-
-                                    </Col>
 
                                 </FormGroup>
                                 {/*<FormGroup row>
@@ -369,6 +378,7 @@ export default function Usuario(props) {
                                 </FormGroup>*/}
                             </CardBody>
                             <CardHeader className="border-top">
+                                <i className="fa fa-envelope"></i>
                                 <strong>Dados de Acesso</strong>
                             </CardHeader>
                             <CardBody className="">
@@ -381,7 +391,7 @@ export default function Usuario(props) {
                                                 value={email}
                                                 onChange={e => setEmail(e.target.value)} />
                                             <InputGroupAddon addonType="append">
-                                                <Button type="button" color="secondary icon-envelope"></Button>
+                                                <spam class="btn btn-secondary disabled icon-envelope"></spam>
                                             </InputGroupAddon>
                                         </InputGroup>
 
@@ -408,7 +418,7 @@ export default function Usuario(props) {
                                                 value={login}
                                                 onChange={e => setLogin(e.target.value)} />
                                             <InputGroupAddon addonType="append">
-                                                <Button type="button" color="secondary icon-user"></Button>
+                                                <spam class="btn btn-secondary disabled icon-user"></spam>
                                             </InputGroupAddon>
                                         </InputGroup>
                                     </Col>
@@ -420,7 +430,7 @@ export default function Usuario(props) {
                                                 value={senhaForm}
                                                 onChange={e => setSenha(e.target.value)} />
                                             <InputGroupAddon addonType="append">
-                                                <Button type="button" color="secondary icon-lock"></Button>
+                                                <spam class="btn btn-secondary disabled icon-lock"></spam>
                                             </InputGroupAddon>
                                         </InputGroup>
 
