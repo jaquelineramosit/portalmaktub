@@ -137,6 +137,8 @@ export default function Adiantamentoos(props) {
                                             ))}
                                         </Input>
                                     </Col>
+                                </FormGroup>
+                                <FormGroup row>
                                     <Col md="4">
                                         <Label htmlFor="statusAtendimentoId">Status do Adiantamento</Label>
                                         <Input type="select" required name="select" id="cboStatusAdiantamentoId" multiple={false}
@@ -149,6 +151,18 @@ export default function Adiantamentoos(props) {
                                             ))}
                                         </Input>
                                     </Col>
+                                    <Col md="4">
+                                        <Label htmlFor="valorAdiantamento">Valor do Adiantamento</Label>
+                                        <InputGroup>
+                                            <Input type="text" required id="txtValorAdiantamento" placeholder="00,00"
+                                                value={valoradiantamento}
+                                                name="valoradiantamento"
+                                                onChange={e => setValoradiantamento(reaisMask(e.target.value))} />
+                                            <InputGroupAddon addonType="append">
+                                                <spam class="btn btn-secondary disabled fa fa-money"></spam>
+                                            </InputGroupAddon>
+                                        </InputGroup>
+                                    </Col>
                                 </FormGroup>
                                 <FormGroup row>
                                     <Col md="4">
@@ -159,7 +173,7 @@ export default function Adiantamentoos(props) {
                                                 value={dataadiantamento}
                                                 onChange={e => setDataadiantamento(e.target.value)} />
                                             <InputGroupAddon addonType="append">
-                                                <Button type="button" color="secondary  fa fa-calendar"></Button>
+                                                <spam class="btn btn-secondary disabled fa fa-calendar"></spam>
                                             </InputGroupAddon>
                                         </InputGroup>
                                     </Col>
@@ -171,21 +185,7 @@ export default function Adiantamentoos(props) {
                                                 value={dataquitacao}
                                                 onChange={e => setDataquitacao(e.target.value)} />
                                             <InputGroupAddon addonType="append">
-                                                <Button type="button" color="secondary  fa fa-calendar"></Button>
-                                            </InputGroupAddon>
-                                        </InputGroup>
-                                    </Col>
-                                </FormGroup>
-                                <FormGroup row>
-                                    <Col md="4">
-                                        <Label htmlFor="valorAdiantamento">Valor do Adiantamento</Label>
-                                        <InputGroup>
-                                            <Input type="text" required id="txtValorAdiantamento" placeholder="00,00"
-                                                value={valoradiantamento}
-                                                name="valoradiantamento"
-                                                onChange={e => setValoradiantamento(reaisMask(e.target.value))} />
-                                            <InputGroupAddon addonType="append">
-                                                <Button type="button" color="secondary  fa fa-money"></Button>
+                                                <spam class="btn btn-secondary disabled fa fa-calendar"></spam>
                                             </InputGroupAddon>
                                         </InputGroup>
                                     </Col>

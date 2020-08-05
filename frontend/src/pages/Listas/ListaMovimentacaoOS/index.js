@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Card, CardBody, CardHeader, Col, Row,Badge } from 'reactstrap';
+import { Card, CardBody, CardHeader, Col, Row, Badge } from 'reactstrap';
 import api from '../../../services/api';
-import DataTable from 'react-data-table-component';
+import DataTableGenerica from '../../../components/DataTableGenerica';
 
 export default function ListaMovimentacaoOS() {
     const [movimentacaoos, setMovimentacaoos] = useState([]);
@@ -73,8 +73,7 @@ export default function ListaMovimentacaoOS() {
             name: 'Ações',
             sortable: true,
             right: true,
-            cell: row => <Link to={`movimentacao-os/${row.id}?action=edit`} className="btn-sm btn-primary"><i className="fa fa-pencil fa-lg mr-1"></i>
-            Editar</Link>
+            cell: row => <Link to={`movimentacao-os/${row.id}?action=edit`} className="btn-sm btn-primary"><i className="fa fa-pencil fa-lg mr-1"></i></Link>
         },
     ];
 
@@ -88,14 +87,10 @@ export default function ListaMovimentacaoOS() {
                             <i className="fa fa-align-justify"></i>Movimentação de OS
                         </CardHeader>
                         <CardBody>
-                        <DataTable className="mt-n3"
-                                title="Movimentação de OS"
-                                columns={columns}
+                            <DataTableGenerica
                                 data={data}
-                                striped={true}
-                                highlightOnHover={true}
-                                responsive={true}
-                                pagination={true}
+                                columns={columns}
+                                title="Movimentação de OS"
                             />
                         </CardBody>
                     </Card>

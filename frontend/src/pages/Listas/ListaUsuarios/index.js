@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Card, CardBody, CardHeader, Col, Row, Badge } from 'reactstrap';
 import api from '../../../services/api';
 import Usuario from '../../Acessos/Usuario';
-import DataTable from 'react-data-table-component';
+import DataTableGenerica from '../../../components/DataTableGenerica';
 
 export default function ListaUsuarios() {
     const [usuarios, setUsuarios] = useState([]);
@@ -72,8 +72,7 @@ export default function ListaUsuarios() {
             name: 'Ações',
             sortable: true,
             right: true,
-            cell: row => <Link to={`usuarios/${row.id}?action=edit`} className="btn-sm btn-primary"><i className="fa fa-pencil fa-lg mr-1"></i>
-            Editar</Link>
+            cell: row => <Link to={`usuarios/${row.id}?action=edit`} className="btn-sm btn-primary"><i className="fa fa-pencil fa-lg mr-1"></i></Link>
         },
     ];
 
@@ -88,20 +87,15 @@ export default function ListaUsuarios() {
                             <i className="fa fa-align-justify"></i>Usuários
 
                         <Link to={`usuarios?action=novo`} className="btn btn-secondary float-right">
-                                <i className="cui-file icons mr-1"></i>
-                                                Novo
-                                            </Link>
+                                <i className="fa fa-plus-circle fa-lg"></i>
+                            </Link>
 
                         </CardHeader>
                         <CardBody>
-                            <DataTable className="mt-n3"
-                                title="Usuários"
-                                columns={columns}
+                            <DataTableGenerica
                                 data={data}
-                                striped={true}
-                                highlightOnHover={true}
-                                responsive={true}
-                                pagination={true}
+                                columns={columns}
+                                title="Usuários"
                             />
                         </CardBody>
                     </Card>

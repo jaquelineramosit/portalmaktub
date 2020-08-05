@@ -2,15 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Badge, Card, CardBody, CardHeader, Col, Row } from 'reactstrap';
 import api from '../../../services/api';
-import DataTable from 'react-data-table-component';
+import DataTableGenerica from '../../../components/DataTableGenerica';
 
 export default function ListaTipoConta() {
     const [tipoconta, setTipoconta] = useState([]);
     const [total, setTotal] = useState(0);
     const usuarioId = localStorage.getItem('userId');
 
-      //logica para pegar o total
-      useEffect(() => {
+    //logica para pegar o total
+    useEffect(() => {
         api.get('tipocontaCount', {
             headers: {
                 Authorization: 1,
@@ -20,7 +20,7 @@ export default function ListaTipoConta() {
             setTotal(response.data);
         })
     }, [1]);
-    
+
     useEffect(() => {
         api.get('tipo-conta', {
             headers: {
@@ -50,8 +50,7 @@ export default function ListaTipoConta() {
             name: 'Ações',
             sortable: true,
             right: true,
-            cell: row => <Link to={`tipo-conta/${row.id}?action=edit`} className="btn-sm btn-primary"><i className="fa fa-pencil fa-lg mr-1"></i>
-            Editar</Link>
+            cell: row => <Link to={`tipo-conta/${row.id}?action=edit`} className="btn-sm btn-primary"><i className="fa fa-pencil fa-lg mr-1"></i></Link>
         },
     ];
 
@@ -64,19 +63,14 @@ export default function ListaTipoConta() {
 
                             <i className="fa fa-align-justify"></i>Tipo da Conta
                             <Link to={`tipo-conta?action=novo`} className="btn btn-secondary float-right">
-                                <i className="cui-file icons mr-1"></i>
-                                                Novo
-                                            </Link>
+                                <i className="fa fa-plus-circle fa-lg"></i>
+                            </Link>
                         </CardHeader>
                         <CardBody>
-                        <DataTable className="mt-n3"
-                                title="Tipo da Conta"
-                                columns={columns}
+                            <DataTableGenerica
                                 data={data}
-                                striped={true}
-                                highlightOnHover={true}
-                                responsive={true}
-                                pagination={true}
+                                columns={columns}
+                                title="Tipo de Conta"
                             />
                         </CardBody>
                     </Card>

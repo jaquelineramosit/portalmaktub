@@ -141,6 +141,7 @@ export default function Tecnico(props) {
                     <Col xs="12" md="12">
                         <Card>
                             <CardHeader>
+                                <i className="fa fa-user-circle-o"></i>
                                 <strong>Técnico</strong>
                                 <small> novo</small>
                             </CardHeader>
@@ -169,21 +170,73 @@ export default function Tecnico(props) {
                                     </Col>
                                 </FormGroup>
                                 <FormGroup row>
-                                    <Col md="4">
-                                        <Label htmlFor="logradouro">Endereço</Label>
-                                        <Input type="text" required id="txtLogradouro"
-                                            placeholder="Digite o Endereço"
-                                            name="logradouro"
-                                            value={logradouro}
-                                            onChange={e => setLogradouro(e.target.value)} />
+                                    <Col md="3">
+                                        <Label htmlFor="tipoTecnicoId">Tipo do Técnico</Label>
+                                        <Input type="select" required name="select" id="cboTipoTecnicoId"
+                                            name="tipotecnicoid"
+                                            value={tipotecnicoid}
+                                            onChange={e => setTipotecnicoid(e.target.value)}>
+                                            <option value={undefined} defaultValue>Selecione...</option>
+                                            {tipoTecnicosid.map(tipoTecnico => (
+                                                <option value={tipoTecnico.id}>{tipoTecnico.nometipotecnico}</option>
+                                            ))}
+                                        </Input>
                                     </Col>
                                     <Col md="3">
-                                        <Label htmlFor="bairro">Bairro</Label>
-                                        <Input type="text" required id="txtBairro" placeholder="Digite o Bairro"
-                                            name="bairro"
-                                            value={bairro}
-                                            onChange={e => setBairro(e.target.value)} />
+                                        <Label htmlFor="telefoneFixo">Telefone Fixo</Label>
+                                        <InputGroup>
+                                            <Input type="text" id="txtTelefoneFixo" placeholder="(11) 9999-9999"
+                                                value={telefonefixo}
+                                                name="telefonefixo"
+                                                onChange={e => setTelefonefixo(telMask(e.target.value))} />
+                                            <InputGroupAddon addonType="append">
+                                                <spam class="btn btn-secondary disabled icon-phone"></spam>
+                                            </InputGroupAddon>
+                                        </InputGroup>
                                     </Col>
+                                    <Col md="3">
+                                        <Label htmlFor="telefoneCelular">Telefone Celular</Label>
+                                        <InputGroup>
+                                            <Input type="text" id="txtTelefoneCelular" placeholder="(11) 9999-9999"
+                                                value={telefonecelular}
+                                                name="telefonecelular"
+                                                onChange={e => setTelefonecelular(celMask(e.target.value))} />
+                                            <InputGroupAddon addonType="append">
+                                                <spam class="btn btn-secondary disabled icon-phone"></spam>
+                                            </InputGroupAddon>
+                                        </InputGroup>
+                                    </Col>
+                                </FormGroup>
+                                <FormGroup row>
+                                    <Col md="4">
+                                        <Label htmlFor="Nome">Nome Contato Emergencial</Label>
+                                        <Input type="text" required id="txtNome" placeholder="Digite o Nome"
+                                            name="nomecontatoemergencial"
+                                            value={nomecontatoemergencial}
+                                            onChange={e => setNomecontatoemergencial(e.target.value)} />
+                                    </Col>
+                                    <Col md="4">
+                                        <Label htmlFor="TelefoneFixo">Telefone Emergencial</Label>
+                                        <InputGroup>
+                                            <Input type="text" id="txtTelefoneFixo" placeholder="(11) 9999-9999"
+                                                value={telefonecttoemergencial}
+                                                name="telefonecttoemergencial"
+                                                onChange={e => setTelefonecttoemergencial(telMask(e.target.value))} />
+                                            <InputGroupAddon addonType="append">
+                                                <spam class="btn btn-secondary disabled icon-phone"></spam>
+                                            </InputGroupAddon>
+                                        </InputGroup>
+                                    </Col>
+                                </FormGroup>
+                            </CardBody>
+                        </Card>
+                        <CardHeader>
+                            <i className="fa fa-map-marker"></i>
+                            <strong>Endereço</strong>
+                        </CardHeader>
+                        <Card>
+                            <CardBody>
+                                <FormGroup row>
                                     <Col md="3">
                                         <Label htmlFor="cep">CEP</Label>
                                         <InputGroup>
@@ -192,19 +245,34 @@ export default function Tecnico(props) {
                                                 name="cep"
                                                 onChange={e => setCep(cepMask(e.target.value))} />
                                             <InputGroupAddon addonType="append">
-                                                <Button type="button" color="secondary fa fa-truck"></Button>
+                                                <spam class="btn btn-secondary disabled fa fa-truck"></spam>
                                             </InputGroupAddon>
                                         </InputGroup>
                                     </Col>
-                                </FormGroup>
-                                <FormGroup row>
                                     <Col md="3">
+                                        <Label htmlFor="logradouro">Endereço</Label>
+                                        <Input type="text" required id="txtLogradouro"
+                                            placeholder="Digite o Endereço"
+                                            name="logradouro"
+                                            value={logradouro}
+                                            onChange={e => setLogradouro(e.target.value)} />
+                                    </Col>
+                                    <Col md="2">
                                         <Label htmlFor="numero">Número</Label>
                                         <Input type="text" required id="txtNumero" placeholder="Digite apenas Números"
                                             value={numero}
                                             name="numero"
                                             onChange={e => setNumero(numMask(e.target.value))} />
                                     </Col>
+                                    <Col md="3">
+                                        <Label htmlFor="bairro">Bairro</Label>
+                                        <Input type="text" required id="txtBairro" placeholder="Digite o Bairro"
+                                            name="bairro"
+                                            value={bairro}
+                                            onChange={e => setBairro(e.target.value)} />
+                                    </Col>
+                                </FormGroup>
+                                <FormGroup row>
                                     <Col md="3">
                                         <Label htmlFor="complemento">Complemento</Label>
                                         <Input type="text" id="txtComplemento" placeholder="Digite o Complemento"
@@ -233,68 +301,6 @@ export default function Tecnico(props) {
                                             <option value="5">Santa Catarina</option>
                                         </Input>
                                     </Col>
-                                </FormGroup>
-                                <FormGroup row>
-                                    <Col md="3">
-                                        <Label htmlFor="telefoneFixo">Telefone Fixo</Label>
-                                        <InputGroup>
-                                            <Input type="text" id="txtTelefoneFixo" placeholder="(11) 9999-9999"
-                                                value={telefonefixo}
-                                                name="telefonefixo"
-                                                onChange={e => setTelefonefixo(telMask(e.target.value))} />
-                                            <InputGroupAddon addonType="append">
-                                                <Button type="button" color="secondary icon-phone"></Button>
-                                            </InputGroupAddon>
-                                        </InputGroup>
-                                    </Col>
-                                    <Col md="3">
-                                        <Label htmlFor="telefoneCelular">Telefone Celular</Label>
-                                        <InputGroup>
-                                            <Input type="text" id="txtTelefoneCelular" placeholder="(11) 9999-9999"
-                                                value={telefonecelular}
-                                                name="telefonecelular"
-                                                onChange={e => setTelefonecelular(celMask(e.target.value))} />
-                                            <InputGroupAddon addonType="append">
-                                                <Button type="button" color="secondary icon-phone"></Button>
-                                            </InputGroupAddon>
-                                        </InputGroup>
-                                    </Col>
-                                    <Col md="3">
-                                        <Label htmlFor="tipoTecnicoId">Tipo do Técnico</Label>
-                                        <Input type="select" required name="select" id="cboTipoTecnicoId"
-                                            name="tipotecnicoid"
-                                            value={tipotecnicoid}
-                                            onChange={e => setTipotecnicoid(e.target.value)}>
-                                            <option value={undefined} defaultValue>Selecione...</option>
-                                            {tipoTecnicosid.map(tipoTecnico => (
-                                                <option value={tipoTecnico.id}>{tipoTecnico.nometipotecnico}</option>
-                                            ))}
-                                        </Input>
-                                    </Col>
-                                </FormGroup>
-                                <FormGroup row>
-                                <Col md="4">
-                                        <Label htmlFor="Nome">Nome Contato Emergencial</Label>
-                                        <Input type="text" required id="txtNome" placeholder="Digite o Nome"
-                                            name="nomecontatoemergencial"
-                                            value={nomecontatoemergencial}
-                                            onChange={e => setNomecontatoemergencial(e.target.value)} />
-                                    </Col>
-
-                                    <Col md="4">
-                                        <Label htmlFor="TelefoneFixo">Telefone Emergencial</Label>
-                                        <InputGroup>
-                                            <Input type="text" id="txtTelefoneFixo" placeholder="(11) 9999-9999"
-                                                value={telefonecttoemergencial}
-                                                name="telefonecttoemergencial"
-                                                onChange={e => setTelefonecttoemergencial(telMask(e.target.value))} />
-                                            <InputGroupAddon addonType="append">
-                                                <Button type="button" color="secondary icon-phone"></Button>
-                                            </InputGroupAddon>
-                                        </InputGroup>
-
-                                    </Col>
-
                                 </FormGroup>
                                 {/* <FormGroup row>    
                                     <Col md="2">
