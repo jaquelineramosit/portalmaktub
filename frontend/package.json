@@ -17,7 +17,7 @@
     "@coreui/icons": "0.3.0",
     "@coreui/react": "^2.5.7",
     "@fortawesome/fontawesome-free": "^5.13.0",
-    "@material-ui/core": "^4.9.14",
+    "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
     "api": "0.0.1",
     "axios": "^0.19.2",

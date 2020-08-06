@@ -10,6 +10,12 @@ module.exports = {
       password : 'Code123!@#',
       database : 'codefo06_MKT'
     },
+    // connection: {
+    //   host : 'localhost',
+    //   user : 'jackyfialho',
+    //   password : '@dmin1234',
+    //   database : 'codefo06_MKT'
+    // },
     migrations : {
       directory: './src/database/migrations',
       tableName: 'knex_migrations'

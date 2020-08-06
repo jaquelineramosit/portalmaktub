@@ -6,6 +6,8 @@ import { numMask, reaisMask } from '../../../mask'
 import api from '../../../services/api';
 import moment from 'moment';
 import NumberFormat from 'react-number-format';
+import { connect } from 'formik';
+import { number } from 'prop-types';
 const dateFormat = require('dateformat');
 let clienteFilialIdInicial = '';
 let clienteIdInicial = '';
@@ -14,7 +16,9 @@ let valorFimInicial = 0;
 let valorInicioInicial = 0;
 let valorPagarInicial = 0;
 let valorReceberInicial = 0;
-let custoAdicionalInicial = 0;
+let qtdeHorasInicial = 0;
+let horasProjeto = 0;
+let custoAdicionalInicial = '';
 let qdeHoras = 0;
 let qdeHorasExtra = 0;
 
@@ -139,38 +143,45 @@ const OrdemServico = (props) => {
                 document.getElementById('txtDataAtendimento').value = dateFormat(response.data.dataatendimento, "yyyy-mm-dd");
 
                 //dados projeto
-                setQtdehoras(response.data.horas);
-                setHoraextra(response.data.valorhoraextra);
+                setQtdehoras(response.data.qtdehoras);
+                qtdeHorasInicial = response.data.qtdehoras;
                 setValorapagar(response.data.valorapagar);
                 setValorapagarFormatado(response.data.valorapagar);
                 valorPagarInicial = response.data.valorapagar;
                 setValorareceber(response.data.valorareceber);    
                 setValorareceberFormatado(response.data.valorareceber);    
                 valorReceberInicial = response.data.valorareceber;
-                setHoraDecimal(response.data.horadecimal); 
-
+                
                 api.get(`filiais?clienteId=${clienteIdInicial}`).then(response => {
                     setClienteFiliais(response.data);
                 });
-
+    
                 api.get(`filiais/${clienteFilialIdInicial}`).then(response => {
                     setDadosFilial(response.data);
                 });
-
+    
                 api.get(`tecnico?tipoProjetoId=${tipoProjetoIdInicial}`).then(response => {
                     setTecnicos(response.data);
                 });
                     
                 qdeHoras = valorFimInicial - valorInicioInicial;
-                qdeHorasExtra =   parseInt(qdeHoras) - parseInt(response.data.horas);
+                qdeHorasExtra =  qdeHoras - qtdeHorasInicial;
 
-                if( qdeHorasExtra  > 0 ) {
-                    valorPagarInicial = (response.data.horadecimal * parseInt(qdeHorasExtra)) + valorPagarInicial + custoAdicionalInicial;
-                    valorReceberInicial = (response.data.horadecimal * parseInt(qdeHorasExtra)) + valorReceberInicial + custoAdicionalInicial;
-                }
+                api.get(`tipo-projeto/${tipoProjetoIdInicial}`).then(response => {
+                    setHoraDecimal(response.data.horadecimal); 
 
-                setTotalapagar(valorPagarInicial);
-                setTotalareceber(valorReceberInicial);
+                    if( qdeHorasExtra  > 0 ) {
+                        console.log(custoAdicionalInicial);
+                        setHoraextra(qdeHorasExtra);
+                        setTotalapagar((response.data.horadecimal * qdeHorasExtra) + valorPagarInicial + custoAdicionalInicial);
+                        setTotalareceber((response.data.horadecimal * qdeHorasExtra) + valorReceberInicial + custoAdicionalInicial);
+                    } else {
+                        console.log(custoAdicionalInicial);
+                        setHoraextra(0);
+                        setTotalapagar(valorPagarInicial + custoAdicionalInicial);
+                        setTotalareceber(valorReceberInicial + custoAdicionalInicial);
+                    }
+                });
             });
         } else {
             return;
@@ -182,19 +193,29 @@ const OrdemServico = (props) => {
     };
 
     function TotaisPagarReceber() {
+        console.log('entrou');
+
         qdeHoras = valorFimInicial - valorInicioInicial;
-        qdeHorasExtra =  parseInt(qtdehoras) - parseInt(qdeHoras);
+        qdeHorasExtra =  qdeHoras - qtdehoras;
 
+        console.log('qdeHoras');
+        console.log(qdeHoras);
+
+        console.log('horasProjeto');
+        console.log(qtdehoras);
+
+        console.log('qdeHorasExtra');
+        console.log(qdeHorasExtra);
+        
         if( qdeHorasExtra  > 0 ) {
-            valorPagarInicial = (horadecimal * parseInt(qdeHorasExtra)) + valorPagarInicial + Number(custoAdicionalInicial);
-            valorReceberInicial = (horadecimal * parseInt(qdeHorasExtra)) + valorReceberInicial + Number(custoAdicionalInicial);
+            setHoraextra(qdeHorasExtra);
+            setTotalapagar((horadecimal * qdeHorasExtra) + valorPagarInicial + Number(custoAdicionalInicial));
+            setTotalareceber((horadecimal * qdeHorasExtra) + valorReceberInicial + Number(custoAdicionalInicial));
         } else {
-            valorPagarInicial = valorPagarInicial + Number(custoAdicionalInicial);
-            valorReceberInicial = valorReceberInicial + Number(custoAdicionalInicial);
+            setHoraextra(0);
+            setTotalapagar(valorPagarInicial + Number(custoAdicionalInicial));
+            setTotalareceber(valorReceberInicial + Number(custoAdicionalInicial));
         }
-
-        setTotalapagar(valorPagarInicial);
-        setTotalareceber(valorReceberInicial);
     }
 
     const [collapseMulti, setCollapseMulti] = useState([true, true])
@@ -267,6 +288,7 @@ const OrdemServico = (props) => {
         setValorareceberFormatado('');
         setTotalareceber('');
         setTotalapagar('');
+        setCustoadicional('');
     }
 
     function getDateNameOfWeekDay(data) {
@@ -307,9 +329,9 @@ const OrdemServico = (props) => {
             case 'numeroos':
                 setNumeroos(numMask(event.target.value));
                 break;
-            case 'custoadicional':
-                setCustoadicional(reaisMask(event.target.value));
-                break;
+            // case 'custoadicional':
+            //     setCustoadicional(reaisMask(event.target.value));
+            //     break;
             case 'clientefilialid':
                 if (value !== 'Selecione...') {
                     setClientefilialid(value);
@@ -344,14 +366,14 @@ const OrdemServico = (props) => {
                     });
                     api.get(`tipo-projeto/${value}`).then(response => {
                         setQtdehoras(response.data.horas);
-                        qdeHoras = response.data.horas;
-                        setHoraextra(response.data.valorhoraextra);
+                        horasProjeto = response.data.horas;
                         setValorapagar(response.data.despesa);
                         setValorapagarFormatado(response.data.despesa);
                         valorPagarInicial = response.data.despesa;
                         setValorareceber(response.data.receita);    
                         setValorareceberFormatado(response.data.receita);    
                         valorReceberInicial = response.data.receita;
+                        setHoraDecimal(response.data.horadecimal);
                         TotaisPagarReceber();
                     });
                 } else {
@@ -868,10 +890,9 @@ const OrdemServico = (props) => {
                                         <Col md="4">
                                             <Label htmlFor="horaextra">Hora Extra</Label>
                                             <InputGroup>
-                                                <Input type="text" id="txtHoraExtra" placeholder="00:00"
+                                                <Input type="text" id="txtHoraExtra" placeholder="00:00" readOnly
                                                     value={horaextra}
                                                     name="horaextra"
-                                                    onChange={e => setHoraextra(e.target.value)}
                                                 />
                                                 <InputGroupAddon addonType="append">
                                                     <spam class="btn btn-secondary disabled fa fa-clock-o"></spam>
@@ -907,12 +928,12 @@ const OrdemServico = (props) => {
                                     <Col md="4">
                                         <Label htmlFor="custoAdicional">Custo Adicional</Label>
                                         <InputGroup>
-                                            <Input type="text" id="txtCustoAdicional" placeholder="R$00,00"
+                                            {/* <Input type="text" id="txtCustoAdicional" placeholder="R$00,00"
                                                 value={custoadicional}
                                                 name="custoadicional"
                                                 onChange={e => setCustoadicional(reaisMask(e.target.value))}
-                                            />
-                                            {/* <NumberFormat
+                                            /> */}
+                                            <NumberFormat
                                                 id={'txtCustoAdicional'}
                                                 name={'custoadicional'}
                                                 className={'form-control'}
@@ -921,7 +942,6 @@ const OrdemServico = (props) => {
                                                 thousandSeparator={'.'}
                                                 decimalSeparator={','}
                                                 prefix={'R$ '}
-                                                placeholder={'R$ 0,00'}
                                                 value={custoadicionalFormatado}
                                                 onValueChange={(values) => {
                                                     const {formattedValue, value} = values;
@@ -930,7 +950,7 @@ const OrdemServico = (props) => {
                                                     custoAdicionalInicial = values.value;
                                                     TotaisPagarReceber();
                                                 }}
-                                            /> */}
+                                            />
                                             <InputGroupAddon addonType="append">
                                                 <Button type="button" color="secondary fa fa-money"></Button>
                                             </InputGroupAddon>
