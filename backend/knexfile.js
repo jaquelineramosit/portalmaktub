@@ -4,16 +4,10 @@ module.exports = {
 
   development: {
     client: 'mysql',
-    // connection: {
-    //   host : 'mysql.codefour.com.br',
-    //   user : 'codefo06_gabi',
-    //   password : 'Code123!@#',
-    //   database : 'codefo06_MKTN'
-    // },
     connection: {
-      host : 'localhost',
-      user : 'jackyfialho',
-      password : '@dmin1234',
+      host : 'mysql.codefour.com.br',
+      user : 'codefo06_jaq',
+      password : 'Code123!@#',
       database : 'codefo06_MKT'
     },
     migrations : {

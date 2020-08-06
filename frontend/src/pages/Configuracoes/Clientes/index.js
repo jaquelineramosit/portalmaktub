@@ -1,4 +1,4 @@
-import React, { useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, InputGroup, InputGroupAddon, CardFooter, Form } from 'reactstrap';
 import '../../../global.css';
 import { Redirect } from "react-router-dom";
@@ -8,9 +8,9 @@ import axios from 'axios';
 
 
 export default function Cliente(props) {
-    
+
     const [redirect, setRedirect] = useState(false);
-     
+
     //parametros
     var search = props.location.search;
     var params = new URLSearchParams(search);
@@ -24,7 +24,8 @@ export default function Cliente(props) {
     const [complemento, setComplemento] = useState('');
     const [bairro, setBairro] = useState('');
     const [cidade, setCidade] = useState('');
-    const [estado, setEstado] = useState('');
+    const [estado, setEstado] = useState('0');
+    const [estados, setEstados] = useState([]);
     const [nomeresponsavel, setNomeresponsavel] = useState('');
     const [telefoneresponsavel, setTelefoneresponsavel] = useState('');
     const [telefonefixo, setTelefonefixo] = useState('');
@@ -34,8 +35,6 @@ export default function Cliente(props) {
     const [cnpj, setCnpj] = useState('');
     const [parceiroid, setParceiroid] = useState('');
     const [parceirosid, setParceirosid] = useState([]);
-    const [ufs, setUfs] = useState([]);
-    const [selectedUf , setSelectedUf] = useState('0');
     const [cities, setCities] = useState([]);
     const [ativo, setAtivo] = useState(1);
 
@@ -48,29 +47,21 @@ export default function Cliente(props) {
     useEffect(() => {
         axios.get('https://servicodados.ibge.gov.br/api/v1/localidades/estados').then(response => {
             const ufInitials = response.data.map(uf => uf.sigla);
-            setUfs(ufInitials);
+            setEstados(ufInitials);
         });
 
     }, []);
 
     useEffect(() => {
-        if(selectedUf === '0'){
+        if (estado === '0') {
             return;
         }
-        axios.get(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${selectedUf}/municipios`).then(response => {
+        axios.get(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${estado}/municipios`).then(response => {
             const cityNames = response.data.map(city => city.nome);
             setCities(cityNames);
         });
 
-    },[selectedUf]);
-
-    function handleSelectUf(event){
-        const uf = event.target.value;
-
-        setSelectedUf(uf); 
-        
-    }
-
+    }, [estado]);
 
     useEffect(() => {
         if (action === 'edit' && clienteIdParam !== '') {
@@ -96,6 +87,13 @@ export default function Cliente(props) {
             return;
         }
     }, [clienteIdParam]);
+
+    function handleSelectUf(event) {
+        const uf = event.target.value;
+
+        setEstado(uf);
+
+    }
 
     function handleInputChange(event) {
         var { name } = event.target;
@@ -129,6 +127,7 @@ export default function Cliente(props) {
             telefonefixo,
             telefonecelular,
             cep,
+            cnpj,
             numero,
             parceiroid,
             ativo
@@ -294,20 +293,20 @@ export default function Cliente(props) {
                                             onChange={e => setLogradouro(e.target.value)} />
                                     </Col>
                                     <Col md="3">
-                                        <Label htmlFor="bairro">Bairro</Label>
-                                        <Input type="text" required id="txtBairro" placeholder="Digite o Bairro"
-                                            name="bairro"
-                                            value={bairro}
-                                            onChange={e => setBairro(e.target.value)} />
-                                    </Col>
-                                </FormGroup>
-                                <FormGroup row>
-                                    <Col md="2">
                                         <Label htmlFor="numero">Número</Label>
                                         <Input type="text" required id="txtNumero" placeholder="Digite Apenas Números"
                                             value={numero}
                                             name="numero"
                                             onChange={e => setNumero(numMask(e.target.value))} />
+                                    </Col>
+                                </FormGroup>
+                                <FormGroup row>
+                                    <Col md="3">
+                                        <Label htmlFor="bairro">Bairro</Label>
+                                        <Input type="text" required id="txtBairro" placeholder="Digite o Bairro"
+                                            name="bairro"
+                                            value={bairro}
+                                            onChange={e => setBairro(e.target.value)} />
                                     </Col>
                                     <Col md="3">
                                         <Label htmlFor="complemento">Complemento</Label>
@@ -320,10 +319,10 @@ export default function Cliente(props) {
                                         <Label htmlFor="estado">UF</Label>
                                         <Input type="select" required name="select" id="cboEstado"
                                             name="estado"
-                                            value={selectedUf}
-                                            onChange={handleSelectUf } >
-                                            <option value="0">UF</option>
-                                            {ufs.map(uf => (
+                                            value={estado}
+                                            onChange={handleSelectUf} >
+                                            <option value="0">Selecione</option>
+                                            {estados.map(uf => (
                                                 <option key={uf} value={uf}>{uf}</option>
                                             ))}
                                         </Input>
@@ -334,11 +333,11 @@ export default function Cliente(props) {
                                             name="cidade"
                                             value={cidade}
                                             onChange={e => setCidade(e.target.value)}>
-                                                 <option value="0">Cidades</option>
+                                            <option value="0">Selecione</option>
                                             {cities.map(city => (
                                                 <option key={city} value={city}>{city}</option>
                                             ))}
-                                    </Input>
+                                        </Input>
                                     </Col>
                                 </FormGroup>
                                 {/*<FormGroup>

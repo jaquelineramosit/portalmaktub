@@ -4,6 +4,7 @@ import '../../../global.css';
 import { Redirect } from "react-router-dom";
 import { telMask, cepMask, numMask, cnpjMask } from '../../../mask'
 import api from '../../../../src/services/api';
+import axios from 'axios';
 
 export default function Filiais(props) {
     const [redirect, setRedirect] = useState(false);
@@ -24,7 +25,9 @@ export default function Filiais(props) {
     const [complemento, setComplemento] = useState('');
     const [bairro, setBairro] = useState('');
     const [cidade, setCidade] = useState('');
-    const [estado, setEstado] = useState('');
+    const [cities, setCities] = useState([]);
+    const [estado, setEstado] = useState('0');
+    const [estados, setEstados] = useState([]);
     const [nomeresponsavel, setNomeresponsavel] = useState('');
     const [telefoneresponsavel, setTelefoneresponsavel] = useState('');
     const [horarioiniciosemana, setHorarioiniciosemana] = useState('');
@@ -53,7 +56,24 @@ export default function Filiais(props) {
         })
     }, [usuarioId]);
 
+    useEffect(() => {
+        axios.get('https://servicodados.ibge.gov.br/api/v1/localidades/estados').then(response => {
+            const ufInitials = response.data.map(uf => uf.sigla);
+            setEstados(ufInitials);
+        });
 
+    }, []);
+
+    useEffect(() => {
+        if (estado === '0') {
+            return;
+        }
+        axios.get(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${estado}/municipios`).then(response => {
+            const cityNames = response.data.map(city => city.nome);
+            setCities(cityNames);
+        });
+
+    }, [estado]);
 
     useEffect(() => {
         if (action === 'edit' && filiaisIdParam !== '') {
@@ -86,6 +106,13 @@ export default function Filiais(props) {
             return;
         }
     }, [filiaisIdParam]);
+
+    function handleSelectUf(event) {
+        const uf = event.target.value;
+
+        setEstado(uf);
+
+    }
 
     function handleInputChange(event) {
         var { name } = event.target;
@@ -272,6 +299,13 @@ export default function Filiais(props) {
                                                 onChange={e => setLogradouro(e.target.value)} />
                                         </InputGroup>
                                     </Col>
+                                    <Col md="2">
+                                        <Label htmlFor="numero">Número</Label>
+                                        <Input type="text" required id="txtNumero" placeholder="Digite o Números"
+                                            value={numero}
+                                            name="numero"
+                                            onChange={e => setNumero(numMask(e.target.value))} />
+                                    </Col>
                                     <Col md="3">
                                         <Label htmlFor="bairro">Bairro</Label>
                                         <Input type="text" required id="txtBairro" placeholder="Digite o Bairro"
@@ -279,22 +313,8 @@ export default function Filiais(props) {
                                             value={bairro}
                                             onChange={e => setBairro(e.target.value)} />
                                     </Col>
-                                    <Col md="3">
-                                        <Label htmlFor="cidade">Cidade</Label>
-                                        <Input type="text" required id="txtCidade" placeholder="Digite a Cidade"
-                                            name="cidade"
-                                            value={cidade}
-                                            onChange={e => setCidade(e.target.value)} />
-                                    </Col>
                                 </FormGroup>
                                 <FormGroup row>
-                                    <Col md="3">
-                                        <Label htmlFor="numero">Número</Label>
-                                        <Input type="text" required id="txtNumero" placeholder="Digite o Números"
-                                            value={numero}
-                                            name="numero"
-                                            onChange={e => setNumero(numMask(e.target.value))} />
-                                    </Col>
                                     <Col md="3">
                                         <Label htmlFor="complemento">Complemento</Label>
                                         <Input type="text" id="txtComplemento" placeholder="Digite o Complemento"
@@ -304,45 +324,28 @@ export default function Filiais(props) {
                                     </Col>
                                     <Col md="3">
                                         <Label htmlFor="estado">UF</Label>
-                                        <Input type="select" required name="select" id="cboEstado" multiple={false}
+                                        <Input type="select" required name="select" id="cboEstado"
                                             name="estado"
                                             value={estado}
-                                            onChange={e => setEstado(e.target.value)} >
-                                            <option value={undefined}>Selecione...</option>
-                                            <option value="SP">São Paulo</option>
-                                            <option value="RJ">Rio de Janeiro</option>
-                                            <option value="MG">Minas Gerais</option>
-                                            <option value="PR">Paraná</option>
-                                            <option value="AC">Acre</option>
-                                            <option value="Al">Alagoas</option>
-                                            <option value="AP">Amapá</option>
-                                            <option value="AM">Amazonas</option>
-                                            <option value="BH">Bahia</option>
-                                            <option value="CE">Ceará</option>
-                                            <option value="DF">Distrito Federal</option>
-                                            <option value="GO">Goiás</option>
-                                            <option value="DF">Distrito Federal</option>
-                                            <option value="MA">Maranhão</option>
-                                            <option value="MG">Mato Grosso</option>
-                                            <option value="MT">Mato Grosso do Sul</option>
-                                            <option value="PA">Pará</option>
-                                            <option value="PB">Paraíba</option>
-                                            <option value="PE">Pernambuco</option>
-                                            <option value="PI">Piau</option>
-                                            <option value="RN">Rio Grande do Norte</option>
-                                            <option value="RS">Rio Grande do Sul</option>
-                                            <option value="RR">Rondônia</option>
-                                            <option value="SC">Santa Catarina</option>
-                                            <option value="SE">Sergipe</option>
-                                            <option value="TO">Tocantins</option>
-                                            <option value="São Paulo">São Paulo</option>
-                                            <option value="Rio de Janeiro">Rio de Janeiro</option>
-                                            <option value=">Minas Gerais">Minas Gerais</option>
-                                            <option value="Paraná">Paraná</option>
-                                            <option value="Santa Catarina">Santa Catarina</option>
+                                            onChange={handleSelectUf} >
+                                            <option value="0">Selecione</option>
+                                            {estados.map(uf => (
+                                                <option key={uf} value={uf}>{uf}</option>
+                                            ))}
                                         </Input>
                                     </Col>
-
+                                    <Col md="3">
+                                        <Label htmlFor="cidade">Cidade</Label>
+                                        <Input type="select" required id="txtCidade" placeholder="Digite a Cidade"
+                                            name="cidade"
+                                            value={cidade}
+                                            onChange={e => setCidade(e.target.value)}>
+                                            <option value="0">Selecione</option>
+                                            {cities.map(city => (
+                                                <option key={city} value={city}>{city}</option>
+                                            ))}
+                                        </Input>
+                                    </Col>
                                 </FormGroup>
                                 <FormGroup row>
                                     <Col md="3">
