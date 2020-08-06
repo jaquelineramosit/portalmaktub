@@ -100,7 +100,7 @@ export default function Disponibilidade(props) {
                             </CardHeader>
                             <CardBody>
                                 <FormGroup row>
-                                    <Col md="4">
+                                    <Col md="6">
                                         <Label htmlFor="nomeDisponibilidade">Disponibilidade</Label>
                                         <Input type="text" required id="txtDisponibilidade" placeholder="Digite a Disponibilidade"
                                             name="nomedisponibilidade"
@@ -109,7 +109,7 @@ export default function Disponibilidade(props) {
                                     </Col>
                                 </FormGroup>
                                 <FormGroup row>
-                                    <Col md="8">
+                                    <Col md="6">
                                         <Label>Descrição</Label>
                                         <Input type="textarea" rows="5" placeholder="Descreva o Tipo de Técnico inserido" id="txtDescricao"
                                             name="descricao"

@@ -99,7 +99,7 @@ export default function StatusParceiro(props) {
                             </CardHeader>
                             <CardBody>
                                 <FormGroup row>
-                                    <Col md="4">
+                                    <Col md="6">
                                         <Label htmlFor="nomeParceiro">Nome do Parceiro</Label>
                                         <InputGroup>
                                             <Input type="text" required id="txtNomeParceiro" placeholder="Digite o nome do Parceiro"
@@ -114,7 +114,7 @@ export default function StatusParceiro(props) {
                                     </Col>
                                 </FormGroup>
                                 <FormGroup row>
-                                    <Col md="8">
+                                    <Col md="6">
                                         <Label>Descrição</Label>
                                         <Input type="textarea" required id="txtDescricao" rows="5" placeholder="Descreva o parceiro inserido"
                                             name="descricao"

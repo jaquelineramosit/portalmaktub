@@ -170,7 +170,7 @@ export default function Cliente(props) {
             <Form onSubmit={handleStatus} onReset={handleReset}>
                 <Row>
                     <Col xs="12" md="12">
-                        <Card>
+                        <Card >
                             <CardHeader>
                                 <i className="fa fa-handshake-o"></i>
                                 <strong>Cliente</strong>
@@ -178,14 +178,14 @@ export default function Cliente(props) {
                             </CardHeader>
                             <CardBody>
                                 <FormGroup row>
-                                    <Col md="4">
+                                    <Col md="6">
                                         <Label htmlFor="nomeCliente">Nome Cliente</Label>
                                         <Input type="text" required id="txtNomeCliente" placeholder="Digite o nome do Cliente"
                                             name="nomecliente"
                                             value={nomecliente}
                                             onChange={e => setNomecliente(e.target.value)} />
                                     </Col>
-                                    <Col md="4">
+                                    <Col md="6">
                                         <Label htmlFor="razaoSocial">Razão Social</Label>
                                         <Input type="text" required id="txtRazaoSocial" placeholder="Digite o nome do Cliente"
                                             name="razaosocial"
@@ -194,7 +194,7 @@ export default function Cliente(props) {
                                     </Col>
                                 </FormGroup>
                                 <FormGroup row>
-                                    <Col md="3">
+                                    <Col md="6">
                                         <Label htmlFor="nomeResponsavel">Nome Responsável</Label>
                                         <Input type="text" required id="txtNomeResponsavel" placeholder="Digite o Nome do responsável"
                                             name="nomeresponsavel"
@@ -211,7 +211,7 @@ export default function Cliente(props) {
                                                 onChange={e => setCnpj(cnpjMask(e.target.value))} />
                                         </InputGroup>
                                     </Col>
-                                    <Col md="2">
+                                    <Col md="3">
                                         <Label htmlFor="parceiroId">Parceiro</Label>
                                         <Input required type="select" name="select" id="cboParceiroId"
                                             name="parceiroid"
@@ -225,7 +225,7 @@ export default function Cliente(props) {
                                     </Col>
                                 </FormGroup>
                                 <FormGroup row>
-                                    <Col md="3">
+                                    <Col md="6">
                                         <Label htmlFor="telefonefixo">Telefone Fixo</Label>
                                         <InputGroup>
                                             <Input type="text" id="txtTelefoneFixo" placeholder="(11) 9999-9999"
@@ -263,12 +263,10 @@ export default function Cliente(props) {
                                     </Col>
                                 </FormGroup>
                             </CardBody>
-                        </Card>
-                        <CardHeader>
-                            <i className="fa fa-map-marker"></i>
-                            <strong>Endereço</strong>
-                        </CardHeader>
-                        <Card>
+                            <CardHeader>
+                                <i className="fa fa-map-marker"></i>
+                                <strong>Endereço</strong>
+                            </CardHeader>
                             <CardBody>
                                 <FormGroup row>
                                     <Col md="3">
@@ -284,7 +282,7 @@ export default function Cliente(props) {
                                         </InputGroup>
                                     </Col>
 
-                                    <Col md="3">
+                                    <Col md="6">
                                         <Label htmlFor="logradouro">Endereço</Label>
                                         <Input type="text" required id="txtLogradouro"
                                             placeholder="Digite o endereço"
@@ -315,7 +313,7 @@ export default function Cliente(props) {
                                             value={complemento}
                                             onChange={e => setComplemento(e.target.value)} />
                                     </Col>
-                                    <Col md="2">
+                                    <Col md="3">
                                         <Label htmlFor="estado">UF</Label>
                                         <Input type="select" required name="select" id="cboEstado"
                                             name="estado"
@@ -327,7 +325,7 @@ export default function Cliente(props) {
                                             ))}
                                         </Input>
                                     </Col>
-                                    <Col md="2">
+                                    <Col md="3">
                                         <Label htmlFor="cidade">Cidade</Label>
                                         <Input type="select" required id="txtCidade" placeholder="Digite a Cidade"
                                             name="cidade"

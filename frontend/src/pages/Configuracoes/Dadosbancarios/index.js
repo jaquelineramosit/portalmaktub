@@ -135,7 +135,7 @@ export default function DadosBancarios(props) {
                             </CardHeader>
                             <CardBody>
                                 <FormGroup row>
-                                    <Col md="3">
+                                    <Col md="4">
                                         <Label htmlFor="tecnicoId">Técnico</Label>
                                         <Input required type="select" name="select" id="cboTecnicoId"
                                             name="tecnicoid"
@@ -148,7 +148,7 @@ export default function DadosBancarios(props) {
 
                                         </Input>
                                     </Col>
-                                    <Col md="3">
+                                    <Col md="4">
                                         <Label htmlFor="bancoId">Banco</Label>
                                         <Input required type="select" name="select" id="cboBancoId"
                                             name="bancoid"
@@ -160,7 +160,7 @@ export default function DadosBancarios(props) {
                                             ))}
                                         </Input>
                                     </Col>
-                                    <Col md="3">
+                                    <Col md="4">
                                         <Label htmlFor="tipoContaId">Tipo de Conta</Label>
                                         <Input required type="select" name="select" id="cboTipoContaId"
                                             name="tipocontaid"
@@ -175,7 +175,7 @@ export default function DadosBancarios(props) {
                                     </Col>
                                 </FormGroup>
                                 <FormGroup row>
-                                    <Col md="3">
+                                    <Col md="4">
                                         <Label htmlFor="agencia">Agência</Label>
                                         <InputGroup>
                                             <Input type="text" required id="txtAgencia" placeholder="Agência"
@@ -184,14 +184,14 @@ export default function DadosBancarios(props) {
                                                 onChange={e => setAgencia(e.target.value)} />
                                         </InputGroup>
                                     </Col>
-                                    <Col md="3">
+                                    <Col md="4">
                                         <Label htmlFor="conta">Conta</Label>
                                         <Input type="text" required id="txtConta" placeholder="Conta"
                                             name="conta"
                                             value={conta}
                                             onChange={e => setConta(e.target.value)} />
                                     </Col>
-                                    <Col md="3">
+                                    <Col md="4">
                                         <Label htmlFor="titularConta">Titular da Conta</Label>
                                         <InputGroup>
                                             <Input id="txtTitularConta" required type="text" placeholder="Insira o titular da conta"
@@ -202,7 +202,7 @@ export default function DadosBancarios(props) {
                                     </Col>
                                 </FormGroup>
                                 <FormGroup row>
-                                    <Col md="3">
+                                    <Col md="4">
                                         <Label htmlFor="docTitular">Documento do Titular</Label>
                                         <InputGroup>
                                             <Input id="txtDocTitular" required type="text" placeholder="CPF ou CNPJ"

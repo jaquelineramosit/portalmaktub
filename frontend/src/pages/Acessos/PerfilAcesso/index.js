@@ -98,7 +98,7 @@ export default function Perfilacesso(props) {
                             </CardHeader>
                             <CardBody>
                                 <FormGroup row>
-                                    <Col md="4">
+                                    <Col md="6">
                                         <Label htmlFor="nomePerfilAccesso">Nome do Perfil de Acesso</Label>
                                         <Input type="text" id="txtPerfilAcesso" multiple placeholder="Digite o nome do Perfil de Acesso"
                                             name="nomeperfil"
@@ -107,7 +107,7 @@ export default function Perfilacesso(props) {
                                     </Col>
                                 </FormGroup>
                                 <FormGroup row>
-                                    <Col md="10">
+                                    <Col md="6">
                                         <Label htmlFor="descricao">Descrião</Label>
                                         <Input type="textarea" id="txtDescricao" multiple placeholder="Digite a Descrição"
                                             name="descricao"

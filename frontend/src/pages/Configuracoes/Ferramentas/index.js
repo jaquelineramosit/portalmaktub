@@ -99,7 +99,7 @@ export default function Ferramenta(props) {
                             </CardHeader>
                             <CardBody>
                                 <FormGroup row>
-                                    <Col md="4">
+                                    <Col md="6">
                                         <Label htmlFor="codFerramenta">Ferramenta</Label>
                                         <Input type="text" required id="txtCodFerramenta" placeholder="Inisira a ferramenta"
                                             name="codferramenta"
@@ -108,7 +108,7 @@ export default function Ferramenta(props) {
                                     </Col>
                                 </FormGroup>
                                 <FormGroup row>
-                                    <Col md="8">
+                                    <Col md="6">
                                         <Label>Descrição</Label>
                                         <Input type="textarea" rows="5" placeholder="Descreva o Tipo de Técnico inserido" id="txtDescrição"
                                             name="descferramenta"

@@ -176,7 +176,7 @@ export default function Tecnico(props) {
                             </CardHeader>
                             <CardBody>
                                 <FormGroup row>
-                                    <Col md="4">
+                                    <Col md="6">
                                         <Label htmlFor="nomeTecnico">Nome Técnico</Label>
                                         <Input type="text" required id="txtNomeTecnico" placeholder="Digite o nome do Técnico"
                                             name="nometecnico"
@@ -199,7 +199,7 @@ export default function Tecnico(props) {
                                     </Col>
                                 </FormGroup>
                                 <FormGroup row>
-                                    <Col md="3">
+                                    <Col md="6">
                                         <Label htmlFor="tipoTecnicoId">Tipo do Técnico</Label>
                                         <Input type="select" required name="select" id="cboTipoTecnicoId"
                                             name="tipotecnicoid"
@@ -237,14 +237,14 @@ export default function Tecnico(props) {
                                     </Col>
                                 </FormGroup>
                                 <FormGroup row>
-                                    <Col md="4">
+                                    <Col md="6">
                                         <Label htmlFor="Nome">Nome Contato Emergencial</Label>
                                         <Input type="text" required id="txtNome" placeholder="Digite o Nome"
                                             name="nomecontatoemergencial"
                                             value={nomecontatoemergencial}
                                             onChange={e => setNomecontatoemergencial(e.target.value)} />
                                     </Col>
-                                    <Col md="4">
+                                    <Col md="3">
                                         <Label htmlFor="TelefoneFixo">Telefone Emergencial</Label>
                                         <InputGroup>
                                             <Input type="text" id="txtTelefoneFixo" placeholder="(11) 9999-9999"
@@ -258,12 +258,10 @@ export default function Tecnico(props) {
                                     </Col>
                                 </FormGroup>
                             </CardBody>
-                        </Card>
                         <CardHeader>
                             <i className="fa fa-map-marker"></i>
                             <strong>Endereço</strong>
                         </CardHeader>
-                        <Card>
                             <CardBody>
                                 <FormGroup row>
                                     <Col md="3">
@@ -278,7 +276,7 @@ export default function Tecnico(props) {
                                             </InputGroupAddon>
                                         </InputGroup>
                                     </Col>
-                                    <Col md="3">
+                                    <Col md="6">
                                         <Label htmlFor="logradouro">Endereço</Label>
                                         <Input type="text" required id="txtLogradouro"
                                             placeholder="Digite o Endereço"
@@ -286,22 +284,22 @@ export default function Tecnico(props) {
                                             value={logradouro}
                                             onChange={e => setLogradouro(e.target.value)} />
                                     </Col>
-                                    <Col md="2">
+                                    <Col md="3">
                                         <Label htmlFor="numero">Número</Label>
                                         <Input type="text" required id="txtNumero" placeholder="Digite apenas Números"
                                             value={numero}
                                             name="numero"
                                             onChange={e => setNumero(numMask(e.target.value))} />
                                     </Col>
-                                    <Col md="3">
+                                </FormGroup>
+                                <FormGroup row>
+                                <Col md="3">
                                         <Label htmlFor="bairro">Bairro</Label>
                                         <Input type="text" required id="txtBairro" placeholder="Digite o Bairro"
                                             name="bairro"
                                             value={bairro}
                                             onChange={e => setBairro(e.target.value)} />
                                     </Col>
-                                </FormGroup>
-                                <FormGroup row>
                                     <Col md="3">
                                         <Label htmlFor="complemento">Complemento</Label>
                                         <Input type="text" id="txtComplemento" placeholder="Digite o Complemento"
@@ -309,7 +307,7 @@ export default function Tecnico(props) {
                                             value={complemento}
                                             onChange={e => setComplemento(e.target.value)} />
                                     </Col>
-                                    <Col md="2">
+                                    <Col md="3">
                                         <Label htmlFor="estado">UF</Label>
                                         <Input type="select" required name="select" id="cboEstado"
                                             name="estado"

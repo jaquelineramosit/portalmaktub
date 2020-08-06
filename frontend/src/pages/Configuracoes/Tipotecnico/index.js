@@ -99,7 +99,7 @@ export default function Tipotecnico(props) {
                             </CardHeader>
                             <CardBody>
                                 <FormGroup row>
-                                    <Col md="4">
+                                    <Col md="6">
                                         <Label htmlFor="nomeTipoTecnico">Nome do Tipo de Técnico</Label>
                                         <Input type="text" required id="txtNomeTipoTecnico" placeholder="Digite o Tipo de Técnico"
                                             name="nometipotecnico"
@@ -108,7 +108,7 @@ export default function Tipotecnico(props) {
                                     </Col>
                                 </FormGroup>
                                 <FormGroup row>
-                                    <Col md="8">
+                                    <Col md="6">
                                         <Label>Descrição</Label>
                                         <Input type="textarea" rows="5" placeholder="Descreva o Tipo de Técnico inserido" required id="txtDescricao"
                                             name="desctipotecnico"

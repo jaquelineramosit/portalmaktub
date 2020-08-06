@@ -303,12 +303,10 @@ export default function Usuario(props) {
 
                                 </FormGroup>
                             </CardBody>
-                        </Card>
-                        <CardHeader>
-                            <i className="fa fa-map-marker"></i>
-                            <strong>Endereço</strong>
-                        </CardHeader>
-                        <Card>
+                            <CardHeader>
+                                <i className="fa fa-map-marker"></i>
+                                <strong>Endereço</strong>
+                            </CardHeader>
                             <CardBody>
                                 <FormGroup row>
                                     <Col md="3">
@@ -323,19 +321,29 @@ export default function Usuario(props) {
                                             </InputGroupAddon>
                                         </InputGroup>
                                     </Col>
-                                    <Col md="4">
+                                    <Col md="6">
                                         <Label htmlFor="Logradouro">Endereço</Label>
                                         <Input type="text" required id="txtLogradouro" placeholder="Digite o Endereço"
                                             name="logradouro"
                                             value={logradouro}
                                             onChange={e => setLogradouro(e.target.value)} />
                                     </Col>
-                                    <Col md="2">
+                                    <Col md="3">
                                         <Label htmlFor="Numero">Número</Label>
                                         <Input type="text" required id="txtNumero" placeholder="Digite apenas Números"
                                             value={numero}
                                             name="numero"
                                             onChange={e => setNum(numMask(e.target.value))} />
+                                    </Col>
+
+                                </FormGroup>
+                                <FormGroup row>
+                                    <Col md="3">
+                                        <Label htmlFor="Bairro">Bairro</Label>
+                                        <Input type="text" required id="txtBairro" placeholder="Digite o Bairro"
+                                            name="bairro"
+                                            value={bairro}
+                                            onChange={e => setBairro(e.target.value)} />
                                     </Col>
                                     <Col md="3">
                                         <Label htmlFor="Complemento">Complemento</Label>
@@ -344,16 +352,7 @@ export default function Usuario(props) {
                                             value={complemento}
                                             onChange={e => setComplemento(e.target.value)} />
                                     </Col>
-                                </FormGroup>
-                                <FormGroup row>
-                                    <Col md="4">
-                                        <Label htmlFor="Bairro">Bairro</Label>
-                                        <Input type="text" required id="txtBairro" placeholder="Digite o Bairro"
-                                            name="bairro"
-                                            value={bairro}
-                                            onChange={e => setBairro(e.target.value)} />
-                                    </Col>
-                                    <Col md="2">
+                                    <Col md="3">
                                         <Label htmlFor="estado">UF</Label>
                                         <Input type="select" required name="select" id="cboEstado"
                                             name="estado"

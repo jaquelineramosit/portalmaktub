@@ -100,7 +100,7 @@ export default function Modulos(props) {
                             </CardHeader>
                             <CardBody>
                                 <FormGroup row>
-                                    <Col md="4">
+                                    <Col md="6">
                                         <Label htmlFor="NomeModulo">Nome Módulo</Label>
                                         <Input type="text" required id="txtNomeModulo" placeholder="Digite Nome do Módulo"
                                             name="nomemodulo"
@@ -109,7 +109,7 @@ export default function Modulos(props) {
                                     </Col>
                                 </FormGroup>
                                 <FormGroup row>
-                                    <Col md="8">
+                                    <Col md="6">
                                         <Label htmlFor="Descricao">Descrição</Label>
                                         <Input type="textarea" rows="5" id="txtDescricao" multiple placeholder="Digite a Descrição do Módulo"
                                             name="descricao"
