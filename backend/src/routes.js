@@ -36,6 +36,7 @@ const StatusPagamentoController = require('./controllers/Configuracao/StatusPaga
 const TecnicoController = require('./controllers/Configuracao/TecnicoController');
 const TipoContaController = require('./controllers/Configuracao/TipoContaController');
 const TipoProjetoController = require('./controllers/Configuracao/TipoProjetoController');
+const TipoProjetoFerramentaController = require('./controllers/Configuracao/TipoProjetoFerramentaController');
 const TipoTecnicoController = require('./controllers/Configuracao/TipoTecnicoController');
 
 //Dashboards
@@ -173,6 +174,7 @@ routes.put('/ferramentas/:id', FerramentaController.update);
 routes.get('/ferramentasosCount', FerramentaOSController.getCount);
 routes.get('/ferramentas-os', FerramentaOSController.getAll);
 routes.get('/ferramentas-os/:id', FerramentaOSController.getById);
+// routes.get('/ferramentas-os-id/:ordemServicoId', FerramentaOSController.getByOrdemServicoId);
 routes.post('/ferramentas-os', FerramentaOSController.create);
 routes.put('/ferramentas-os/:id', FerramentaOSController.update);
 
@@ -181,12 +183,6 @@ routes.get('/parceiro', ParceiroController.getAll);
 routes.get('/parceiro/:id', ParceiroController.getById);
 routes.post('/parceiro', ParceiroController.create);
 routes.put('/parceiro/:id', ParceiroController.update);
-
-routes.get('/tipoprojetoCount', TipoProjetoController.getCount);
-routes.get('/tipo-projeto', TipoProjetoController.getAll);
-routes.get('/tipo-projeto/:id', TipoProjetoController.getById);
-routes.post('/tipo-projeto', TipoProjetoController.create);
-routes.put('/tipo-projeto/:id', TipoProjetoController.update);
 
 routes.get('/projetotecnicoCount', ProjetoTecnicoController.getCount);
 routes.get('/projeto-tecnico', ProjetoTecnicoController.getAll);
@@ -232,11 +228,19 @@ routes.get('/tipo-conta/:id', TipoContaController.getById);
 routes.post('/tipo-conta', TipoContaController.create);
 routes.put('/tipo-conta/:id', TipoContaController.update);
 
+
 routes.get('/tipoprojetoCount', TipoProjetoController.getCount);
 routes.get('/tipo-projeto', TipoProjetoController.getAll);
 routes.get('/tipo-projeto/:id', TipoProjetoController.getById);
 routes.post('/tipo-projeto', TipoProjetoController.create);
 routes.put('/tipo-projeto/:id', TipoProjetoController.update);
+
+routes.get('/tipo-projeto-ferramenta', TipoProjetoFerramentaController.getAll);
+routes.get('/tipo-projeto-ferramenta/:id', TipoProjetoFerramentaController.getById);
+routes.get('/tipo-projeto-ferramenta-id/:tipoProjetoId', TipoProjetoFerramentaController.getByTipoProjetoId);
+routes.get('/tipo-projeto-ferramenta-disponiveis/:tipoProjetoId', TipoProjetoFerramentaController.getByFerramentasDisponiveis);
+routes.post('/tipo-projeto-ferramenta', TipoProjetoFerramentaController.create);
+routes.put('/tipo-projeto-ferramenta/:id', TipoProjetoFerramentaController.update);
 
 routes.get('/tipotecnicoCount', TipoTecnicoController.getCount);
 routes.get('/tipo-tecnico', TipoTecnicoController.getAll);

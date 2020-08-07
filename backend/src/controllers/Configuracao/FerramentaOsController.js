@@ -38,6 +38,25 @@ module.exports = {
         return response.json(ferramentaos);
     },
 
+    // async getByOrdemServicoId (request, response) {
+    //     const  { ordemServicoId }  = request.params;
+
+    //     const ferramentaos = await connection('ferramentaos')
+    //         .where('ferramentaos.ordemservicoid', ordemServicoId)
+    //         .join('ferramenta', 'ferramenta.id', '=', 'ferramentaos.ferramentaid') 
+    //         .join('ordemservico', 'ordemservico.id', '=', 'ferramentaos.ordemservicoid') 
+    //         .join('usuario', 'usuario.id', '=', 'ferramentaos.usuarioid')   
+    //         .select([
+    //             'ferramentaos.*',
+    //             'ordemservico.numeroos',
+    //             'ferramenta.codferramenta',
+    //             'usuario.nome'
+    //         ]);
+    
+    //     return response.json(ferramentaos);
+    // },
+
+
     async create(request, response) {
         const  usuarioid  = request.headers.authorization;
         const  dataultmodif = getDate();
