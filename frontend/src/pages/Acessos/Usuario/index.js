@@ -4,6 +4,7 @@ import '../../../global.css';
 import { Redirect } from "react-router-dom";
 import { cpfMask, rgMask, telMask, celMask, cepMask, numMask } from '../../../mask'
 import api from '../../../../src/services/api';
+import axios from 'axios';
 const dateFormat = require('dateformat');
 
 export default function Usuario(props) {
@@ -24,7 +25,9 @@ export default function Usuario(props) {
     const [complemento, setComplemento] = useState('');
     const [bairro, setBairro] = useState('');
     const [cidade, setCidade] = useState('');
-    const [estado, setEstado] = useState('');
+    const [cities, setCities] = useState([]);
+    const [estado, setEstado] = useState('0');
+    const [estados, setEstados] = useState([]);
     const [genero, setGenero] = useState('');
     const [contatoemergencia, setContatoemergencial] = useState('');
     const [telefonecttoemergencia, settelefonecttoemergencia] = useState('');
@@ -46,6 +49,25 @@ export default function Usuario(props) {
             setPerfilAcessos(response.data);
         })
     }, [usuarioId]);
+
+    useEffect(() => {
+        axios.get('https://servicodados.ibge.gov.br/api/v1/localidades/estados').then(response => {
+            const ufInitials = response.data.map(uf => uf.sigla);
+            setEstados(ufInitials);
+        });
+
+    }, []);
+
+    useEffect(() => {
+        if (estado === '0') {
+            return;
+        }
+        axios.get(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${estado}/municipios`).then(response => {
+            const cityNames = response.data.map(city => city.nome);
+            setCities(cityNames);
+        });
+
+    }, [estado]);
 
     useEffect(() => {
         if (action === 'edit' && usuariosIdParam !== '') {
@@ -77,6 +99,13 @@ export default function Usuario(props) {
             return;
         }
     }, [usuariosIdParam]);
+
+    function handleSelectUf(event) {
+        const uf = event.target.value;
+
+        setEstado(uf);
+
+    }
 
     function handleInputChange(event) {
         var { name } = event.target;
@@ -194,7 +223,7 @@ export default function Usuario(props) {
                                             <InputGroupAddon addonType="append">
                                                 <spam class="btn btn-secondary disabled fa fa-calendar"></spam>
                                             </InputGroupAddon>
-                                        </InputGroup> 
+                                        </InputGroup>
                                     </Col>
                                     <Col md="2">
                                         <Label htmlFor="Genero">Genero</Label>
@@ -274,12 +303,10 @@ export default function Usuario(props) {
 
                                 </FormGroup>
                             </CardBody>
-                        </Card>
-                        <CardHeader>
-                            <i className="fa fa-map-marker"></i>
-                            <strong>Endereço</strong>
-                        </CardHeader>
-                        <Card>
+                            <CardHeader>
+                                <i className="fa fa-map-marker"></i>
+                                <strong>Endereço</strong>
+                            </CardHeader>
                             <CardBody>
                                 <FormGroup row>
                                     <Col md="3">
@@ -294,19 +321,29 @@ export default function Usuario(props) {
                                             </InputGroupAddon>
                                         </InputGroup>
                                     </Col>
-                                    <Col md="4">
+                                    <Col md="6">
                                         <Label htmlFor="Logradouro">Endereço</Label>
                                         <Input type="text" required id="txtLogradouro" placeholder="Digite o Endereço"
                                             name="logradouro"
                                             value={logradouro}
                                             onChange={e => setLogradouro(e.target.value)} />
                                     </Col>
-                                    <Col md="2">
+                                    <Col md="3">
                                         <Label htmlFor="Numero">Número</Label>
                                         <Input type="text" required id="txtNumero" placeholder="Digite apenas Números"
                                             value={numero}
                                             name="numero"
                                             onChange={e => setNum(numMask(e.target.value))} />
+                                    </Col>
+
+                                </FormGroup>
+                                <FormGroup row>
+                                    <Col md="3">
+                                        <Label htmlFor="Bairro">Bairro</Label>
+                                        <Input type="text" required id="txtBairro" placeholder="Digite o Bairro"
+                                            name="bairro"
+                                            value={bairro}
+                                            onChange={e => setBairro(e.target.value)} />
                                     </Col>
                                     <Col md="3">
                                         <Label htmlFor="Complemento">Complemento</Label>
@@ -315,58 +352,30 @@ export default function Usuario(props) {
                                             value={complemento}
                                             onChange={e => setComplemento(e.target.value)} />
                                     </Col>
-                                </FormGroup>
-                                <FormGroup row>
-                                    <Col md="4">
-                                        <Label htmlFor="Bairro">Bairro</Label>
-                                        <Input type="text" required id="txtBairro" placeholder="Digite o Bairro"
-                                            name="bairro"
-                                            value={bairro}
-                                            onChange={e => setBairro(e.target.value)} />
-                                    </Col>
-                                    <Col md="4">
-                                        <Label htmlFor="Cidade">Cidade</Label>
-                                        <Input type="text" required id="txtCidade" placeholder="Digite o Cidade"
-                                            name="cidade"
-                                            value={cidade}
-                                            onChange={e => setCidade(e.target.value)} />
-                                    </Col>
-                                    <Col md="2">
-                                        <Label htmlFor="Estado">Estado</Label>
+                                    <Col md="3">
+                                        <Label htmlFor="estado">UF</Label>
                                         <Input type="select" required name="select" id="cboEstado"
                                             name="estado"
                                             value={estado}
-                                            onChange={e => setEstado(e.target.value)}>
-                                            <option value={undefined}>Selecione...</option>
-                                            <option value="SP">São Paulo</option>
-                                            <option value="RJ">Rio de Janeiro</option>
-                                            <option value="MG">Minas Gerais</option>
-                                            <option value="PR">Paraná</option>
-                                            <option value="AC">Acre</option>
-                                            <option value="Al">Alagoas</option>
-                                            <option value="AP">Amapá</option>
-                                            <option value="AM">Amazonas</option>
-                                            <option value="BH">Bahia</option>
-                                            <option value="CE">Ceará</option>
-                                            <option value="DF">Distrito Federal</option>
-                                            <option value="GO">Goiás</option>
-                                            <option value="DF">Distrito Federal</option>
-                                            <option value="MA">Maranhão</option>
-                                            <option value="MG">Mato Grosso</option>
-                                            <option value="MT">Mato Grosso do Sul</option>
-                                            <option value="PA">Pará</option>
-                                            <option value="PB">Paraíba</option>
-                                            <option value="PE">Pernambuco</option>
-                                            <option value="PI">Piau</option>
-                                            <option value="RN">Rio Grande do Norte</option>
-                                            <option value="RS">Rio Grande do Sul</option>
-                                            <option value="RR">Rondônia</option>
-                                            <option value="SC">Santa Catarina</option>
-                                            <option value="SE">Sergipe</option>
-                                            <option value="TO">Tocantins</option>
+                                            onChange={handleSelectUf} >
+                                            <option value="0">Selecione</option>
+                                            {estados.map(uf => (
+                                                <option key={uf} value={uf}>{uf}</option>
+                                            ))}
                                         </Input>
                                     </Col>
-
+                                    <Col md="3">
+                                        <Label htmlFor="cidade">Cidade</Label>
+                                        <Input type="select" required id="txtCidade" placeholder="Digite a Cidade"
+                                            name="cidade"
+                                            value={cidade}
+                                            onChange={e => setCidade(e.target.value)}>
+                                            <option value="0">Selecione</option>
+                                            {cities.map(city => (
+                                                <option key={city} value={city}>{city}</option>
+                                            ))}
+                                        </Input>
+                                    </Col>
                                 </FormGroup>
                                 {/*<FormGroup row>
                                    <Col md="2">

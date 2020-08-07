@@ -100,7 +100,7 @@ export default function StatusPagamento(props) {
                             </CardHeader>
                             <CardBody>
                                 <FormGroup row>
-                                    <Col md="4">
+                                    <Col md="6">
                                         <Label htmlFor="status">Status de Pagamento</Label>
                                         <Input type="text" required id="txtStatus" placeholder="Inisira o Status"
                                             name="status"
@@ -109,7 +109,7 @@ export default function StatusPagamento(props) {
                                     </Col>
                                 </FormGroup>
                                 <FormGroup row>
-                                    <Col md="8">
+                                    <Col md="6">
                                         <Label>Descrição</Label>
                                         <Input type="textarea" rows="5" placeholder="Descreva o Status inserido" id="txtDescStatus"
                                             name="descstatus"

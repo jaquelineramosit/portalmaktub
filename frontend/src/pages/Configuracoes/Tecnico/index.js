@@ -4,6 +4,7 @@ import '../../../global.css';
 import { Redirect } from "react-router-dom";
 import { cpfMask, rgMask, telMask, celMask, cepMask, numMask } from '../../../mask'
 import api from '../../../../src/services/api';
+import axios from 'axios';
 
 export default function Tecnico(props) {
     const [redirect, setRedirect] = useState(false);
@@ -21,7 +22,9 @@ export default function Tecnico(props) {
     const [complemento, setComplemento] = useState('');
     const [bairro, setBairro] = useState('');
     const [cidade, setCidade] = useState('');
-    const [estado, setEstado] = useState('');
+    const [cities, setCities] = useState([]);
+    const [estado, setEstado] = useState('0');
+    const [estados, setEstados] = useState([]);
     const [telefonefixo, setTelefonefixo] = useState('');
     const [telefonecelular, setTelefonecelular] = useState('');
     const [cep, setCep] = useState('');
@@ -38,6 +41,25 @@ export default function Tecnico(props) {
             setTipoTecnicosid(response.data);
         })
     }, [usuarioId]);
+
+    useEffect(() => {
+        axios.get('https://servicodados.ibge.gov.br/api/v1/localidades/estados').then(response => {
+            const ufInitials = response.data.map(uf => uf.sigla);
+            setEstados(ufInitials);
+        });
+
+    }, []);
+
+    useEffect(() => {
+        if (estado === '0') {
+            return;
+        }
+        axios.get(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${estado}/municipios`).then(response => {
+            const cityNames = response.data.map(city => city.nome);
+            setCities(cityNames);
+        });
+
+    }, [estado]);
 
     useEffect(() => {
         if (action === 'edit' && statusIdParam !== '') {
@@ -63,6 +85,13 @@ export default function Tecnico(props) {
             return;
         }
     }, [statusIdParam]);
+
+    function handleSelectUf(event) {
+        const uf = event.target.value;
+
+        setEstado(uf);
+
+    }
 
     function handleInputChange(event) {
         var { name } = event.target;
@@ -147,7 +176,7 @@ export default function Tecnico(props) {
                             </CardHeader>
                             <CardBody>
                                 <FormGroup row>
-                                    <Col md="4">
+                                    <Col md="6">
                                         <Label htmlFor="nomeTecnico">Nome Técnico</Label>
                                         <Input type="text" required id="txtNomeTecnico" placeholder="Digite o nome do Técnico"
                                             name="nometecnico"
@@ -170,7 +199,7 @@ export default function Tecnico(props) {
                                     </Col>
                                 </FormGroup>
                                 <FormGroup row>
-                                    <Col md="3">
+                                    <Col md="6">
                                         <Label htmlFor="tipoTecnicoId">Tipo do Técnico</Label>
                                         <Input type="select" required name="select" id="cboTipoTecnicoId"
                                             name="tipotecnicoid"
@@ -208,14 +237,14 @@ export default function Tecnico(props) {
                                     </Col>
                                 </FormGroup>
                                 <FormGroup row>
-                                    <Col md="4">
+                                    <Col md="6">
                                         <Label htmlFor="Nome">Nome Contato Emergencial</Label>
                                         <Input type="text" required id="txtNome" placeholder="Digite o Nome"
                                             name="nomecontatoemergencial"
                                             value={nomecontatoemergencial}
                                             onChange={e => setNomecontatoemergencial(e.target.value)} />
                                     </Col>
-                                    <Col md="4">
+                                    <Col md="3">
                                         <Label htmlFor="TelefoneFixo">Telefone Emergencial</Label>
                                         <InputGroup>
                                             <Input type="text" id="txtTelefoneFixo" placeholder="(11) 9999-9999"
@@ -229,12 +258,10 @@ export default function Tecnico(props) {
                                     </Col>
                                 </FormGroup>
                             </CardBody>
-                        </Card>
                         <CardHeader>
                             <i className="fa fa-map-marker"></i>
                             <strong>Endereço</strong>
                         </CardHeader>
-                        <Card>
                             <CardBody>
                                 <FormGroup row>
                                     <Col md="3">
@@ -249,7 +276,7 @@ export default function Tecnico(props) {
                                             </InputGroupAddon>
                                         </InputGroup>
                                     </Col>
-                                    <Col md="3">
+                                    <Col md="6">
                                         <Label htmlFor="logradouro">Endereço</Label>
                                         <Input type="text" required id="txtLogradouro"
                                             placeholder="Digite o Endereço"
@@ -257,22 +284,22 @@ export default function Tecnico(props) {
                                             value={logradouro}
                                             onChange={e => setLogradouro(e.target.value)} />
                                     </Col>
-                                    <Col md="2">
+                                    <Col md="3">
                                         <Label htmlFor="numero">Número</Label>
                                         <Input type="text" required id="txtNumero" placeholder="Digite apenas Números"
                                             value={numero}
                                             name="numero"
                                             onChange={e => setNumero(numMask(e.target.value))} />
                                     </Col>
-                                    <Col md="3">
+                                </FormGroup>
+                                <FormGroup row>
+                                <Col md="3">
                                         <Label htmlFor="bairro">Bairro</Label>
                                         <Input type="text" required id="txtBairro" placeholder="Digite o Bairro"
                                             name="bairro"
                                             value={bairro}
                                             onChange={e => setBairro(e.target.value)} />
                                     </Col>
-                                </FormGroup>
-                                <FormGroup row>
                                     <Col md="3">
                                         <Label htmlFor="complemento">Complemento</Label>
                                         <Input type="text" id="txtComplemento" placeholder="Digite o Complemento"
@@ -281,24 +308,27 @@ export default function Tecnico(props) {
                                             onChange={e => setComplemento(e.target.value)} />
                                     </Col>
                                     <Col md="3">
-                                        <Label htmlFor="cidade">Cidade</Label>
-                                        <Input type="text" required id="txtCidade" placeholder="Digite a Cidade"
-                                            name="cidade"
-                                            value={cidade}
-                                            onChange={e => setCidade(e.target.value)} />
-                                    </Col>
-                                    <Col md="2">
                                         <Label htmlFor="estado">UF</Label>
-                                        <Input type="select" required name="select" id="cboEstado" multiple={false}
+                                        <Input type="select" required name="select" id="cboEstado"
                                             name="estado"
                                             value={estado}
-                                            onChange={e => setEstado(e.target.value)}>
-                                            <option value={undefined}>Selecione...</option>
-                                            <option value="1">São Paulo</option>
-                                            <option value="2">Rio de Janeiro</option>
-                                            <option value="3">Minas Gerais</option>
-                                            <option value="4">Paraná</option>
-                                            <option value="5">Santa Catarina</option>
+                                            onChange={handleSelectUf} >
+                                            <option value="0">Selecione</option>
+                                            {estados.map(uf => (
+                                                <option key={uf} value={uf}>{uf}</option>
+                                            ))}
+                                        </Input>
+                                    </Col>
+                                    <Col md="3">
+                                        <Label htmlFor="cidade">Cidade</Label>
+                                        <Input type="select" required id="txtCidade" placeholder="Digite a Cidade"
+                                            name="cidade"
+                                            value={cidade}
+                                            onChange={e => setCidade(e.target.value)}>
+                                            <option value="0">Selecione</option>
+                                            {cities.map(city => (
+                                                <option key={city} value={city}>{city}</option>
+                                            ))}
                                         </Input>
                                     </Col>
                                 </FormGroup>

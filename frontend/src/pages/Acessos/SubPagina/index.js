@@ -129,7 +129,7 @@ export default function Subpagina(props) {
                                     </Col>
                                 </FormGroup>
                                 <FormGroup row>
-                                    <Col md="10">
+                                    <Col md="8">
                                         <Label htmlFor="descricao">Descrião</Label>
                                         <Input type="textarea" id="txtDescricao" multiple placeholder="Digite a Descrição"
                                             name="descricao"

@@ -4,6 +4,7 @@ import '../../../global.css';
 import { Redirect } from "react-router-dom";
 import { telMask, cepMask, numMask, cnpjMask } from '../../../mask'
 import api from '../../../../src/services/api';
+import axios from 'axios';
 
 export default function Filiais(props) {
     const [redirect, setRedirect] = useState(false);
@@ -24,7 +25,9 @@ export default function Filiais(props) {
     const [complemento, setComplemento] = useState('');
     const [bairro, setBairro] = useState('');
     const [cidade, setCidade] = useState('');
-    const [estado, setEstado] = useState('');
+    const [cities, setCities] = useState([]);
+    const [estado, setEstado] = useState('0');
+    const [estados, setEstados] = useState([]);
     const [nomeresponsavel, setNomeresponsavel] = useState('');
     const [telefoneresponsavel, setTelefoneresponsavel] = useState('');
     const [horarioiniciosemana, setHorarioiniciosemana] = useState('');
@@ -53,7 +56,24 @@ export default function Filiais(props) {
         })
     }, [usuarioId]);
 
+    useEffect(() => {
+        axios.get('https://servicodados.ibge.gov.br/api/v1/localidades/estados').then(response => {
+            const ufInitials = response.data.map(uf => uf.sigla);
+            setEstados(ufInitials);
+        });
 
+    }, []);
+
+    useEffect(() => {
+        if (estado === '0') {
+            return;
+        }
+        axios.get(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${estado}/municipios`).then(response => {
+            const cityNames = response.data.map(city => city.nome);
+            setCities(cityNames);
+        });
+
+    }, [estado]);
 
     useEffect(() => {
         if (action === 'edit' && filiaisIdParam !== '') {
@@ -86,6 +106,13 @@ export default function Filiais(props) {
             return;
         }
     }, [filiaisIdParam]);
+
+    function handleSelectUf(event) {
+        const uf = event.target.value;
+
+        setEstado(uf);
+
+    }
 
     function handleInputChange(event) {
         var { name } = event.target;
@@ -176,7 +203,30 @@ export default function Filiais(props) {
                             </CardHeader>
                             <CardBody>
                                 <FormGroup row>
+                                    <Col md="5">
+                                        <Label htmlFor="nomeFilial">Nome Filial</Label>
+                                        <Input type="text" required id="txtNomeFilial" placeholder="Digite o nome da filial"
+                                            name="nomefilial"
+                                            value={nomefilial}
+                                            onChange={e => setNomefilial(e.target.value)} />
+                                    </Col>
+                                    <Col md="4">
+                                        <Label htmlFor="RazaoSocial">Razão Social</Label>
+                                        <Input type="text" required id="txtRazaoSocial" placeholder="Digite a razão social"
+                                            name="razaosocial"
+                                            value={razaosocial}
+                                            onChange={e => setRazaosocial(e.target.value)} />
+                                    </Col>
                                     <Col md="3">
+                                        <Label htmlFor="nomeResponsavel">Nome Responsável</Label>
+                                        <Input type="text" required id="txtNomeResponsavel" placeholder="Digite o nome do responsável"
+                                            name="nomeresponsavel"
+                                            value={nomeresponsavel}
+                                            onChange={e => setNomeresponsavel(e.target.value)} />
+                                    </Col>
+                                </FormGroup>
+                                <FormGroup row>
+                                    <Col md="5">
                                         <Label htmlFor="clienteId">Cliente</Label>
                                         <Input required type="select" name="select" id="cboClienteid" multiple={false}
                                             name="clienteid"
@@ -188,40 +238,7 @@ export default function Filiais(props) {
                                             ))}
                                         </Input>
                                     </Col>
-                                    <Col md="3">
-                                        <Label htmlFor="RazaoSocial">Razão Social</Label>
-                                        <Input type="text" required id="txtRazaoSocial" placeholder="Digite a razão social"
-                                            name="razaosocial"
-                                            value={razaosocial}
-                                            onChange={e => setRazaosocial(e.target.value)} />
-                                    </Col>
-                                    <Col md="3">
-                                        <Label htmlFor="nomeFilial">Nome Filial</Label>
-                                        <Input type="text" required id="txtNomeFilial" placeholder="Digite o nome da filial"
-                                            name="nomefilial"
-                                            value={nomefilial}
-                                            onChange={e => setNomefilial(e.target.value)} />
-                                    </Col>
                                     <Col md="2">
-                                        <Label htmlFor="nomeResponsavel">Nome Responsável</Label>
-                                        <Input type="text" required id="txtNomeResponsavel" placeholder="Digite o nome do responsável"
-                                            name="nomeresponsavel"
-                                            value={nomeresponsavel}
-                                            onChange={e => setNomeresponsavel(e.target.value)} />
-                                    </Col>
-                                </FormGroup>
-                                <FormGroup row>
-                                    <Col md="3">
-                                        <Label htmlFor="cnpj">CNPJ</Label>
-                                        <InputGroup>
-                                            <Input type="text" required id="txtCnpj"
-                                                placeholder="Digite a CNPJ"
-                                                value={cnpj}
-                                                name="cnpj"
-                                                onChange={e => setCnpj(cnpjMask(e.target.value))} />
-                                        </InputGroup>
-                                    </Col>
-                                    <Col md="3">
                                         <Label htmlFor="bandeiraId">Bandeira</Label>
                                         <Input required type="select" name="select" id="cboBandeiraId" multiple={false}
                                             name="bandeiraid"
@@ -235,117 +252,24 @@ export default function Filiais(props) {
                                     </Col>
                                     <Col md="2">
                                         <Label htmlFor="ced">CED</Label>
-                                        <Input type="text" required id="txtCed"
+                                        <Input type="text" required id="txtCed" placeholder="Insira o CED"
                                             name="ced"
                                             value={ced}
                                             onChange={e => setCed(e.target.value)} />
                                     </Col>
-                                </FormGroup>
-                            </CardBody>
-                        </Card>
-                        <CardHeader>
-                            <i className="fa fa-map-marker"></i>
-                            <strong>Endereço</strong>
-                        </CardHeader>
-                        <Card>
-                            <CardBody>
-                                <FormGroup row>
-                                    <Col md="2">
-                                        <Label htmlFor="cep">CEP</Label>
+                                    <Col md="3">
+                                        <Label htmlFor="cnpj">CNPJ</Label>
                                         <InputGroup>
-                                            <Input id="txtCep" size="16" required type="text" placeholder="00000-000"
-                                                value={cep}
-                                                name="cep"
-                                                onChange={e => setCep(cepMask(e.target.value))} />
-                                            <InputGroupAddon addonType="append">
-                                                <spam class="btn btn-secondary disabled fa fa-truck"></spam>
-                                            </InputGroupAddon>
+                                            <Input type="text" required id="txtCnpj"
+                                                placeholder="Digite a CNPJ"
+                                                value={cnpj}
+                                                name="cnpj"
+                                                onChange={e => setCnpj(cnpjMask(e.target.value))} />
                                         </InputGroup>
                                     </Col>
-                                    <Col md="3">
-                                        <Label htmlFor="logradouro">Endereço</Label>
-                                        <InputGroup>
-                                            <Input type="text" required id="txtLogradouro"
-                                                placeholder="Digite o Endereço"
-                                                name="logradouro"
-                                                value={logradouro}
-                                                onChange={e => setLogradouro(e.target.value)} />
-                                        </InputGroup>
-                                    </Col>
-                                    <Col md="3">
-                                        <Label htmlFor="bairro">Bairro</Label>
-                                        <Input type="text" required id="txtBairro" placeholder="Digite o Bairro"
-                                            name="bairro"
-                                            value={bairro}
-                                            onChange={e => setBairro(e.target.value)} />
-                                    </Col>
-                                    <Col md="3">
-                                        <Label htmlFor="cidade">Cidade</Label>
-                                        <Input type="text" required id="txtCidade" placeholder="Digite a Cidade"
-                                            name="cidade"
-                                            value={cidade}
-                                            onChange={e => setCidade(e.target.value)} />
-                                    </Col>
                                 </FormGroup>
                                 <FormGroup row>
-                                    <Col md="3">
-                                        <Label htmlFor="numero">Número</Label>
-                                        <Input type="text" required id="txtNumero" placeholder="Digite o Números"
-                                            value={numero}
-                                            name="numero"
-                                            onChange={e => setNumero(numMask(e.target.value))} />
-                                    </Col>
-                                    <Col md="3">
-                                        <Label htmlFor="complemento">Complemento</Label>
-                                        <Input type="text" id="txtComplemento" placeholder="Digite o Complemento"
-                                            name="complemento"
-                                            value={complemento}
-                                            onChange={e => setComplemento(e.target.value)} />
-                                    </Col>
-                                    <Col md="3">
-                                        <Label htmlFor="estado">UF</Label>
-                                        <Input type="select" required name="select" id="cboEstado" multiple={false}
-                                            name="estado"
-                                            value={estado}
-                                            onChange={e => setEstado(e.target.value)} >
-                                            <option value={undefined}>Selecione...</option>
-                                            <option value="SP">São Paulo</option>
-                                            <option value="RJ">Rio de Janeiro</option>
-                                            <option value="MG">Minas Gerais</option>
-                                            <option value="PR">Paraná</option>
-                                            <option value="AC">Acre</option>
-                                            <option value="Al">Alagoas</option>
-                                            <option value="AP">Amapá</option>
-                                            <option value="AM">Amazonas</option>
-                                            <option value="BH">Bahia</option>
-                                            <option value="CE">Ceará</option>
-                                            <option value="DF">Distrito Federal</option>
-                                            <option value="GO">Goiás</option>
-                                            <option value="DF">Distrito Federal</option>
-                                            <option value="MA">Maranhão</option>
-                                            <option value="MG">Mato Grosso</option>
-                                            <option value="MT">Mato Grosso do Sul</option>
-                                            <option value="PA">Pará</option>
-                                            <option value="PB">Paraíba</option>
-                                            <option value="PE">Pernambuco</option>
-                                            <option value="PI">Piau</option>
-                                            <option value="RN">Rio Grande do Norte</option>
-                                            <option value="RS">Rio Grande do Sul</option>
-                                            <option value="RR">Rondônia</option>
-                                            <option value="SC">Santa Catarina</option>
-                                            <option value="SE">Sergipe</option>
-                                            <option value="TO">Tocantins</option>
-                                            <option value="São Paulo">São Paulo</option>
-                                            <option value="Rio de Janeiro">Rio de Janeiro</option>
-                                            <option value=">Minas Gerais">Minas Gerais</option>
-                                            <option value="Paraná">Paraná</option>
-                                            <option value="Santa Catarina">Santa Catarina</option>
-                                        </Input>
-                                    </Col>
-
-                                </FormGroup>
-                                <FormGroup row>
-                                    <Col md="3">
+                                    <Col md="5">
                                         <Label htmlFor="telefoneFixo">Telefone Fixo</Label>
                                         <InputGroup>
                                             <Input type="text" id="txtTelefoneFixo" placeholder="(11) 9999-9999"
@@ -357,7 +281,7 @@ export default function Filiais(props) {
                                             </InputGroupAddon>
                                         </InputGroup>
                                     </Col>
-                                    <Col md="3">
+                                    <Col md="4">
                                         <Label htmlFor="telefoneResponsavel">Telefone Responsável</Label>
                                         <InputGroup>
                                             <Input type="text" id="txtTelefoneResponsavel" placeholder="(11) 9999-9999"
@@ -371,15 +295,90 @@ export default function Filiais(props) {
                                     </Col>
                                 </FormGroup>
                             </CardBody>
-                        </Card>
                         <CardHeader>
-                            <i className="fa fa-clock-o"></i>
-                            <strong>Horários</strong>
+                            <i className="fa fa-map-marker"></i>
+                            <strong>Endereço</strong>
                         </CardHeader>
-                        <Card>
                             <CardBody>
                                 <FormGroup row>
                                     <Col md="3">
+                                        <Label htmlFor="cep">CEP</Label>
+                                        <InputGroup>
+                                            <Input id="txtCep" size="16" required type="text" placeholder="00000-000"
+                                                value={cep}
+                                                name="cep"
+                                                onChange={e => setCep(cepMask(e.target.value))} />
+                                            <InputGroupAddon addonType="append">
+                                                <spam class="btn btn-secondary disabled fa fa-truck"></spam>
+                                            </InputGroupAddon>
+                                        </InputGroup>
+                                    </Col>
+                                    <Col md="6">
+                                        <Label htmlFor="logradouro">Endereço</Label>
+                                        <InputGroup>
+                                            <Input type="text" required id="txtLogradouro"
+                                                placeholder="Digite o Endereço"
+                                                name="logradouro"
+                                                value={logradouro}
+                                                onChange={e => setLogradouro(e.target.value)} />
+                                        </InputGroup>
+                                    </Col>
+                                    <Col md="3">
+                                        <Label htmlFor="numero">Número</Label>
+                                        <Input type="text" required id="txtNumero" placeholder="Digite o Números"
+                                            value={numero}
+                                            name="numero"
+                                            onChange={e => setNumero(numMask(e.target.value))} />
+                                    </Col>
+                                </FormGroup>
+                                <FormGroup row>
+                                    <Col md="3">
+                                        <Label htmlFor="bairro">Bairro</Label>
+                                        <Input type="text" required id="txtBairro" placeholder="Digite o Bairro"
+                                            name="bairro"
+                                            value={bairro}
+                                            onChange={e => setBairro(e.target.value)} />
+                                    </Col>
+                                    <Col md="3">
+                                        <Label htmlFor="complemento">Complemento</Label>
+                                        <Input type="text" id="txtComplemento" placeholder="Digite o Complemento"
+                                            name="complemento"
+                                            value={complemento}
+                                            onChange={e => setComplemento(e.target.value)} />
+                                    </Col>
+                                    <Col md="3">
+                                        <Label htmlFor="estado">UF</Label>
+                                        <Input type="select" required name="select" id="cboEstado"
+                                            name="estado"
+                                            value={estado}
+                                            onChange={handleSelectUf} >
+                                            <option value="0">Selecione</option>
+                                            {estados.map(uf => (
+                                                <option key={uf} value={uf}>{uf}</option>
+                                            ))}
+                                        </Input>
+                                    </Col>
+                                    <Col md="3">
+                                        <Label htmlFor="cidade">Cidade</Label>
+                                        <Input type="select" required id="txtCidade" placeholder="Digite a Cidade"
+                                            name="cidade"
+                                            value={cidade}
+                                            onChange={e => setCidade(e.target.value)}>
+                                            <option value="0">Selecione</option>
+                                            {cities.map(city => (
+                                                <option key={city} value={city}>{city}</option>
+                                            ))}
+                                        </Input>
+                                    </Col>
+                                </FormGroup>
+                            </CardBody>          
+                        <CardHeader>
+                            <i className="fa fa-clock-o"></i>
+                            <strong>Horários</strong>
+                        </CardHeader>                   
+                            <CardBody>
+                                <FormGroup row>
+                                    <Col md="4">
                                         <Label htmlFor="horarioInicioSemana">Horario Início da semana</Label>
                                         <InputGroup>
                                             <Input type="time" required id="txtHorarioInicioSemana"
@@ -391,7 +390,7 @@ export default function Filiais(props) {
                                             </InputGroupAddon>
                                         </InputGroup>
                                     </Col>
-                                    <Col md="3">
+                                    <Col md="4">
                                         <Label htmlFor="horarioInicioDomingo">Horario Início do Domingo</Label>
                                         <InputGroup>
                                             <Input type="time" required id="horarioInicioDomingo"
@@ -403,7 +402,7 @@ export default function Filiais(props) {
                                             </InputGroupAddon>
                                         </InputGroup>
                                     </Col>
-                                    <Col md="3">
+                                    <Col md="4">
                                         <Label htmlFor="horarioInicioSabado">Horario Início do Sábado</Label>
                                         <InputGroup>
                                             <Input type="time" required id="txtHorarioInicioSabado"
@@ -417,7 +416,7 @@ export default function Filiais(props) {
                                     </Col>
                                 </FormGroup>
                                 <FormGroup row>
-                                    <Col md="3">
+                                    <Col md="4">
                                         <Label htmlFor="horarioFimSemana">Horario Fim da semana</Label>
                                         <InputGroup>
                                             <Input type="time" required id="txtHorarioFimSemana"
@@ -429,7 +428,7 @@ export default function Filiais(props) {
                                             </InputGroupAddon>
                                         </InputGroup>
                                     </Col>
-                                    <Col md="3">
+                                    <Col md="4">
                                         <Label htmlFor="horarioFimDomingo">Horario Fim do Domingo</Label>
                                         <InputGroup>
                                             <Input type="time" required id="txtHorarioFimDomgingo"
@@ -441,7 +440,7 @@ export default function Filiais(props) {
                                             </InputGroupAddon>
                                         </InputGroup>
                                     </Col>
-                                    <Col md="3">
+                                    <Col md="4">
                                         <Label htmlFor="horarioFimSabado">Horario Fim do Sábado</Label>
                                         <InputGroup>
                                             <Input type="time" required id="txtHorarioFimSabado"

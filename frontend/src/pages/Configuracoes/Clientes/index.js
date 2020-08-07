@@ -1,4 +1,4 @@
-import React, { useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, InputGroup, InputGroupAddon, CardFooter, Form } from 'reactstrap';
 import '../../../global.css';
 import { Redirect } from "react-router-dom";
@@ -8,9 +8,9 @@ import axios from 'axios';
 
 
 export default function Cliente(props) {
-    
+
     const [redirect, setRedirect] = useState(false);
-     
+
     //parametros
     var search = props.location.search;
     var params = new URLSearchParams(search);
@@ -24,7 +24,8 @@ export default function Cliente(props) {
     const [complemento, setComplemento] = useState('');
     const [bairro, setBairro] = useState('');
     const [cidade, setCidade] = useState('');
-    const [estado, setEstado] = useState('');
+    const [estado, setEstado] = useState('0');
+    const [estados, setEstados] = useState([]);
     const [nomeresponsavel, setNomeresponsavel] = useState('');
     const [telefoneresponsavel, setTelefoneresponsavel] = useState('');
     const [telefonefixo, setTelefonefixo] = useState('');
@@ -34,8 +35,6 @@ export default function Cliente(props) {
     const [cnpj, setCnpj] = useState('');
     const [parceiroid, setParceiroid] = useState('');
     const [parceirosid, setParceirosid] = useState([]);
-    const [ufs, setUfs] = useState([]);
-    const [selectedUf , setSelectedUf] = useState('0');
     const [cities, setCities] = useState([]);
     const [ativo, setAtivo] = useState(1);
 
@@ -48,29 +47,21 @@ export default function Cliente(props) {
     useEffect(() => {
         axios.get('https://servicodados.ibge.gov.br/api/v1/localidades/estados').then(response => {
             const ufInitials = response.data.map(uf => uf.sigla);
-            setUfs(ufInitials);
+            setEstados(ufInitials);
         });
 
     }, []);
 
     useEffect(() => {
-        if(selectedUf === '0'){
+        if (estado === '0') {
             return;
         }
-        axios.get(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${selectedUf}/municipios`).then(response => {
+        axios.get(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${estado}/municipios`).then(response => {
             const cityNames = response.data.map(city => city.nome);
             setCities(cityNames);
         });
 
-    },[selectedUf]);
-
-    function handleSelectUf(event){
-        const uf = event.target.value;
-
-        setSelectedUf(uf); 
-        
-    }
-
+    }, [estado]);
 
     useEffect(() => {
         if (action === 'edit' && clienteIdParam !== '') {
@@ -96,6 +87,13 @@ export default function Cliente(props) {
             return;
         }
     }, [clienteIdParam]);
+
+    function handleSelectUf(event) {
+        const uf = event.target.value;
+
+        setEstado(uf);
+
+    }
 
     function handleInputChange(event) {
         var { name } = event.target;
@@ -129,6 +127,7 @@ export default function Cliente(props) {
             telefonefixo,
             telefonecelular,
             cep,
+            cnpj,
             numero,
             parceiroid,
             ativo
@@ -171,7 +170,7 @@ export default function Cliente(props) {
             <Form onSubmit={handleStatus} onReset={handleReset}>
                 <Row>
                     <Col xs="12" md="12">
-                        <Card>
+                        <Card >
                             <CardHeader>
                                 <i className="fa fa-handshake-o"></i>
                                 <strong>Cliente</strong>
@@ -179,14 +178,14 @@ export default function Cliente(props) {
                             </CardHeader>
                             <CardBody>
                                 <FormGroup row>
-                                    <Col md="4">
+                                    <Col md="6">
                                         <Label htmlFor="nomeCliente">Nome Cliente</Label>
                                         <Input type="text" required id="txtNomeCliente" placeholder="Digite o nome do Cliente"
                                             name="nomecliente"
                                             value={nomecliente}
                                             onChange={e => setNomecliente(e.target.value)} />
                                     </Col>
-                                    <Col md="4">
+                                    <Col md="6">
                                         <Label htmlFor="razaoSocial">Razão Social</Label>
                                         <Input type="text" required id="txtRazaoSocial" placeholder="Digite o nome do Cliente"
                                             name="razaosocial"
@@ -195,7 +194,7 @@ export default function Cliente(props) {
                                     </Col>
                                 </FormGroup>
                                 <FormGroup row>
-                                    <Col md="3">
+                                    <Col md="6">
                                         <Label htmlFor="nomeResponsavel">Nome Responsável</Label>
                                         <Input type="text" required id="txtNomeResponsavel" placeholder="Digite o Nome do responsável"
                                             name="nomeresponsavel"
@@ -212,7 +211,7 @@ export default function Cliente(props) {
                                                 onChange={e => setCnpj(cnpjMask(e.target.value))} />
                                         </InputGroup>
                                     </Col>
-                                    <Col md="2">
+                                    <Col md="3">
                                         <Label htmlFor="parceiroId">Parceiro</Label>
                                         <Input required type="select" name="select" id="cboParceiroId"
                                             name="parceiroid"
@@ -226,7 +225,7 @@ export default function Cliente(props) {
                                     </Col>
                                 </FormGroup>
                                 <FormGroup row>
-                                    <Col md="3">
+                                    <Col md="6">
                                         <Label htmlFor="telefonefixo">Telefone Fixo</Label>
                                         <InputGroup>
                                             <Input type="text" id="txtTelefoneFixo" placeholder="(11) 9999-9999"
@@ -264,12 +263,10 @@ export default function Cliente(props) {
                                     </Col>
                                 </FormGroup>
                             </CardBody>
-                        </Card>
-                        <CardHeader>
-                            <i className="fa fa-map-marker"></i>
-                            <strong>Endereço</strong>
-                        </CardHeader>
-                        <Card>
+                            <CardHeader>
+                                <i className="fa fa-map-marker"></i>
+                                <strong>Endereço</strong>
+                            </CardHeader>
                             <CardBody>
                                 <FormGroup row>
                                     <Col md="3">
@@ -285,7 +282,7 @@ export default function Cliente(props) {
                                         </InputGroup>
                                     </Col>
 
-                                    <Col md="3">
+                                    <Col md="6">
                                         <Label htmlFor="logradouro">Endereço</Label>
                                         <Input type="text" required id="txtLogradouro"
                                             placeholder="Digite o endereço"
@@ -294,20 +291,20 @@ export default function Cliente(props) {
                                             onChange={e => setLogradouro(e.target.value)} />
                                     </Col>
                                     <Col md="3">
-                                        <Label htmlFor="bairro">Bairro</Label>
-                                        <Input type="text" required id="txtBairro" placeholder="Digite o Bairro"
-                                            name="bairro"
-                                            value={bairro}
-                                            onChange={e => setBairro(e.target.value)} />
-                                    </Col>
-                                </FormGroup>
-                                <FormGroup row>
-                                    <Col md="2">
                                         <Label htmlFor="numero">Número</Label>
                                         <Input type="text" required id="txtNumero" placeholder="Digite Apenas Números"
                                             value={numero}
                                             name="numero"
                                             onChange={e => setNumero(numMask(e.target.value))} />
+                                    </Col>
+                                </FormGroup>
+                                <FormGroup row>
+                                    <Col md="3">
+                                        <Label htmlFor="bairro">Bairro</Label>
+                                        <Input type="text" required id="txtBairro" placeholder="Digite o Bairro"
+                                            name="bairro"
+                                            value={bairro}
+                                            onChange={e => setBairro(e.target.value)} />
                                     </Col>
                                     <Col md="3">
                                         <Label htmlFor="complemento">Complemento</Label>
@@ -316,29 +313,29 @@ export default function Cliente(props) {
                                             value={complemento}
                                             onChange={e => setComplemento(e.target.value)} />
                                     </Col>
-                                    <Col md="2">
+                                    <Col md="3">
                                         <Label htmlFor="estado">UF</Label>
                                         <Input type="select" required name="select" id="cboEstado"
                                             name="estado"
-                                            value={selectedUf}
-                                            onChange={handleSelectUf } >
-                                            <option value="0">UF</option>
-                                            {ufs.map(uf => (
+                                            value={estado}
+                                            onChange={handleSelectUf} >
+                                            <option value="0">Selecione</option>
+                                            {estados.map(uf => (
                                                 <option key={uf} value={uf}>{uf}</option>
                                             ))}
                                         </Input>
                                     </Col>
-                                    <Col md="2">
+                                    <Col md="3">
                                         <Label htmlFor="cidade">Cidade</Label>
                                         <Input type="select" required id="txtCidade" placeholder="Digite a Cidade"
                                             name="cidade"
                                             value={cidade}
                                             onChange={e => setCidade(e.target.value)}>
-                                                 <option value="0">Cidades</option>
+                                            <option value="0">Selecione</option>
                                             {cities.map(city => (
                                                 <option key={city} value={city}>{city}</option>
                                             ))}
-                                    </Input>
+                                        </Input>
                                     </Col>
                                 </FormGroup>
                                 {/*<FormGroup>
