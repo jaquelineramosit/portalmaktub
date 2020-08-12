@@ -3,7 +3,16 @@ const getDate = require('../../utils/getDate');
 module.exports = {
     async getAll (request, response) {
         const tipoprojetoferramenta = await connection('tipoprojetoferramenta')
-        .select('*')   
+        
+        .join('usuario', 'usuario.id', '=', 'tipoprojetoferramenta.usuarioid')
+        .join('tipoprojeto', 'tipoprojeto.id', '=', 'tipoprojetoferramenta.tipoprojetoid')
+        .join('ferramenta', 'ferramenta.id', '=', 'tipoprojetoferramenta.ferramentaid')
+        .select([
+            'tipoprojetoferramenta.*',
+            'tipoprojeto.nometipoprojeto',
+            'ferramenta.codferramenta',            
+            'usuario.nome'       
+        ])   
         return response.json(tipoprojetoferramenta);
     },
 
@@ -11,8 +20,16 @@ module.exports = {
         const  { id }  = request.params;
 
         const tipoprojetoferramenta = await connection('tipoprojetoferramenta')
-            .where('id', id)
-            .select()
+            .where('tipoprojetoferramenta.id', id)
+            .join('usuario', 'usuario.id', '=', 'tipoprojetoferramenta.usuarioid')
+            .join('tipoprojeto', 'tipoprojeto.id', '=', 'tipoprojetoferramenta.tipoprojetoid')
+            .join('ferramenta', 'ferramenta.id', '=', 'tipoprojetoferramenta.ferramentaid')
+            .select([
+                'tipoprojetoferramenta.*',
+                'tipoprojeto.nometipoprojeto',
+                'ferramenta.codferramenta',            
+                'usuario.nome'       
+            ])
             .first();
     
         return response.json(tipoprojetoferramenta);
@@ -50,19 +67,15 @@ module.exports = {
         const  usuarioid  = request.headers.authorization;
         const  dataultmodif = getDate();
 
-        const { nometipoprojetoferramenta, receita, despesa, horas, valorhoraextra, valorhoratecnico, horadecimal, ativo } = request.body;
+        const { ferramentaid, tipoprojetoid, observacao, ativo } = request.body;
         
-        const [id] = await connection('tipoprojetoferramenta').insert({            
-            nometipoprojetoferramenta,
-            receita,
-            despesa,
-            horas,
-            valorhoraextra,
-            valorhoratecnico,
-            horadecimal,
+        const [id] = await connection('tipoprojetoferramenta').insert({                        
+            ferramentaid,
+            tipoprojetoid,
+            observacao,
             ativo,
             usuarioid,
-            dataultmodif
+            dataultmodif,
         })
 
         return response.json({ id });
@@ -73,19 +86,15 @@ module.exports = {
         const  usuarioid  = request.headers.authorization;
         const  dataultmodif = getDate();
         
-        const { nometipoprojetoferramenta, receita, despesa, horas, valorhoraextra, horadecimal, valorhoratecnico, ativo } = request.body;
+        const { ferramentaid, tipoprojetoid, observacao, ativo } = request.body;
 
         await connection('tipoprojetoferramenta').where('id', id).update({            
-            nometipoprojetoferramenta,
-            receita,
-            despesa,
-            horas,
-            valorhoraextra,
-            valorhoratecnico,
-            horadecimal,
+            ferramentaid,
+            tipoprojetoid,
+            observacao,
             ativo,
             usuarioid,
-            dataultmodif
+            dataultmodif,
         });           
 
         return response.status(204).send();
