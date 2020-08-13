@@ -94,7 +94,6 @@ module.exports = {
                     descricaoservico,
                     tecnicoid,
                     observacaoos,
-                    datafechamento,
                     horaentrada,
                     horasaida,
                     qtdehoras,

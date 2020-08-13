@@ -6,6 +6,8 @@ import { telMask, cepMask, numMask, cnpjMask } from '../../../mask'
 import api from '../../../../src/services/api';
 import axios from 'axios';
 
+let clienteIdInicial;
+
 export default function Filiais(props) {
     const [redirect, setRedirect] = useState(false);
 
@@ -50,11 +52,11 @@ export default function Filiais(props) {
         })
     }, [usuarioId]);
 
-    useEffect(() => {
-        api.get('bandeira').then(response => {
-            setBandeirasid(response.data);
-        })
-    }, [usuarioId]);
+    // useEffect(() => {
+    //     api.get('bandeira').then(response => {
+    //         setBandeirasid(response.data);
+    //     })
+    // }, [usuarioId]);
 
     useEffect(() => {
         axios.get('https://servicodados.ibge.gov.br/api/v1/localidades/estados').then(response => {
@@ -80,6 +82,7 @@ export default function Filiais(props) {
             api.get(`filiais/${filiaisIdParam}`).then(response => {
                 setBandeiraid(response.data.bandeiraid);
                 setClienteid(response.data.clienteid);
+                clienteIdInicial = response.data.clienteid;
                 setCed(response.data.ced);
                 setNomefilial(response.data.nomefilial);
                 setRazaosocial(response.data.razaosocial);
@@ -115,14 +118,25 @@ export default function Filiais(props) {
     }
 
     function handleInputChange(event) {
-        var { name } = event.target;
+        event.preventDefault();
 
-        if (name === 'ativo') {
-            if (ativo === 1) {
-                setAtivo(0);
-            } else {
-                setAtivo(1);
-            }
+        const { name, value } = event.target;
+
+        switch (name) {
+            case 'ativo' :
+                if (ativo === 1) {
+                    setAtivo(0);
+                } else {
+                    setAtivo(1);
+                };
+                break;
+            case 'clienteid' :
+                api.get(`cliente-bandeiras/${value}`).then(response => {
+                    clienteIdInicial = value;
+                    setClienteid(value);
+                    setBandeirasid(response.data);
+                });
+                break;
         }
     };
 
@@ -231,10 +245,11 @@ export default function Filiais(props) {
                                         <Input required type="select" name="select" id="cboClienteid" multiple={false}
                                             name="clienteid"
                                             value={clienteid}
-                                            onChange={e => setClienteid(e.target.value)}>
+                                            onChange={handleInputChange}
+                                        >
                                             <option value={undefined} defaultValue>Selecione...</option>
                                             {clientesid.map(cliente => (
-                                                <option value={cliente.id}>{cliente.nomecliente}</option>
+                                                <option key={`cliente${cliente.id}`} value={cliente.id}>{cliente.nomecliente}</option>
                                             ))}
                                         </Input>
                                     </Col>
@@ -246,7 +261,7 @@ export default function Filiais(props) {
                                             onChange={e => setBandeiraid(e.target.value)}>
                                             <option value={undefined} defaultValue>Selecione...</option>
                                             {bandeirasid.map(bandeira => (
-                                                <option value={bandeira.id}>{bandeira.nomebandeira}</option>
+                                                <option key={`bandeira${bandeira.id}`} value={bandeira.id}>{bandeira.nomebandeira}</option>
                                             ))}
                                         </Input>
                                     </Col>
@@ -277,7 +292,7 @@ export default function Filiais(props) {
                                                 name="telefonefixo"
                                                 onChange={e => setTelefonefixo(telMask(e.target.value))} />
                                             <InputGroupAddon addonType="append">
-                                                <spam class="btn btn-secondary disabled icon-phone"></spam>
+                                                <span className="btn btn-secondary disabled icon-phone"></span>
                                             </InputGroupAddon>
                                         </InputGroup>
                                     </Col>
@@ -289,7 +304,7 @@ export default function Filiais(props) {
                                                 name="telefoneresponsavel"
                                                 onChange={e => setTelefoneresponsavel(telMask(e.target.value))} />
                                             <InputGroupAddon addonType="append">
-                                                <spam class="btn btn-secondary disabled icon-phone"></spam>
+                                                <span className="btn btn-secondary disabled icon-phone"></span>
                                             </InputGroupAddon>
                                         </InputGroup>
                                     </Col>
@@ -309,7 +324,7 @@ export default function Filiais(props) {
                                                 name="cep"
                                                 onChange={e => setCep(cepMask(e.target.value))} />
                                             <InputGroupAddon addonType="append">
-                                                <spam class="btn btn-secondary disabled fa fa-truck"></spam>
+                                                <span className="btn btn-secondary disabled fa fa-truck"></span>
                                             </InputGroupAddon>
                                         </InputGroup>
                                     </Col>
@@ -354,7 +369,7 @@ export default function Filiais(props) {
                                             onChange={handleSelectUf} >
                                             <option value="0">Selecione</option>
                                             {estados.map(uf => (
-                                                <option key={uf} value={uf}>{uf}</option>
+                                                <option key={`uf${uf}`} value={uf}>{uf}</option>
                                             ))}
                                         </Input>
                                     </Col>
@@ -366,7 +381,7 @@ export default function Filiais(props) {
                                             onChange={e => setCidade(e.target.value)}>
                                             <option value="0">Selecione</option>
                                             {cities.map(city => (
-                                                <option key={city} value={city}>{city}</option>
+                                                <option key={`city${city}`} value={city}>{city}</option>
                                             ))}
                                         </Input>
                                     </Col>
@@ -386,7 +401,7 @@ export default function Filiais(props) {
                                                 value={horarioiniciosemana}
                                                 onChange={e => setHorarioiniciosemana(e.target.value)} />
                                             <InputGroupAddon addonType="append">
-                                                <spam class="btn btn-secondary disabled fa fa-clock-o"></spam>
+                                                <span className="btn btn-secondary disabled fa fa-clock-o"></span>
                                             </InputGroupAddon>
                                         </InputGroup>
                                     </Col>
@@ -398,7 +413,7 @@ export default function Filiais(props) {
                                                 value={horarioiniciodomingo}
                                                 onChange={e => setHorarioiniciodomingo(e.target.value)} />
                                             <InputGroupAddon addonType="append">
-                                                <spam class="btn btn-secondary disabled fa fa-clock-o"></spam>
+                                                <span className="btn btn-secondary disabled fa fa-clock-o"></span>
                                             </InputGroupAddon>
                                         </InputGroup>
                                     </Col>
@@ -410,7 +425,7 @@ export default function Filiais(props) {
                                                 value={horarioiniciosabado}
                                                 onChange={e => setHorarioiniciosabado(e.target.value)} />
                                             <InputGroupAddon addonType="append">
-                                                <spam class="btn btn-secondary disabled fa fa-clock-o"></spam>
+                                                <span className="btn btn-secondary disabled fa fa-clock-o"></span>
                                             </InputGroupAddon>
                                         </InputGroup>
                                     </Col>
@@ -424,7 +439,7 @@ export default function Filiais(props) {
                                                 value={horariofimsemana}
                                                 onChange={e => setHorariofimsemana(e.target.value)} />
                                             <InputGroupAddon addonType="append">
-                                                <spam class="btn btn-secondary disabled fa fa-clock-o"></spam>
+                                                <span className="btn btn-secondary disabled fa fa-clock-o"></span>
                                             </InputGroupAddon>
                                         </InputGroup>
                                     </Col>
@@ -436,7 +451,7 @@ export default function Filiais(props) {
                                                 value={horariofimdomingo}
                                                 onChange={e => setHorariofimdomingo(e.target.value)} />
                                             <InputGroupAddon addonType="append">
-                                                <spam class="btn btn-secondary disabled fa fa-clock-o"></spam>
+                                                <span className="btn btn-secondary disabled fa fa-clock-o"></span>
                                             </InputGroupAddon>
                                         </InputGroup>
                                     </Col>
@@ -448,7 +463,7 @@ export default function Filiais(props) {
                                                 value={horariofimsabado}
                                                 onChange={e => setHorariofimsabado(e.target.value)} />
                                             <InputGroupAddon addonType="append">
-                                                <spam class="btn btn-secondary disabled fa fa-clock-o"></spam>
+                                                <span className="btn btn-secondary disabled fa fa-clock-o"></span>
                                             </InputGroupAddon>
                                         </InputGroup>
                                     </Col>
