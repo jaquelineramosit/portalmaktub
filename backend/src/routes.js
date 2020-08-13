@@ -15,6 +15,7 @@ const RegisterController = require('./controllers/Acessos/RegisterController');
 const OrdemServicoController = require('./controllers/OrdemServico/OrdemServicoController');
 const ListaOrdemServicoController = require('./controllers/OrdemServico/ListaOrdemServicoController');
 const MovimentacaoOsController = require('./controllers/OrdemServico/MovimentacaoOsController');
+const MovimentacaoOsLogController = require('./controllers/OrdemServico/MovimentacaoOsLogController');
 const AdiantamentoOsController = require('./controllers/OrdemServico/AdiantamentoOsController');
 
 //Configurações
@@ -111,8 +112,18 @@ routes.get('/ordem-servico-ultimo', UltimoNumeroOs.getLastNumeroOs);
 routes.get('/movimentacaoCount', MovimentacaoOsController.getCount);
 routes.get('/movimentacao-os', MovimentacaoOsController.getAll);
 routes.get('/movimentacao-os/:id', MovimentacaoOsController.getById);
+routes.get('/movimentacao-os-osid/:ordemservicoId', MovimentacaoOsController.getByOsId);
+routes.get('/movimentacao-os-lista/', MovimentacaoOsController.getAllListaOS);
 routes.post('/movimentacao-os', MovimentacaoOsController.create);
 routes.put('/movimentacao-os/:id', MovimentacaoOsController.update);
+
+
+routes.get('/movimentacao-os-log', MovimentacaoOsLogController.getAll);
+routes.get('/movimentacao-os-log/:id', MovimentacaoOsLogController.getById);
+routes.get('/movimentacao-os-log-todos-por-os/:ordemservicoId', MovimentacaoOsLogController.getAllByOsId);
+routes.post('/movimentacao-os-log', MovimentacaoOsLogController.create);
+
+
 
 routes.get('/adiantamentoCount', AdiantamentoOsController.getCount);
 routes.get('/adiantamento-os', AdiantamentoOsController.getAll);
