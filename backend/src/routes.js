@@ -21,6 +21,7 @@ const AdiantamentoOsController = require('./controllers/OrdemServico/Adiantament
 const BancoController = require('./controllers/Configuracao/BancoController');
 const BandeiraController = require('./controllers/Configuracao/BandeiraController');
 const ClienteController = require('./controllers/Configuracao/ClienteController');
+const ClienteBandeiraController = require('./controllers/Configuracao/ClienteBandeiraController');
 const DadosBancariosController = require('./controllers/Configuracao/DadosBancariosController');
 const DisponibilidadeController = require('./controllers/Configuracao/DisponibilidadeController');
 const DisponTecnicoController = require('./controllers/Configuracao/DisponTecnicoController');
@@ -140,6 +141,8 @@ routes.get('/clientes', ClienteController.getAll);
 routes.get('/clientes/:id', ClienteController.getById);
 routes.post('/clientes', ClienteController.create);
 routes.put('/clientes/:id', ClienteController.update);
+
+routes.get('/cliente-bandeiras/:clienteId', ClienteBandeiraController.getByClientId);
 
 routes.get('/dadosbancariosCount', DadosBancariosController.getCount);
 routes.get('/dados-bancarios', DadosBancariosController.getAll);
