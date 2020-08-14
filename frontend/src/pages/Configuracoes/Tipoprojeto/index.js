@@ -79,9 +79,7 @@ export default function Tipoprojeto(props) {
     const handleToggle = (value) => () => {
         const currentIndex = checked.indexOf(value);
         const newChecked = [...checked];
-    
-        
-    
+                
         if (currentIndex === -1) {
           newChecked.push(value);
         } else {
@@ -185,11 +183,15 @@ export default function Tipoprojeto(props) {
             valorhoraextra,
             valorhoratecnico,
             horadecimal,
-            ativo
+            ativo,
+            right
         };
+
+        //const ferramentas = 
 
         if (action === 'edit') {
             try {
+
                 const response = await api.put(`/tipo-projeto/${tipoprojetoIdParam}`, data, {
                     headers: {
                         Authorization: 6,
@@ -296,7 +298,7 @@ export default function Tipoprojeto(props) {
                                     <Col md="3">
                                         <Label htmlFor="horadecimal">Hora Decimal</Label>
                                         <InputGroup>
-                                            <Input id="txtHoradecimal" required type="text" placeholder="R$00,00" required id="txtHoradecimal"
+                                            <Input id="txtHoradecimal" type="text" placeholder="R$00,00" id="txtHoradecimal"
                                                 value={horadecimal}
                                                 name="horadecimal"
                                                 onChange={e => setHoradecimal(reaisMask(e.target.value))} />

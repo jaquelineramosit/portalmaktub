@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, CardFooter, Form, } from 'reactstrap';
+import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, CardFooter, Form, ListGroup, ListGroupItem, } from 'reactstrap';
 import '../../../global.css';
 import { Redirect } from "react-router-dom";
 import api from '../../../../src/services/api';
@@ -11,7 +11,7 @@ export default function Movimentacaoos(props) {
     var search = props.location.search;
     var params = new URLSearchParams(search);
     var action = params.get('action');
-    var movimentacaoIdParam = props.match.params.id;
+    var ordemservicoIdParam = props.match.params.id;
     const usuarioId = localStorage.getItem('userId');
 
     const [ordemservicoid, setOrdemServicoid] = useState('');
@@ -23,6 +23,8 @@ export default function Movimentacaoos(props) {
     const [statusatendimentosid, setStatusAtendimentosid] = useState([]);
     const [statuspagamentosid, setStatusPagamentosid] = useState([]);
     const [statuscobrancasid, setStatusCobrancasid] = useState([]);
+    const [movimentacaoLogId, setMovimentacaoLogId] = useState([]);
+    
     const [ativo, setAtivo] = useState(1);
 
     useEffect(() => {
@@ -49,11 +51,15 @@ export default function Movimentacaoos(props) {
         })
     }, [usuarioId]);
 
-
+    useEffect(() => {
+        api.get(`movimentacao-os-log-todos-por-os/${ordemservicoIdParam}`).then(response => {
+            setMovimentacaoLogId(response.data);
+        })
+    }, [usuarioId]);
 
     useEffect(() => {
-        if (action === 'edit' && movimentacaoIdParam !== '') {
-            api.get(`movimentacao-os/${movimentacaoIdParam}`).then(response => {
+        if (action === 'edit' && ordemservicoIdParam !== '') {
+            api.get(`movimentacao-os-osid/${ordemservicoIdParam}`).then(response => {
                 setOrdemServicoid(response.data.ordemservicoid);
                 setStatusAtendimentoid(response.data.statusatendimentoid);
                 setStatusPagamentoid(response.data.statuspagamentoid);
@@ -64,7 +70,7 @@ export default function Movimentacaoos(props) {
         } else {
             return;
         }
-    }, [movimentacaoIdParam]);
+    }, [ordemservicoIdParam]);
 
     function handleInputChange(event) {
         var { name } = event.target;
@@ -96,7 +102,7 @@ export default function Movimentacaoos(props) {
 
         if (action === 'edit') {
             try {
-                const response = await api.put(`/movimentacao-os/${movimentacaoIdParam}`, data, {
+                const response = await api.put(`/movimentacao-os/${ordemservicoIdParam}`, data, {
                     headers: {
                         Authorization: 6,
                     }
@@ -215,14 +221,121 @@ export default function Movimentacaoos(props) {
                     </Col>
                     <Col md="3">
                         <Card>
-                            <CardHeader>
+                            <CardHeader>                            
+                                <i className="fa fa-history"></i>
                                 <strong>Timeline</strong>                                
                             </CardHeader>
-                            <CardBody>
-                                <FormGroup row>
+                            <CardBody className="p-0"> 
+                                <ListGroup className="list-group-accent" tag={'div'}>
 
-                                </FormGroup>
+                                    {/* <ListGroupItem className="list-group-item-accent-secondary bg-light text-center font-weight-bold text-muted text-uppercase small">Today</ListGroupItem> */}
+                                    <ListGroupItem className="list-group-item-accent-warning list-group-item-divider text-grey p-2">
+                                        <div className="avatar float-right">
+                                            <img className="img-avatar" src="assets/img/avatars/7.jpg" alt="Usuário"></img>
+                                        </div>
+                                        <div>
+                                            <small className="text-muted mr-2">
+                                                <i className="icon-layers"></i>
+                                            </small>
+                                            <strong>Título do Status</strong> 
+                                        </div>
+                                        <div>
+                                            <small className="text-muted mr-2">
+                                                <i className="icon-user"></i>
+                                                
+                                            </small>
+                                            <small className="text-muted">
+                                                Nome de Usuário
+                                            </small>                                        
+                                        </div>
+                                        <small className="text-muted mr-3">
+                                            <i className="icon-calendar"></i>&nbsp; Em: 01/08/2020 às 12:23h
+                                        </small>                                        
+                                    </ListGroupItem>
+                                    <ListGroupItem className="list-group-item-accent-info list-group-item-divider text-grey p-2">
+                                        <div className="avatar float-right">
+                                            <img className="img-avatar" src="assets/img/avatars/4.jpg" alt="Usuário"></img>
+                                        </div>
+                                        <div>
+                                            <small className="text-muted mr-2">
+                                                <i className="icon-layers"></i>
+                                            </small>
+                                            <strong>Título do Status</strong> 
+                                        </div>
+                                        <div>
+                                            <small className="text-muted mr-2">
+                                                <i className="icon-user"></i>
+                                                
+                                            </small>
+                                            <small className="text-muted">
+                                                Nome de Usuário
+                                            </small>                                        
+                                        </div>
+                                        <small className="text-muted mr-3">
+                                            <i className="icon-calendar"></i>&nbsp; Em: 01/08/2020 às 12:23h
+                                        </small> 
+                                    </ListGroupItem>
+                                    {/* <ListGroupItem className="list-group-item-accent-secondary bg-light text-center font-weight-bold text-muted text-uppercase small">Yesterday</ListGroupItem>
+                                    <ListGroupItem action tag="a" href="#" className="list-group-item-accent-danger list-group-item-divider">
+                                        <div>New UI Project - <strong>deadline</strong></div>
+                                        <small className="text-muted mr-3"><i className="icon-calendar"></i>&nbsp; 10 - 11pm</small>
+                                        <small className="text-muted"><i className="icon-home"></i>&nbsp; creativeLabs HQ</small>
+                                        <div className="avatars-stack mt-2">
+                                        <div className="avatar avatar-xs">
+                                            <img src={'assets/img/avatars/2.jpg'} className="img-avatar" alt="admin@bootstrapmaster.com" />
+                                        </div>
+                                        <div className="avatar avatar-xs">
+                                            <img src={'assets/img/avatars/3.jpg'} className="img-avatar" alt="admin@bootstrapmaster.com" />
+                                        </div>
+                                        <div className="avatar avatar-xs">
+                                            <img src={'assets/img/avatars/4.jpg'} className="img-avatar" alt="admin@bootstrapmaster.com" />
+                                        </div>
+                                        <div className="avatar avatar-xs">
+                                            <img src={'assets/img/avatars/5.jpg'} className="img-avatar" alt="admin@bootstrapmaster.com" />
+                                        </div>
+                                        <div className="avatar avatar-xs">
+                                            <img src={'assets/img/avatars/6.jpg'} className="img-avatar" alt="admin@bootstrapmaster.com" />
+                                        </div>
+                                        </div>
+                                    </ListGroupItem>
+                                    <ListGroupItem action tag="a" href="#" className="list-group-item-accent-success list-group-item-divider">
+                                        <div><strong>#10 Startups.Garden</strong> Meetup</div>
+                                        <small className="text-muted mr-3"><i className="icon-calendar"></i>&nbsp; 1 - 3pm</small>
+                                        <small className="text-muted"><i className="icon-location-pin"></i>&nbsp; Palo Alto, CA</small>
+                                    </ListGroupItem>
+                                    <ListGroupItem action tag="a" href="#" className="list-group-item-accent-primary list-group-item-divider">
+                                        <div><strong>Team meeting</strong></div>
+                                        <small className="text-muted mr-3"><i className="icon-calendar"></i>&nbsp; 4 - 6pm</small>
+                                        <small className="text-muted"><i className="icon-home"></i>&nbsp; creativeLabs HQ</small>
+                                        <div className="avatars-stack mt-2">
+                                        <div className="avatar avatar-xs">
+                                            <img src={'assets/img/avatars/2.jpg'} className="img-avatar" alt="admin@bootstrapmaster.com" />
+                                        </div>
+                                        <div className="avatar avatar-xs">
+                                            <img src={'assets/img/avatars/3.jpg'} className="img-avatar" alt="admin@bootstrapmaster.com" />
+                                        </div>
+                                        <div className="avatar avatar-xs">
+                                            <img src={'assets/img/avatars/4.jpg'} className="img-avatar" alt="admin@bootstrapmaster.com" />
+                                        </div>
+                                        <div className="avatar avatar-xs">
+                                            <img src={'assets/img/avatars/5.jpg'} className="img-avatar" alt="admin@bootstrapmaster.com" />
+                                        </div>
+                                        <div className="avatar avatar-xs">
+                                            <img src={'assets/img/avatars/6.jpg'} className="img-avatar" alt="admin@bootstrapmaster.com" />
+                                        </div>
+                                        <div className="avatar avatar-xs">
+                                            <img src={'assets/img/avatars/7.jpg'} className="img-avatar" alt="admin@bootstrapmaster.com" />
+                                        </div>
+                                        <div className="avatar avatar-xs">
+                                            <img src={'assets/img/avatars/8.jpg'} className="img-avatar" alt="admin@bootstrapmaster.com" />
+                                        </div>
+                                        </div>
+                                    </ListGroupItem> */}
+                                </ListGroup>                                
                             </CardBody>
+                            <CardFooter>
+                                <div className="small text-muted"><strong>Atualizado em:</strong> 13/08/2020 às 13:12</div>                                
+                            </CardFooter>
                         </Card>
                     </Col>
                 </Row>

@@ -20,7 +20,7 @@ export default function ListaMovimentacaoOS() {
     }, [1]);
 
     useEffect(() => {
-        api.get('movimentacao-os', {
+        api.get('movimentacao-os-lista', {
             headers: {
                 Authorization: 1,
             }
@@ -29,7 +29,7 @@ export default function ListaMovimentacaoOS() {
         })
     }, [usuarioId]);
     const data = movimentacaoos;
-
+    console.log(data);
     const columns = [
         {
             name: 'Ordem de Serviço',
@@ -39,20 +39,20 @@ export default function ListaMovimentacaoOS() {
         },
         {
             name: 'Status de Atendimento',
-            selector: 'status',
+            selector: 'statusAtendimento',
             sortable: true,
             center: true,
 
         },
         {
             name: 'Status de Pagamento',
-            selector: 'status',
+            selector: 'statusPagamento',
             sortable: true,
             center: true,
         },
         {
             name: 'Status de Cobrança',
-            selector: 'status',
+            selector: 'statusCobranca',
             sortable: true,
             center: true,
 
@@ -83,7 +83,6 @@ export default function ListaMovimentacaoOS() {
                 <Col xs="12" lg="12">
                     <Card>
                         <CardHeader className="links">
-
                             <i className="fa fa-align-justify"></i>Movimentação de OS
                         </CardHeader>
                         <CardBody>

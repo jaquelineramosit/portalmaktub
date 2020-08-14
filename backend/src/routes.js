@@ -15,12 +15,14 @@ const RegisterController = require('./controllers/Acessos/RegisterController');
 const OrdemServicoController = require('./controllers/OrdemServico/OrdemServicoController');
 const ListaOrdemServicoController = require('./controllers/OrdemServico/ListaOrdemServicoController');
 const MovimentacaoOsController = require('./controllers/OrdemServico/MovimentacaoOsController');
+const MovimentacaoOsLogController = require('./controllers/OrdemServico/MovimentacaoOsLogController');
 const AdiantamentoOsController = require('./controllers/OrdemServico/AdiantamentoOsController');
 
 //Configurações
 const BancoController = require('./controllers/Configuracao/BancoController');
 const BandeiraController = require('./controllers/Configuracao/BandeiraController');
 const ClienteController = require('./controllers/Configuracao/ClienteController');
+const ClienteBandeiraController = require('./controllers/Configuracao/ClienteBandeiraController');
 const DadosBancariosController = require('./controllers/Configuracao/DadosBancariosController');
 const DisponibilidadeController = require('./controllers/Configuracao/DisponibilidadeController');
 const DisponTecnicoController = require('./controllers/Configuracao/DisponTecnicoController');
@@ -111,8 +113,18 @@ routes.get('/ordem-servico-ultimo', UltimoNumeroOs.getLastNumeroOs);
 routes.get('/movimentacaoCount', MovimentacaoOsController.getCount);
 routes.get('/movimentacao-os', MovimentacaoOsController.getAll);
 routes.get('/movimentacao-os/:id', MovimentacaoOsController.getById);
+routes.get('/movimentacao-os-osid/:ordemservicoId', MovimentacaoOsController.getByOsId);
+routes.get('/movimentacao-os-lista/', MovimentacaoOsController.getAllListaOS);
 routes.post('/movimentacao-os', MovimentacaoOsController.create);
 routes.put('/movimentacao-os/:id', MovimentacaoOsController.update);
+
+
+routes.get('/movimentacao-os-log', MovimentacaoOsLogController.getAll);
+routes.get('/movimentacao-os-log/:id', MovimentacaoOsLogController.getById);
+routes.get('/movimentacao-os-log-todos-por-os/:ordemservicoId', MovimentacaoOsLogController.getAllByOsId);
+routes.post('/movimentacao-os-log', MovimentacaoOsLogController.create);
+
+
 
 routes.get('/adiantamentoCount', AdiantamentoOsController.getCount);
 routes.get('/adiantamento-os', AdiantamentoOsController.getAll);
@@ -147,6 +159,7 @@ routes.get('/cliente-bandeira-id/:clienteId', ClientebandeiraController.getByCli
 routes.get('/cliente-bandeira-disponiveis/:clienteId', ClientebandeiraController.getBybandeirasDisponiveis);
 routes.post('/cliente-bandeira', ClientebandeiraController.create);
 routes.put('/cliente-bandeira/:id', ClientebandeiraController.update);
+routes.get('/cliente-bandeiras/:clienteId', ClienteBandeiraController.getByClientId);
 
 routes.get('/dadosbancariosCount', DadosBancariosController.getCount);
 routes.get('/dados-bancarios', DadosBancariosController.getAll);

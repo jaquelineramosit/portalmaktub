@@ -32,4 +32,11 @@ margin-left: 900px;
   background: black;
 }
 
+.text-grey {
+  color: #5c6873;
+}
 
+.list-item li:hover {
+  background-color: #63c2de;
+  cursor: pointer;
+}

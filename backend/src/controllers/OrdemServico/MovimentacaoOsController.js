@@ -43,6 +43,77 @@ module.exports = {
         return response.json(movimentacaoos);
     },
 
+    async getByOrdemServicoId (request, response) {
+        const  { ordemservicoId }  = request.params;
+
+        const movimentacaoos = await connection('movimentacaoos')
+            .where('movimentacaoos.ordemservico', ordemservicoId)
+            .join('ordemservico', 'ordemservico.id', '=', 'movimentacaoos.ordemservicoid')
+            .join('statusatendimento', 'statusatendimento.id', '=', 'movimentacaoos.statusatendimentoid')
+            .join('statuspagamento', 'statuspagamento.id', '=', 'movimentacaoos.statuspagamentoid')
+            .join('statuscobranca', 'statuscobranca.id', '=', 'movimentacaoos.statuscobrancaid')
+            .join('usuario', 'usuario.id', '=', 'movimentacaoos.usuarioid')
+            .select([
+                'movimentacaoos.*',
+                'ordemservico.numeroos',
+                'statusatendimento.status',
+                'statuspagamento.status',
+                'statuscobranca.status',
+                'usuario.nome'
+            ])            
+            .first();
+    
+        return response.json(movimentacaoos);
+    },
+
+    async getAllListaOS (request, response) {
+        const  { ordemservicoId }  = request.params;
+
+        const movimentacaoos = await connection('movimentacaoos')
+        .whereRaw(
+            `movimentacaoos.id = (SELECT MAX(id) FROM movimentacaoos AS mos WHERE mos.ordemservicoid = movimentacaoos.ordemservicoid)`
+        )
+        .join('ordemservico', 'ordemservico.id', '=', 'movimentacaoos.ordemservicoid')
+        .join('statusatendimento', 'statusatendimento.id', '=', 'movimentacaoos.statusatendimentoid')
+        .join('statuspagamento', 'statuspagamento.id', '=', 'movimentacaoos.statuspagamentoid')
+        .join('statuscobranca', 'statuscobranca.id', '=', 'movimentacaoos.statuscobrancaid')
+        .join('usuario', 'usuario.id', '=', 'movimentacaoos.usuarioid')
+        .select([
+            'ordemservico.*',            
+            'statusatendimento.status as statusAtendimento',
+            'statuspagamento.status as statusPagamento',
+            'statuscobranca.status as statusCobranca',
+            'usuario.nome'
+        ])
+        .orderBy('ordemservico.numeroos')
+                
+        return response.json(movimentacaoos);
+    },
+
+    async getByOsId (request, response) {
+        const  { ordemservicoId }  = request.params;
+
+        const movimentacaoos = await connection('movimentacaoos')
+        .where('movimentacaoos.ordemservicoid', ordemservicoId)
+        .join('ordemservico', 'ordemservico.id', '=', 'movimentacaoos.ordemservicoid')
+        .join('statusatendimento', 'statusatendimento.id', '=', 'movimentacaoos.statusatendimentoid')
+        .join('statuspagamento', 'statuspagamento.id', '=', 'movimentacaoos.statuspagamentoid')
+        .join('statuscobranca', 'statuscobranca.id', '=', 'movimentacaoos.statuscobrancaid')
+        .join('usuario', 'usuario.id', '=', 'movimentacaoos.usuarioid')
+        .select([
+            'movimentacaoos.*',
+            'ordemservico.numeroos',
+            'statusatendimento.status',
+            'statuspagamento.status ',
+            'statuscobranca.status',
+            'usuario.nome'
+        ]).orderBy('movimentacaoos.id', 'desc')
+        .first();
+    
+        return response.json(movimentacaoos);
+    },
+
+
     async create(request, response) {
         const  usuarioid  = request.headers.authorization;
         const  dataultmodif = getDate();
