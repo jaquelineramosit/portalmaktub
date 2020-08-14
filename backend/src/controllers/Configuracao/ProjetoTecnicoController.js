@@ -3,16 +3,7 @@ const getDate = require('../../utils/getDate');
 module.exports = {
     async getAll (request, response) {
         const tipoprojetotecnico = await connection('tipoprojetotecnico')
-        .join('tecnico', 'tecnico.id', '=', 'tipoprojetotecnico.tecnicoid') 
-        .join('tipoprojeto', 'tipoprojeto.id', '=', 'tipoprojetotecnico.tipoprojetoid') 
-        .join('usuario', 'usuario.id', '=', 'tipoprojetotecnico.usuarioid')   
-        .select([
-            'tipoprojetotecnico.*',
-            'tipoprojeto.nometipoprojeto',
-            'tecnico.nometecnico',
-            'usuario.nome'
-        ]);
-    
+        .select('*')   
         return response.json(tipoprojetotecnico);
     },
 
@@ -20,34 +11,49 @@ module.exports = {
         const  { id }  = request.params;
 
         const tipoprojetotecnico = await connection('tipoprojetotecnico')
-            .where('tipoprojetotecnico.id', id)
-            .join('tecnico', 'tecnico.id', '=', 'tipoprojetotecnico.tecnicoid') 
-            .join('tipoprojeto', 'tipoprojeto.id', '=', 'tipoprojetotecnico.tipoprojetoid') 
-            .join('usuario', 'usuario.id', '=', 'tipoprojetotecnico.usuarioid')   
-            .select([
-                'tipoprojetotecnico.*',
-                'tipoprojeto.nometipoprojeto',
-                'tecnico.nometecnico',
-                'usuario.nome'
-            ])
+            .where('id', id)
+            .select()
             .first();
-    
         return response.json(tipoprojetotecnico);
+    },
+
+    async getByTecnicoId (request, response) {
+        const  {tecnicoId}  = request.params;
+        const tipoprojeto = await connection('tipoprojeto')
+        .whereRaw(
+            `tipoprojeto.id IN (SELECT tipoprojetoid FROM tipoprojetotecnico WHERE tecnicoId = ${tecnicoId})`
+        ) 
+            .select([
+                'tipoprojeto.*'                
+            ]);
+        return response.json(tipoprojeto);      
+    },
+   
+    async getBytipoprojetosDisponiveis (request, response) {
+        const  { tecnicoId }  = request.params;
+        const tipoprojeto = await connection('tipoprojeto')
+            .whereRaw(
+                `tipoprojeto.id NOT IN (SELECT tipoprojetoid FROM tipoprojetotecnico WHERE tecnicoId = ${tecnicoId})`
+            )
+            .select([
+                'tipoprojeto.*'
+            ]);
+    
+        return response.json(tipoprojeto);
     },
 
     async create(request, response) {
         const  usuarioid  = request.headers.authorization;
         const  dataultmodif = getDate();
 
-        const { tecnicoid, tipoprojetoid,descricao,ativo } = request.body;
+        const { tipoprojetoid, tecnicoid } = request.body;
         
-        const [id] = await connection('tipoprojetotecnico').insert({
+        const [id] = await connection('tipoprojetotecnico').insert({            
+            tipoprojetoid,
             tecnicoid,
-            tipoprojetoid, 
-            descricao,
             ativo,
-            dataultmodif,
-            usuarioid
+            usuarioid,
+            dataultmodif
         })
 
         return response.json({ id });
@@ -58,15 +64,14 @@ module.exports = {
         const  usuarioid  = request.headers.authorization;
         const  dataultmodif = getDate();
         
-        const { tecnicoid, tipoprojetoid, descricao,ativo } = request.body;
+        const { tipoprojetoid, tecnicoid } = request.body;
 
-        await connection('tipoprojetotecnico').where('id', id).update({
+        await connection('tipoprojetotecnico').where('id', id).update({            
+            tipoprojetoid,
             tecnicoid,
-            tipoprojetoid, 
-            descricao,
             ativo,
-            dataultmodif,
-            usuarioid
+            usuarioid,
+            dataultmodif
         });           
 
         return response.status(204).send();

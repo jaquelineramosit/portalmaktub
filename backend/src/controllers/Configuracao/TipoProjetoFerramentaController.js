@@ -3,6 +3,7 @@ const getDate = require('../../utils/getDate');
 module.exports = {
     async getAll (request, response) {
         const tipoprojetoferramenta = await connection('tipoprojetoferramenta')
+        console.log(tipoprojetoferramenta)
         .select('*')   
         return response.json(tipoprojetoferramenta);
     },
@@ -20,7 +21,6 @@ module.exports = {
 
     async getByTipoProjetoId (request, response) {
         const  { tipoProjetoId }  = request.params;
-
         const ferramenta = await connection('ferramenta')
         .whereRaw(
             `ferramenta.id IN (SELECT ferramentaid FROM tipoprojetoferramenta WHERE tipoprojetoid = ${tipoProjetoId})`
