@@ -1,11 +1,30 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, InputGroup, InputGroupAddon, CardFooter, Form } from 'reactstrap';
 import '../../../global.css';
+import './styles.css';
 import { Redirect } from "react-router-dom";
 import { telMask, cepMask, numMask, cnpjMask, celMask, cpfMask } from '../../../mask'
-import api from '../../../../src/services/api';
 import axios from 'axios';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import Checkbox from '@material-ui/core/Checkbox';
+import { makeStyles } from '@material-ui/core/styles';
+import api from '../../../../src/services/api';
 
+const useStyles = makeStyles((theme) => ({
+
+}));
+
+
+function not(a, b) {
+  return a.filter((value) => b.indexOf(value) === -1);
+}
+
+function intersection(a, b) {
+  return a.filter((value) => b.indexOf(value) !== -1);
+}
 
 export default function Cliente(props) {
 
@@ -17,6 +36,14 @@ export default function Cliente(props) {
     var action = params.get('action');
     var clienteIdParam = props.match.params.id;
     const usuarioId = localStorage.getItem('userId');
+
+    const [checked, setChecked] = React.useState([]);
+    const [left, setLeft] = React.useState([]);
+    const [right, setRight] = React.useState([]);
+
+    const leftChecked = intersection(checked, left);
+    const rightChecked = intersection(checked, right);
+
 
     const [nomecliente, setNomecliente] = useState('');
     const [razaosocial, setRazaosocial] = useState('');
@@ -37,6 +64,23 @@ export default function Cliente(props) {
     const [parceirosid, setParceirosid] = useState([]);
     const [cities, setCities] = useState([]);
     const [ativo, setAtivo] = useState(1);
+
+    useEffect(() => {
+        if (action === 'edit' && clienteIdParam !== '') {
+            api.get(`cliente-bandeira-id/${clienteIdParam}`).then(response => {
+                setRight(response.data)                              
+            });
+
+            api.get(`cliente-bandeira-disponiveis/${clienteIdParam}`).then(response => {
+                setLeft(response.data)                
+            });
+
+        } else {
+            api.get(`bandeira`).then(response => {
+                setLeft(response.data)                               
+            });
+        }
+    }, [clienteIdParam]);
 
     useEffect(() => {
         api.get('parceiro').then(response => {
@@ -87,6 +131,72 @@ export default function Cliente(props) {
             return;
         }
     }, [clienteIdParam]);
+
+    const handleToggle = (value) => () => {
+        const currentIndex = checked.indexOf(value);
+        const newChecked = [...checked];
+    
+        
+    
+        if (currentIndex === -1) {
+          newChecked.push(value);
+        } else {
+          newChecked.splice(currentIndex, 1);
+        }
+        setChecked(newChecked);
+        console.log(newChecked);
+      };
+    
+      const handleAllRight = () => {
+        console.log("Right")
+        console.log(right)
+        setRight(right.concat(left));
+        setLeft([]);
+      };
+    
+      const handleCheckedRight = () => {
+        setRight(right.concat(leftChecked));
+        setLeft(not(left, leftChecked));
+        setChecked(not(checked, leftChecked));
+      };
+    
+      const handleCheckedLeft = () => {
+        setLeft(left.concat(rightChecked));
+        setRight(not(right, rightChecked));
+        setChecked(not(checked, rightChecked));
+      };
+    
+      const handleAllLeft = () => {
+        console.log("left")
+        console.log(left)
+        setLeft(left.concat(right));
+        setRight([]);
+      };
+    const customList = (items, index) => (
+        <div className="paper" key={`div-${index}`}>
+          <List dense component="div" role="list" key={`list-${index}`} className="list-border">
+            {items.map((value) => {
+              const labelId = `transfer-list-item-${value['id']}-label`;
+              console.log(labelId)
+              return (
+                <ListItem key={value['id']} role="listitem" button onClick={handleToggle(value)}>
+                  <ListItemIcon>
+                    <Checkbox
+                      checked={checked.indexOf(value) !== -1}
+                      tabIndex={-1}
+                      disableRipple
+                      inputProps={{ 'aria-labelledby': labelId }}
+                    />
+                  </ListItemIcon>
+                  <ListItemText id={labelId} primary={`${value['nomebandeira']}`} />
+                </ListItem>
+              );
+            })}
+            <ListItem />
+          </List>
+        </div>
+    );
+
 
     function handleSelectUf(event) {
         const uf = event.target.value;
@@ -348,7 +458,63 @@ export default function Cliente(props) {
 
                                 </FormGroup>*/}
                             </CardBody>
-
+                            <CardHeader>
+                                <strong>Bandeiras</strong>                                
+                            </CardHeader>
+                            <CardBody className="">
+                                <Row className="classeDiv">
+                                    <Col md="4">
+                                        <strong>Bandeiras</strong>
+                                        {customList(left)}                                       
+                                    </Col>
+                                    <Col md="2" className="classeButton">
+                                        <Button
+                                            variant="outlined"
+                                            size="small"
+                                            className="button"
+                                            onClick={handleAllRight}
+                                            disabled={left.length === 0}
+                                            aria-label="move all right"
+                                        >
+                                            ≫
+                                        </Button>
+                                        <Button
+                                            variant="outlined"
+                                            size="small"
+                                            className="button"
+                                            onClick={handleCheckedRight}
+                                            disabled={leftChecked.length === 0}
+                                            aria-label="move selected right"
+                                        >
+                                            &gt;
+                                        </Button>
+                                        <Button
+                                            variant="outlined"
+                                            size="small"
+                                            className="button"
+                                            onClick={handleCheckedLeft}
+                                            disabled={rightChecked.length === 0}
+                                            aria-label="move selected left"
+                                        >
+                                            &lt;
+                                        </Button>
+                                        <Button
+                                            variant="outlined"
+                                            size="small"
+                                            className="button"
+                                            onClick={handleAllLeft}
+                                            disabled={right.length === 0}
+                                            aria-label="move all left"
+                                        >
+                                            ≪
+                                        </Button>
+                                    </Col>
+                                    <Col md="4">
+                                    <strong>Bandeiras Selecionados</strong>                                       
+                                        {customList(right)}
+                                    </Col>
+                                </Row>                            
+                            </CardBody>
                             <CardFooter className="text-center">
                                 <Button type="submit" size="sm" color="success" className=" mr-3"><i className="fa fa-check"></i> Salvar</Button>
                                 <Button type="reset" size="sm" color="danger" className="ml-3"><i className="fa fa-ban "></i> Cancelar</Button>

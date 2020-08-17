@@ -37,7 +37,6 @@ module.exports = {
 
     async getByTipoProjetoId (request, response) {
         const  { tipoProjetoId }  = request.params;
-
         const ferramenta = await connection('ferramenta')
         .whereRaw(
             `ferramenta.id IN (SELECT ferramentaid FROM tipoprojetoferramenta WHERE tipoprojetoid = ${tipoProjetoId})`

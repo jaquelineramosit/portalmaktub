@@ -87,11 +87,6 @@ export default {
           url: '/lista-disponibilidade',
           icon: 'icon-support',
         },
-        {
-          name: 'Dispon. Técnicos',
-          url: '/lista-disponibilidade-tecnico',
-          icon: 'icon-support',
-        },
       ],
     },
     {
@@ -101,11 +96,6 @@ export default {
         {
           name: 'Tipo de Projeto',
           url: '/lista-tipo-projeto',
-          icon: 'icon-note',
-        },
-        {
-          name: 'Projeto x Técnico',
-          url: '/lista-projeto-tecnico',
           icon: 'icon-note',
         },
         {

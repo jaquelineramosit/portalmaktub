@@ -40,7 +40,7 @@ const TipoContaController = require('./controllers/Configuracao/TipoContaControl
 const TipoProjetoController = require('./controllers/Configuracao/TipoProjetoController');
 const TipoProjetoFerramentaController = require('./controllers/Configuracao/TipoProjetoFerramentaController');
 const TipoTecnicoController = require('./controllers/Configuracao/TipoTecnicoController');
-
+const ClientebandeiraController = require('./controllers/Configuracao/Clientebandeira');
 //Dashboards
 const DashboardController = require('./controllers/Dashboard/DashboardController');
 const UltimoNumeroOs = require('./controllers/OrdemServico/UltimoNumeroOs');
@@ -153,6 +153,12 @@ routes.get('/clientes/:id', ClienteController.getById);
 routes.post('/clientes', ClienteController.create);
 routes.put('/clientes/:id', ClienteController.update);
 
+routes.get('/cliente-bandeira', ClientebandeiraController.getAll);
+routes.get('/cliente-bandeira/:id', ClientebandeiraController.getById);
+routes.get('/cliente-bandeira-id/:clienteId', ClientebandeiraController.getByClienteId);
+routes.get('/cliente-bandeira-disponiveis/:clienteId', ClientebandeiraController.getBybandeirasDisponiveis);
+routes.post('/cliente-bandeira', ClientebandeiraController.create);
+routes.put('/cliente-bandeira/:id', ClientebandeiraController.update);
 routes.get('/cliente-bandeiras/:clienteId', ClienteBandeiraController.getByClientId);
 
 routes.get('/dadosbancariosCount', DadosBancariosController.getCount);
@@ -167,9 +173,10 @@ routes.get('/disponibilidade/:id', DisponibilidadeController.getById);
 routes.post('/disponibilidade', DisponibilidadeController.create);
 routes.put('/disponibilidade/:id', DisponibilidadeController.update);
 
-routes.get('/disponibilidadetecnicoCount', DisponTecnicoController.getCount);
 routes.get('/disponibilidade-tecnico', DisponTecnicoController.getAll);
 routes.get('/disponibilidade-tecnico/:id', DisponTecnicoController.getById);
+routes.get('/disponibilidade-tecnico-id/:tecnicoId', DisponTecnicoController.getByTecnicosId);
+routes.get('/disponibilidade-tecnico-disponiveis/:tecnicoId', DisponTecnicoController.getBydisponibilidadesDisponiveis);
 routes.post('/disponibilidade-tecnico', DisponTecnicoController.create);
 routes.put('/disponibilidade-tecnico/:id', DisponTecnicoController.update);
 
@@ -198,11 +205,14 @@ routes.get('/parceiro/:id', ParceiroController.getById);
 routes.post('/parceiro', ParceiroController.create);
 routes.put('/parceiro/:id', ParceiroController.update);
 
-routes.get('/projetotecnicoCount', ProjetoTecnicoController.getCount);
 routes.get('/projeto-tecnico', ProjetoTecnicoController.getAll);
 routes.get('/projeto-tecnico/:id', ProjetoTecnicoController.getById);
+routes.get('/projeto-tecnico-id/:tecnicoId', ProjetoTecnicoController.getByTecnicoId);
+routes.get('/projeto-tecnico-disponiveis/:tecnicoId', ProjetoTecnicoController.getBytipoprojetosDisponiveis);
 routes.post('/projeto-tecnico', ProjetoTecnicoController.create);
 routes.put('/projeto-tecnico/:id', ProjetoTecnicoController.update);
+
+
 
 routes.get('/statusadiantamentoAtivo', StatusAdiantamentoController.getAtivo);
 routes.get('/statusadiantamentoCount', StatusAdiantamentoController.getCount);

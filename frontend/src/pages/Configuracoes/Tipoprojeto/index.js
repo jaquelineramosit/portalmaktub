@@ -8,14 +8,12 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Checkbox from '@material-ui/core/Checkbox';
 import Paper from '@material-ui/core/Paper';
-
 import { reaisMask } from '../../../mask';
 import { Redirect } from "react-router-dom";
 import '../../../global.css';
 import './styles.css';
 import api from '../../../services/api';
 import { NativeSelect } from '@material-ui/core';
-
 const useStyles = makeStyles((theme) => ({
 
   }));
@@ -136,7 +134,7 @@ export default function Tipoprojeto(props) {
                 </ListItem>
               );
             })}
-            <ListItem />
+            <ListItem/>
           </List>
         </div>
     );
@@ -262,7 +260,7 @@ export default function Tipoprojeto(props) {
                                     <Col md="3">
                                         <Label htmlFor="horas">Carga Horária do Projeto</Label>
                                         <InputGroup>
-                                            <Input type="time" required id="txtHoras" required id="txtHorastotal"
+                                            <Input type="text" required id="txtHoras" required id="txtHorastotal"
                                                 name="horas"
                                                 value={horas}
                                                 onChange={e => setHoras((e.target.value))} />
@@ -303,7 +301,7 @@ export default function Tipoprojeto(props) {
                                             <Input id="txtHoradecimal" type="text" placeholder="R$00,00" id="txtHoradecimal"
                                                 value={horadecimal}
                                                 name="horadecimal"
-                                                onChange={e => setValorhoratecnico(reaisMask(e.target.value))} />
+                                                onChange={e => setHoradecimal(reaisMask(e.target.value))} />
                                             <InputGroupAddon addonType="append">
                                                 <span className="btn btn-secondary disabled fa fa-money"></span>
                                             </InputGroupAddon>
