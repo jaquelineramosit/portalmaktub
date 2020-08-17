@@ -322,6 +322,8 @@ export default function Tecnico(props) {
             telefonecelular,
             nomecontatoemergencial,
             telefonecttoemergencial,
+            right,
+            rights,
             ativo
         };
 

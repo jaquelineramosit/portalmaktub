@@ -22,7 +22,7 @@ module.exports = {
         const  usuarioid  = request.headers.authorization;
         const  dataultmodif = getDate();
 
-        const { nometipoprojeto, receita, despesa, horas, valorhoraextra, valorhoratecnico, horadecimal, ativo, right } = request.body;
+        const { nometipoprojeto, receita, despesa, horas, valorhoraextra, valorhoratecnico, horadecimal, ativo, right} = request.body;
         
         const trx = await connection.transaction();
         try {
@@ -40,6 +40,7 @@ module.exports = {
             })
             
             const tipoProjetoFerramenta = right.map((ferramentaItem) => {
+                console.log(right)
                 return {
                     ferramentaid: ferramentaItem.id,
                     tipoprojetoid: tipoprojetoid,
@@ -50,14 +51,15 @@ module.exports = {
                 }                
             })
     
-            console.log(tipoProjetoFerramenta)
+        
 
             await trx('tipoprojetoferramenta').insert(tipoProjetoFerramenta)
             trx.commit()
             return response.json({ tipoProjetoFerramenta });
         } catch (err) {
             trx.rollback()
-            return response.send('ocorreu um erro ao salvar')
+            console.log(err)
+            return response.send(err)
         }        
     },
     
