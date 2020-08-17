@@ -35,45 +35,49 @@ export default function ListaMovimentacaoOS() {
             name: 'Ordem de Serviço',
             selector: 'numeroos',
             sortable: true,
-
+            width: '15%'
         },
         {
             name: 'Status de Atendimento',
             selector: 'statusAtendimento',
             sortable: true,
             center: true,
-
+            width: '19%'
         },
         {
             name: 'Status de Pagamento',
             selector: 'statusPagamento',
             sortable: true,
             center: true,
+            width: '19%'
         },
         {
             name: 'Status de Cobrança',
             selector: 'statusCobranca',
             sortable: true,
             center: true,
-
+            width: '19%'
         },
         {
             name: 'Observação',
             selector: 'observacao',
             sortable: true,
             center: true,
+            width: '10%'
         },
         {
             name: 'Status',
             sortable: true,
             center: true,
+            width: '9%',
             cell: row => <Badge color="success">Ativo</Badge>,
         },
         {
             name: 'Ações',
             sortable: true,
             right: true,
-            cell: row => <Link to={`movimentacao-os/${row.id}?action=edit`} className="btn-sm btn-primary"><i className="fa fa-pencil fa-lg mr-1"></i></Link>
+            width: '9%',
+            cell: row => <Link to={`movimentacao-os/${row.id}?action=edit`} className="btn-sm btn-primary"><i className="fa fa-pencil fa-lg"></i></Link>
         },
     ];
 

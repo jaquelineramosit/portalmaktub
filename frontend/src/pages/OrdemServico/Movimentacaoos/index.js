@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, CardFooter, Form, ListGroup, ListGroupItem, } from 'reactstrap';
 import '../../../global.css';
 import { Redirect } from "react-router-dom";
@@ -227,54 +227,61 @@ export default function Movimentacaoos(props) {
                             </CardHeader>
                             <CardBody className="p-0"> 
                                 <ListGroup className="list-group-accent" tag={'div'}>
-
+                                    {/* // {items.map((value) => { */}
                                     {/* <ListGroupItem className="list-group-item-accent-secondary bg-light text-center font-weight-bold text-muted text-uppercase small">Today</ListGroupItem> */}
-                                    <ListGroupItem className="list-group-item-accent-warning list-group-item-divider text-grey p-2">
-                                        <div className="avatar float-right">
-                                            <img className="img-avatar" src="assets/img/avatars/7.jpg" alt="Usuário"></img>
-                                        </div>
-                                        <div>
-                                            <small className="text-muted mr-2">
-                                                <i className="icon-layers"></i>
-                                            </small>
-                                            <strong>Título do Status</strong> 
-                                        </div>
-                                        <div>
-                                            <small className="text-muted mr-2">
-                                                <i className="icon-user"></i>
-                                                
-                                            </small>
-                                            <small className="text-muted">
-                                                Nome de Usuário
-                                            </small>                                        
-                                        </div>
-                                        <small className="text-muted mr-3">
-                                            <i className="icon-calendar"></i>&nbsp; Em: 01/08/2020 às 12:23h
-                                        </small>                                        
-                                    </ListGroupItem>
-                                    <ListGroupItem className="list-group-item-accent-info list-group-item-divider text-grey p-2">
-                                        <div className="avatar float-right">
-                                            <img className="img-avatar" src="assets/img/avatars/4.jpg" alt="Usuário"></img>
-                                        </div>
-                                        <div>
-                                            <small className="text-muted mr-2">
-                                                <i className="icon-layers"></i>
-                                            </small>
-                                            <strong>Título do Status</strong> 
-                                        </div>
-                                        <div>
-                                            <small className="text-muted mr-2">
-                                                <i className="icon-user"></i>
-                                                
-                                            </small>
-                                            <small className="text-muted">
-                                                Nome de Usuário
-                                            </small>                                        
-                                        </div>
-                                        <small className="text-muted mr-3">
-                                            <i className="icon-calendar"></i>&nbsp; Em: 01/08/2020 às 12:23h
-                                        </small> 
-                                    </ListGroupItem>
+                                    {movimentacaoLogId.map((movimentacaolog) => {
+                                        return(
+                                            <Fragment>
+                                                <ListGroupItem className="list-group-item-accent-warning list-group-item-divider text-grey p-2">
+                                                    <div className="avatar float-right">
+                                                        <img className="img-avatar" src="assets/img/avatars/7.jpg" alt="Usuário"></img>
+                                                    </div>
+                                                    <div>
+                                                        <small className="text-muted mr-2">
+                                                            <i className="icon-layers"></i>
+                                                        </small>
+                                                        <strong>{movimentacaolog.statusAtendimento}</strong> 
+                                                    </div>
+                                                    <div>
+                                                        <small className="text-muted mr-2">
+                                                            <i className="icon-user"></i>                                                            
+                                                        </small>
+                                                        <small className="text-muted">
+                                                            {movimentacaolog.nome}&nbsp;{movimentacaolog.sobrenome}
+                                                        </small>                                        
+                                                    </div>
+                                                    <small className="text-muted mr-3">
+                                                        <i className="icon-calendar"></i>&nbsp; Em: 01/08/2020 às 12:23h
+                                                    </small>                                        
+                                                </ListGroupItem>
+                                                {/* <ListGroupItem className="list-group-item-accent-info list-group-item-divider text-grey p-2">
+                                                    <div className="avatar float-right">
+                                                        <img className="img-avatar" src="assets/img/avatars/4.jpg" alt="Usuário"></img>
+                                                    </div>
+                                                    <div>
+                                                        <small className="text-muted mr-2">
+                                                            <i className="icon-layers"></i>
+                                                        </small>
+                                                        <strong>Título do Status</strong> 
+                                                    </div>
+                                                    <div>
+                                                        <small className="text-muted mr-2">
+                                                            <i className="icon-user"></i>
+                                                            
+                                                        </small>
+                                                        <small className="text-muted">
+                                                            Nome de Usuário
+                                                        </small>                                        
+                                                    </div>
+                                                    <small className="text-muted mr-3">
+                                                        <i className="icon-calendar"></i>&nbsp; Em: 01/08/2020 às 12:23h
+                                                    </small> 
+                                                </ListGroupItem> */}
+                                            </Fragment>
+                                        )
+                                    })}
+                                    
+                                    
                                     {/* <ListGroupItem className="list-group-item-accent-secondary bg-light text-center font-weight-bold text-muted text-uppercase small">Yesterday</ListGroupItem>
                                     <ListGroupItem action tag="a" href="#" className="list-group-item-accent-danger list-group-item-divider">
                                         <div>New UI Project - <strong>deadline</strong></div>

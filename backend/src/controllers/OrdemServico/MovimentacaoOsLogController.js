@@ -13,10 +13,11 @@ module.exports = {
             'movimentacaooslog.*',
             'movimentacaooslog.movimentacaoosid',
             'ordemservico.numeroos',
-            'statusatendimento.status',
-            'statuspagamento.status ',
-            'statuscobranca.status',
-            'usuario.nome'
+            'statusatendimento.status as statusAtendimento',
+            'statuspagamento.status as statusPagamento',
+            'statuscobranca.status as statusCobranca',
+            'usuario.nome',
+            'usuario.sobrenome',
         ]);
     
         return response.json(movimentacaooslog);
@@ -37,9 +38,9 @@ module.exports = {
                 'movimentacaooslog.*',
                 'movimentacaooslog.movimentacaoosid',
                 'ordemservico.numeroos',
-                'statusatendimento.status',
-                'statuspagamento.status',
-                'statuscobranca.status',
+                'statusatendimento.status as statusAtendimento',
+                'statuspagamento.status as statusPagamento',
+                'statuscobranca.status as statusCobranca',
                 'usuario.nome'
             ])            
             .first();
@@ -62,9 +63,9 @@ module.exports = {
             'movimentacaooslog.*',
             'movimentacaooslog.movimentacaoosid',
             'ordemservico.numeroos',
-            'statusatendimento.status',
-            'statuspagamento.status ',
-            'statuscobranca.status',
+            'statusatendimento.status as statusAtendimento',
+            'statuspagamento.status as statusPagamento',
+            'statuscobranca.status as statusCobranca',
             'usuario.nome'
         ]);
     
