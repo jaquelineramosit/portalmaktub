@@ -22,7 +22,7 @@ module.exports = {
                 'tecnico.nometecnico',
                 'usuario.nome',
                 'statusatendimento.status'
-            ]).distinct()
+            ]).orderBy('ordemservico.id', 'desc').distinct()
             .limit(rows);
             response.header('X-Total-Count', count['count(*)']);
     
