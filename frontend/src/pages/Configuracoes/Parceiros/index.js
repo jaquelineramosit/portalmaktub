@@ -116,7 +116,7 @@ export default function StatusParceiro(props) {
                                 <FormGroup row>
                                     <Col md="6">
                                         <Label>Descrição</Label>
-                                        <Input type="textarea" required id="txtDescricao" rows="5" placeholder="Descreva o parceiro inserido"
+                                        <Input type="textarea" id="txtDescricao" rows="5" placeholder="Descreva o parceiro inserido"
                                             name="descricao"
                                             value={descricao}
                                             onChange={e => setDescricao(e.target.value)} />

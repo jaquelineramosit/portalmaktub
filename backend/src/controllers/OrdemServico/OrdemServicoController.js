@@ -11,12 +11,14 @@ module.exports = {
         
             .join('clientefilial', 'clientefilial.id', '=', 'ordemservico.clientefilialid')
             .join('tipoprojeto', 'tipoprojeto.id', '=', 'ordemservico.tipoprojetoid')
+            .join('cliente', 'cliente.id', '=', 'clientefilial.clienteid')
             .join('tecnico', 'tecnico.id', '=', 'ordemservico.tecnicoid')
             .join('usuario', 'usuario.id', '=', 'ordemservico.usuarioid')
             .select([
                 'ordemservico.*',
                 'clientefilial.nomefilial',
                 'tipoprojeto.nometipoprojeto',
+                'cliente.nomecliente',
                 'tecnico.nometecnico',
                 'usuario.nome'
             ])
