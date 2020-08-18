@@ -240,6 +240,7 @@ export default function Cliente(props) {
             cnpj,
             numero,
             parceiroid,
+            right,
             ativo
         };
 
