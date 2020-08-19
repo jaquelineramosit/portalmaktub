@@ -49,21 +49,14 @@ export default function ListaMovimentacaoOS() {
             selector: 'statusPagamento',
             sortable: true,
             center: true,
-            width: '19%'
+            width: '24%'
         },
         {
             name: 'Status de Cobrança',
             selector: 'statusCobranca',
             sortable: true,
             center: true,
-            width: '19%'
-        },
-        {
-            name: 'Observação',
-            selector: 'observacao',
-            sortable: true,
-            center: true,
-            width: '10%'
+            width: '25%'
         },
         {
             name: 'Status',
