@@ -11,7 +11,8 @@ module.exports = {
             'ordemservico.numeroos',
             'statusadiantamento.status',
             'usuario.nome'        
-        ]);
+        ])
+        .orderBy('adiantamentoos.dataadiantamento', 'desc');
     
         return response.json(adiantamentoos);
     },

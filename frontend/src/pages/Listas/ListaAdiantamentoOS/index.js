@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Card, CardBody, CardHeader, Col, Row, Badge } from 'reactstrap';
 import api from '../../../services/api';
 import DataTableGenerica from '../../../components/DataTableGenerica';
+import DateDiv from '../../../components/DateDiv';
 import '../../../global.css';
 
 
@@ -54,7 +55,7 @@ export default function ListaAdiantamentoOS() {
             selector: 'dataadiantamento',
             sortable: true,
             center: true,
-
+            cell: row => <DateDiv data={row.dataadiantamento} controleId={row.id} isLabel={false} label=""></DateDiv>
         },
         {
             name: 'Data de Quitação',
