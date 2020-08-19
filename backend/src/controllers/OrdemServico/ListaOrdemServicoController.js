@@ -2,11 +2,21 @@ const connection = require('../../database/connection');
 const getDate = require('../../utils/getDate');
 
 module.exports = {
+
+    /*
+    Responsável: Jaqueline Ramos
+    Em: 18/08/2020
+    Objetivo: Lista as Ordens de Serviços limitadas a uma determinada quantidade de linhas, o parâmetro row vai determinar qual é esse limite
+    */
     async getAllLimitRows (request, response) {
         const rows  = request.params.rows; 
-        
-        const [count] = await connection('ordemservico').count();
-        const ordemservico = await connection('ordemservico')        
+
+        if(rows > 0) {
+            
+            const ordemservico = await connection('ordemservico') 
+            .whereRaw(
+                `movimentacaoos.id = (SELECT MAX(id) FROM movimentacaoos AS mos WHERE mos.ordemservicoid = movimentacaoos.ordemservicoid)`
+            )
             .join('clientefilial', 'clientefilial.id', '=', 'ordemservico.clientefilialid')
             .join('cliente', 'cliente.id', '=', 'clientefilial.clienteid')
             .join('tipoprojeto', 'tipoprojeto.id', '=', 'ordemservico.tipoprojetoid')
@@ -22,10 +32,14 @@ module.exports = {
                 'tecnico.nometecnico',
                 'usuario.nome',
                 'statusatendimento.status'
-            ]).orderBy('ordemservico.id', 'desc').distinct()
+            ])
+            .orderBy('ordemservico.id', 'desc')
+            .distinct()
             .limit(rows);
-            response.header('X-Total-Count', count['count(*)']);
-    
-        return response.json(ordemservico);
-    },    
+        
+            return response.json(ordemservico);
+        } else {
+            return response.json();
+        }        
+    },
 };

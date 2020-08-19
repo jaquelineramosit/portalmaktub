@@ -170,13 +170,11 @@ const OrdemServico = (props) => {
                 api.get(`tipo-projeto/${tipoProjetoIdInicial}`).then(response => {
                     setHoraDecimal(response.data.horadecimal); 
 
-                    if( qdeHorasExtra  > 0 ) {
-                        console.log(custoAdicionalInicial);
+                    if( qdeHorasExtra  > 0 ) {                        
                         setHoraextra(qdeHorasExtra);
                         setTotalapagar((response.data.horadecimal * qdeHorasExtra) + valorPagarInicial + custoAdicionalInicial);
                         setTotalareceber((response.data.horadecimal * qdeHorasExtra) + valorReceberInicial + custoAdicionalInicial);
                     } else {
-                        console.log(custoAdicionalInicial);
                         setHoraextra(0);
                         setTotalapagar(valorPagarInicial + custoAdicionalInicial);
                         setTotalareceber(valorReceberInicial + custoAdicionalInicial);
@@ -192,21 +190,10 @@ const OrdemServico = (props) => {
         setRedirect(true);
     };
 
-    function TotaisPagarReceber() {
-        console.log('entrou');
-
+    function TotaisPagarReceber() {        
         qdeHoras = valorFimInicial - valorInicioInicial;
         qdeHorasExtra =  qdeHoras - qtdehoras;
 
-        console.log('qdeHoras');
-        console.log(qdeHoras);
-
-        console.log('horasProjeto');
-        console.log(qtdehoras);
-
-        console.log('qdeHorasExtra');
-        console.log(qdeHorasExtra);
-        
         if( qdeHorasExtra  > 0 ) {
             setHoraextra(qdeHorasExtra);
             setTotalapagar((horadecimal * qdeHorasExtra) + valorPagarInicial + Number(custoAdicionalInicial));
@@ -485,7 +472,7 @@ const OrdemServico = (props) => {
                                                 onChange={e => setDatasolicitacao(e.target.value)}
                                             />
                                             <InputGroupAddon addonType="append">
-                                                <spam class="btn btn-secondary disabled fa fa-calendar fa-lg"></spam>
+                                                <span className="btn btn-secondary disabled fa fa-calendar fa-lg"></span>
                                             </InputGroupAddon>
                                         </InputGroup>
                                     </Col>
@@ -499,7 +486,7 @@ const OrdemServico = (props) => {
                                             />
 
                                             <InputGroupAddon addonType="append">
-                                                <spam class="btn btn-secondary disabled fa fa-calendar fa-lg"></spam>
+                                                <span className="btn btn-secondary disabled fa fa-calendar fa-lg"></span>
                                             </InputGroupAddon>
                                         </InputGroup>
                                     </Col>
@@ -539,7 +526,7 @@ const OrdemServico = (props) => {
                                                     ))}
                                                 </Input>
                                                 <InputGroupAddon addonType="append">
-                                                    <spam class="btn btn-secondary disabled fa fa-handshake-o"></spam>
+                                                    <span className="btn btn-secondary disabled fa fa-handshake-o"></span>
                                                 </InputGroupAddon>
                                             </InputGroup>
                                         </Col>
@@ -557,7 +544,7 @@ const OrdemServico = (props) => {
                                                     ))}
                                                 </Input>
                                                 <InputGroupAddon addonType="append">
-                                                    <spam class="btn btn-secondary disabled fa fa-building-o "></spam>
+                                                    <span className="btn btn-secondary disabled fa fa-building-o "></span>
                                                 </InputGroupAddon>
                                             </InputGroup>
                                         </Col>
@@ -720,13 +707,10 @@ const OrdemServico = (props) => {
                                 </CardBody>
                             </Collapse>
                             <CardHeader>
-                                <i className="fa fa-clipboard"></i>
+                                <i className="icon-note"></i>
                                 <strong>Informações do Projeto</strong>
                                 <div className="card-header-actions">
-                                    <IconOpenClose type='servicos' isOpen={collapseMulti[1]}></IconOpenClose>
-                                    {/* <Button className="card-header-action" onClick={()=>{toggleMulti('servicos')}}>
-                                        <i className="fa fa-chevron-up"></i>
-                                    </Button> */}
+                                    <IconOpenClose type='servicos' isOpen={collapseMulti[1]}></IconOpenClose>                                    
                                 </div>
                             </CardHeader>
                             <Collapse isOpen={collapseMulti[1]}>
@@ -745,7 +729,7 @@ const OrdemServico = (props) => {
                                                     ))}
                                                 </Input>
                                                 <InputGroupAddon addonType="append">
-                                                    <spam class="btn btn-secondary disabled fa icon-wrench"></spam>
+                                                    <span className="btn btn-secondary disabled fa icon-wrench"></span>
                                                 </InputGroupAddon>
                                             </InputGroup>
                                         </Col>
@@ -762,7 +746,7 @@ const OrdemServico = (props) => {
                                                     ))}
                                                 </Input>
                                                 <InputGroupAddon addonType="append">
-                                                    <spam class="btn btn-secondary disabled fa fa-user-md"></spam>
+                                                    <span className="btn btn-secondary disabled fa fa-user-md"></span>
                                                 </InputGroupAddon>
                                             </InputGroup>
                                         </Col>
@@ -790,7 +774,7 @@ const OrdemServico = (props) => {
                                                     onChange={handleInputChange}
                                                 />
                                                 <InputGroupAddon addonType="append">
-                                                    <spam class="btn btn-secondary disabled fa fa-clock-o"></spam>
+                                                    <span className="btn btn-secondary disabled fa fa-clock-o"></span>
                                                 </InputGroupAddon>
                                             </InputGroup>
                                         </Col>
@@ -803,7 +787,7 @@ const OrdemServico = (props) => {
                                                     onChange={handleInputChange}
                                                 />
                                                 <InputGroupAddon addonType="append">
-                                                    <spam class="btn btn-secondary disabled fa fa-clock-o"></spam>
+                                                    <span className="btn btn-secondary disabled fa fa-clock-o"></span>
                                                 </InputGroupAddon>
                                             </InputGroup>
                                         </Col>
@@ -817,7 +801,7 @@ const OrdemServico = (props) => {
                                                     // onChange={handleInputChange}
                                                 />
                                                 <InputGroupAddon addonType="append">
-                                                    <spam class="btn btn-secondary disabled fa fa-clock-o"></spam>
+                                                    <span className="btn btn-secondary disabled fa fa-clock-o"></span>
                                                 </InputGroupAddon>
                                             </InputGroup>
                                         </Col>
@@ -851,7 +835,7 @@ const OrdemServico = (props) => {
                                                     }}
                                                 />
                                                 <InputGroupAddon addonType="append">
-                                                    <spam class="btn btn-secondary disabled fa fa-money"></spam>
+                                                    <span className="btn btn-secondary disabled fa fa-money"></span>
                                                 </InputGroupAddon>
                                             </InputGroup>
                                         </Col>
@@ -883,7 +867,7 @@ const OrdemServico = (props) => {
                                                     }}
                                                 />
                                                 <InputGroupAddon addonType="append">
-                                                    <spam class="btn btn-secondary disabled fa fa-money"></spam>
+                                                    <span className="btn btn-secondary disabled fa fa-money"></span>
                                                 </InputGroupAddon>
                                             </InputGroup>
                                         </Col>
@@ -895,7 +879,7 @@ const OrdemServico = (props) => {
                                                     name="horaextra"
                                                 />
                                                 <InputGroupAddon addonType="append">
-                                                    <spam class="btn btn-secondary disabled fa fa-clock-o"></spam>
+                                                    <span className="btn btn-secondary disabled fa fa-clock-o"></span>
                                                 </InputGroupAddon>
                                             </InputGroup>
                                         </Col>

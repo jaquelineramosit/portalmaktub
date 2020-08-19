@@ -1,5 +1,6 @@
 import React, {Component, Fragment, useEffect, useState} from 'react';
 import api from '../../../../src/services/api';
+
 import { Link } from 'react-router-dom';
 import { Bar, Line } from 'react-chartjs-2';
 import { getStyle, hexToRgba } from '@coreui/coreui/dist/js/coreui-utilities';
@@ -15,7 +16,7 @@ import {
     Tooltip,
     OverlayTrigger
 } from 'react-bootstrap';
-
+const dateFormat = require('dateformat');
 export default function DashBoard() {
 
     const usuarioId = localStorage.getItem('userId');
@@ -494,7 +495,7 @@ export default function DashBoard() {
                                     {listaOrdemServico.map((ordemServico, index) => 
                                     <tr key={`tr${ordemServico.id}_${index}`}>
                                         <td className="text-center">
-                                            <Link key={`link${ordemServico.id}`} to={`/ordem-servico/${ordemServico.id}?action=edit`}>{ordemServico.id}</Link>
+                                            <Link key={`link${ordemServico.id}`} to={`/ordem-servico/${ordemServico.id}?action=edit`}>{ordemServico.numeroos}</Link>
                                         </td>
                                         <td>
                                             <div key={`cliente${ordemServico.id}`}>
@@ -515,14 +516,14 @@ export default function DashBoard() {
                                             </div>                                                
                                         </td>
                                         <td>
-                                            Instalação de SSD
+                                            {ordemServico.nometipoprojeto}                                        
                                         </td>
                                         <td>
                                             <div key={`dtAtendimento${ordemServico.id}`} className="small text-muted">                                              
-                                                <strong>Atendimento:</strong> 01/08/2020
+                                                <strong>Atendimento:</strong> {dateFormat(ordemServico.dataatendimento, "dd/mm/yyyy")}
                                             </div>
                                             <div key={`dtCadastro${ordemServico.id}`} className="small text-muted">
-                                            <strong>Cadastro:</strong>01/03/2020
+                                            <strong>Cadastro:</strong> {dateFormat(ordemServico.datasolicitacao, "dd/mm/yyyy")}
                                             </div>
                                         </td>
                                     </tr>
