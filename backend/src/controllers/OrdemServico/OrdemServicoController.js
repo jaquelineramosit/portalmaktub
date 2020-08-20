@@ -8,21 +8,29 @@ module.exports = {
     async getAll (request, response) {
         const [count] = await connection('ordemservico').count();
         const ordemservico = await connection('ordemservico')
-        
+            .whereRaw(
+                `movimentacaoos.id = (SELECT MAX(id) FROM movimentacaoos AS mos WHERE mos.ordemservicoid = movimentacaoos.ordemservicoid)`
+            )
             .join('clientefilial', 'clientefilial.id', '=', 'ordemservico.clientefilialid')
-            .join('tipoprojeto', 'tipoprojeto.id', '=', 'ordemservico.tipoprojetoid')
             .join('cliente', 'cliente.id', '=', 'clientefilial.clienteid')
+            .join('tipoprojeto', 'tipoprojeto.id', '=', 'ordemservico.tipoprojetoid')
             .join('tecnico', 'tecnico.id', '=', 'ordemservico.tecnicoid')
             .join('usuario', 'usuario.id', '=', 'ordemservico.usuarioid')
+            .join('movimentacaoos', 'movimentacaoos.ordemservicoid', '=', 'ordemservico.id')
+            .join('statusatendimento', 'statusatendimento.id', '=', 'movimentacaoos.statusatendimentoid')
             .select([
                 'ordemservico.*',
+                'cliente.nomecliente',
                 'clientefilial.nomefilial',
                 'tipoprojeto.nometipoprojeto',
-                'cliente.nomecliente',
                 'tecnico.nometecnico',
-                'usuario.nome'
+                'usuario.nome',
+                'statusatendimento.status as statusAtendimento'
             ])
-            response.header('X-Total-Count', count['count(*)']);
+            .orderBy('ordemservico.dataatendimento', 'desc')
+            .distinct()
+        
+        response.header('X-Total-Count', count['count(*)']);
     
         return response.json(ordemservico);
     },

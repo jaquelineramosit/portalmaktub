@@ -85,7 +85,7 @@ module.exports = {
             'statuscobranca.status as statusCobranca',
             'usuario.nome'
         ])
-        .orderBy('ordemservico.numeroos')
+        .orderBy('ordemservico.numeroos', 'desc')
                 
         return response.json(movimentacaoos);
     },

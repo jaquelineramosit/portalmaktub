@@ -15,7 +15,9 @@ import {
     Tooltip,
     OverlayTrigger
 } from 'react-bootstrap';
+import BadgeStatus from '../../../components/BadgeStatus'
 
+const dateFormat = require('dateformat');
 export default function DashBoard() {
 
     const usuarioId = localStorage.getItem('userId');
@@ -313,39 +315,7 @@ export default function DashBoard() {
         },
     };
     const [color, setColor]  = useState('');
-    const BadgeStatus = (props) => {
-        const status = props.status;        
-        var color = "";
-        var textColor = "";
-        
-        switch (status) {
-            case "Novo":
-                color = "info";
-                textColor = "text-white";
-                break
-            case "Concluído":
-                color = "success"
-                break
-            case "Em Andamento":
-                color = "warning"
-                break
-            case "Cancelado":
-                color = "danger"
-                break
-            case "Agendado":
-                color = "light"
-                break     
-            case "Improdutivo":
-                color = "dark"
-                break   
-            }
-        return (
-            <Fragment>
-                <Badge className={textColor} color={color}>{status}</Badge>
-            </Fragment>
-        )
-    } 
-
+    
     const Cards = () => {  
         return (
             <Fragment>
@@ -466,8 +436,7 @@ export default function DashBoard() {
                         <CardHeader className="links">
                             <FaChartLine /> Últimas OS's
                             <Link to={`ordem-servico?action=novo`} className="btn-sm btn-secondary float-right">
-                                <i className="cui-file icons mr-1"></i>
-                                Novo
+                                <i className="fa fa-plus-circle fa-lg"></i>
                             </Link>
                         </CardHeader>                       
                         <CardBody className="p-1">                                
@@ -485,16 +454,16 @@ export default function DashBoard() {
                                         </th>
                                         <th className="">Cliente / Filial</th>                                        
                                         <th>Técnico</th>
-                                        <th className="text-center">Status</th>
-                                        <th>Projeto</th>
                                         <th>Data</th>
+                                        <th>Projeto</th>
+                                        <th className="text-center">Status</th>                                        
                                     </tr>
                                 </thead>
                                 <tbody key={`tablebody`}>
                                     {listaOrdemServico.map((ordemServico, index) => 
                                     <tr key={`tr${ordemServico.id}_${index}`}>
                                         <td className="text-center">
-                                            <Link key={`link${ordemServico.id}`} to={`/ordem-servico/${ordemServico.id}?action=edit`}>{ordemServico.id}</Link>
+                                            <Link key={`link${ordemServico.id}`} to={`/ordem-servico/${ordemServico.id}?action=edit`}>{ordemServico.numeroos}</Link>
                                         </td>
                                         <td>
                                             <div key={`cliente${ordemServico.id}`}>
@@ -510,20 +479,20 @@ export default function DashBoard() {
                                             {ordemServico.nometecnico}
                                         </td>
                                         <td>
+                                            <div key={`dtAtendimento${ordemServico.id}`} className="small text-muted">                                              
+                                                <strong>Atendimento:</strong> {dateFormat(ordemServico.dataatendimento, "dd/mm/yyyy")}
+                                            </div>
+                                            <div key={`dtCadastro${ordemServico.id}`} className="small text-muted">
+                                            <strong>Solicitação:</strong> {dateFormat(ordemServico.datasolicitacao, "dd/mm/yyyy")}
+                                            </div>
+                                        </td>
+                                        <td>
+                                            {ordemServico.nometipoprojeto}                                        
+                                        </td>
+                                        <td>
                                             <div key={`status${ordemServico.id}`} className="text-center">
                                                 <BadgeStatus key={`badge${ordemServico.id}`} status={ordemServico.status}></BadgeStatus>
                                             </div>                                                
-                                        </td>
-                                        <td>
-                                            Instalação de SSD
-                                        </td>
-                                        <td>
-                                            <div key={`dtAtendimento${ordemServico.id}`} className="small text-muted">                                              
-                                                <strong>Atendimento:</strong> 01/08/2020
-                                            </div>
-                                            <div key={`dtCadastro${ordemServico.id}`} className="small text-muted">
-                                            <strong>Cadastro:</strong>01/03/2020
-                                            </div>
                                         </td>
                                     </tr>
                                     )}                                    

@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardBody, CardHeader, Col, Row, Badge } from 'reactstrap';
 import api from '../../../services/api';
 import DataTableGenerica from '../../../components/DataTableGenerica';
+import BadgeStatus from '../../../components/BadgeStatus'
 
 export default function ListaMovimentacaoOS() {
     const [movimentacaoos, setMovimentacaoos] = useState([]);
@@ -28,8 +29,9 @@ export default function ListaMovimentacaoOS() {
             setMovimentacaoos(response.data);
         })
     }, [usuarioId]);
+
     const data = movimentacaoos;
-    console.log(data);
+    
     const columns = [
         {
             name: 'Ordem de Serviço',
@@ -42,21 +44,24 @@ export default function ListaMovimentacaoOS() {
             selector: 'statusAtendimento',
             sortable: true,
             center: true,
-            width: '19%'
+            width: '19%',
+            cell: row => <BadgeStatus key={`badge${row.id}`} status={row.statusAtendimento}></BadgeStatus>,
         },
         {
             name: 'Status de Pagamento',
             selector: 'statusPagamento',
             sortable: true,
             center: true,
-            width: '24%'
+            width: '24%',
+            cell: row => <BadgeStatus key={`badge${row.id}`} status={row.statusPagamento}></BadgeStatus>,
         },
         {
             name: 'Status de Cobrança',
             selector: 'statusCobranca',
             sortable: true,
             center: true,
-            width: '25%'
+            width: '25%',
+            cell: row => <BadgeStatus key={`badge${row.id}`} status={row.statusCobranca}></BadgeStatus>,
         },
         {
             name: 'Status',
