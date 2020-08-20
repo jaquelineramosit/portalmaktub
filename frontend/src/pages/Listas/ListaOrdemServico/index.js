@@ -70,6 +70,14 @@ export default function ListaOrdemServico(props) {
             width: '12%',
         },
         {
+            name: 'Cliente',
+            selector: 'nomecliente',
+            sortable: true,
+
+        },
+        {
+            name: 'Filial',
+            selector: 'nomefilial',
             name: 'Cliente / Filial',
             selector: 'nomecliente',
             sortable: true,

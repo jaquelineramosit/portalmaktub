@@ -24,7 +24,6 @@ export default function DadosBancarios(props) {
     const [bancosid, setBancosid] = useState([]);
     const [tipocontasid, setTipoContasid] = useState([]);
     const [tecnicosid, setTecnicosid] = useState([]);
-    const [contapadrao, setContapadrao] = useState(1);
     const [ativo, setAtivo] = useState(1);
 
 
@@ -38,7 +37,7 @@ export default function DadosBancarios(props) {
                 setConta(response.data.conta);
                 setTitularconta(response.data.titularconta);
                 setDoctitular(response.data.doctitular);
-                response.data.contapadrao === 1 ? setContapadrao(1) : setContapadrao(0);
+                response.data.ativo === 1 ? setAtivo(1) : setAtivo(0);
             });
         } else {
             return;
@@ -88,7 +87,6 @@ export default function DadosBancarios(props) {
             conta,
             titularconta,
             doctitular,
-            contapadrao: '1',
             ativo
         };
 

@@ -46,7 +46,7 @@ module.exports = {
         const  dataultmodif = getDate();
 
         const { tecnicoid, bancoid, tipocontaid, agencia, conta, titularconta,
-                doctitular, contapadrao, ativo } = request.body;
+                doctitular, ativo } = request.body;
         
         const [id] = await connection('dadosbancarios').insert({            
             tecnicoid,
@@ -56,7 +56,6 @@ module.exports = {
             conta,
             titularconta,
             doctitular,
-            contapadrao,
             ativo,
             usuarioid,
             dataultmodif            
@@ -71,7 +70,7 @@ module.exports = {
         const  dataultmodif = getDate();
         
         const { tecnicoid, bancoid, tipocontaid, agencia, conta, titularconta,
-                doctitular, contapadrao, ativo } = request.body;
+                doctitular, ativo } = request.body;
 
         await connection('dadosbancarios').where('id', id).update({            
             tecnicoid,
@@ -81,7 +80,6 @@ module.exports = {
             conta,
             titularconta,
             doctitular,
-            contapadrao,
             ativo,
             usuarioid,
             dataultmodif
