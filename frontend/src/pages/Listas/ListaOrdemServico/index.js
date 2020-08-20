@@ -42,14 +42,14 @@ export default function ListaOrdemServico(props) {
 
         },
         {
-            name: 'Filial',
-            selector: 'nomefilial',
+            name: 'Cliente',
+            selector: 'nomecliente',
             sortable: true,
 
         },
         {
-            name: 'Cliente',
-            selector: 'nomecliente',
+            name: 'Filial',
+            selector: 'nomefilial',
             sortable: true,
 
         },

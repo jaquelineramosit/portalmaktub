@@ -47,6 +47,7 @@ export default function ListaAdiantamentoOS() {
             selector: 'valoradiantamento',
             sortable: true,
             center: true,
+            width: '18%'
 
         },
         {
@@ -54,6 +55,7 @@ export default function ListaAdiantamentoOS() {
             selector: 'dataadiantamento',
             sortable: true,
             center: true,
+            width: '20%'
 
         },
         {
@@ -61,6 +63,7 @@ export default function ListaAdiantamentoOS() {
             selector: 'dataquitacao',
             sortable: true,
             center: true,
+            width: '25%'
 
         },
         {
@@ -68,12 +71,6 @@ export default function ListaAdiantamentoOS() {
             selector: 'status',
             sortable: true,
             center: true,
-        },
-        {
-            name: 'Status',
-            sortable: true,
-            center: true,
-            cell: row => <Badge color="success">Ativo</Badge>,
         },
         {
             name: 'Ações',
