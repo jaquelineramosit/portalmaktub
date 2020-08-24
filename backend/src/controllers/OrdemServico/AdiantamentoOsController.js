@@ -9,7 +9,7 @@ module.exports = {
         .select([
             'adiantamentoos.*', 
             'ordemservico.numeroos',
-            'statusadiantamento.status',
+            'statusadiantamento.status as statusAdiantamento',
             'usuario.nome'        
         ])
         .orderBy('adiantamentoos.dataadiantamento', 'desc');

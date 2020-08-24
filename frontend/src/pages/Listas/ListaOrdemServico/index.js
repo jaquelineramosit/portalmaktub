@@ -70,12 +70,6 @@ export default function ListaOrdemServico(props) {
             width: '12%',
         },
         {
-            name: 'Cliente',
-            selector: 'nomecliente',
-            sortable: true,
-
-        },
-        {
             name: 'Filial',
             selector: 'nomefilial',
             name: 'Cliente / Filial',
@@ -95,7 +89,7 @@ export default function ListaOrdemServico(props) {
             name: 'Data',
             sortable: true,
             selector: 'dataatendimento',
-            width: '14%',
+            width: '16%',
             cell: row => <DivData key={`divData${row.id}`} dataatendimento={row.dataatendimento} datasolicitacao={row.datasolicitacao} ordemservicoId={row.id}></DivData>,
         },
         {
@@ -103,10 +97,11 @@ export default function ListaOrdemServico(props) {
             selector: 'nometipoprojeto',
             sortable: true,
             center: true,
-            width: '16%',
+            width: '14%',
         },
         {
             name: 'Status',
+            selector: 'statusAtendimento',
             sortable: true,
             center: true,
             width: '8%',

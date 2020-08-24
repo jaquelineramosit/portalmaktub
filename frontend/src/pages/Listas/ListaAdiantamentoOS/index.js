@@ -4,6 +4,7 @@ import { Card, CardBody, CardHeader, Col, Row, Badge } from 'reactstrap';
 import api from '../../../services/api';
 import DataTableGenerica from '../../../components/DataTableGenerica';
 import DateDiv from '../../../components/DateDiv';
+import BadgeStatus from '../../../components/BadgeStatus'
 import '../../../global.css';
 
 
@@ -42,30 +43,29 @@ export default function ListaAdiantamentoOS() {
             name: 'Ordem de Serviço',
             selector: 'numeroos',
             sortable: true,
+            width: '15%'
         },
         {
-            name: 'Valor de Adiantamento',
+            name: 'Valor Adiantamento',
             selector: 'valoradiantamento',
             sortable: true,
             center: true,
-            width: '18%'
-
+            width: '17%'
         },
         {
-            name: 'Data de Adiantamento',
+            name: 'Data Adiantamento',
             selector: 'dataadiantamento',
             sortable: true,
             center: true,
-            width: '20%',
-
+            width: '16%',
             cell: row => <DateDiv data={row.dataadiantamento} controleId={row.id} isLabel={false} label=""></DateDiv>
         },
         {
-            name: 'Data de Quitação',
+            name: 'Data Quitação',
             selector: 'dataquitacao',
             sortable: true,
             center: true,
-            width: '25%',
+            width: '16%',
             cell: row => <DateDiv data={row.dataquitacao} controleId={row.id} isLabel={false} label=""></DateDiv>
         },
         {
@@ -73,12 +73,22 @@ export default function ListaAdiantamentoOS() {
             selector: 'status',
             sortable: true,
             center: true,
+            width: '18%',
+            cell: row => <BadgeStatus key={`badge${row.id}`} status={row.statusAdiantamento}></BadgeStatus>,
+        },
+        {
+            name: 'Status',
+            sortable: true,
+            center: true,
+            cell: row => <Badge color="success">Ativo</Badge>,
+            width: '9%',
         },
         {
             name: 'Ações',
             sortable: true,
             right: true,
-            cell: row => <Link to={`adiantamento-os/${row.id}?action=edit`} className="btn-sm btn-primary"><i className="fa fa-pencil fa-lg mr-1"></i></Link>
+            cell: row => <Link to={`adiantamento-os/${row.id}?action=edit`} className="btn-sm btn-primary"><i className="fa fa-pencil fa-lg"></i></Link>,
+            width: '9%',
         },
     ];
 

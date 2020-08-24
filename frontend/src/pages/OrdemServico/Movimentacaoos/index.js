@@ -138,7 +138,7 @@ export default function Movimentacaoos(props) {
                     <Col md="9">
                         <Card>
                             <CardHeader>
-                                <i className="icon-wrench"></i>
+                                <i className="fa fa-arrows"></i>
                                 <strong>Movimentação de OS</strong>
                                 {action === 'novo' ? <small> nova</small> : <small> editar</small>}
                             </CardHeader>
