@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Component, Fragment } from 'react';
-import { Row, Collapse, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, InputGroup, InputGroupAddon, CardFooter, Form } from 'reactstrap';
+import { Row, Collapse, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, InputGroup, InputGroupAddon, CardFooter, Form, ListGroup, ListGroupItem, } from 'reactstrap';
 import { Redirect } from 'react-router-dom';
 import '../../../global.css';
 import { numMask, reaisMask } from '../../../mask'
@@ -58,7 +58,17 @@ const OrdemServico = (props) => {
     const [valorapagar, setValorapagar] = useState(0);
     const [valorapagarFormatado, setValorapagarFormatado] = useState(0);
     const [valorareceber, setValorareceber] = useState(0);    
-    const [valorareceberFormatado, setValorareceberFormatado] = useState(0);    
+    const [valorareceberFormatado, setValorareceberFormatado] = useState(0); 
+
+    //informacoes movimentacao os
+    const [statusatendimentoid, setStatusAtendimentoid] = useState('');
+    const [statuspagamentoid, setStatusPagamentoid] = useState('');
+    const [statuscobrancaid, setStatusCobrancaid] = useState('');
+    const [observacao, setObservacao] = useState('');
+    const [statusatendimentosid, setStatusAtendimentosid] = useState([]);
+    const [statuspagamentosid, setStatusPagamentosid] = useState([]);
+    const [statuscobrancasid, setStatusCobrancasid] = useState([]);
+    const [movimentacaoLogId, setMovimentacaoLogId] = useState([]);
 
     // informacoes filial
     const [dadosFilial, setDadosFilial] = useState({
@@ -108,6 +118,30 @@ const OrdemServico = (props) => {
     useEffect(() => {
         api.get('tipo-projeto').then(response => {
             setTipoProjeto(response.data);
+        })
+    }, [usuarioId]);
+
+    useEffect(() => {
+        api.get('status-atendimento').then(response => {
+            setStatusAtendimentosid(response.data);
+        })
+    }, [usuarioId]);
+
+    useEffect(() => {
+        api.get('status-cobranca').then(response => {
+            setStatusCobrancasid(response.data);
+        })
+    }, [usuarioId]);
+
+    useEffect(() => {
+        api.get('status-pagamento').then(response => {
+            setStatusPagamentosid(response.data);
+        })
+    }, [usuarioId]);
+
+    useEffect(() => {
+        api.get(`movimentacao-os-log-todos-por-os/${cadosdIdParam}`).then(response => {
+            setMovimentacaoLogId(response.data);
         })
     }, [usuarioId]);
 
@@ -186,6 +220,20 @@ const OrdemServico = (props) => {
         }
     }, [cadosdIdParam]);
 
+    useEffect(() => {
+        if (action === 'edit' && cadosdIdParam !== '') {
+            api.get(`movimentacao-os-osid/${cadosdIdParam}`).then(response => {
+                setStatusAtendimentoid(response.data.statusatendimentoid);
+                setStatusPagamentoid(response.data.statuspagamentoid);
+                setStatusCobrancaid(response.data.statuscobrancaid);
+                setObservacao(response.data.observacao);
+                response.data.ativo === 1 ? setAtivo(1) : setAtivo(0);
+            });
+        } else {
+            return;
+        }
+    }, [cadosdIdParam]);
+
     function handleReset() {
         setRedirect(true);
     };
@@ -205,7 +253,7 @@ const OrdemServico = (props) => {
         }
     }
 
-    const [collapseMulti, setCollapseMulti] = useState([true, true])
+    const [collapseMulti, setCollapseMulti] = useState([true, true, true])
 
     // //testar com o multiplo toggle
     const toggleMulti = (type) => {
@@ -217,9 +265,13 @@ const OrdemServico = (props) => {
             case "servicos":
                 newCollapse[1] = !collapseMulti[1];
                 break;
-            case "both":
+            case "movimentacaoos":
+                newCollapse[2] = !collapseMulti[2];
+                break;
+            case "all":
                 newCollapse[0] = !collapseMulti[0];
                 newCollapse[1] = !collapseMulti[1];
+                newCollapse[2] = !collapseMulti[2];
                 break;
             default:
         }
@@ -404,7 +456,11 @@ const OrdemServico = (props) => {
             totalareceber,
             diadasemana,
             custoadicional,
-            ativo
+            ativo,
+            statusatendimentoid,
+            statuspagamentoid, 
+            statuscobrancaid, 
+            observacao
         };
 
         if (action === 'edit') {
@@ -446,6 +502,7 @@ const OrdemServico = (props) => {
                 <Row>
                     <Col xs="12" md="12">
                         <Card>
+                            {/* card Ordem Serviço */}
                             <CardHeader>
                                 <i className="icon-wrench"></i>
                                 <strong>Ordem de Serviço</strong>
@@ -499,6 +556,7 @@ const OrdemServico = (props) => {
                                     </Col>
                                 </FormGroup>
                             </CardBody>
+                            {/* card Cliente / Filial */}
                             <CardHeader>
                                 <i className="fa fa-handshake-o"></i>
                                 <strong>Cliente / Filial</strong>
@@ -706,6 +764,7 @@ const OrdemServico = (props) => {
                                     </FormGroup>
                                 </CardBody>
                             </Collapse>
+                            {/* card Informações do Projeto */}
                             <CardHeader>
                                 <i className="icon-note"></i>
                                 <strong>Informações do Projeto</strong>
@@ -714,7 +773,7 @@ const OrdemServico = (props) => {
                                 </div>
                             </CardHeader>
                             <Collapse isOpen={collapseMulti[1]}>
-                                <CardBody>
+                                <CardBody className="border-bottom">
                                     <FormGroup row>
                                         <Col md="4">
                                             <Label htmlFor="tiposervicoid">Tipo de Projeto</Label>
@@ -941,6 +1000,112 @@ const OrdemServico = (props) => {
                                         </InputGroup>
                                     </Col>
                                 </FormGroup>
+                                </CardBody>
+                            </Collapse>
+                            {/* card Movimentação Ordem Serviço */}
+                            <CardHeader>
+                                <i className="fa fa-arrows"></i>
+                                <strong>Movimentação de OS</strong>
+                                <div className="card-header-actions">
+                                    <IconOpenClose type='movimentacaoos' isOpen={collapseMulti[2]}></IconOpenClose>                                    
+                                </div>
+                            </CardHeader>
+                            <Collapse isOpen={collapseMulti[2]}>
+                                <CardBody>                          
+                                    <Row>
+                                        <Col md="8">
+                                            <FormGroup row>
+                                                <Col md="4">
+                                                    <Label htmlFor="statusAtendimentoId">Status Atendimento</Label>
+                                                    <Input type="select" required name="select" id="cboStatusAtendimentoId" multiple={false}
+                                                        name="statusatendimentoid"
+                                                        value={statusatendimentoid}
+                                                        onChange={e => setStatusAtendimentoid(e.target.value)}>
+                                                        <option value={undefined} defaultValue>Selecione...</option>
+                                                        {statusatendimentosid.map(statusatendimento => (
+                                                            <option key={statusatendimento.id} value={statusatendimento.id}>{statusatendimento.status}</option>
+                                                        ))}
+                                                    </Input>
+                                                </Col>
+                                                <Col md="4">
+                                                    <Label htmlFor="statusCobrancaId">Status Cobrança</Label>
+                                                    <Input type="select" required name="select" id="cboStatusCobrancaId" multiple={false}
+                                                        name="statuscobrancaid"
+                                                        value={statuscobrancaid}
+                                                        onChange={e => setStatusCobrancaid(e.target.value)}>
+                                                        <option value={undefined} defaultValue>Selecione...</option>
+                                                        {statuscobrancasid.map(statuscobranca => (
+                                                            <option key={statuscobranca.id} value={statuscobranca.id}>{statuscobranca.status}</option>
+                                                        ))}
+                                                    </Input>
+                                                </Col>
+                                                <Col md="4">
+                                                    <Label htmlFor="statusPagamentoId">Status Pagamento</Label>
+                                                    <Input type="select" required name="select" id="cboStatuspPagamentoId" multiple={false}
+                                                        name="statuspagamentoid"
+                                                        value={statuspagamentoid}
+                                                        onChange={e => setStatusPagamentoid(e.target.value)}>
+                                                        <option value={undefined} defaultValue>Selecione...</option>
+                                                        {statuspagamentosid.map(statuspagamento => (
+                                                            <option key={statuspagamento.id} value={statuspagamento.id}>{statuspagamento.status}</option>
+                                                        ))}
+                                                    </Input>
+                                                </Col>
+                                            </FormGroup>
+                                            <FormGroup row>
+                                                <Col md="12">
+                                                    <Label>Observação</Label>
+                                                    <Input type="textarea" rows="5" placeholder="Digite a obsevação" required id="txtObservacao"
+                                                        name="observacao"
+                                                        value={observacao}
+                                                        onChange={e => setObservacao(e.target.value)} />
+                                                </Col>
+                                            </FormGroup>
+                                        </Col>
+                                        <Col md="4">
+                                            <CardHeader>                            
+                                                <i className="fa fa-history"></i>
+                                                <strong>Timeline</strong>                                
+                                            </CardHeader>
+                                            <CardBody className="p-0"> 
+                                                <ListGroup className="list-group-accent" tag={'div'}>
+                                                    {/* // {items.map((value) => { */}
+                                                    {/* <ListGroupItem className="list-group-item-accent-secondary bg-light text-center font-weight-bold text-muted text-uppercase small">Today</ListGroupItem> */}
+                                                    {movimentacaoLogId.map((movimentacaolog) => {
+                                                        return(
+                                                            <Fragment>
+                                                                <ListGroupItem className="list-group-item-accent-warning list-group-item-divider text-grey p-2">
+                                                                    <div className="avatar float-right">
+                                                                        <img className="img-avatar" src="assets/img/avatars/7.jpg" alt="Usuário"></img>
+                                                                    </div>
+                                                                    <div>
+                                                                        <small className="text-muted mr-2">
+                                                                            <i className="icon-layers"></i>
+                                                                        </small>
+                                                                        <strong>{movimentacaolog.statusAtendimento}</strong> 
+                                                                    </div>
+                                                                    <div>
+                                                                        <small className="text-muted mr-2">
+                                                                            <i className="icon-user"></i>                                                            
+                                                                        </small>
+                                                                        <small className="text-muted">
+                                                                            {movimentacaolog.nome}&nbsp;{movimentacaolog.sobrenome}
+                                                                        </small>                                        
+                                                                    </div>
+                                                                    <small className="text-muted mr-3">
+                                                                        <i className="icon-calendar"></i>&nbsp; Em: 01/08/2020 às 12:23h
+                                                                    </small>                                        
+                                                                </ListGroupItem>
+                                                            </Fragment>
+                                                        )
+                                                    })}
+                                                </ListGroup>                                
+                                            </CardBody>
+                                            <CardFooter>
+                                                <div className="small text-muted"><strong>Atualizado em:</strong> 13/08/2020 às 13:12</div>                                
+                                            </CardFooter>
+                                        </Col>
+                                    </Row>
                                 </CardBody>
                             </Collapse>
                             <CardFooter className="text-center">
