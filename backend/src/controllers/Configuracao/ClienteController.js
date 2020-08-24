@@ -40,18 +40,18 @@ module.exports = {
         return response.json(cliente);
     },
 
- 
-    async create(request, response) {
-        const  usuarioid  = request.headers.authorization;
-        const  dataultmodif = getDate();
 
-        const {parceiroid, nomecliente, cnpj, razaosocial, logradouro, numero, complemento,
+    async create(request, response) {
+        const usuarioid = request.headers.authorization;
+        const dataultmodif = getDate();
+
+        const { parceiroid, nomecliente, cnpj, razaosocial, logradouro, numero, complemento,
             bairro, cidade, estado, cep, telefonefixo, telefonecelular, nomeresponsavel,
-            telefoneresponsavel, ativo, right} = request.body;
-        
+            telefoneresponsavel, ativo, right } = request.body;
+
         const trx = await connection.transaction();
         try {
-            const [clienteid] = await trx('cliente').insert({            
+            const [clienteid] = await trx('cliente').insert({
                 parceiroid,
                 nomecliente,
                 cnpj,
@@ -71,19 +71,18 @@ module.exports = {
                 usuarioid,
                 dataultmodif
             })
-            
+
             const clienteBandeira = right.map((bandeiraItem) => {
-                console.log(right)
                 return {
                     bandeiraid: bandeiraItem.id,
                     clienteid: clienteid,
                     ativo: 1,
                     usuarioid: usuarioid,
                     dataultmodif: dataultmodif
-                }                
+                }
             })
-    
-        
+
+
 
             await trx('clientebandeira').insert(clienteBandeira)
             trx.commit()
@@ -92,9 +91,9 @@ module.exports = {
             trx.rollback()
             console.log(err)
             return response.send('ocorreu um erro ao salvar')
-        }        
+        }
     },
-    
+
 
 
     async update(request, response) {
@@ -104,7 +103,7 @@ module.exports = {
 
         const { parceiroid, nomecliente, cnpj, razaosocial, logradouro, numero, complemento,
             bairro, cidade, estado, cep, telefonefixo, telefonecelular, nomeresponsavel,
-            telefoneresponsavel, right, ativo } = request.body;
+            telefoneresponsavel, right,left, ativo } = request.body;
 
         const trx = await connection.transaction();
         try {
@@ -128,8 +127,6 @@ module.exports = {
                 usuarioid,
                 dataultmodif
             });
-            //deleta os tipos de projeto x ferramenta e cadastra tudo de novo
-            await trx('clientebandeira').where('id', id).delete(clienteBandeira)
 
             //cadastra novamente
             const clienteBandeira = right.map((bandeirasItem) => {
@@ -141,12 +138,15 @@ module.exports = {
                     dataultmodif: dataultmodif
                 }
             })
-
+            
+            //deleta os tipos de projeto x ferramenta e cadastra tudo de novo
+            await trx('clientebandeira').where('id', id).delete(clienteBandeira)
             await trx('clientebandeira').insert(clienteBandeira)
             trx.commit()
             return response.json({ clienteBandeira });
         } catch (err) {
             trx.rollback()
+            console.log(err)
             return response.send('ocorreu um erro ao salvar')
         }
 

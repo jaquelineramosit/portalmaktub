@@ -51,8 +51,6 @@ module.exports = {
                 }                
             })
     
-        
-
             await trx('tipoprojetoferramenta').insert(tipoProjetoFerramenta)
             trx.commit()
             return response.json({ tipoProjetoFerramenta });
@@ -68,7 +66,7 @@ module.exports = {
         const  usuarioid  = request.headers.authorization;
         const  dataultmodif = getDate();
         
-        const { nometipoprojeto, receita, despesa, horas, valorhoraextra, horadecimal, valorhoratecnico, ativo, right } = request.body;
+        const { nometipoprojeto, receita, despesa, horas, valorhoraextra, horadecimal, valorhoratecnico, ativo, right, left} = request.body;
 
         const trx = await connection.transaction();
         try {
@@ -85,9 +83,6 @@ module.exports = {
                 dataultmodif
             })
             
-            //deleta os tipos de projeto x ferramenta e cadastra tudo de novo
-            await trx('tipoprojetoferramenta').where('id', id).delete(tipoProjetoFerramenta)
-
             //cadastra novamente
             const tipoProjetoFerramenta = right.map((ferramentaItem) => {
                 return {
@@ -99,13 +94,16 @@ module.exports = {
                     dataultmodif: dataultmodif
                 }                
             })
-    
+                    //deleta os tipos de projeto x ferramenta e cadastra tudo de novo
+            await trx('tipoprojetoferramenta').where('id', id).delete(tipoProjetoFerramenta)
             await trx('tipoprojetoferramenta').insert(tipoProjetoFerramenta)
             trx.commit()
-            return response.json({ tipoProjetoFerramenta });
+            return response.json({ tipoProjetoFerramenta }) ;
         } catch (err) {
             trx.rollback()
+            console.log(err)
             return response.send('ocorreu um erro ao salvar')
+
         }      
 
 

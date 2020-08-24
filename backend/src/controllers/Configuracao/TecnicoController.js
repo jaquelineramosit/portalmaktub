@@ -137,15 +137,13 @@ module.exports = {
                 usuarioid
             })
 
-            //deleta os tipos de projeto x ferramenta e cadastra tudo de novo
-            await trx('tipoprojetotecnico').where('id', id).delete(projetoTecnico)
-            await trx('disponibilidadetecnico').where('id', id).delete(disponTecnico)
+
             //cadastra novamente
             const projetoTecnico = right.map((tipoProjetoItem) => {
                 console.log(right)
                 return {
                     tipoprojetoid: tipoProjetoItem.id,
-                    tecnicoid: tecnicoid,
+                    tecnicoid: id,
                     descricao: '',
                     ativo: 1,
                     usuarioid: usuarioid,
@@ -156,14 +154,18 @@ module.exports = {
                 console.log(rights)
                 return {
                     disponibilidadeId: disponTecnicoItem.id,
-                    tecnicoId: tecnicoid,
+                    tecnicoId: id,
                     ativo: 1,
                     usuarioId: usuarioid,
                     dataultmodif: dataultmodif
                 }
             })
+            //deleta os tipos de projeto x ferramenta e cadastra tudo de novo
+            await trx('tipoprojetotecnico').where('id', id).delete(projetoTecnico)
+            await trx('disponibilidadetecnico').where('id', id).delete(disponTecnico)
 
-            await trx('tipoprojetotecnico', 'disponibilidadetecnico').insert(projetoTecnico, disponTecnico)
+            await trx('tipoprojetotecnico').insert(projetoTecnico)
+            await trx('disponibilidadetecnico').insert(disponTecnico)
             trx.commit()
             return response.json({ projetoTecnico }), ({ disponTecnico })
         } catch (err) {
