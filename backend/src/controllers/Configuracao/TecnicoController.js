@@ -161,8 +161,8 @@ module.exports = {
                 }
             })
             //deleta os tipos de projeto x ferramenta e cadastra tudo de novo
-            await trx('tipoprojetotecnico').where('id', id).delete(projetoTecnico)
-            await trx('disponibilidadetecnico').where('id', id).delete(disponTecnico)
+            await trx('tipoprojetotecnico').where('tecnicoId', id).delete()
+            await trx('disponibilidadetecnico').where('tecnicoId', id).delete()
 
             await trx('tipoprojetotecnico').insert(projetoTecnico)
             await trx('disponibilidadetecnico').insert(disponTecnico)

@@ -95,7 +95,7 @@ module.exports = {
                 }                
             })
                     //deleta os tipos de projeto x ferramenta e cadastra tudo de novo
-            await trx('tipoprojetoferramenta').where('id', id).delete(tipoProjetoFerramenta)
+            await trx('tipoprojetoferramenta').where('tipoprojetoId', id).delete()
             await trx('tipoprojetoferramenta').insert(tipoProjetoFerramenta)
             trx.commit()
             return response.json({ tipoProjetoFerramenta }) ;
@@ -103,10 +103,7 @@ module.exports = {
             trx.rollback()
             console.log(err)
             return response.send('ocorreu um erro ao salvar')
-
         }      
-
-
         await connection('tipoprojeto').where('id', id).update({            
             nometipoprojeto,
             receita,
