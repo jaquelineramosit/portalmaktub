@@ -415,7 +415,7 @@ export default function Tecnico(props) {
                                                 name="telefonefixo"
                                                 onChange={e => setTelefonefixo(telMask(e.target.value))} />
                                             <InputGroupAddon addonType="append">
-                                                <spam class="btn btn-secondary disabled icon-phone"></spam>
+                                                <span className="btn btn-secondary disabled icon-phone"></span>
                                             </InputGroupAddon>
                                         </InputGroup>
                                     </Col>
@@ -427,7 +427,7 @@ export default function Tecnico(props) {
                                                 name="telefonecelular"
                                                 onChange={e => setTelefonecelular(celMask(e.target.value))} />
                                             <InputGroupAddon addonType="append">
-                                                <spam class="btn btn-secondary disabled icon-phone"></spam>
+                                                <span className="btn btn-secondary disabled icon-phone"></span>
                                             </InputGroupAddon>
                                         </InputGroup>
                                     </Col>
@@ -448,7 +448,7 @@ export default function Tecnico(props) {
                                                 name="telefonecttoemergencial"
                                                 onChange={e => setTelefonecttoemergencial(telMask(e.target.value))} />
                                             <InputGroupAddon addonType="append">
-                                                <spam class="btn btn-secondary disabled icon-phone"></spam>
+                                                <span className="btn btn-secondary disabled icon-phone"></span>
                                             </InputGroupAddon>
                                         </InputGroup>
                                     </Col>
@@ -584,7 +584,7 @@ export default function Tecnico(props) {
                                                 name="cep"
                                                 onChange={e => setCep(cepMask(e.target.value))} />
                                             <InputGroupAddon addonType="append">
-                                                <spam class="btn btn-secondary disabled fa fa-truck"></spam>
+                                                <span className="btn btn-secondary disabled fa fa-truck"></span>
                                             </InputGroupAddon>
                                         </InputGroup>
                                     </Col>

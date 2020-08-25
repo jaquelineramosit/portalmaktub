@@ -159,7 +159,7 @@ export default function Adiantamentoos(props) {
                                                 name="valoradiantamento"
                                                 onChange={e => setValoradiantamento(reaisMask(e.target.value))} />
                                             <InputGroupAddon addonType="append">
-                                                <spam class="btn btn-secondary disabled fa fa-money"></spam>
+                                                <span className="btn btn-secondary disabled fa fa-money"></span>
                                             </InputGroupAddon>
                                         </InputGroup>
                                     </Col>
@@ -173,7 +173,7 @@ export default function Adiantamentoos(props) {
                                                 value={dataadiantamento}
                                                 onChange={e => setDataadiantamento(e.target.value)} />
                                             <InputGroupAddon addonType="append">
-                                                <spam class="btn btn-secondary disabled fa fa-calendar"></spam>
+                                                <span className="btn btn-secondary disabled fa fa-calendar"></span>
                                             </InputGroupAddon>
                                         </InputGroup>
                                     </Col>
@@ -185,7 +185,7 @@ export default function Adiantamentoos(props) {
                                                 value={dataquitacao}
                                                 onChange={e => setDataquitacao(e.target.value)} />
                                             <InputGroupAddon addonType="append">
-                                                <spam class="btn btn-secondary disabled fa fa-calendar"></spam>
+                                                <span className="btn btn-secondary disabled fa fa-calendar"></span>
                                             </InputGroupAddon>
                                         </InputGroup>
                                     </Col>

@@ -118,7 +118,7 @@ export default function Bandeira(props) {
                                                 onChange={e => setBandeira(e.target.value)} >
                                             </Input>
                                             <InputGroupAddon addonType="append">
-                                            <spam class="btn btn-secondary disabled fa fa-flag"></spam>
+                                            <span className="btn btn-secondary disabled fa fa-flag"></span>
                                             </InputGroupAddon>
                                         </InputGroup>
                                     </Col>

@@ -108,7 +108,7 @@ export default function StatusParceiro(props) {
                                                 onChange={e => setNomeparceiro(e.target.value)} >
                                             </Input>
                                             <InputGroupAddon addonType="append">
-                                            <spam class="btn btn-secondary disabled fa fa-handshake-o"></spam>
+                                            <span className="btn btn-secondary disabled fa fa-handshake-o"></span>
                                             </InputGroupAddon>
                                         </InputGroup>
                                     </Col>

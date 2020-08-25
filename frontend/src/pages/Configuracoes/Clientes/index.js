@@ -344,7 +344,7 @@ export default function Cliente(props) {
                                                 name="telefonefixo"
                                                 onChange={e => setTelefonefixo(telMask(e.target.value))} />
                                             <InputGroupAddon addonType="append">
-                                                <spam class="btn btn-secondary disabled icon-phone"></spam>
+                                                <span className="btn btn-secondary disabled icon-phone"></span>
                                             </InputGroupAddon>
                                         </InputGroup>
                                     </Col>
@@ -356,7 +356,7 @@ export default function Cliente(props) {
                                                 name="telefonecelular"
                                                 onChange={e => setTelefonecelular(celMask(e.target.value))} />
                                             <InputGroupAddon addonType="append">
-                                                <spam class="btn btn-secondary disabled icon-phone"></spam>
+                                                <span className="btn btn-secondary disabled icon-phone"></span>
                                             </InputGroupAddon>
                                         </InputGroup>
                                     </Col>
@@ -368,7 +368,7 @@ export default function Cliente(props) {
                                                 name="telefoneresponsavel"
                                                 onChange={e => setTelefoneresponsavel(telMask(e.target.value))} />
                                             <InputGroupAddon addonType="append">
-                                                <spam class="btn btn-secondary disabled icon-phone"></spam>
+                                                <span className="btn btn-secondary disabled icon-phone"></span>
                                             </InputGroupAddon>
                                         </InputGroup>
                                     </Col>
@@ -388,7 +388,7 @@ export default function Cliente(props) {
                                                 name="cep"
                                                 onChange={e => setCep(cepMask(e.target.value))} />
                                             <InputGroupAddon addonType="append">
-                                                <spam class="btn btn-secondary disabled fa fa-truck"></spam>
+                                                <span className="btn btn-secondary disabled fa fa-truck"></span>
                                             </InputGroupAddon>
                                         </InputGroup>
                                     </Col>

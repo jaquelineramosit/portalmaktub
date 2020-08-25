@@ -221,7 +221,7 @@ export default function Usuario(props) {
                                                 value={dataNasc}
                                                 onChange={e => setDatanasc(e.target.value)} />
                                             <InputGroupAddon addonType="append">
-                                                <spam class="btn btn-secondary disabled fa fa-calendar"></spam>
+                                                <span className="btn btn-secondary disabled fa fa-calendar"></span>
                                             </InputGroupAddon>
                                         </InputGroup>
                                     </Col>
@@ -260,7 +260,7 @@ export default function Usuario(props) {
                                                 name="telefone"
                                                 onChange={e => setTelefone(telMask(e.target.value))} />
                                             <InputGroupAddon addonType="append">
-                                                <spam class="btn btn-secondary disabled icon-phone"></spam>
+                                                <span className="btn btn-secondary disabled icon-phone"></span>
                                             </InputGroupAddon>
                                         </InputGroup>
 
@@ -273,7 +273,7 @@ export default function Usuario(props) {
                                                 name="celular"
                                                 onChange={e => setCelular(celMask(e.target.value))} />
                                             <InputGroupAddon addonType="append">
-                                                <spam class="btn btn-secondary disabled icon-screen-smartphone"></spam>
+                                                <span className="btn btn-secondary disabled icon-screen-smartphone"></span>
                                             </InputGroupAddon>
                                         </InputGroup>
                                     </Col>
@@ -295,7 +295,7 @@ export default function Usuario(props) {
                                                 name="telefonecttoemergencia"
                                                 onChange={e => settelefonecttoemergencia(celMask(e.target.value))} />
                                             <InputGroupAddon addonType="append">
-                                                <spam class="btn btn-secondary disabled icon-screen-smartphone"></spam>
+                                                <span className="btn btn-secondary disabled icon-screen-smartphone"></span>
                                             </InputGroupAddon>
                                         </InputGroup>
 
@@ -317,7 +317,7 @@ export default function Usuario(props) {
                                                 name="cep"
                                                 onChange={e => setCep(cepMask(e.target.value))} />
                                             <InputGroupAddon addonType="append">
-                                                <spam class="btn btn-secondary disabled fa fa-truck"></spam>
+                                                <span className="btn btn-secondary disabled fa fa-truck"></span>
                                             </InputGroupAddon>
                                         </InputGroup>
                                     </Col>
@@ -400,7 +400,7 @@ export default function Usuario(props) {
                                                 value={email}
                                                 onChange={e => setEmail(e.target.value)} />
                                             <InputGroupAddon addonType="append">
-                                                <spam class="btn btn-secondary disabled icon-envelope"></spam>
+                                                <span className="btn btn-secondary disabled icon-envelope"></span>
                                             </InputGroupAddon>
                                         </InputGroup>
 
@@ -427,7 +427,7 @@ export default function Usuario(props) {
                                                 value={login}
                                                 onChange={e => setLogin(e.target.value)} />
                                             <InputGroupAddon addonType="append">
-                                                <spam class="btn btn-secondary disabled icon-user"></spam>
+                                                <span className="btn btn-secondary disabled icon-user"></span>
                                             </InputGroupAddon>
                                         </InputGroup>
                                     </Col>
@@ -439,7 +439,7 @@ export default function Usuario(props) {
                                                 value={senhaForm}
                                                 onChange={e => setSenha(e.target.value)} />
                                             <InputGroupAddon addonType="append">
-                                                <spam class="btn btn-secondary disabled icon-lock"></spam>
+                                                <span className="btn btn-secondary disabled icon-lock"></span>
                                             </InputGroupAddon>
                                         </InputGroup>
 
