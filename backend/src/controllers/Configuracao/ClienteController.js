@@ -140,7 +140,7 @@ module.exports = {
             })
             
             //deleta os tipos de projeto x ferramenta e cadastra tudo de novo
-            await trx('clientebandeira').where('id', id).delete(clienteBandeira)
+            await trx('clientebandeira').where('clienteId', id).delete()
             await trx('clientebandeira').insert(clienteBandeira)
             trx.commit()
             return response.json({ clienteBandeira });
