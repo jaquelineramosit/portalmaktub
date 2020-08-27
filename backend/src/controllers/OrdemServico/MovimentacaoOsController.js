@@ -142,7 +142,7 @@ module.exports = {
         const { ordemservicoid, statusatendimentoid, statuspagamentoid,
             statuscobrancaid, observacao, ativo } = request.body;
 
-        await connection('movimentacaoos').where('id', id).update({
+        await connection('movimentacaoos').where('ordemservicoid', id).update({
             ordemservicoid,
             statusatendimentoid,
             statuspagamentoid,

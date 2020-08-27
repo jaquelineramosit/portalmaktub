@@ -9,6 +9,7 @@ import '../global.css';
 import { numMask } from '../mask'
 import api from '../services/api';
 import moment from 'moment';
+import CardListaStatus from '../components/CardListaStatus'
 const dateFormat = require('dateformat');
 let clienteFilialIdInicial = '';
 let clienteIdInicial = '';
@@ -22,41 +23,6 @@ let horasProjeto = 0;
 let custoAdicionalInicial = '';
 let qdeHoras = 0;
 let qdeHorasExtra = 0;
-
-// const TabClienteFilial = (props) => {
-
-  
-
-//   const clienteid = props.clienteid;
-//   const clientes = props.clientes;
-//   const clienteFiliais = props.clienteFiliais;
-//   const clientefilialid = props.clientefilialid;
-//   const dadosFilial = props.dadosFilial;
-
-//   return(
-//     <Fragment>
-      
-//     </Fragment>
-//   )
-// }
-
-const TabInfoProjeto = () => {
-
-  return(
-    <Fragment>
-      <div>Tab 2</div>
-    </Fragment>
-  )
-}
-
-const TabMovimentacaoOS = () => {
-
-  return(
-    <Fragment>
-      <div>Tab 3</div>
-    </Fragment>
-  )
-}
 
 const MultiTabs = (props) => {
 
@@ -80,8 +46,8 @@ const MultiTabs = (props) => {
     const [observacaoos, setObservacaoos] = useState('');
     const [nomediasemana, setNomediasemana] = useState('');
     const [horadecimal, setHoraDecimal] = useState(0);
-    const [horaentrada, setHoraentrada] = useState(0);
-    const [horasaida, setHorasaida] = useState(0);
+    const [horaentrada, setHoraentrada] = useState('00:00');
+    const [horasaida, setHorasaida] = useState('00:00');
     const [totalapagar, setTotalapagar] = useState(0);
     const [totalareceber, setTotalareceber] = useState(0);
     const [diadasemana, setDiadasemana] = useState(0);
@@ -429,6 +395,30 @@ const MultiTabs = (props) => {
       }
   };
 
+  async function handleAtualizaMovimentacao(e) {
+    e.preventDefault();
+    alert('oi');
+    const dataMovimentacao = {
+        statusatendimentoid, 
+        statuscobrancaid,
+        statuspagamentoid,
+        observacao,
+        ativo: true
+    }
+
+    try {
+        const response = await api.put(`/movimentacao-os/${cadosdIdParam}`, dataMovimentacao, {
+            headers: {
+                Authorization: 1,
+            }
+        });
+        alert(`Movimentação atualizada com sucesso.`);
+        setRedirect(true);
+    } catch (err) {
+
+        alert('Erro na atualização, tente novamente.');
+    }
+  }
 
   async function handleOs(e) {
       e.preventDefault();
@@ -457,6 +447,8 @@ const MultiTabs = (props) => {
           statuscobrancaid, 
           observacao
       };
+
+      console.log(action)
 
       if (action === 'edit') {
 
@@ -490,523 +482,526 @@ const MultiTabs = (props) => {
           }
       }
   }
-    const [key, setKey] = useState('home');
+    const [key, setKey] = useState('clientefilial');
   
     return (
-      <div className="animated fadeIn">
-          <Form onSubmit={handleOs} onReset={handleReset}>
-              <Row>
-                  <Col xs="12" md="12">
-                      <Card className="mb-0">
-                          {/* card Ordem Serviço */}
-                          <CardHeader>
-                        <i className="icon-wrench"></i>
-                        <strong>Ordem de Serviço</strong>
-                        {action === 'novo' ? <small> nova</small> : <small> editar</small>}
-                    </CardHeader>
-                          <CardBody>
-                              <FormGroup row>
-                              <Col md="4">
-                                  <Label htmlFor="numeroOs">Número da OS</Label>
-                                  <Input type="text" required id="txtNumeroOs" placeholder="" readOnly
-                                      value={numeroos}
-                                      name="numeroos"
-                                      onChange={e => setNumeroos(e.target.value)}
-                                  />
-                              </Col>
-                          </FormGroup>
-                              <FormGroup row>
-                              <Col md="4">
-                                  <Label htmlFor="dataSolicitacao">Data da Solicitação</Label>
-                                  <InputGroup>
-                                      <Input type="date" required id="txtDataSolicitacao"
-                                          value={datasolicitacao}
-                                          name="datasolicitacao"
-                                          onChange={e => setDatasolicitacao(e.target.value)}
-                                      />
-                                      <InputGroupAddon addonType="append">
-                                          <span className="btn btn-secondary disabled fa fa-calendar fa-lg"></span>
-                                      </InputGroupAddon>
-                                  </InputGroup>
-                              </Col>
-                              <Col md="4">
-                                  <Label htmlFor="dataatendimento">Data atendimento</Label>
-                                  <InputGroup>
-                                      <Input type="date" required id="txtDataAtendimento"
-                                          value={dataatendimento}
-                                          name="dataatendimento"
-                                          onChange={handleInputChange}
-                                      />
-
-                                      <InputGroupAddon addonType="append">
-                                          <span className="btn btn-secondary disabled fa fa-calendar fa-lg"></span>
-                                      </InputGroupAddon>
-                                  </InputGroup>
-                              </Col>
-                              <Col md="4">
-                                  <Label htmlFor="didasemana">Dia Da semana</Label>
-                                  <Input type="text" required id="txtDiasemana" disabled
-                                      name="nomediasemana"
-                                      value={nomediasemana}
-                                  />
-                              </Col>
-                          </FormGroup>
-                          </CardBody>                           
-                      </Card>
-                      <Card>
-                          <CardBody>                                                          
-                              <Tabs
-                                id="controlled-tab-example"
-                                activeKey={key}
-                                onSelect={(k) => setKey(k)}
-                              >
-                                  <Tab 
-                                    eventKey="home" 
-                                    title={
-                                        <Fragment>
-                                          <i className="fa fa-handshake-o"></i><strong><span className="ml-2">Cliente / Filial </span> </strong>                                                                                  
-                                        </Fragment>
-                                    }                                 
-                                 >
-                                    <FormGroup row>
-                                        <Col md="4">
-                                            <Label htmlFor="clienteId">Cliente</Label>
-                                            <InputGroup>
-                                                <Input type="select" id="cboCliente"
-                                                    value={clienteid}
-                                                    name="clienteid"
-                                                    onChange={handleInputChange}
-                                                >
-                                                    <option value={undefined} defaultValue>Selecione...</option>
-                                                    {clientes.map(cliente => (
-                                                        <option key={`cliente${cliente.id}`} value={cliente.id}>{cliente.nomecliente}</option>
-                                                    ))}
-                                                </Input>
-                                                <InputGroupAddon addonType="append">
-                                                    <span className="btn btn-secondary disabled fa fa-handshake-o"></span>
-                                                </InputGroupAddon>
-                                            </InputGroup>
-                                        </Col>
-                                        <Col md="4">
-                                            <Label htmlFor="clienteFilialId">Filial do Cliente</Label>
-                                            <InputGroup>
-                                                <Input required type="select" id="cboClienteFilial"
-                                                    value={clientefilialid}
-                                                    name="clientefilialid"
-                                                    onChange={handleInputChange}
-                                                >
-                                                    <option value={undefined} defaultValue>Selecione...</option>
-                                                    {clienteFiliais.map(clienteFilial => (
-                                                        <option key={clienteFilial.id} value={clienteFilial.id}>{clienteFilial.nomefilial}</option>
-                                                    ))}
-                                                </Input>
-                                                <InputGroupAddon addonType="append">
-                                                    <span className="btn btn-secondary disabled fa fa-building-o "></span>
-                                                </InputGroupAddon>
-                                            </InputGroup>
-                                        </Col>
-                                        <Col md="4">
-                                            <Label htmlFor="bandeiraId">Bandeira</Label>
-                                            <InputGroup>
-                                                <Input type="text" id="txtBandeira" readOnly
-                                                    value={dadosFilial.nomebandeira}
-                                                    name="nomebandeira"
-                                                />
-                                            </InputGroup>
-                                        </Col>
-                                    </FormGroup>
-                                    <FormGroup row>
-                                        <Col md="2">
-                                            <Label htmlFor="telefoneFixo">Telefone Fixo</Label>
-                                            <InputGroup>
-                                                <Input type="text" id="txtTelefoneFixo" readOnly
-                                                    value={dadosFilial.telefonefixo}
-                                                    name="telefonefixo"
-                                                />
-                                            </InputGroup>
-                                        </Col>
-                                        <Col md="2">
-                                            <Label htmlFor="telefoneResponsavel">Tel. Responsável</Label>
-                                            <InputGroup>
-                                                <Input type="text" id="txtTelefoneResponsavel" readOnly
-                                                    value={dadosFilial.telefoneresponsavel}
-                                                    name="telefoneresponsavel"
-                                                />
-
-                                            </InputGroup>
-                                        </Col>
-                                        <Col md="2">
-                                            <Label htmlFor="lblCed">CED</Label>
-                                            <Input type="text" readOnly required id="txtCed"
-                                                value={dadosFilial.ced}
-                                                name="ced"
-                                            />
-                                        </Col>
-                                        <Col md="2">
-                                            <Label htmlFor="lblCep">CEP</Label>
-                                            <Input type="text" readOnly required id="txtCep"
-                                                value={dadosFilial.cep}
-                                                name="cep"
-                                            />
-                                        </Col>
-                                        <Col md="4">
-                                            <Label htmlFor="lblLogradouro">Logradouro</Label>
-                                            <InputGroup>
-                                                <Input required type="text" readOnly id="txtLogradouro"
-                                                    value={dadosFilial.logradouro}
-                                                    name="logradouro"
-                                                />
-                                            </InputGroup>
-                                        </Col>
-
-                                    </FormGroup>
-                                    <FormGroup row>
-                                        <Col md="2">
-                                            <Label htmlFor="lblNumero">Nº</Label>
-                                            <InputGroup>
-                                                <Input type="text" id="txtNumero" readOnly
-                                                    value={dadosFilial.numero}
-                                                    name="numero"
-                                                />
-                                            </InputGroup>
-                                        </Col>
-                                        <Col md="2">
-                                            <Label htmlFor="lblComplemento">Complemento</Label>
-                                            <InputGroup>
-                                                <Input type="text" id="txtComplemento" readOnly
-                                                    value={dadosFilial.complemento}
-                                                    name="complemento"
-                                                />
-                                            </InputGroup>
-                                        </Col>
-                                        <Col md="2">
-                                            <Label htmlFor="lblBairro">Bairro</Label>
-                                            <Input type="text" required id="txtBairro" readOnly
-                                                value={dadosFilial.bairro}
-                                                name="bairro"
-                                            />
-                                        </Col>
-                                        <Col md="2">
-                                            <Label htmlFor="lblEstado">Estado</Label>
-                                            <InputGroup>
-                                                <Input required type="text" id="txtEstado" readOnly
-                                                    value={dadosFilial.estado}
-                                                    name="estado"
-                                                />
-                                            </InputGroup>
-                                        </Col>
-                                        <Col md="4">
-                                            <Label htmlFor="lblCidade">Cidade</Label>
-                                            <Input type="text" required id="txtCidade" readOnly
-                                                value={dadosFilial.cidade}
-                                                name="cidade"
-                                            />
-                                        </Col>
-                                    </FormGroup>
-                                    <FormGroup row>
-                                        <Col md="4">
-                                            <Label htmlFor="lblHorarioInicioSemana">Horario Início da semana</Label>
-                                            <InputGroup>
-                                                <Input type="time" required id="txtHorarioInicioSemana" readOnly
-                                                    value={dadosFilial.horarioiniciosemana}
-                                                    name="horarioiniciosemana"
-                                                />
-                                            </InputGroup>
-                                        </Col>
-                                        <Col md="4">
-                                            <Label htmlFor="lblHorarioInicioSabado">Horario Início do Sábado</Label>
-                                            <InputGroup>
-                                                <Input type="time" required id="txtHorarioInicioSabado" readOnly
-                                                    value={dadosFilial.horarioiniciosabado}
-                                                    name="horarioiniciosabado"
-                                                />
-                                            </InputGroup>
-                                        </Col>
-                                        <Col md="4">
-                                            <Label htmlFor="lblHorarioInicioSabado">Horario Início do Domingo</Label>
-                                            <InputGroup>
-                                                <Input type="time" required id="txtHorarioInicioDomingo" readOnly
-                                                    value={dadosFilial.horarioiniciodomingo}
-                                                    name="horarioiniciodomingo"
-                                                />
-                                            </InputGroup>
-                                        </Col>
-                                    </FormGroup>
-                                    <FormGroup row>
-                                        <Col md="4">
-                                            <Label htmlFor="lblHorarioFimSemana">Horario Fim da semana</Label>
-                                            <InputGroup>
-                                                <Input type="time" required id="txtHorarioFimSemana" readOnly
-                                                    value={dadosFilial.horariofimsemana}
-                                                    name="horariofimsemana"
-                                                />
-                                            </InputGroup>
-                                        </Col>
-                                        <Col md="4">
-                                            <Label htmlFor="lblHorarioFimSabado">Horario Fim do Sábado</Label>
-                                            <InputGroup>
-                                                <Input type="time" required id="txtHorarioFimSabado" readOnly
-                                                    value={dadosFilial.horariofimsabado}
-                                                    name="horariofimsabado"
-                                                />
-                                            </InputGroup>
-                                        </Col>
-                                        <Col md="4">
-                                            <Label htmlFor="lblHorarioFimDomingo">Horario Fim do Domingo</Label>
-                                            <InputGroup>
-                                                <Input type="time" required id="txtHorarioFimDomingo" readOnly
-                                                    value={dadosFilial.horariofimdomingo}
-                                                    name="horariofimdomingo"
-                                                />
-                                            </InputGroup>
-                                        </Col>
-                                    </FormGroup>
-                                  </Tab>
-                                  <Tab 
-                                    eventKey="profile" 
-                                    title={
-                                      <Fragment>
-                                        <i className="icon-note"></i><strong><span className="ml-2">Informações do Projeto</span></strong>
-                                      </Fragment>
-                                  } 
-                                  >
-                                      <FormGroup row>
-                                        <Col md="4">
-                                            <Label htmlFor="tiposervicoid">Tipo de Projeto</Label>
-                                            <InputGroup>
-                                                <Input required type="select" id="cboTipoServico"
-                                                    value={tipoprojetoid}
-                                                    name="tipoprojetoid"
-                                                    onChange={handleInputChange}>
-                                                    <option value={undefined} defaultValue>Selecione...</option>
-                                                    {tipoProjeto.map(tipoProjeto => (
-                                                        <option key={`tipoProjeto${tipoProjeto.id}`} value={tipoProjeto.id}>{tipoProjeto.nometipoprojeto}</option>
-                                                    ))}
-                                                </Input>
-                                                <InputGroupAddon addonType="append">
-                                                    <span className="btn btn-secondary disabled fa icon-wrench"></span>
-                                                </InputGroupAddon>
-                                            </InputGroup>
-                                        </Col>
-                                        <Col md="4">
-                                            <Label htmlFor="tecnicoId">Técnico</Label>
-                                            <InputGroup>
-                                                <Input required type="select" id="cobTecnico"
-                                                    value={tecnicoid}
-                                                    name="tecnicoid"
-                                                    onChange={e => setTecnicoid(e.target.value)} >
-                                                    <option value={undefined} defaultValue>Selecione...</option>
-                                                    {tecnicos.map(tecnico => (
-                                                        <option key={`tecnicoid${tecnico.id}`} value={tecnico.id}>{tecnico.nometecnico}</option>
-                                                    ))}
-                                                </Input>
-                                                <InputGroupAddon addonType="append">
-                                                    <span className="btn btn-secondary disabled fa fa-user-md"></span>
-                                                </InputGroupAddon>
-                                            </InputGroup>
-                                        </Col>
-                                    </FormGroup>
-                                    <FormGroup row>
-                                        <Col md="12">
-                                            <Label htmlFor="descricaoservico">Descrição do Projeto</Label>
-                                            <InputGroup>
-                                                <Input id="txtDescricaoServico" rows="5" required type="textarea" placeholder="Descrição do Serviço"
-                                                    value={descricaoservico}
-                                                    name="descricaoservico"
-                                                    onChange={e => setDescricaoservico(e.target.value)}
-                                                />
-                                            </InputGroup>
-                                        </Col>
-                                    </FormGroup>
-                                    <FormGroup row>
-                                        <Col md="4">
-                                            <Label htmlFor="horaEntrada">Hora de Entrada</Label>
-                                            <InputGroup>
-                                                <Input type="time" required id="txtHoraEntrada"
-                                                    placeholder="00:00:00"
-                                                    value={horaentrada}
-                                                    name="horaentrada"
-                                                    onChange={handleInputChange}
-                                                />
-                                                <InputGroupAddon addonType="append">
-                                                    <span className="btn btn-secondary disabled fa fa-clock-o"></span>
-                                                </InputGroupAddon>
-                                            </InputGroup>
-                                        </Col>
-                                        <Col md="4">
-                                            <Label htmlFor="horaSaida">Hora de Saída</Label>
-                                            <InputGroup>
-                                                <Input type="time" required name="time" id="txtHoraSaida"
-                                                    value={horasaida}
-                                                    name="horasaida"
-                                                    onChange={handleInputChange}
-                                                />
-                                                <InputGroupAddon addonType="append">
-                                                    <span className="btn btn-secondary disabled fa fa-clock-o"></span>
-                                                </InputGroupAddon>
-                                            </InputGroup>
-                                        </Col>
-                                        <Col md="4">
-                                            <Label htmlFor="qtHoras">Quantidade de Horas</Label>
-                                            <InputGroup>
-                                                <Input type="text" id="txtqtdHoras" readOnly
-                                                    value={qtdehoras}
-                                                    name="qtdehoras"
-                                                    placeholder="00:00"
-                                                    // onChange={handleInputChange}
-                                                />
-                                                <InputGroupAddon addonType="append">
-                                                    <span className="btn btn-secondary disabled fa fa-clock-o"></span>
-                                                </InputGroupAddon>
-                                            </InputGroup>
-                                        </Col>
-                                    </FormGroup>
-                                    <FormGroup row>
-                                        <Col md="4">
-                                            <Label htmlFor="valorPpagar">Valor a Pagar</Label>
-                                            <InputGroup>
-                                                {/* <Input type="text" id="txtValorPagar" placeholder="R$00,00"
-                                                    value={valorapagar}
-                                                    name="valorapagar"
-                                                    onChange={e => setValorapagar(e.target.value)}
-                                                /> */}
-                                                <NumberFormat
-                                                    id={'txtValorPagar'}
-                                                    name={'valorapagar'}
-                                                    className={'form-control'}
-                                                    decimalScale={2}
-                                                    fixedDecimalScale={true}
-                                                    thousandSeparator={'.'}
-                                                    decimalSeparator={','}
-                                                    prefix={'R$ '}
-                                                    placeholder={'R$ 0,00'}
-                                                    value={valorapagarFormatado}
-                                                    onValueChange={(values) => {
-                                                        const {formattedValue, value} = values;
-                                                        setValorapagar(values.value);
-                                                        setValorapagarFormatado(values.formattedValue);
-                                                        valorPagarInicial = values.value;
-                                                        TotaisPagarReceber();
-                                                    }}
-                                                />
-                                                <InputGroupAddon addonType="append">
-                                                    <span className="btn btn-secondary disabled fa fa-money"></span>
-                                                </InputGroupAddon>
-                                            </InputGroup>
-                                        </Col>
-                                        <Col md="4">
-                                            <Label htmlFor="valorReceber">Valor a Receber</Label>
-                                            <InputGroup>
-                                                {/* <Input type="text" id="txtValorReceber" placeholder="R$00,00"
-                                                    value={valorareceber}
-                                                    name="valorareceber"
-                                                    onChange={e => setValorareceber(e.target.value)}
-                                                /> */}
-                                                <NumberFormat
-                                                    id={'txtValorReceber'}
-                                                    name={'valorareceber'}
-                                                    className={'form-control'}
-                                                    decimalScale={2}
-                                                    fixedDecimalScale={true}
-                                                    thousandSeparator={'.'}
-                                                    decimalSeparator={','}
-                                                    prefix={'R$ '}
-                                                    placeholder={'R$ 0,00'}
-                                                    value={valorareceberFormatado}
-                                                    onValueChange={(values) => {
-                                                        const {formattedValue, value} = values;
-                                                        setValorareceber(values.value);
-                                                        setValorareceberFormatado(values.formattedValue);
-                                                        valorReceberInicial = values.value;
-                                                        TotaisPagarReceber();
-                                                    }}
-                                                />
-                                                <InputGroupAddon addonType="append">
-                                                    <span className="btn btn-secondary disabled fa fa-money"></span>
-                                                </InputGroupAddon>
-                                            </InputGroup>
-                                        </Col>
-                                        <Col md="4">
-                                            <Label htmlFor="horaextra">Hora Extra</Label>
-                                            <InputGroup>
-                                                <Input type="text" id="txtHoraExtra" placeholder="00:00" readOnly
-                                                    value={horaextra}
-                                                    name="horaextra"
-                                                />
-                                                <InputGroupAddon addonType="append">
-                                                    <span className="btn btn-secondary disabled fa fa-clock-o"></span>
-                                                </InputGroupAddon>
-                                            </InputGroup>
-                                        </Col>
-                                    </FormGroup>
-                                    <FormGroup row>
+        <div className="animated fadeIn">
+            {redirect && <Redirect to="/lista-ordem-servico" />}
+            <Form onSubmit={handleOs} onReset={handleReset}>
+                <Row>
+                    <Col xs="12" md="12">
+                        <Card className="mb-0">
+                            {/* card Ordem Serviço */}
+                            <CardHeader>
+                                <i className="icon-wrench"></i>
+                                <strong>Ordem de Serviço</strong>
+                                {action === 'novo' ? <small> nova</small> : <small> editar</small>}
+                            </CardHeader>
+                            <CardBody>
+                                <FormGroup row>
                                     <Col md="4">
-                                        <Label htmlFor="totalpagar">Total a pagar</Label>
-                                        <InputGroup>
-                                            <Input type="text" id="txtTotalPagar" readOnly
-                                                value={Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(totalapagar)}
-                                                name="totalapagar"
-                                            />
-                                            <InputGroupAddon addonType="append">
-                                                <Button type="button" color="secondary fa fa-money"></Button>
-                                            </InputGroupAddon>
-                                        </InputGroup>
-                                    </Col>
-                                    <Col md="4">
-                                        <Label htmlFor="totalreceber">Total a Receber</Label>
-                                        <InputGroup>
-                                            <Input type="text" id="txtTotalReceber" readOnly
-                                                value={Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(totalareceber)}
-                                                name="totalareceber"
-                                            />
-                                            <InputGroupAddon addonType="append">
-                                                <Button type="button" color="secondary fa fa-money"></Button>
-                                            </InputGroupAddon>
-                                        </InputGroup>
-                                    </Col>
-                                    <Col md="4">
-                                        <Label htmlFor="custoAdicional">Custo Adicional</Label>
-                                        <InputGroup>
-                                            {/* <Input type="text" id="txtCustoAdicional" placeholder="R$00,00"
-                                                value={custoadicional}
-                                                name="custoadicional"
-                                                onChange={e => setCustoadicional(reaisMask(e.target.value))}
-                                            /> */}
-                                            <NumberFormat
-                                                id={'txtCustoAdicional'}
-                                                name={'custoadicional'}
-                                                className={'form-control'}
-                                                decimalScale={2}
-                                                fixedDecimalScale={true}
-                                                thousandSeparator={'.'}
-                                                decimalSeparator={','}
-                                                prefix={'R$ '}
-                                                value={custoadicionalFormatado}
-                                                onValueChange={(values) => {
-                                                    const {formattedValue, value} = values;
-                                                    setCustoadicional(values.value);
-                                                    setCustoadicionalFormatado(values.formattedValue);
-                                                    custoAdicionalInicial = values.value;
-                                                    TotaisPagarReceber();
-                                                }}
-                                            />
-                                            <InputGroupAddon addonType="append">
-                                                <Button type="button" color="secondary fa fa-money"></Button>
-                                            </InputGroupAddon>
-                                        </InputGroup>
+                                        <Label htmlFor="numeroOs">Número da OS</Label>
+                                        <Input type="text" id="txtNumeroOs" readOnly
+                                            value={numeroos}
+                                            name="numeroos"
+                                            onChange={e => setNumeroos(e.target.value)}
+                                        />
                                     </Col>
                                 </FormGroup>
-                                  </Tab>
-                                  <Tab 
-                                    eventKey="contact" 
-                                    title={
-                                      <Fragment>
-                                        <i className="fa fa-arrows"></i><strong><span className="ml-2">Movimentação de OS</span></strong>
-                                      </Fragment>
-                                  } 
-                                  >
-                                      <Row>
-                                        <Col md="8">
+                                <FormGroup row>
+                                    <Col md="4">
+                                        <Label htmlFor="dataSolicitacao">Data da Solicitação</Label>
+                                        <InputGroup>
+                                            <Input type="date" required id="txtDataSolicitacao"
+                                                value={datasolicitacao}
+                                                name="datasolicitacao"
+                                                onChange={e => setDatasolicitacao(e.target.value)}
+                                            />
+                                            <InputGroupAddon addonType="append">
+                                                <span className="btn btn-secondary disabled fa fa-calendar fa-lg"></span>
+                                            </InputGroupAddon>
+                                        </InputGroup>
+                                    </Col>
+                                    <Col md="4">
+                                        <Label htmlFor="dataatendimento">Data atendimento</Label>
+                                        <InputGroup>
+                                            <Input type="date" required id="txtDataAtendimento"
+                                                value={dataatendimento}
+                                                name="dataatendimento"
+                                                onChange={handleInputChange}
+                                            />
+                                            <InputGroupAddon addonType="append">
+                                                <span className="btn btn-secondary disabled fa fa-calendar fa-lg"></span>
+                                            </InputGroupAddon>
+                                        </InputGroup>
+                                    </Col>
+                                    <Col md="4">
+                                        <Label htmlFor="didasemana">Dia Da semana</Label>
+                                        <Input type="text" required id="txtDiasemana" disabled
+                                            name="nomediasemana"
+                                            value={nomediasemana}
+                                        />
+                                    </Col>
+                                </FormGroup>
+                            </CardBody>                         
+                        </Card>
+                        <Card>
+                            <CardBody>                                                          
+                                <Tabs
+                                    id="controlled-tab-example"
+                                    activeKey={key}
+                                    onSelect={(k) => setKey(k)}
+                                >
+                                    {/* Tab1. CLiente / Filial */}
+                                    <Tab 
+                                        eventKey="clientefilial" 
+                                        title={
+                                            <Fragment>
+                                                <i className="fa fa-handshake-o"></i><strong><span className="ml-2">Cliente / Filial </span> </strong>                                                                                  
+                                            </Fragment>
+                                        }                                 
+                                    >
+                                        <FormGroup row>
+                                            <Col md="4">
+                                                <Label htmlFor="clienteId">Cliente</Label>
+                                                <InputGroup>
+                                                    <Input type="select" id="cboCliente"
+                                                        value={clienteid}
+                                                        name="clienteid"
+                                                        onChange={handleInputChange}
+                                                    >
+                                                        <option value={undefined} defaultValue>Selecione...</option>
+                                                        {clientes.map(cliente => (
+                                                            <option key={`cliente${cliente.id}`} value={cliente.id}>{cliente.nomecliente}</option>
+                                                        ))}
+                                                    </Input>
+                                                    <InputGroupAddon addonType="append">
+                                                        <span className="btn btn-secondary disabled fa fa-handshake-o"></span>
+                                                    </InputGroupAddon>
+                                                </InputGroup>
+                                            </Col>
+                                            <Col md="4">
+                                                <Label htmlFor="clienteFilialId">Filial do Cliente</Label>
+                                                <InputGroup>
+                                                    <Input required type="select" id="cboClienteFilial"
+                                                        value={clientefilialid}
+                                                        name="clientefilialid"
+                                                        onChange={handleInputChange}
+                                                    >
+                                                        <option value={undefined} defaultValue>Selecione...</option>
+                                                        {clienteFiliais.map(clienteFilial => (
+                                                            <option key={clienteFilial.id} value={clienteFilial.id}>{clienteFilial.nomefilial}</option>
+                                                        ))}
+                                                    </Input>
+                                                    <InputGroupAddon addonType="append">
+                                                        <span className="btn btn-secondary disabled fa fa-building-o "></span>
+                                                    </InputGroupAddon>
+                                                </InputGroup>
+                                            </Col>
+                                            <Col md="4">
+                                                <Label htmlFor="bandeiraId">Bandeira</Label>
+                                                <InputGroup>
+                                                    <Input type="text" id="txtBandeira" readOnly
+                                                        value={dadosFilial.nomebandeira}
+                                                        name="nomebandeira"
+                                                    />
+                                                </InputGroup>
+                                            </Col>
+                                        </FormGroup>
+                                        <FormGroup row>
+                                            <Col md="2">
+                                                <Label htmlFor="telefoneFixo">Telefone Fixo</Label>
+                                                <InputGroup>
+                                                    <Input type="text" id="txtTelefoneFixo" readOnly
+                                                        value={dadosFilial.telefonefixo}
+                                                        name="telefonefixo"
+                                                    />
+                                                </InputGroup>
+                                            </Col>
+                                            <Col md="2">
+                                                <Label htmlFor="telefoneResponsavel">Tel. Responsável</Label>
+                                                <InputGroup>
+                                                    <Input type="text" id="txtTelefoneResponsavel" readOnly
+                                                        value={dadosFilial.telefoneresponsavel}
+                                                        name="telefoneresponsavel"
+                                                    />
+
+                                                </InputGroup>
+                                            </Col>
+                                            <Col md="2">
+                                                <Label htmlFor="lblCed">CED</Label>
+                                                <Input type="text" readOnly required id="txtCed"
+                                                    value={dadosFilial.ced}
+                                                    name="ced"
+                                                />
+                                            </Col>
+                                            <Col md="2">
+                                                <Label htmlFor="lblCep">CEP</Label>
+                                                <Input type="text" readOnly required id="txtCep"
+                                                    value={dadosFilial.cep}
+                                                    name="cep"
+                                                />
+                                            </Col>
+                                            <Col md="4">
+                                                <Label htmlFor="lblLogradouro">Logradouro</Label>
+                                                <InputGroup>
+                                                    <Input required type="text" readOnly id="txtLogradouro"
+                                                        value={dadosFilial.logradouro}
+                                                        name="logradouro"
+                                                    />
+                                                </InputGroup>
+                                            </Col>
+
+                                        </FormGroup>
+                                        <FormGroup row>
+                                            <Col md="2">
+                                                <Label htmlFor="lblNumero">Nº</Label>
+                                                <InputGroup>
+                                                    <Input type="text" id="txtNumero" readOnly
+                                                        value={dadosFilial.numero}
+                                                        name="numero"
+                                                    />
+                                                </InputGroup>
+                                            </Col>
+                                            <Col md="2">
+                                                <Label htmlFor="lblComplemento">Complemento</Label>
+                                                <InputGroup>
+                                                    <Input type="text" id="txtComplemento" readOnly
+                                                        value={dadosFilial.complemento}
+                                                        name="complemento"
+                                                    />
+                                                </InputGroup>
+                                            </Col>
+                                            <Col md="2">
+                                                <Label htmlFor="lblBairro">Bairro</Label>
+                                                <Input type="text" required id="txtBairro" readOnly
+                                                    value={dadosFilial.bairro}
+                                                    name="bairro"
+                                                />
+                                            </Col>
+                                            <Col md="2">
+                                                <Label htmlFor="lblEstado">Estado</Label>
+                                                <InputGroup>
+                                                    <Input required type="text" id="txtEstado" readOnly
+                                                        value={dadosFilial.estado}
+                                                        name="estado"
+                                                    />
+                                                </InputGroup>
+                                            </Col>
+                                            <Col md="4">
+                                                <Label htmlFor="lblCidade">Cidade</Label>
+                                                <Input type="text" required id="txtCidade" readOnly
+                                                    value={dadosFilial.cidade}
+                                                    name="cidade"
+                                                />
+                                            </Col>
+                                        </FormGroup>
+                                        <FormGroup row>
+                                            <Col md="4">
+                                                <Label htmlFor="lblHorarioInicioSemana">Horario Início da semana</Label>
+                                                <InputGroup>
+                                                    <Input type="time" required id="txtHorarioInicioSemana" readOnly
+                                                        value={dadosFilial.horarioiniciosemana}
+                                                        name="horarioiniciosemana"
+                                                    />
+                                                </InputGroup>
+                                            </Col>
+                                            <Col md="4">
+                                                <Label htmlFor="lblHorarioInicioSabado">Horario Início do Sábado</Label>
+                                                <InputGroup>
+                                                    <Input type="time" required id="txtHorarioInicioSabado" readOnly
+                                                        value={dadosFilial.horarioiniciosabado}
+                                                        name="horarioiniciosabado"
+                                                    />
+                                                </InputGroup>
+                                            </Col>
+                                            <Col md="4">
+                                                <Label htmlFor="lblHorarioInicioSabado">Horario Início do Domingo</Label>
+                                                <InputGroup>
+                                                    <Input type="time" required id="txtHorarioInicioDomingo" readOnly
+                                                        value={dadosFilial.horarioiniciodomingo}
+                                                        name="horarioiniciodomingo"
+                                                    />
+                                                </InputGroup>
+                                            </Col>
+                                        </FormGroup>
+                                        <FormGroup row>
+                                            <Col md="4">
+                                                <Label htmlFor="lblHorarioFimSemana">Horario Fim da semana</Label>
+                                                <InputGroup>
+                                                    <Input type="time" required id="txtHorarioFimSemana" readOnly
+                                                        value={dadosFilial.horariofimsemana}
+                                                        name="horariofimsemana"
+                                                    />
+                                                </InputGroup>
+                                            </Col>
+                                            <Col md="4">
+                                                <Label htmlFor="lblHorarioFimSabado">Horario Fim do Sábado</Label>
+                                                <InputGroup>
+                                                    <Input type="time" required id="txtHorarioFimSabado" readOnly
+                                                        value={dadosFilial.horariofimsabado}
+                                                        name="horariofimsabado"
+                                                    />
+                                                </InputGroup>
+                                            </Col>
+                                            <Col md="4">
+                                                <Label htmlFor="lblHorarioFimDomingo">Horario Fim do Domingo</Label>
+                                                <InputGroup>
+                                                    <Input type="time" required id="txtHorarioFimDomingo" readOnly
+                                                        value={dadosFilial.horariofimdomingo}
+                                                        name="horariofimdomingo"
+                                                    />
+                                                </InputGroup>
+                                            </Col>
+                                        </FormGroup>
+                                    </Tab>
+                                    {/* Tab2. Informações do Projeto< */}
+                                    <Tab 
+                                        eventKey="projetos" 
+                                        title={
+                                        <Fragment>
+                                            <i className="icon-note"></i><strong><span className="ml-2">Informações do Projeto</span></strong>
+                                        </Fragment>
+                                        } 
+                                    >
+                                        <FormGroup row>
+                                            <Col md="4">
+                                                <Label htmlFor="tiposervicoid">Tipo de Projeto</Label>
+                                                <InputGroup>
+                                                    <Input required type="select" id="cboTipoServico"
+                                                        value={tipoprojetoid}
+                                                        name="tipoprojetoid"
+                                                        onChange={handleInputChange}>
+                                                        <option value={undefined} defaultValue>Selecione...</option>
+                                                        {tipoProjeto.map(tipoProjeto => (
+                                                            <option key={`tipoProjeto${tipoProjeto.id}`} value={tipoProjeto.id}>{tipoProjeto.nometipoprojeto}</option>
+                                                        ))}
+                                                    </Input>
+                                                    <InputGroupAddon addonType="append">
+                                                        <span className="btn btn-secondary disabled fa icon-wrench"></span>
+                                                    </InputGroupAddon>
+                                                </InputGroup>
+                                            </Col>
+                                            <Col md="4">
+                                                <Label htmlFor="tecnicoId">Técnico</Label>
+                                                <InputGroup>
+                                                    <Input required type="select" id="cobTecnico"
+                                                        value={tecnicoid}
+                                                        name="tecnicoid"
+                                                        onChange={e => setTecnicoid(e.target.value)} >
+                                                        <option value={undefined} defaultValue>Selecione...</option>
+                                                        {tecnicos.map(tecnico => (
+                                                            <option key={`tecnicoid${tecnico.id}`} value={tecnico.id}>{tecnico.nometecnico}</option>
+                                                        ))}
+                                                    </Input>
+                                                    <InputGroupAddon addonType="append">
+                                                        <span className="btn btn-secondary disabled fa fa-user-md"></span>
+                                                    </InputGroupAddon>
+                                                </InputGroup>
+                                            </Col>
+                                        </FormGroup>
+                                        <FormGroup row>
+                                            <Col md="12">
+                                                <Label htmlFor="descricaoservico">Descrição do Projeto</Label>
+                                                <InputGroup>
+                                                    <Input id="txtDescricaoServico" rows="5" required type="textarea" placeholder="Descrição do Projeto"
+                                                        value={descricaoservico}
+                                                        name="descricaoservico"
+                                                        onChange={e => setDescricaoservico(e.target.value)}
+                                                    />
+                                                </InputGroup>
+                                            </Col>
+                                        </FormGroup>
+                                        <FormGroup row>
+                                            <Col md="4">
+                                                <Label htmlFor="horaEntrada">Hora de Entrada</Label>
+                                                <InputGroup>
+                                                    <Input type="time" required id="txtHoraEntrada"
+                                                        placeholder="00:00:00"
+                                                        value={horaentrada}
+                                                        name="horaentrada"
+                                                        onChange={handleInputChange}
+                                                    />
+                                                    <InputGroupAddon addonType="append">
+                                                        <span className="btn btn-secondary disabled fa fa-clock-o"></span>
+                                                    </InputGroupAddon>
+                                                </InputGroup>
+                                            </Col>
+                                            <Col md="4">
+                                                <Label htmlFor="horaSaida">Hora de Saída</Label>
+                                                <InputGroup>
+                                                    <Input type="time" required name="time" id="txtHoraSaida"
+                                                        value={horasaida}
+                                                        name="horasaida"
+                                                        onChange={handleInputChange}
+                                                    />
+                                                    <InputGroupAddon addonType="append">
+                                                        <span className="btn btn-secondary disabled fa fa-clock-o"></span>
+                                                    </InputGroupAddon>
+                                                </InputGroup>
+                                            </Col>
+                                            <Col md="4">
+                                                <Label htmlFor="qtHoras">Quantidade de Horas</Label>
+                                                <InputGroup>
+                                                    <Input type="text" id="txtqtdHoras" readOnly
+                                                        value={qtdehoras}
+                                                        name="qtdehoras"
+                                                        placeholder="00:00"
+                                                        // onChange={handleInputChange}
+                                                    />
+                                                    <InputGroupAddon addonType="append">
+                                                        <span className="btn btn-secondary disabled fa fa-clock-o"></span>
+                                                    </InputGroupAddon>
+                                                </InputGroup>
+                                            </Col>
+                                        </FormGroup>
+                                        <FormGroup row>
+                                            <Col md="4">
+                                                <Label htmlFor="valorPpagar">Valor a Pagar</Label>
+                                                <InputGroup>
+                                                    {/* <Input type="text" id="txtValorPagar" placeholder="R$00,00"
+                                                        value={valorapagar}
+                                                        name="valorapagar"
+                                                        onChange={e => setValorapagar(e.target.value)}
+                                                    /> */}
+                                                    <NumberFormat
+                                                        id={'txtValorPagar'}
+                                                        name={'valorapagar'}
+                                                        className={'form-control'}
+                                                        decimalScale={2}
+                                                        fixedDecimalScale={true}
+                                                        thousandSeparator={'.'}
+                                                        decimalSeparator={','}
+                                                        prefix={'R$ '}
+                                                        placeholder={'R$ 0,00'}
+                                                        value={valorapagarFormatado}
+                                                        onValueChange={(values) => {
+                                                            const {formattedValue, value} = values;
+                                                            setValorapagar(values.value);
+                                                            setValorapagarFormatado(values.formattedValue);
+                                                            valorPagarInicial = values.value;
+                                                            TotaisPagarReceber();
+                                                        }}
+                                                    />
+                                                    <InputGroupAddon addonType="append">
+                                                        <span className="btn btn-secondary disabled fa fa-money"></span>
+                                                    </InputGroupAddon>
+                                                </InputGroup>
+                                            </Col>
+                                            <Col md="4">
+                                                <Label htmlFor="valorReceber">Valor a Receber</Label>
+                                                <InputGroup>
+                                                    {/* <Input type="text" id="txtValorReceber" placeholder="R$00,00"
+                                                        value={valorareceber}
+                                                        name="valorareceber"
+                                                        onChange={e => setValorareceber(e.target.value)}
+                                                    /> */}
+                                                    <NumberFormat
+                                                        id={'txtValorReceber'}
+                                                        name={'valorareceber'}
+                                                        className={'form-control'}
+                                                        decimalScale={2}
+                                                        fixedDecimalScale={true}
+                                                        thousandSeparator={'.'}
+                                                        decimalSeparator={','}
+                                                        prefix={'R$ '}
+                                                        placeholder={'R$ 0,00'}
+                                                        value={valorareceberFormatado}
+                                                        onValueChange={(values) => {
+                                                            const {formattedValue, value} = values;
+                                                            setValorareceber(values.value);
+                                                            setValorareceberFormatado(values.formattedValue);
+                                                            valorReceberInicial = values.value;
+                                                            TotaisPagarReceber();
+                                                        }}
+                                                    />
+                                                    <InputGroupAddon addonType="append">
+                                                        <span className="btn btn-secondary disabled fa fa-money"></span>
+                                                    </InputGroupAddon>
+                                                </InputGroup>
+                                            </Col>
+                                            <Col md="4">
+                                                <Label htmlFor="horaextra">Hora Extra</Label>
+                                                <InputGroup>
+                                                    <Input type="text" id="txtHoraExtra" placeholder="00:00" readOnly
+                                                        value={horaextra}
+                                                        name="horaextra"
+                                                    />
+                                                    <InputGroupAddon addonType="append">
+                                                        <span className="btn btn-secondary disabled fa fa-clock-o"></span>
+                                                    </InputGroupAddon>
+                                                </InputGroup>
+                                            </Col>
+                                        </FormGroup>
+                                        <FormGroup row>
+                                            <Col md="4">
+                                                <Label htmlFor="totalpagar">Total a pagar</Label>
+                                                <InputGroup>
+                                                    <Input type="text" id="txtTotalPagar" readOnly
+                                                        value={Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(totalapagar)}
+                                                        name="totalapagar"
+                                                    />
+                                                    <InputGroupAddon addonType="append">
+                                                        <Button type="button" color="secondary fa fa-money"></Button>
+                                                    </InputGroupAddon>
+                                                </InputGroup>
+                                            </Col>
+                                            <Col md="4">
+                                                <Label htmlFor="totalreceber">Total a Receber</Label>
+                                                <InputGroup>
+                                                    <Input type="text" id="txtTotalReceber" readOnly
+                                                        value={Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(totalareceber)}
+                                                        name="totalareceber"
+                                                    />
+                                                    <InputGroupAddon addonType="append">
+                                                        <Button type="button" color="secondary fa fa-money"></Button>
+                                                    </InputGroupAddon>
+                                                </InputGroup>
+                                            </Col>
+                                            <Col md="4">
+                                                <Label htmlFor="custoAdicional">Custo Adicional</Label>
+                                                <InputGroup>
+                                                    {/* <Input type="text" id="txtCustoAdicional" placeholder="R$00,00"
+                                                        value={custoadicional}
+                                                        name="custoadicional"
+                                                        onChange={e => setCustoadicional(reaisMask(e.target.value))}
+                                                    /> */}
+                                                    <NumberFormat
+                                                        id={'txtCustoAdicional'}
+                                                        name={'custoadicional'}
+                                                        className={'form-control'}
+                                                        decimalScale={2}
+                                                        fixedDecimalScale={true}
+                                                        thousandSeparator={'.'}
+                                                        decimalSeparator={','}
+                                                        prefix={'R$ '}
+                                                        value={custoadicionalFormatado}
+                                                        onValueChange={(values) => {
+                                                            const {formattedValue, value} = values;
+                                                            setCustoadicional(values.value);
+                                                            setCustoadicionalFormatado(values.formattedValue);
+                                                            custoAdicionalInicial = values.value;
+                                                            TotaisPagarReceber();
+                                                        }}
+                                                    />
+                                                    <InputGroupAddon addonType="append">
+                                                        <Button type="button" color="secondary fa fa-money"></Button>
+                                                    </InputGroupAddon>
+                                                </InputGroup>
+                                            </Col>
+                                        </FormGroup>
+                                    </Tab>
+                                    {/* Tab3. Movimentação de OS */}
+                                    <Tab 
+                                        eventKey="movimentacao" 
+                                        title={
+                                        <Fragment>
+                                            <i className="fa fa-arrows"></i><strong><span className="ml-2">Movimentação de OS</span></strong>
+                                        </Fragment>
+                                    } 
+                                    >
+                                        <Row>
+                                            <Col md="8">
                                             <FormGroup row>
                                                 <Col md="4">
                                                     <Label htmlFor="statusAtendimentoId">Status Atendimento</Label>
@@ -1048,14 +1043,20 @@ const MultiTabs = (props) => {
                                             <FormGroup row>
                                                 <Col md="12">
                                                     <Label>Observação</Label>
-                                                    <Input type="textarea" rows="5" placeholder="Digite a obsevação" required id="txtObservacao"
+                                                    <Input type="textarea" rows="5" placeholder="Digite a obsevação" id="txtObservacaoMovimentacao"
                                                         name="observacao"
                                                         value={observacao}
                                                         onChange={e => setObservacao(e.target.value)} />
                                                 </Col>
                                             </FormGroup>
+                                            {action !== 'editar' ? (
+                                                <FormGroup className="text-left">
+                                                    <Button type="button" size="sm" color="info" className="text-white mr-3" onClick={handleAtualizaMovimentacao}><i className="fa fa-check"></i> Atualizar Movimentação</Button>
+                                                </FormGroup>
+                                            ) : ""}
+                                            
                                         </Col>
-                                        <Col md="4">
+                                            <Col md="4">
                                             <CardHeader>                            
                                                 <i className="fa fa-history"></i>
                                                 <strong>Timeline</strong>                                
@@ -1066,30 +1067,7 @@ const MultiTabs = (props) => {
                                                     {/* <ListGroupItem className="list-group-item-accent-secondary bg-light text-center font-weight-bold text-muted text-uppercase small">Today</ListGroupItem> */}
                                                     {movimentacaoLogId.map((movimentacaolog) => {
                                                         return(
-                                                            <Fragment>
-                                                                <ListGroupItem className="list-group-item-accent-warning list-group-item-divider text-grey p-2">
-                                                                    <div className="avatar float-right">
-                                                                        <img className="img-avatar" src="assets/img/avatars/7.jpg" alt="Usuário"></img>
-                                                                    </div>
-                                                                    <div>
-                                                                        <small className="text-muted mr-2">
-                                                                            <i className="icon-layers"></i>
-                                                                        </small>
-                                                                        <strong>{movimentacaolog.statusAtendimento}</strong> 
-                                                                    </div>
-                                                                    <div>
-                                                                        <small className="text-muted mr-2">
-                                                                            <i className="icon-user"></i>                                                            
-                                                                        </small>
-                                                                        <small className="text-muted">
-                                                                            {movimentacaolog.nome}&nbsp;{movimentacaolog.sobrenome}
-                                                                        </small>                                        
-                                                                    </div>
-                                                                    <small className="text-muted mr-3">
-                                                                        <i className="icon-calendar"></i>&nbsp; Em: 01/08/2020 às 12:23h
-                                                                    </small>                                        
-                                                                </ListGroupItem>
-                                                            </Fragment>
+                                                            <CardListaStatus movimentacaolog={movimentacaolog}></CardListaStatus>
                                                         )
                                                     })}
                                                 </ListGroup>                                
@@ -1098,17 +1076,19 @@ const MultiTabs = (props) => {
                                                 <div className="small text-muted"><strong>Atualizado em:</strong> 13/08/2020 às 13:12</div>                                
                                             </CardFooter>
                                         </Col>
-                                    </Row>
-                                  </Tab>
-                              </Tabs>
-                          </CardBody>
-                      </Card>
-                  </Col>
-              
-                
-              </Row>
-          </Form>
-      </div>
+                                        </Row>
+                                    </Tab>
+                                </Tabs>
+                            </CardBody>
+                            <CardFooter className="text-center">
+                                <Button type="submit" size="sm" color="success" className="mr-3"><i className="fa fa-check"></i> Salvar</Button>
+                                <Button type="reset" size="sm" color="danger" className="ml-3"><i className="fa fa-ban "></i> Cancelar</Button>
+                            </CardFooter>
+                        </Card>
+                    </Col>    
+                </Row>
+            </Form>
+        </div>
     );
   }
   

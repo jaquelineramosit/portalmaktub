@@ -40,3 +40,10 @@ margin-left: 900px;
   background-color: #63c2de;
   cursor: pointer;
 }
+
+.nav-tabs .nav-link.active {
+  color: #000;
+  border: 1px solid #c8ced3;
+  border-bottom: none;
+  border-radius: calc(0.25rem - 1px) calc(0.25rem - 1px) 0 0;
+}
