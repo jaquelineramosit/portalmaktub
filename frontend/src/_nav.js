@@ -17,12 +17,7 @@ export default {
         attributes: {}      // optional valid JS object with JS API naming ex: { className: "my-class", style: { fontFamily: "Verdana" }, id: "my-id"}
       },
       class: ''             // optional class names space delimited list for title item ex: "text-center"
-    },
-    {
-      name: 'Ordem de Serviço Tabs',
-      url: '/teste-mult-tabs/73?action=edit',
-      icon: 'icon-wrench',
-    },
+    },    
     {
       name: 'Ordem de Serviço',
       url: '/lista-ordem-servico',

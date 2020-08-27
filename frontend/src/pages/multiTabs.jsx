@@ -23,6 +23,7 @@ let horasProjeto = 0;
 let custoAdicionalInicial = '';
 let qdeHoras = 0;
 let qdeHorasExtra = 0;
+var now = new Date();
 
 const MultiTabs = (props) => {
 
@@ -1002,80 +1003,80 @@ const MultiTabs = (props) => {
                                     >
                                         <Row>
                                             <Col md="8">
-                                            <FormGroup row>
-                                                <Col md="4">
-                                                    <Label htmlFor="statusAtendimentoId">Status Atendimento</Label>
-                                                    <Input type="select" required name="select" id="cboStatusAtendimentoId" multiple={false}
-                                                        name="statusatendimentoid"
-                                                        value={statusatendimentoid}
-                                                        onChange={e => setStatusAtendimentoid(e.target.value)}>
-                                                        <option value={undefined} defaultValue>Selecione...</option>
-                                                        {statusatendimentosid.map(statusatendimento => (
-                                                            <option key={statusatendimento.id} value={statusatendimento.id}>{statusatendimento.status}</option>
-                                                        ))}
-                                                    </Input>
-                                                </Col>
-                                                <Col md="4">
-                                                    <Label htmlFor="statusCobrancaId">Status Cobrança</Label>
-                                                    <Input type="select" required name="select" id="cboStatusCobrancaId" multiple={false}
-                                                        name="statuscobrancaid"
-                                                        value={statuscobrancaid}
-                                                        onChange={e => setStatusCobrancaid(e.target.value)}>
-                                                        <option value={undefined} defaultValue>Selecione...</option>
-                                                        {statuscobrancasid.map(statuscobranca => (
-                                                            <option key={statuscobranca.id} value={statuscobranca.id}>{statuscobranca.status}</option>
-                                                        ))}
-                                                    </Input>
-                                                </Col>
-                                                <Col md="4">
-                                                    <Label htmlFor="statusPagamentoId">Status Pagamento</Label>
-                                                    <Input type="select" required name="select" id="cboStatuspPagamentoId" multiple={false}
-                                                        name="statuspagamentoid"
-                                                        value={statuspagamentoid}
-                                                        onChange={e => setStatusPagamentoid(e.target.value)}>
-                                                        <option value={undefined} defaultValue>Selecione...</option>
-                                                        {statuspagamentosid.map(statuspagamento => (
-                                                            <option key={statuspagamento.id} value={statuspagamento.id}>{statuspagamento.status}</option>
-                                                        ))}
-                                                    </Input>
-                                                </Col>
-                                            </FormGroup>
-                                            <FormGroup row>
-                                                <Col md="12">
-                                                    <Label>Observação</Label>
-                                                    <Input type="textarea" rows="5" placeholder="Digite a obsevação" id="txtObservacaoMovimentacao"
-                                                        name="observacao"
-                                                        value={observacao}
-                                                        onChange={e => setObservacao(e.target.value)} />
-                                                </Col>
-                                            </FormGroup>
-                                            {action !== 'editar' ? (
-                                                <FormGroup className="text-left">
-                                                    <Button type="button" size="sm" color="info" className="text-white mr-3" onClick={handleAtualizaMovimentacao}><i className="fa fa-check"></i> Atualizar Movimentação</Button>
+                                                <FormGroup row>
+                                                    <Col md="4">
+                                                        <Label htmlFor="statusAtendimentoId">Status Atendimento</Label>
+                                                        <Input type="select" required name="select" id="cboStatusAtendimentoId" multiple={false}
+                                                            name="statusatendimentoid"
+                                                            value={statusatendimentoid}
+                                                            onChange={e => setStatusAtendimentoid(e.target.value)}>
+                                                            <option value={undefined} defaultValue>Selecione...</option>
+                                                            {statusatendimentosid.map(statusatendimento => (
+                                                                <option key={statusatendimento.id} value={statusatendimento.id}>{statusatendimento.status}</option>
+                                                            ))}
+                                                        </Input>
+                                                    </Col>
+                                                    <Col md="4">
+                                                        <Label htmlFor="statusCobrancaId">Status Cobrança</Label>
+                                                        <Input type="select" required name="select" id="cboStatusCobrancaId" multiple={false}
+                                                            name="statuscobrancaid"
+                                                            value={statuscobrancaid}
+                                                            onChange={e => setStatusCobrancaid(e.target.value)}>
+                                                            <option value={undefined} defaultValue>Selecione...</option>
+                                                            {statuscobrancasid.map(statuscobranca => (
+                                                                <option key={statuscobranca.id} value={statuscobranca.id}>{statuscobranca.status}</option>
+                                                            ))}
+                                                        </Input>
+                                                    </Col>
+                                                    <Col md="4">
+                                                        <Label htmlFor="statusPagamentoId">Status Pagamento</Label>
+                                                        <Input type="select" required name="select" id="cboStatuspPagamentoId" multiple={false}
+                                                            name="statuspagamentoid"
+                                                            value={statuspagamentoid}
+                                                            onChange={e => setStatusPagamentoid(e.target.value)}>
+                                                            <option value={undefined} defaultValue>Selecione...</option>
+                                                            {statuspagamentosid.map(statuspagamento => (
+                                                                <option key={statuspagamento.id} value={statuspagamento.id}>{statuspagamento.status}</option>
+                                                            ))}
+                                                        </Input>
+                                                    </Col>
                                                 </FormGroup>
-                                            ) : ""}
-                                            
-                                        </Col>
+                                                <FormGroup row>
+                                                    <Col md="12">
+                                                        <Label>Observação</Label>
+                                                        <Input type="textarea" rows="5" placeholder="Digite a obsevação" id="txtObservacaoMovimentacao"
+                                                            name="observacao"
+                                                            value={observacao}
+                                                            onChange={e => setObservacao(e.target.value)} />
+                                                    </Col>
+                                                </FormGroup>
+                                                {action !== 'editar' ? (
+                                                    <FormGroup className="text-left">
+                                                        <Button type="button" size="sm" color="info" className="text-white mr-3" onClick={handleAtualizaMovimentacao}><i className="fa fa-check"></i> Atualizar Movimentação</Button>
+                                                    </FormGroup>
+                                                ) : ""}
+                                                
+                                            </Col>
                                             <Col md="4">
-                                            <CardHeader>                            
-                                                <i className="fa fa-history"></i>
-                                                <strong>Timeline</strong>                                
-                                            </CardHeader>
-                                            <CardBody className="p-0"> 
-                                                <ListGroup className="list-group-accent" tag={'div'}>
-                                                    {/* // {items.map((value) => { */}
-                                                    {/* <ListGroupItem className="list-group-item-accent-secondary bg-light text-center font-weight-bold text-muted text-uppercase small">Today</ListGroupItem> */}
-                                                    {movimentacaoLogId.map((movimentacaolog) => {
-                                                        return(
-                                                            <CardListaStatus movimentacaolog={movimentacaolog}></CardListaStatus>
-                                                        )
-                                                    })}
-                                                </ListGroup>                                
-                                            </CardBody>
-                                            <CardFooter>
-                                                <div className="small text-muted"><strong>Atualizado em:</strong> 13/08/2020 às 13:12</div>                                
-                                            </CardFooter>
-                                        </Col>
+                                                <CardHeader>                            
+                                                    <i className="fa fa-history"></i>
+                                                    <strong>Timeline</strong>                                
+                                                </CardHeader>
+                                                <CardBody className="p-0"> 
+                                                    <ListGroup className="list-group-accent" tag={'div'}>
+                                                        {/* // {items.map((value) => { */}
+                                                        {/* <ListGroupItem className="list-group-item-accent-secondary bg-light text-center font-weight-bold text-muted text-uppercase small">Today</ListGroupItem> */}
+                                                        {movimentacaoLogId.map((movimentacaolog) => {
+                                                            return(
+                                                                <CardListaStatus key={movimentacaolog.id} movimentacaolog={movimentacaolog}></CardListaStatus>
+                                                            )
+                                                        })}
+                                                    </ListGroup>                                
+                                                </CardBody>
+                                                <CardFooter>
+                                                    <div className="small text-muted"><strong>Atualizado em:</strong> {dateFormat(now, "dd/mm/yyyy")} às {dateFormat(now, "HH:MM")}</div>                                
+                                                </CardFooter>
+                                            </Col>
                                         </Row>
                                     </Tab>
                                 </Tabs>
