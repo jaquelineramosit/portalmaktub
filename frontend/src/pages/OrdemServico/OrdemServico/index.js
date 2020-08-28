@@ -3,7 +3,6 @@ import React, { useState, useEffect, Component, Fragment } from 'react';
 import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, InputGroup, InputGroupAddon, CardFooter, Form, ListGroup, ListGroupItem, } from 'reactstrap';
 import { Redirect } from 'react-router-dom';
 import NumberFormat from 'react-number-format';
-import { } from 'react-icons/fi'
 import '../../../global.css';
 import { numMask } from '../../../mask'
 import api from '../../../services/api';

@@ -17,7 +17,12 @@ export default {
         attributes: {}      // optional valid JS object with JS API naming ex: { className: "my-class", style: { fontFamily: "Verdana" }, id: "my-id"}
       },
       class: ''             // optional class names space delimited list for title item ex: "text-center"
-    },    
+    },
+    // {
+    //   name: 'Mensagens',
+    //   url: '/teste-mensagens',
+    //   icon: 'fa fa-comment',
+    // },
     {
       name: 'Ordem de Serviço',
       url: '/lista-ordem-servico',

@@ -87,7 +87,7 @@ const Relcustotecnico = React.lazy(() => import('./pages/Relatórios/Relatorio C
 
 const Collapse = React.lazy(() => import('./pages/Configuracoes/Collapse'));
 const TesteMultiSelect = React.lazy(() => import('./pages/testeMultiSelect'));
-const MultiTabs = React.lazy(() => import('./pages/multiTabs'));
+const TesteMensagens = React.lazy(() => import('./pages/testeMensagens'));
 
 const routes = [
   
@@ -207,9 +207,7 @@ const routes = [
 
   { path: '/collapse', name: 'Collapse', component: Collapse },
   { path: '/teste-mult-select', name: 'Teste Multi Select', component: TesteMultiSelect },
-  { path: '/teste-mult-tabs', exact:true, name: 'Teste Multi Tabs', component: MultiTabs },
-  { path: '/teste-mult-tabs/:id', name: 'Teste Multi Tabs', component: MultiTabs },
-];
+  { path: '/teste-mensagens', exact:true, name: 'Teste Mensagens', component: TesteMensagens },
 
-
+]
 export default routes;
