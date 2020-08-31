@@ -1,5 +1,5 @@
 import React from 'react';
-import { toast } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import '../../global.css';
 
@@ -7,7 +7,7 @@ import '../../global.css';
 
     exibeMensagem: (status, msg) => {
 
-        console.log(status);
+        console.log(`status${status} - msg${msg}`);
         switch(status) {
             case 'success':
                 toast.success(                
@@ -24,6 +24,7 @@ import '../../global.css';
                 )
                 break;
             case 'error': 
+                console.log(msg);
                 toast.error(                
                     msg,
                     { 
