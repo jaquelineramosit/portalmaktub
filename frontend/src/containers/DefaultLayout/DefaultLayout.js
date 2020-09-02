@@ -2,7 +2,7 @@ import React, { Component, Suspense } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import * as router from 'react-router-dom';
 import { Container } from 'reactstrap';
-
+import {PopUpToaster} from '../../components/Toaster';
 import '../../global.css';
 
 import {
@@ -53,6 +53,7 @@ class DefaultLayout extends Component {
       <div className="app">
         {/* {console.log(logado)}
         {logado === false || logado === null && <Redirect to='/logon' />} */}
+        <PopUpToaster />
         <AppHeader fixed>
           <Suspense  fallback={this.loading()}>
             <DefaultHeader onLogout={e=>this.signOut(e)}/>

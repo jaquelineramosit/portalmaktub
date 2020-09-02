@@ -3,7 +3,14 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import '../../global.css';
 
- const Toaster = {
+export const PopUpToaster = () => {
+
+    return (
+        <ToastContainer />
+    )
+}
+
+const Toaster = {
 
     exibeMensagem: (status, msg) => {
 

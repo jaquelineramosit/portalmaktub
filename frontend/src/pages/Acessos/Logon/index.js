@@ -4,21 +4,44 @@ import { Button, Card, CardBody, CardGroup, Col, Container, Form, Input, InputGr
 import './style.css';
 import ImgLogon from '../../../assets/img/logon.jpg';
 import api from '../../../../src/services/api';
-import toaster from '../../../components/Toaster';
+import Toaster, { PopUpToaster } from '../../../components/Toaster';
+import FormValidator from '../../../components/Validator/FormValidator';
 
 export default function Logon() {
          
         const [login, setLogin] = useState('');
-        const [senhaForm, setSenhaForm] = useState('');
+        const [senha, setSenha] = useState('');
 
         const history = useHistory();
 
         async function handleLogin(e) {
             e.preventDefault();
 
+            //validação de form para login e senha
+            // const validador = new FormValidator([    
+            //     {
+            //         campo: 'login',
+            //         metodo: 'isEmpty',
+            //         validoQuando: true,
+            //         mensagem: 'Selecione o campo Status de Cobrança!'
+            //     },
+            //     {
+            //         campo: 'dataOs',
+            //         metodo: 'isEmpty',
+            //         validoQuando: true,
+            //         mensagem: 'Informe uma data válida de serviço!'
+            //     },
+            //     {
+            //         campo: 'descricao',
+            //         metodo: 'isEmpty',
+            //         validoQuando: true,
+            //         mensagem: 'Informe uma descrição para o serviço!'
+            //     }
+            // ]);
+
             const data = {
                 login,
-                senhaForm
+                senha
             };
 
             try {
@@ -26,17 +49,18 @@ export default function Logon() {
                 localStorage.setItem('logado', true);
                 localStorage.setItem('userId', response.data.id);
                 localStorage.setItem('nomeUsuario', response.data.nome);
-                toaster.exibeMensagem('logon-success', `Bem vindo(a) ${response.data.nome}!`) 
+                Toaster.exibeMensagem('logon-success', `Bem vindo(a) ${response.data.nome}!`) 
                 history.push('/dashboard');
 
             } catch (err) {
-                toaster.exibeMensagem('logon-error', 'Usuário e/ou senha inválido(s). Tente novamente.')                
+                Toaster.exibeMensagem('logon-error', 'Usuário e/ou senha inválido(s). Tente novamente.')                
             }
         }
 
         return (  
             <div className="app flex-row align-items-center">
                 <Container>
+                    <PopUpToaster />
                     <Row className="justify-content-center">
                         <Col md="8">
                             <CardGroup>
@@ -51,7 +75,7 @@ export default function Logon() {
                                                         <i className="icon-user"></i>
                                                     </InputGroupText>
                                                 </InputGroupAddon>
-                                                <Input type="text" placeholder="Usuário"
+                                                <Input type="text" placeholder="Usuário" id="login" name="login" required
                                                 value={login}
                                                 onChange={ e => setLogin(e.target.value)}
                                                 autoComplete="username" />
@@ -62,9 +86,9 @@ export default function Logon() {
                                                         <i className="icon-lock"></i>
                                                     </InputGroupText>
                                                 </InputGroupAddon>
-                                                <Input type="password" placeholder="Senha" 
-                                                value={senhaForm}
-                                                onChange={ e => setSenhaForm(e.target.value)}
+                                                <Input type="password" placeholder="Senha" id="senha" name="senha" required
+                                                value={senha}
+                                                onChange={ e => setSenha(e.target.value)}
                                                 autoComplete="current-password" />
                                             </InputGroup>
                                             <Row>

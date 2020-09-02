@@ -2,9 +2,7 @@ import {Tabs, Tab, TabContainer } from 'react-bootstrap'
 import React, { useState, useEffect, history, Component, Fragment } from 'react';
 import '../global.css';
 import FormValidator from '../components/Validator/FormValidator';
-import Toaster from '../components/Toaster';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import Toaster from '../components/Toaster'
 import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, InputGroup, InputGroupAddon, CardFooter, Form, ListGroup, ListGroupItem, } from 'reactstrap';
 import { Redirect } from 'react-router-dom';
 import api from '../services/api';
@@ -86,7 +84,7 @@ const TesteMensagens = (props) => {
         <div className="animated fadeIn">
             {redirect && <Redirect to="/lista-ordem-servico" />}
             <Form onSubmit={handleOs}>
-                <ToastContainer />
+                
                 <Row>
                     <Col xs="12" md="12">
                         <Card className="mb-0">
