@@ -57,12 +57,10 @@ export default function Banco(props) {
             nomebanco,
             ativo
         };
-
         try {
 
             //chamar o método Valida
             const validador = new FormValidator([
-                
                 {
                     campo: 'codbanco',
                     metodo: 'isEmpty',
@@ -81,16 +79,16 @@ export default function Banco(props) {
                     campo: 'codbanco',
                     metodo: 'isLength',
                     args: [{min:1, max:3}],
-                    validoQuando: false,
+                    validoQuando: true,
                     mensagem: 'Informe o código do banco com 3 caracteres!'
                 },
-                // {
-                //     campo: 'nomebanco',
-                //     metodo: 'isLength',
-                //     args: [{min:5, max:50}],
-                //     validoQuando: true,
-                //     mensagem: 'Informe o nome do banco de 5 a no máximo 50 caracteres!'
-                // },
+                {
+                    campo: 'nomebanco',
+                    metodo: 'isLength',
+                    args: [{min:5, max:50}],
+                    validoQuando: true,
+                    mensagem: 'Informe o nome do banco de 5 a no máximo 50 caracteres!'
+                },
             ]);
                           
             const validacao = validador.valida(data);

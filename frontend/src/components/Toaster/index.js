@@ -35,7 +35,7 @@ const Toaster = {
                     msg,
                     { 
                         position: "top-right",
-                        autoClose: 20000,
+                        autoClose: 15000,
                         hideProgressBar: true,
                         closeOnClick: true,
                         pauseOnHover: true,
@@ -49,7 +49,7 @@ const Toaster = {
                     msg,
                     { 
                         position: "top-right",
-                        autoClose: 20000,
+                        autoClose: 15000,
                         hideProgressBar: true,
                         closeOnClick: true,
                         pauseOnHover: true,
@@ -63,7 +63,7 @@ const Toaster = {
                     msg,
                     { 
                         position: "top-right",
-                        autoClose: 20000,
+                        autoClose: 15000,
                         hideProgressBar: true,
                         closeOnClick: true,
                         pauseOnHover: true,
@@ -91,7 +91,7 @@ const Toaster = {
                     msg,
                     { 
                         position: "top-right",
-                        autoClose: 4000,
+                        autoClose: 10000,
                         hideProgressBar: true,
                         closeOnClick: true,
                         pauseOnHover: true,

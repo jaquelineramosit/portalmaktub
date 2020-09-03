@@ -10,8 +10,8 @@ class FormValidator {
 
         //começa assumindo que está tudo válido, recebe o 
         //objeto do método valido.
-        const validacao = this.valido();        
-
+        const validacao = this.valido();
+        validacao.isValid = true;
         this.validacoes.forEach(regra => { //loop em todos os campos do formulário
         
             const campoValor = state[regra.campo.toString()];
@@ -20,18 +20,15 @@ class FormValidator {
             
             //invoca o método específico para cada campo do forEach
             if (metodoValidacoes(campoValor, ...args, state) !== regra.validoQuando) {
-
+                
                 validacao[regra.campo] = {
                     isInvalid: true,
                     message: regra.mensagem
                 }
                 validacao.isValid = false;
-
-            } else {
-                validacao.isValid = true;
-            }
+            } 
         });  
-        
+
         return validacao;      
     }
 
@@ -42,8 +39,6 @@ class FormValidator {
         this.validacoes.map(regra => (
             validacao[regra.campo] = { isInvalid: false, message: '' }
         ));
-
-        
 
         return { isValid: true, ...validacao };
     }
