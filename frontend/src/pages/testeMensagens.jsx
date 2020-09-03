@@ -38,19 +38,19 @@ const TesteMensagens = (props) => {
                 {
                     campo: 'statuscobrancaid',
                     metodo: 'isEmpty',
-                    validoQuando: true,
+                    validoQuando: false,
                     mensagem: 'Selecione o campo Status de Cobrança!'
                 },
                 {
                     campo: 'dataOs',
                     metodo: 'isEmpty',
-                    validoQuando: true,
+                    validoQuando: false,
                     mensagem: 'Informe uma data válida de serviço!'
                 },
                 {
                     campo: 'descricao',
                     metodo: 'isEmpty',
-                    validoQuando: true,
+                    validoQuando: false,
                     mensagem: 'Informe uma descrição para o serviço!'
                 }
             ]);
@@ -109,13 +109,13 @@ const TesteMensagens = (props) => {
                                     </Col>
                                     <Col md="4">
                                         <Label htmlFor="dataOs">Data Os</Label>
-                                        <Input type="date" id="dataOs" required                                          
+                                        <Input type="date" id="dataOs"                                          
                                             name="dataOs"                                            
                                         />
                                     </Col>
                                     <Col md="4">
                                         <Label htmlFor="descricao">Desc Serviço</Label>
-                                        <Input type="text" id="descricao"  required                                            
+                                        <Input type="text" id="descricao"                                             
                                             name="descricao"                                            
                                         />
                                     </Col>

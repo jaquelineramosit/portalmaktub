@@ -14,14 +14,13 @@ const Toaster = {
 
     exibeMensagem: (status, msg) => {
 
-        console.log(`status${status} - msg${msg}`);
         switch(status) {
             case 'success':
                 toast.success(                
                     msg,
                     { 
                         position: "top-right",
-                        autoClose: 5000,
+                        autoClose: 10000,
                         hideProgressBar: true,
                         closeOnClick: true,
                         pauseOnHover: true,
@@ -36,7 +35,7 @@ const Toaster = {
                     msg,
                     { 
                         position: "top-right",
-                        autoClose: 4000,
+                        autoClose: 20000,
                         hideProgressBar: true,
                         closeOnClick: true,
                         pauseOnHover: true,
@@ -50,7 +49,7 @@ const Toaster = {
                     msg,
                     { 
                         position: "top-right",
-                        autoClose: 4000,
+                        autoClose: 20000,
                         hideProgressBar: true,
                         closeOnClick: true,
                         pauseOnHover: true,
@@ -64,7 +63,7 @@ const Toaster = {
                     msg,
                     { 
                         position: "top-right",
-                        autoClose: 4000,
+                        autoClose: 20000,
                         hideProgressBar: true,
                         closeOnClick: true,
                         pauseOnHover: true,
@@ -78,7 +77,7 @@ const Toaster = {
                     msg,
                     { 
                         position: "top-right",
-                        autoClose: 4000,
+                        autoClose: 10000,
                         hideProgressBar: true,
                         closeOnClick: true,
                         pauseOnHover: true,

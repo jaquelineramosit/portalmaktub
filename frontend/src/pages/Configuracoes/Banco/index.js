@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, CardFooter, Form } from 'reactstrap';
 import '../../../global.css';
+import FormValidator from '../../../components/Validator/FormValidator';
+import Toaster from '../../../components/Toaster'
 import { Redirect } from "react-router-dom";
 import api from '../../../../src/services/api';
 
@@ -56,33 +58,94 @@ export default function Banco(props) {
             ativo
         };
 
-        if (action === 'edit') {
-            try {
-                const response = await api.put(`/banco/${bancoIdParam}`, data, {
-                    headers: {
-                        Authorization: 6,
-                    }
-                });
-                alert(`Cadastro atualizado com sucesso.`);
-                setRedirect(true);
-            } catch (err) {
-                alert('Erro na atualização, tente novamente.');
-            }
-        } else {
-            if (action === 'novo') {
-                try {
-                    const response = await api.post('banco', data, {
-                        headers: {
-                            Authorization: 6,
-                        }
-                    });
-                    alert('Cadastro realizado com sucesso.');
-                    setRedirect(true);
-                } catch (err) {
+        try {
 
-                    alert('Erro no cadastro, tente novamente.');
+            //chamar o método Valida
+            const validador = new FormValidator([
+                
+                {
+                    campo: 'codbanco',
+                    metodo: 'isEmpty',
+                    args: [{ignore_whitespace:true}],
+                    validoQuando: false,
+                    mensagem: 'Informe o código do banco!'
+                },
+                {
+                    campo: 'nomebanco',
+                    metodo: 'isEmpty',
+                    args: [{ignore_whitespace:true}],
+                    validoQuando: false,
+                    mensagem: 'Informe o nome do banco!'
+                },
+                {
+                    campo: 'codbanco',
+                    metodo: 'isLength',
+                    args: [{min:1, max:3}],
+                    validoQuando: false,
+                    mensagem: 'Informe o código do banco com 3 caracteres!'
+                },
+                // {
+                //     campo: 'nomebanco',
+                //     metodo: 'isLength',
+                //     args: [{min:5, max:50}],
+                //     validoQuando: true,
+                //     mensagem: 'Informe o nome do banco de 5 a no máximo 50 caracteres!'
+                // },
+            ]);
+                          
+            const validacao = validador.valida(data);
+
+            if(validacao.isValid) {
+                if (action === 'edit') {
+                    try {
+                        const response = await api.put(`/banco/${bancoIdParam}`, data, {
+                            headers: {
+                                Authorization: 6,
+                            }
+                        });
+                        if(response.status === 200) {
+                            Toaster.exibeMensagem('success', "Alterado com sucesso!"); 
+                            setRedirect(true);
+                        } else {
+                            Toaster.exibeMensagem('error', "Ocorreu um erro ao alterar o registro"); 
+                        }
+                    } catch (err) {
+                        Toaster.exibeMensagem('error', "Ocorreu um erro. Favor contatar o administrador do sistema."); 
+                    }
+                } else {
+                    if (action === 'novo') {
+                        try {
+                            const response = await api.post('banco', data, {
+                                headers: {
+                                    Authorization: 6,
+                                }
+                            });
+                            if(response.status === 200) {
+                                Toaster.exibeMensagem('success', "Incluido com sucesso!"); 
+                                setRedirect(true);
+                            } else {
+                                Toaster.exibeMensagem('error', "Ocorreu um erro ao cadastrar um novo registro"); 
+                            }
+                        } catch (err) {
+                            Toaster.exibeMensagem('error', "Ocorreu um erro. Favor contatar o administrador do sistema.");
+                        }
+                    }
                 }
+                Toaster.exibeMensagem('success', "Módulo adicionado com sucesso!");    
+                //history.push('/consulta-modulos');
+            } else {
+                const { codbanco, nomebanco} = validacao;
+                const campos = [codbanco, nomebanco];
+                const camposInvalidos = campos.filter(elem => {
+                    
+                    return elem.isInvalid
+                });
+                camposInvalidos.forEach(campo => {
+                    Toaster.exibeMensagem('error', campo.message);                    
+                });
             }
+        } catch (ex) {
+            Toaster.exibeMensagem('error', "Erro no cadastro, tente novamente.");               
         }
     }
 
@@ -103,14 +166,14 @@ export default function Banco(props) {
                                 <FormGroup row>
                                     <Col md="4">
                                         <Label htmlFor="codBanco">Código do Banco</Label>
-                                        <Input type="text" required id="txtCodBanco" placeholder="Digite o Código do banco"
+                                        <Input type="text" required id="codbanco" placeholder="Digite o Código do banco"
                                             name="codbanco"
                                             value={codbanco}
                                             onChange={e => setCodbanco(e.target.value)} />
                                     </Col>
                                     <Col md="4">
                                         <Label htmlFor="codBanco">Nome do Banco</Label>
-                                        <Input type="text" required id="txtNomeBanco" placeholder="Digite o Nome do Banco"
+                                        <Input type="text" required id="nomebanco" placeholder="Digite o Nome do Banco"
                                             name="nomebanco"
                                             value={nomebanco}
                                             onChange={e => setNomebanco(e.target.value)} />
