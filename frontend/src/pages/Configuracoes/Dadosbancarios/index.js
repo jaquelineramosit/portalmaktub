@@ -128,7 +128,7 @@ export default function DadosBancarios(props) {
                     <Col xs="12" md="12">
                         <Card>
                             <CardHeader>
-                                <strong>Conta de Tecnico</strong>
+                                <strong>Dados Bancários</strong>
                                 <small> novo</small>
                             </CardHeader>
                             <CardBody>
