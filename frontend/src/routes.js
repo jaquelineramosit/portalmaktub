@@ -16,7 +16,7 @@ const PermissaoAcesso = React.lazy(() => import('./pages/Acessos/PermissaoAcesso
 const Register = React.lazy(() => import('./pages/Acessos/Register'));
 const Funcao = React.lazy(() => import('./pages/Acessos/Funcao'));
 const Usuario = React.lazy(() => import('./pages/Acessos/Usuario'));
-
+const Profile = React.lazy(() => import('./pages/Acessos/Profile'));
 
 // Configurações
 const Clientes = React.lazy(() => import('./pages/Configuracoes/Clientes'));
@@ -87,7 +87,9 @@ const Relcustotecnico = React.lazy(() => import('./pages/Relatórios/Relatorio C
 
 const Collapse = React.lazy(() => import('./pages/Configuracoes/Collapse'));
 const TesteMultiSelect = React.lazy(() => import('./pages/testeMultiSelect'));
-const MultiTabs = React.lazy(() => import('./pages/multiTabs'));
+const TesteMensagens = React.lazy(() => import('./pages/testeMensagens'));
+const TesteToast = React.lazy(() => import('./pages/testeToast'));
+
 
 const routes = [
   
@@ -114,7 +116,7 @@ const routes = [
   { path: '/funcao/:id', name: 'Função', component: Funcao },
   { path: '/usuarios', exact:true, name: 'Usuários', component: Usuario },
   { path: '/usuarios/:id', name: 'Usuários', component: Usuario },
-
+  { path: '/profile', name: 'Minha Conta', component: Profile },
 
 
   //Configuração
@@ -207,9 +209,8 @@ const routes = [
 
   { path: '/collapse', name: 'Collapse', component: Collapse },
   { path: '/teste-mult-select', name: 'Teste Multi Select', component: TesteMultiSelect },
-  { path: '/teste-mult-tabs', exact:true, name: 'Teste Multi Tabs', component: MultiTabs },
-  { path: '/teste-mult-tabs/:id', name: 'Teste Multi Tabs', component: MultiTabs },
-];
+  { path: '/teste-mensagens', exact:true, name: 'Teste Mensagens', component: TesteMensagens },
+  { path: '/teste-toast',  name: 'Teste Toast', component: TesteToast },
 
-
+]
 export default routes;

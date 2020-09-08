@@ -5,61 +5,62 @@ Objetivo: Esse controle tem o objetivo criar um objeto do tipo list-grpup-item p
 */
 import React, { Fragment } from 'react';
 import {  ListGroupItem, } from 'reactstrap';
+const dateFormat = require('dateformat');
 const CardListStatus = (props) => {
     const movimentacaolog = props.movimentacaolog;
-    const status = movimentacaolog.status; 
-    let classDefault = "list-group-item-divider text-grey p-2"
-    let className = "";
+    const status = movimentacaolog.statusAtendimento; 
+    var classDefault = "list-group-item-divider text-grey p-2"
+    var className = "";
     
     switch (status) {
         case "Novo":
-            className = "list-group-item-accent-info";
+            className = "list-group-item-accent-info ";
             // textclassName = "text-white";
             break
         case "Concluído":
-            className = "list-group-item-accent-success"
+            className = "list-group-item-accent-success "
             break
         case "Em Andamento":
-            className = "list-group-item-accent-warning"
+            className = "list-group-item-accent-warning "
             break
         case "Cancelado":
-            className = "list-group-item-accent-danger"
+            className = "list-group-item-accent-danger "
             break
         case "Agendado":
-            className = "list-group-item-accent-light"
+            className = "list-group-item-accent-lightBold "
             break     
         case "Improdutivo":
-            className = "list-group-item-accent-dark"
+            className = "list-group-item-accent-dark "
             break 
         case "Pago":
-            className = "list-group-item-accent-success"
+            className = "list-group-item-accent-success "
             break 
         case "Nota Recebida":
-            className = "list-group-item-accent-info"
+            className = "list-group-item-accent-info "
             break
         case "Nao Executado":
-            className = "list-group-item-accent-danger"
+            className = "list-group-item-accent-danger "
             break
         case "Enviada ao Financeiro":
-            className = "list-group-item-accent-light"
+            className = "list-group-item-accent-lightBold "
             break  
         case "Nao Faturado":
-            className = "list-group-item-accent-warning"
+            className = "list-group-item-accent-warning "
             break  
         case "Faturado":
-            className = "list-group-item-accent-success"
+            className = "list-group-item-accent-success "
             break  
         case "Programados":
-            className = "list-group-item-accent-info"
+            className = "list-group-item-accent-info "
             break 
         case "Nao Pago":
-            className = "list-group-item-accent-danger"
+            className = "list-group-item-accent-danger "
             break 
         }
-        className = `${className} ${classDefault}`  
+        var classNova = {className, classDefault}        
     return (
         <Fragment>
-            <ListGroupItem className={className}>
+            <ListGroupItem className={`${classNova.className}${classNova.classDefault}`}>
                 <div className="avatar float-right">
                     <img className="img-avatar" src="assets/img/avatars/7.jpg" alt="Usuário"></img>
                 </div>
@@ -78,7 +79,7 @@ const CardListStatus = (props) => {
                     </small>                                        
                 </div>
                 <small className="text-muted mr-3">
-                    <i className="icon-calendar"></i>&nbsp; Em: {movimentacaolog.sobrenome} às {movimentacaolog.sobrenome}
+                   <i className="icon-calendar"></i>&nbsp; Em: {dateFormat(movimentacaolog.dataultmodif, "dd/mm/yyyy")}   {/* às {dateFormat(movimentacaolog.dataultmodif, "yyyy-mm-dd"} */}
                 </small>                                        
             </ListGroupItem>
         </Fragment>

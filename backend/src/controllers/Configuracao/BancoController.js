@@ -2,64 +2,81 @@ const connection = require('../../database/connection');
 const getDate = require('../../utils/getDate');
 module.exports = {
     async getAll (request, response) {
-        const banco = await connection('banco')
-        .join('usuario', 'usuario.id', '=', 'banco.usuarioid') 
-        .select([
-            'banco.*', 
-            'usuario.nome'
-        ]);
-    
-        return response.json(banco);
-    },
-
-    async getById (request, response) {
-        const  { id }  = request.params;
-
-        const banco = await connection('banco')
-            .where('banco.id', id)
+        try {
+            const banco = await connection('banco')
             .join('usuario', 'usuario.id', '=', 'banco.usuarioid') 
             .select([
                 'banco.*', 
                 'usuario.nome'
-            ])            
-            .first();
-    
-        return response.json(banco);
+            ]);
+        
+            return response.status(200).json(banco);
+        } catch (err) {
+            return response.status(400).json({ error: 'Ocorreu um erro ao acessar os dados.' })
+        }
+    },
+
+    async getById (request, response) {
+        try {
+            const  { id }  = request.params;
+
+            const banco = await connection('banco')
+                .where('banco.id', id)
+                .join('usuario', 'usuario.id', '=', 'banco.usuarioid') 
+                .select([
+                    'banco.*', 
+                    'usuario.nome'
+                ])            
+                .first();
+        
+            return response.status(200).json(banco);
+        } catch (err) {
+            return response.status(400).json({ error: 'Ocorreu um erro ao acessar os dados.' })
+        }
+        
     },
 
     async create(request, response) {
-        const  usuarioid  = request.headers.authorization;
-        const  dataultmodif = getDate();
+        try {
+            const  usuarioid  = request.headers.authorization;
+            const  dataultmodif = getDate();
 
-        const { codbanco, nomebanco, ativo } = request.body;
-        
-        const [id] = await connection('banco').insert({
-            codbanco,
-            nomebanco, 
-            ativo,
-            dataultmodif,
-            usuarioid
-        })
+            const { codbanco, nomebanco, ativo } = request.body;
+            
+            const [id] = await connection('banco').insert({
+                codbanco,
+                nomebanco, 
+                ativo,
+                dataultmodif,
+                usuarioid
+            })
 
-        return response.json({ id });
+            return response.status(200).json({ id });
+        } catch (err) {
+            return response.status(400).json({ error: 'Ocorreu um erro ao criar um novo registro.' })
+        }
     },
     
     async update (request, response) {
-        const   { id }   = request.params;
-        const  usuarioid  = request.headers.authorization;
-        const  dataultmodif = getDate();
-        
-        const { codbanco, nomebanco, ativo } = request.body;
+        try {
+            const   { id }   = request.params;
+            const  usuarioid  = request.headers.authorization;
+            const  dataultmodif = getDate();
+            
+            const { codbanco, nomebanco, ativo } = request.body;
 
-        await connection('banco').where('id', id).update({
-            codbanco,
-            nomebanco, 
-            ativo,
-            dataultmodif,
-            usuarioid
-        });           
+            await connection('banco').where('id', id).update({
+                codbanco,
+                nomebanco, 
+                ativo,
+                dataultmodif,
+                usuarioid
+            });           
 
-        return response.status(204).send();
+            return response.status(200).send();
+        } catch (err) {
+            return response.status(400).json({ error: 'Ocorreu um erro ao criar um novo registro.' })
+        }
     },
     async getCount (request,response) {        
 

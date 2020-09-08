@@ -109,9 +109,6 @@ export default function Adiantamentoos(props) {
             }
         }
     }
-
-
-
     return (
         <div className="animated fadeIn">
             {redirect && <Redirect to="/lista-adiantamento-os" />}
@@ -145,7 +142,7 @@ export default function Adiantamentoos(props) {
                                             name="statusadiantamentoid"
                                             value={statusadiantamentoid}
                                             onChange={e => setStatusadiantamentoid(e.target.value)}>
-                                            <option value={undefined} defaultValue>Selecione...</option>
+                                            <option value="" defaultValue>Selecione...</option>
                                             {statusAdiantamentosid.map(statusAdiantamento => (
                                                 <option value={statusAdiantamento.id}>{statusAdiantamento.status}</option>
                                             ))}

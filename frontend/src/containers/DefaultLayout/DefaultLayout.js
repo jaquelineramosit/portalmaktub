@@ -2,7 +2,7 @@ import React, { Component, Suspense } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import * as router from 'react-router-dom';
 import { Container } from 'reactstrap';
-
+import {PopUpToaster} from '../../components/Toaster';
 import '../../global.css';
 
 import {
@@ -41,10 +41,14 @@ class DefaultLayout extends Component {
 
   signOut(e) {
     localStorage.clear(); //limpa todo o local storage
-    console.log("entrou aqui");
     e.preventDefault();
     this.props.history.push('/logon');
     
+  }
+
+  profile(e) {
+    e.preventDefault();
+    this.props.history.push('/profile');
   }
 
   render() {
@@ -53,9 +57,10 @@ class DefaultLayout extends Component {
       <div className="app">
         {/* {console.log(logado)}
         {logado === false || logado === null && <Redirect to='/logon' />} */}
+        <PopUpToaster />
         <AppHeader fixed>
           <Suspense  fallback={this.loading()}>
-            <DefaultHeader onLogout={e=>this.signOut(e)}/>
+            <DefaultHeader onLogout={e=>this.signOut(e)} onProfile={e=>this.profile(e)}/>
           </Suspense>
         </AppHeader>
         <div className="app-body">

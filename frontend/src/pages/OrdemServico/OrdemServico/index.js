@@ -1,13 +1,13 @@
+import {Tabs, Tab, TabContainer } from 'react-bootstrap'
 import React, { useState, useEffect, Component, Fragment } from 'react';
-import { Row, Collapse, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, InputGroup, InputGroupAddon, CardFooter, Form, ListGroup, ListGroupItem, } from 'reactstrap';
+import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, InputGroup, InputGroupAddon, CardFooter, Form, ListGroup, ListGroupItem, } from 'reactstrap';
 import { Redirect } from 'react-router-dom';
+import NumberFormat from 'react-number-format';
 import '../../../global.css';
-import { numMask, reaisMask } from '../../../mask'
+import { numMask } from '../../../mask'
 import api from '../../../services/api';
 import moment from 'moment';
-import NumberFormat from 'react-number-format';
-import { connect } from 'formik';
-import { number } from 'prop-types';
+import CardListaStatus from '../../../components/CardListaStatus'
 const dateFormat = require('dateformat');
 let clienteFilialIdInicial = '';
 let clienteIdInicial = '';
@@ -21,10 +21,12 @@ let horasProjeto = 0;
 let custoAdicionalInicial = '';
 let qdeHoras = 0;
 let qdeHorasExtra = 0;
+var now = new Date();
 
 const OrdemServico = (props) => {
-    const [redirect, setRedirect] = useState(false);
 
+    const [redirect, setRedirect] = useState(false);
+  
     var search = props.location.search;
     var params = new URLSearchParams(search);
     var action = params.get('action');
@@ -43,8 +45,8 @@ const OrdemServico = (props) => {
     const [observacaoos, setObservacaoos] = useState('');
     const [nomediasemana, setNomediasemana] = useState('');
     const [horadecimal, setHoraDecimal] = useState(0);
-    const [horaentrada, setHoraentrada] = useState(0);
-    const [horasaida, setHorasaida] = useState(0);
+    const [horaentrada, setHoraentrada] = useState('00:00');
+    const [horasaida, setHorasaida] = useState('00:00');
     const [totalapagar, setTotalapagar] = useState(0);
     const [totalareceber, setTotalareceber] = useState(0);
     const [diadasemana, setDiadasemana] = useState(0);
@@ -253,266 +255,252 @@ const OrdemServico = (props) => {
         }
     }
 
-    const [collapseMulti, setCollapseMulti] = useState([true, true, true])
+    function getDateNameOfWeekDay(data) {
+      var data = String(moment(data));
 
-    // //testar com o multiplo toggle
-    const toggleMulti = (type) => {
-        let newCollapse = collapseMulti.slice()
-        switch (type) {
-            case "clientes":
-                newCollapse[0] = !collapseMulti[0];
-                break;
-            case "servicos":
-                newCollapse[1] = !collapseMulti[1];
-                break;
-            case "movimentacaoos":
-                newCollapse[2] = !collapseMulti[2];
-                break;
-            case "all":
-                newCollapse[0] = !collapseMulti[0];
-                newCollapse[1] = !collapseMulti[1];
-                newCollapse[2] = !collapseMulti[2];
-                break;
-            default:
-        }
-        setCollapseMulti(newCollapse)
-    }
-    
-    const IconOpenClose = (prop) => {
+      var date = new Date(data);
 
-        let tipo = prop.type;
-        let isOpen = prop.isOpen;
-        let iconUp = "fa fa-chevron-down";
-        
-        if(isOpen) {
-            iconUp = "fa fa-chevron-up"
-        } 
-        return(
-            <Fragment>
-                <Button className="card-header-action" onClick={()=>{toggleMulti(tipo)}}>
-                    <i className={iconUp}></i>
-                </Button>
-            </Fragment>
-        )
+      var diaNumero = date.getDay();
+      setDiadasemana(parseInt(diaNumero));
+
+      var diasDaSemana = new Array(7);
+      diasDaSemana[0] = "Domingo";
+      diasDaSemana[1] = "Segunda-feira";
+      diasDaSemana[2] = "Terça-feira";
+      diasDaSemana[3] = "Quarta-feira";
+      diasDaSemana[4] = "Quinta-feira";
+      diasDaSemana[5] = "Sexta-feira";
+      diasDaSemana[6] = "Sábado";
+
+      var nomeDiaDaSemana = diasDaSemana[date.getDay()];
+
+      return nomeDiaDaSemana;
     }
 
     function zerarDadosFilial() {
-        setDadosFilial({
-            nomebandeira: '',
-            telefonefixo: '',
-            telefoneresponsavel: '',
-            ced: '',
-            cep: '',
-            logradouro: '',
-            numero: '',
-            complemento: '',
-            bairro: '',
-            estado: '',
-            cidade: '',
-            horarioiniciosemana: '00:00',
-            horarioiniciosabado: '00:00',
-            horarioiniciodomingo: '00:00',
-            horariofimsemana: '00:00',
-            horariofimsabado: '00:00',
-            horariofimdomingo: '00:00'
-        });
+      setDadosFilial({
+          nomebandeira: '',
+          telefonefixo: '',
+          telefoneresponsavel: '',
+          ced: '',
+          cep: '',
+          logradouro: '',
+          numero: '',
+          complemento: '',
+          bairro: '',
+          estado: '',
+          cidade: '',
+          horarioiniciosemana: '00:00',
+          horarioiniciosabado: '00:00',
+          horarioiniciodomingo: '00:00',
+          horariofimsemana: '00:00',
+          horariofimsabado: '00:00',
+          horariofimdomingo: '00:00'
+      });
     }
 
     function zeraDadosServico() {
-        setQtdehoras('');
-        setHoraextra('');
-        setValorapagar('');
-        setValorapagarFormatado('');
-        setValorareceber('');
-        setValorareceberFormatado('');
-        setTotalareceber('');
-        setTotalapagar('');
-        setCustoadicional('');
-    }
-
-    function getDateNameOfWeekDay(data) {
-        var data = String(moment(data));
-
-        var date = new Date(data);
-
-        var diaNumero = date.getDay();
-        setDiadasemana(parseInt(diaNumero));
-
-        var diasDaSemana = new Array(7);
-        diasDaSemana[0] = "Domingo";
-        diasDaSemana[1] = "Segunda-feira";
-        diasDaSemana[2] = "Terça-feira";
-        diasDaSemana[3] = "Quarta-feira";
-        diasDaSemana[4] = "Quinta-feira";
-        diasDaSemana[5] = "Sexta-feira";
-        diasDaSemana[6] = "Sábado";
-
-        var nomeDiaDaSemana = diasDaSemana[date.getDay()];
-
-        return nomeDiaDaSemana;
+      setQtdehoras('');
+      setHoraextra('');
+      setValorapagar('');
+      setValorapagarFormatado('');
+      setValorareceber('');
+      setValorareceberFormatado('');
+      setTotalareceber('');
+      setTotalapagar('');
+      setCustoadicional('');
     }
 
     function handleInputChange(event) {
-        event.preventDefault();
+      event.preventDefault();
 
-        const { name, value } = event.target;
+      const { name, value } = event.target;
 
-        switch (name) {
-            case 'dataatendimento':
-                if ('dataatendimento' != "") {
-                    setDataAtendimento(value);
-                    let nomeDiaDaSemana = getDateNameOfWeekDay(value);
-                    setNomediasemana(nomeDiaDaSemana);
-                }
-                break;
-            case 'numeroos':
-                setNumeroos(numMask(event.target.value));
-                break;
-            // case 'custoadicional':
-            //     setCustoadicional(reaisMask(event.target.value));
-            //     break;
-            case 'clientefilialid':
-                if (value !== 'Selecione...') {
-                    setClientefilialid(value);
-                    api.get(`filiais/${value}`).then(response => {
-                        setDadosFilial(response.data);
-                    });
-                } else {
-                    setClientefilialid('');
-                    zerarDadosFilial();
-                }
-                break;
-            case 'clienteid':
-                if (value !== 'Selecione...') {
-                    setClienteid(value);
-                    setClientefilialid('');
-                    api.get(`filiais?clienteId=${value}`).then(response => {
-                        setClienteFiliais(response.data);
-                        zerarDadosFilial();
-                    });
-                } else {
-                    setClienteFiliais([]);
-                    setClienteid('');
-                    zerarDadosFilial();
-                }
-                break;
-            case 'tipoprojetoid':
-                if (value !== 'Selecione...') {
-                    setTipoprojetoid(value);
-                    setTecnicoid('');
-                    api.get(`tecnico?tipoProjetoId=${value}`).then(response => {
-                        setTecnicos(response.data);
-                    });
-                    api.get(`tipo-projeto/${value}`).then(response => {
-                        setQtdehoras(response.data.horas);
-                        horasProjeto = response.data.horas;
-                        setValorapagar(response.data.despesa);
-                        setValorapagarFormatado(response.data.despesa);
-                        valorPagarInicial = response.data.despesa;
-                        setValorareceber(response.data.receita);    
-                        setValorareceberFormatado(response.data.receita);    
-                        valorReceberInicial = response.data.receita;
-                        setHoraDecimal(response.data.horadecimal);
-                        TotaisPagarReceber();
-                    });
-                } else {
-                    setTipoprojetoid('');
-                    setTecnicoid('');
-                    setTecnicos([]);
-                    zeraDadosServico();
-                }
-                break;
-            case 'horaentrada':
-                setHoraentrada(value);
-                valorInicioInicial = new Date("2020-08-29 " + value).getHours();
-                TotaisPagarReceber();
-                break;
-            case 'horasaida':
-                setHorasaida(value);
-                valorFimInicial = new Date("2020-08-29 " + value).getHours();
-                TotaisPagarReceber();
-                break;
-        }
-    };
+      switch (name) {
+          case 'dataatendimento':
+              if ('dataatendimento' != "") {
+                  setDataAtendimento(value);
+                  let nomeDiaDaSemana = getDateNameOfWeekDay(value);
+                  setNomediasemana(nomeDiaDaSemana);
+              }
+              break;
+          case 'numeroos':
+              setNumeroos(numMask(event.target.value));
+              break;
+          // case 'custoadicional':
+          //     setCustoadicional(reaisMask(event.target.value));
+          //     break;
+          case 'clientefilialid':
+              if (value !== 'Selecione...') {
+                  setClientefilialid(value);
+                  api.get(`filiais/${value}`).then(response => {
+                      setDadosFilial(response.data);
+                  });
+              } else {
+                  setClientefilialid('');
+                  zerarDadosFilial();
+              }
+              break;
+          case 'clienteid':
+              if (value !== 'Selecione...') {
+                  setClienteid(value);
+                  setClientefilialid('');
+                  api.get(`filiais?clienteId=${value}`).then(response => {
+                      setClienteFiliais(response.data);
+                      zerarDadosFilial();
+                  });
+              } else {
+                  setClienteFiliais([]);
+                  setClienteid('');
+                  zerarDadosFilial();
+              }
+              break;
+          case 'tipoprojetoid':
+              if (value !== 'Selecione...') {
+                  setTipoprojetoid(value);
+                  setTecnicoid('');
+                  api.get(`tecnico?tipoProjetoId=${value}`).then(response => {
+                      setTecnicos(response.data);
+                  });
+                  api.get(`tipo-projeto/${value}`).then(response => {
+                      setQtdehoras(response.data.horas);
+                      horasProjeto = response.data.horas;
+                      setValorapagar(response.data.despesa);
+                      setValorapagarFormatado(response.data.despesa);
+                      valorPagarInicial = response.data.despesa;
+                      setValorareceber(response.data.receita);    
+                      setValorareceberFormatado(response.data.receita);    
+                      valorReceberInicial = response.data.receita;
+                      setHoraDecimal(response.data.horadecimal);
+                      TotaisPagarReceber();
+                  });
+              } else {
+                  setTipoprojetoid('');
+                  setTecnicoid('');
+                  setTecnicos([]);
+                  zeraDadosServico();
+              }
+              break;
+          case 'horaentrada':
+              setHoraentrada(value);
+              valorInicioInicial = new Date("2020-08-29 " + value).getHours();
+              TotaisPagarReceber();
+              break;
+          case 'horasaida':
+              setHorasaida(value);
+              valorFimInicial = new Date("2020-08-29 " + value).getHours();
+              TotaisPagarReceber();
+              break;
+      }
+  };
 
-    async function handleOs(e) {
-        e.preventDefault();
-
-        const data = {
-            datasolicitacao,
-            dataatendimento,
-            clientefilialid,
-            tipoprojetoid,
-            descricaoservico,
-            tecnicoid,
-            observacaoos,
-            horaentrada,
-            horasaida,
-            qtdehoras,
-            horaextra,
-            valorapagar,
-            valorareceber,
-            totalapagar,
-            totalareceber,
-            diadasemana,
-            custoadicional,
-            ativo,
-            statusatendimentoid,
-            statuspagamentoid, 
-            statuscobrancaid, 
-            observacao
-        };
-
-        if (action === 'edit') {
-
-            try {
-                const response = await api.put(`/ordem-servico/${cadosdIdParam}`, data, {
-                    headers: {
-                        Authorization: 1,
-                    }
-                });
-                alert(`Cadastro atualizado com sucesso.`);
-                setRedirect(true);
-            } catch (err) {
-
-                alert('Erro na atualização, tente novamente.');
-            }
-
-        } else {
-
-            if (action === 'novo') {
-                try {
-                    const response = await api.post('ordem-servico', data, {
-                        headers: {
-                            Authorization: 1,
-                        }
-                    });
-                    alert(`Cadastro realizado com sucesso.`);
-                    setRedirect(true);
-                } catch (err) {
-                    alert('Erro no cadastro, tente novamente.');
-                }
-            }
-        }
+  async function handleAtualizaMovimentacao(e) {
+    e.preventDefault();
+    alert('oi');
+    const dataMovimentacao = {
+        statusatendimentoid, 
+        statuscobrancaid,
+        statuspagamentoid,
+        observacao,
+        ativo: true
     }
+
+    try {
+        const response = await api.put(`/movimentacao-os/${cadosdIdParam}`, dataMovimentacao, {
+            headers: {
+                Authorization: 1,
+            }
+        });
+        alert(`Movimentação atualizada com sucesso.`);
+        setRedirect(true);
+    } catch (err) {
+
+        alert('Erro na atualização, tente novamente.');
+    }
+  }
+
+  async function handleOs(e) {
+      e.preventDefault();
+
+      const data = {
+          datasolicitacao,
+          dataatendimento,
+          clientefilialid,
+          tipoprojetoid,
+          descricaoservico,
+          tecnicoid,
+          observacaoos,
+          horaentrada,
+          horasaida,
+          qtdehoras,
+          horaextra,
+          valorapagar,
+          valorareceber,
+          totalapagar,
+          totalareceber,
+          diadasemana,
+          custoadicional,
+          ativo,
+          statusatendimentoid,
+          statuspagamentoid, 
+          statuscobrancaid, 
+          observacao
+      };
+
+      console.log(action)
+
+      if (action === 'edit') {
+
+          try {
+              const response = await api.put(`/ordem-servico/${cadosdIdParam}`, data, {
+                  headers: {
+                      Authorization: 1,
+                  }
+              });
+              alert(`Cadastro atualizado com sucesso.`);
+              setRedirect(true);
+          } catch (err) {
+
+              alert('Erro na atualização, tente novamente.');
+          }
+
+      } else {
+
+          if (action === 'novo') {
+              try {
+                  const response = await api.post('ordem-servico', data, {
+                      headers: {
+                          Authorization: 1,
+                      }
+                  });
+                  alert(`Cadastro realizado com sucesso.`);
+                  setRedirect(true);
+              } catch (err) {
+                  alert('Erro no cadastro, tente novamente.');
+              }
+          }
+      }
+  }
+    const [key, setKey] = useState('clientefilial');
+  
     return (
         <div className="animated fadeIn">
             {redirect && <Redirect to="/lista-ordem-servico" />}
             <Form onSubmit={handleOs} onReset={handleReset}>
                 <Row>
                     <Col xs="12" md="12">
-                        <Card>
+                        <Card className="mb-0">
                             {/* card Ordem Serviço */}
                             <CardHeader>
                                 <i className="icon-wrench"></i>
                                 <strong>Ordem de Serviço</strong>
                                 {action === 'novo' ? <small> nova</small> : <small> editar</small>}
                             </CardHeader>
-                            <CardBody className="border-bottom">
+                            <CardBody>
                                 <FormGroup row>
                                     <Col md="4">
                                         <Label htmlFor="numeroOs">Número da OS</Label>
-                                        <Input type="text" required id="txtNumeroOs" placeholder="" readOnly
+                                        <Input type="text" id="txtNumeroOs" readOnly
                                             value={numeroos}
                                             name="numeroos"
                                             onChange={e => setNumeroos(e.target.value)}
@@ -534,14 +522,13 @@ const OrdemServico = (props) => {
                                         </InputGroup>
                                     </Col>
                                     <Col md="4">
-                                        <Label htmlFor="dataatendimento">Data atendimento</Label>
+                                        <Label htmlFor="dataatendimento">Data do Atendimento</Label>
                                         <InputGroup>
                                             <Input type="date" required id="txtDataAtendimento"
                                                 value={dataatendimento}
                                                 name="dataatendimento"
                                                 onChange={handleInputChange}
                                             />
-
                                             <InputGroupAddon addonType="append">
                                                 <span className="btn btn-secondary disabled fa fa-calendar fa-lg"></span>
                                             </InputGroupAddon>
@@ -555,568 +542,553 @@ const OrdemServico = (props) => {
                                         />
                                     </Col>
                                 </FormGroup>
+                            </CardBody>                         
+                        </Card>
+                        <Card>
+                            <CardBody>                                                          
+                                <Tabs
+                                    id="controlled-tab-example"
+                                    activeKey={key}
+                                    onSelect={(k) => setKey(k)}
+                                >
+                                    {/* Tab1. CLiente / Filial */}
+                                    <Tab 
+                                        eventKey="clientefilial" 
+                                        title={
+                                            <Fragment>
+                                                <i className="fa fa-handshake-o"></i><strong><span className="ml-2">Cliente / Filial </span> </strong>                                                                                  
+                                            </Fragment>
+                                        }                                 
+                                    >
+                                        <FormGroup row>
+                                            <Col md="4">
+                                                <Label htmlFor="clienteId">Cliente</Label>
+                                                <InputGroup>
+                                                    <Input type="select" id="cboCliente"
+                                                        value={clienteid}
+                                                        name="clienteid"
+                                                        onChange={handleInputChange}
+                                                    >
+                                                        <option value={undefined} defaultValue>Selecione...</option>
+                                                        {clientes.map(cliente => (
+                                                            <option key={`cliente${cliente.id}`} value={cliente.id}>{cliente.nomecliente}</option>
+                                                        ))}
+                                                    </Input>
+                                                    <InputGroupAddon addonType="append">
+                                                        <span className="btn btn-secondary disabled fa fa-handshake-o"></span>
+                                                    </InputGroupAddon>
+                                                </InputGroup>
+                                            </Col>
+                                            <Col md="4">
+                                                <Label htmlFor="clienteFilialId">Filial do Cliente</Label>
+                                                <InputGroup>
+                                                    <Input required type="select" id="cboClienteFilial"
+                                                        value={clientefilialid}
+                                                        name="clientefilialid"
+                                                        onChange={handleInputChange}
+                                                    >
+                                                        <option value={undefined} defaultValue>Selecione...</option>
+                                                        {clienteFiliais.map(clienteFilial => (
+                                                            <option key={clienteFilial.id} value={clienteFilial.id}>{clienteFilial.nomefilial}</option>
+                                                        ))}
+                                                    </Input>
+                                                    <InputGroupAddon addonType="append">
+                                                        <span className="btn btn-secondary disabled fa fa-building-o "></span>
+                                                    </InputGroupAddon>
+                                                </InputGroup>
+                                            </Col>
+                                            <Col md="4">
+                                                <Label htmlFor="bandeiraId">Bandeira</Label>
+                                                <InputGroup>
+                                                    <Input type="text" id="txtBandeira" readOnly
+                                                        value={dadosFilial.nomebandeira}
+                                                        name="nomebandeira"
+                                                    />
+                                                </InputGroup>
+                                            </Col>
+                                        </FormGroup>
+                                        <FormGroup row>
+                                            <Col md="2">
+                                                <Label htmlFor="telefoneFixo">Telefone Fixo</Label>
+                                                <InputGroup>
+                                                    <Input type="text" id="txtTelefoneFixo" readOnly
+                                                        value={dadosFilial.telefonefixo}
+                                                        name="telefonefixo"
+                                                    />
+                                                </InputGroup>
+                                            </Col>
+                                            <Col md="2">
+                                                <Label htmlFor="telefoneResponsavel">Tel. Responsável</Label>
+                                                <InputGroup>
+                                                    <Input type="text" id="txtTelefoneResponsavel" readOnly
+                                                        value={dadosFilial.telefoneresponsavel}
+                                                        name="telefoneresponsavel"
+                                                    />
+
+                                                </InputGroup>
+                                            </Col>
+                                            <Col md="2">
+                                                <Label htmlFor="lblCed">CED</Label>
+                                                <Input type="text" readOnly required id="txtCed"
+                                                    value={dadosFilial.ced}
+                                                    name="ced"
+                                                />
+                                            </Col>
+                                            <Col md="2">
+                                                <Label htmlFor="lblCep">CEP</Label>
+                                                <Input type="text" readOnly required id="txtCep"
+                                                    value={dadosFilial.cep}
+                                                    name="cep"
+                                                />
+                                            </Col>
+                                            <Col md="4">
+                                                <Label htmlFor="lblLogradouro">Logradouro</Label>
+                                                <InputGroup>
+                                                    <Input required type="text" readOnly id="txtLogradouro"
+                                                        value={dadosFilial.logradouro}
+                                                        name="logradouro"
+                                                    />
+                                                </InputGroup>
+                                            </Col>
+
+                                        </FormGroup>
+                                        <FormGroup row>
+                                            <Col md="2">
+                                                <Label htmlFor="lblNumero">Nº</Label>
+                                                <InputGroup>
+                                                    <Input type="text" id="txtNumero" readOnly
+                                                        value={dadosFilial.numero}
+                                                        name="numero"
+                                                    />
+                                                </InputGroup>
+                                            </Col>
+                                            <Col md="2">
+                                                <Label htmlFor="lblComplemento">Complemento</Label>
+                                                <InputGroup>
+                                                    <Input type="text" id="txtComplemento" readOnly
+                                                        value={dadosFilial.complemento}
+                                                        name="complemento"
+                                                    />
+                                                </InputGroup>
+                                            </Col>
+                                            <Col md="2">
+                                                <Label htmlFor="lblBairro">Bairro</Label>
+                                                <Input type="text" required id="txtBairro" readOnly
+                                                    value={dadosFilial.bairro}
+                                                    name="bairro"
+                                                />
+                                            </Col>
+                                            <Col md="2">
+                                                <Label htmlFor="lblEstado">Estado</Label>
+                                                <InputGroup>
+                                                    <Input required type="text" id="txtEstado" readOnly
+                                                        value={dadosFilial.estado}
+                                                        name="estado"
+                                                    />
+                                                </InputGroup>
+                                            </Col>
+                                            <Col md="4">
+                                                <Label htmlFor="lblCidade">Cidade</Label>
+                                                <Input type="text" required id="txtCidade" readOnly
+                                                    value={dadosFilial.cidade}
+                                                    name="cidade"
+                                                />
+                                            </Col>
+                                        </FormGroup>
+                                        <FormGroup row>
+                                            <Col md="4">
+                                                <Label htmlFor="lblHorarioInicioSemana">Horario Início da semana</Label>
+                                                <InputGroup>
+                                                    <Input type="time" required id="txtHorarioInicioSemana" readOnly
+                                                        value={dadosFilial.horarioiniciosemana}
+                                                        name="horarioiniciosemana"
+                                                    />
+                                                </InputGroup>
+                                            </Col>
+                                            <Col md="4">
+                                                <Label htmlFor="lblHorarioInicioSabado">Horario Início do Sábado</Label>
+                                                <InputGroup>
+                                                    <Input type="time" required id="txtHorarioInicioSabado" readOnly
+                                                        value={dadosFilial.horarioiniciosabado}
+                                                        name="horarioiniciosabado"
+                                                    />
+                                                </InputGroup>
+                                            </Col>
+                                            <Col md="4">
+                                                <Label htmlFor="lblHorarioInicioSabado">Horario Início do Domingo</Label>
+                                                <InputGroup>
+                                                    <Input type="time" required id="txtHorarioInicioDomingo" readOnly
+                                                        value={dadosFilial.horarioiniciodomingo}
+                                                        name="horarioiniciodomingo"
+                                                    />
+                                                </InputGroup>
+                                            </Col>
+                                        </FormGroup>
+                                        <FormGroup row>
+                                            <Col md="4">
+                                                <Label htmlFor="lblHorarioFimSemana">Horario Fim da semana</Label>
+                                                <InputGroup>
+                                                    <Input type="time" required id="txtHorarioFimSemana" readOnly
+                                                        value={dadosFilial.horariofimsemana}
+                                                        name="horariofimsemana"
+                                                    />
+                                                </InputGroup>
+                                            </Col>
+                                            <Col md="4">
+                                                <Label htmlFor="lblHorarioFimSabado">Horario Fim do Sábado</Label>
+                                                <InputGroup>
+                                                    <Input type="time" required id="txtHorarioFimSabado" readOnly
+                                                        value={dadosFilial.horariofimsabado}
+                                                        name="horariofimsabado"
+                                                    />
+                                                </InputGroup>
+                                            </Col>
+                                            <Col md="4">
+                                                <Label htmlFor="lblHorarioFimDomingo">Horario Fim do Domingo</Label>
+                                                <InputGroup>
+                                                    <Input type="time" required id="txtHorarioFimDomingo" readOnly
+                                                        value={dadosFilial.horariofimdomingo}
+                                                        name="horariofimdomingo"
+                                                    />
+                                                </InputGroup>
+                                            </Col>
+                                        </FormGroup>
+                                    </Tab>
+                                    {/* Tab2. Informações do Projeto< */}
+                                    <Tab 
+                                        eventKey="projetos" 
+                                        title={
+                                        <Fragment>
+                                            <i className="icon-note"></i><strong><span className="ml-2">Informações do Projeto</span></strong>
+                                        </Fragment>
+                                        } 
+                                    >
+                                        <FormGroup row>
+                                            <Col md="4">
+                                                <Label htmlFor="tiposervicoid">Tipo de Projeto</Label>
+                                                <InputGroup>
+                                                    <Input required type="select" id="cboTipoServico"
+                                                        value={tipoprojetoid}
+                                                        name="tipoprojetoid"
+                                                        onChange={handleInputChange}>
+                                                        <option value={undefined} defaultValue>Selecione...</option>
+                                                        {tipoProjeto.map(tipoProjeto => (
+                                                            <option key={`tipoProjeto${tipoProjeto.id}`} value={tipoProjeto.id}>{tipoProjeto.nometipoprojeto}</option>
+                                                        ))}
+                                                    </Input>
+                                                    <InputGroupAddon addonType="append">
+                                                        <span className="btn btn-secondary disabled fa icon-wrench"></span>
+                                                    </InputGroupAddon>
+                                                </InputGroup>
+                                            </Col>
+                                            <Col md="4">
+                                                <Label htmlFor="tecnicoId">Técnico</Label>
+                                                <InputGroup>
+                                                    <Input required type="select" id="cobTecnico"
+                                                        value={tecnicoid}
+                                                        name="tecnicoid"
+                                                        onChange={e => setTecnicoid(e.target.value)} >
+                                                        <option value={undefined} defaultValue>Selecione...</option>
+                                                        {tecnicos.map(tecnico => (
+                                                            <option key={`tecnicoid${tecnico.id}`} value={tecnico.id}>{tecnico.nometecnico}</option>
+                                                        ))}
+                                                    </Input>
+                                                    <InputGroupAddon addonType="append">
+                                                        <span className="btn btn-secondary disabled fa fa-user-md"></span>
+                                                    </InputGroupAddon>
+                                                </InputGroup>
+                                            </Col>
+                                        </FormGroup>
+                                        <FormGroup row>
+                                            <Col md="12">
+                                                <Label htmlFor="descricaoservico">Descrição do Projeto</Label>
+                                                <InputGroup>
+                                                    <Input id="txtDescricaoServico" rows="5" required type="textarea" placeholder="Descrição do Projeto"
+                                                        value={descricaoservico}
+                                                        name="descricaoservico"
+                                                        onChange={e => setDescricaoservico(e.target.value)}
+                                                    />
+                                                </InputGroup>
+                                            </Col>
+                                        </FormGroup>
+                                        <FormGroup row>
+                                            <Col md="4">
+                                                <Label htmlFor="horaEntrada">Hora de Entrada</Label>
+                                                <InputGroup>
+                                                    <Input type="time" required id="txtHoraEntrada"
+                                                        placeholder="00:00:00"
+                                                        value={horaentrada}
+                                                        name="horaentrada"
+                                                        onChange={handleInputChange}
+                                                    />
+                                                    <InputGroupAddon addonType="append">
+                                                        <span className="btn btn-secondary disabled fa fa-clock-o"></span>
+                                                    </InputGroupAddon>
+                                                </InputGroup>
+                                            </Col>
+                                            <Col md="4">
+                                                <Label htmlFor="horaSaida">Hora de Saída</Label>
+                                                <InputGroup>
+                                                    <Input type="time" required name="time" id="txtHoraSaida"
+                                                        value={horasaida}
+                                                        name="horasaida"
+                                                        onChange={handleInputChange}
+                                                    />
+                                                    <InputGroupAddon addonType="append">
+                                                        <span className="btn btn-secondary disabled fa fa-clock-o"></span>
+                                                    </InputGroupAddon>
+                                                </InputGroup>
+                                            </Col>
+                                            <Col md="4">
+                                                <Label htmlFor="qtHoras">Quantidade de Horas</Label>
+                                                <InputGroup>
+                                                    <Input type="text" id="txtqtdHoras" readOnly
+                                                        value={qtdehoras}
+                                                        name="qtdehoras"
+                                                        placeholder="00:00"
+                                                        // onChange={handleInputChange}
+                                                    />
+                                                    <InputGroupAddon addonType="append">
+                                                        <span className="btn btn-secondary disabled fa fa-clock-o"></span>
+                                                    </InputGroupAddon>
+                                                </InputGroup>
+                                            </Col>
+                                        </FormGroup>
+                                        <FormGroup row>
+                                            <Col md="4">
+                                                <Label htmlFor="valorPpagar">Valor a Pagar</Label>
+                                                <InputGroup>
+                                                    {/* <Input type="text" id="txtValorPagar" placeholder="R$00,00"
+                                                        value={valorapagar}
+                                                        name="valorapagar"
+                                                        onChange={e => setValorapagar(e.target.value)}
+                                                    /> */}
+                                                    <NumberFormat
+                                                        id={'txtValorPagar'}
+                                                        name={'valorapagar'}
+                                                        className={'form-control'}
+                                                        decimalScale={2}
+                                                        fixedDecimalScale={true}
+                                                        thousandSeparator={'.'}
+                                                        decimalSeparator={','}
+                                                        prefix={'R$ '}
+                                                        placeholder={'R$ 0,00'}
+                                                        value={valorapagarFormatado}
+                                                        onValueChange={(values) => {
+                                                            const {formattedValue, value} = values;
+                                                            setValorapagar(values.value);
+                                                            setValorapagarFormatado(values.formattedValue);
+                                                            valorPagarInicial = values.value;
+                                                            TotaisPagarReceber();
+                                                        }}
+                                                    />
+                                                    <InputGroupAddon addonType="append">
+                                                        <span className="btn btn-secondary disabled fa fa-money"></span>
+                                                    </InputGroupAddon>
+                                                </InputGroup>
+                                            </Col>
+                                            <Col md="4">
+                                                <Label htmlFor="valorReceber">Valor a Receber</Label>
+                                                <InputGroup>
+                                                    {/* <Input type="text" id="txtValorReceber" placeholder="R$00,00"
+                                                        value={valorareceber}
+                                                        name="valorareceber"
+                                                        onChange={e => setValorareceber(e.target.value)}
+                                                    /> */}
+                                                    <NumberFormat
+                                                        id={'txtValorReceber'}
+                                                        name={'valorareceber'}
+                                                        className={'form-control'}
+                                                        decimalScale={2}
+                                                        fixedDecimalScale={true}
+                                                        thousandSeparator={'.'}
+                                                        decimalSeparator={','}
+                                                        prefix={'R$ '}
+                                                        placeholder={'R$ 0,00'}
+                                                        value={valorareceberFormatado}
+                                                        onValueChange={(values) => {
+                                                            const {formattedValue, value} = values;
+                                                            setValorareceber(values.value);
+                                                            setValorareceberFormatado(values.formattedValue);
+                                                            valorReceberInicial = values.value;
+                                                            TotaisPagarReceber();
+                                                        }}
+                                                    />
+                                                    <InputGroupAddon addonType="append">
+                                                        <span className="btn btn-secondary disabled fa fa-money"></span>
+                                                    </InputGroupAddon>
+                                                </InputGroup>
+                                            </Col>
+                                            <Col md="4">
+                                                <Label htmlFor="horaextra">Hora Extra</Label>
+                                                <InputGroup>
+                                                    <Input type="text" id="txtHoraExtra" placeholder="00:00" readOnly
+                                                        value={horaextra}
+                                                        name="horaextra"
+                                                    />
+                                                    <InputGroupAddon addonType="append">
+                                                        <span className="btn btn-secondary disabled fa fa-clock-o"></span>
+                                                    </InputGroupAddon>
+                                                </InputGroup>
+                                            </Col>
+                                        </FormGroup>
+                                        <FormGroup row>
+                                            <Col md="4">
+                                                <Label htmlFor="totalpagar">Total a pagar</Label>
+                                                <InputGroup>
+                                                    <Input type="text" id="txtTotalPagar" readOnly
+                                                        value={Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(totalapagar)}
+                                                        name="totalapagar"
+                                                    />
+                                                    <InputGroupAddon addonType="append">
+                                                        <Button type="button" color="secondary fa fa-money"></Button>
+                                                    </InputGroupAddon>
+                                                </InputGroup>
+                                            </Col>
+                                            <Col md="4">
+                                                <Label htmlFor="totalreceber">Total a Receber</Label>
+                                                <InputGroup>
+                                                    <Input type="text" id="txtTotalReceber" readOnly
+                                                        value={Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(totalareceber)}
+                                                        name="totalareceber"
+                                                    />
+                                                    <InputGroupAddon addonType="append">
+                                                        <Button type="button" color="secondary fa fa-money"></Button>
+                                                    </InputGroupAddon>
+                                                </InputGroup>
+                                            </Col>
+                                            <Col md="4">
+                                                <Label htmlFor="custoAdicional">Custo Adicional</Label>
+                                                <InputGroup>
+                                                    {/* <Input type="text" id="txtCustoAdicional" placeholder="R$00,00"
+                                                        value={custoadicional}
+                                                        name="custoadicional"
+                                                        onChange={e => setCustoadicional(reaisMask(e.target.value))}
+                                                    /> */}
+                                                    <NumberFormat
+                                                        id={'txtCustoAdicional'}
+                                                        name={'custoadicional'}
+                                                        className={'form-control'}
+                                                        decimalScale={2}
+                                                        fixedDecimalScale={true}
+                                                        thousandSeparator={'.'}
+                                                        decimalSeparator={','}
+                                                        prefix={'R$ '}
+                                                        value={custoadicionalFormatado}
+                                                        onValueChange={(values) => {
+                                                            const {formattedValue, value} = values;
+                                                            setCustoadicional(values.value);
+                                                            setCustoadicionalFormatado(values.formattedValue);
+                                                            custoAdicionalInicial = values.value;
+                                                            TotaisPagarReceber();
+                                                        }}
+                                                    />
+                                                    <InputGroupAddon addonType="append">
+                                                        <Button type="button" color="secondary fa fa-money"></Button>
+                                                    </InputGroupAddon>
+                                                </InputGroup>
+                                            </Col>
+                                        </FormGroup>
+                                    </Tab>
+                                    {/* Tab3. Movimentação de OS */}
+                                    <Tab 
+                                        eventKey="movimentacao" 
+                                        title={
+                                        <Fragment>
+                                            <i className="fa fa-arrows"></i><strong><span className="ml-2">Movimentação de OS</span></strong>
+                                        </Fragment>
+                                    } 
+                                    >
+                                        <Row>
+                                            <Col md="8">
+                                                <FormGroup row>
+                                                    <Col md="4">
+                                                        <Label htmlFor="statusAtendimentoId">Status Atendimento</Label>
+                                                        <Input type="select" required name="select" id="cboStatusAtendimentoId" multiple={false}
+                                                            name="statusatendimentoid"
+                                                            value={statusatendimentoid}
+                                                            onChange={e => setStatusAtendimentoid(e.target.value)}>
+                                                            <option value={undefined} defaultValue>Selecione...</option>
+                                                            {statusatendimentosid.map(statusatendimento => (
+                                                                <option key={statusatendimento.id} value={statusatendimento.id}>{statusatendimento.status}</option>
+                                                            ))}
+                                                        </Input>
+                                                    </Col>
+                                                    <Col md="4">
+                                                        <Label htmlFor="statusCobrancaId">Status Cobrança</Label>
+                                                        <Input type="select" required name="select" id="cboStatusCobrancaId" multiple={false}
+                                                            name="statuscobrancaid"
+                                                            value={statuscobrancaid}
+                                                            onChange={e => setStatusCobrancaid(e.target.value)}>
+                                                            <option value={undefined} defaultValue>Selecione...</option>
+                                                            {statuscobrancasid.map(statuscobranca => (
+                                                                <option key={statuscobranca.id} value={statuscobranca.id}>{statuscobranca.status}</option>
+                                                            ))}
+                                                        </Input>
+                                                    </Col>
+                                                    <Col md="4">
+                                                        <Label htmlFor="statusPagamentoId">Status Pagamento</Label>
+                                                        <Input type="select" required name="select" id="cboStatuspPagamentoId" multiple={false}
+                                                            name="statuspagamentoid"
+                                                            value={statuspagamentoid}
+                                                            onChange={e => setStatusPagamentoid(e.target.value)}>
+                                                            <option value={undefined} defaultValue>Selecione...</option>
+                                                            {statuspagamentosid.map(statuspagamento => (
+                                                                <option key={statuspagamento.id} value={statuspagamento.id}>{statuspagamento.status}</option>
+                                                            ))}
+                                                        </Input>
+                                                    </Col>
+                                                </FormGroup>
+                                                <FormGroup row>
+                                                    <Col md="12">
+                                                        <Label>Observação</Label>
+                                                        <Input type="textarea" rows="5" placeholder="Digite a obsevação" id="txtObservacaoMovimentacao"
+                                                            name="observacao"
+                                                            value={observacao}
+                                                            onChange={e => setObservacao(e.target.value)} />
+                                                    </Col>
+                                                </FormGroup>
+                                                {action !== 'editar' ? (
+                                                    <FormGroup className="text-left">
+                                                        <Button type="button" size="sm" color="info" className="text-white mr-3" onClick={handleAtualizaMovimentacao}><i className="fa fa-check"></i> Atualizar Movimentação</Button>
+                                                    </FormGroup>
+                                                ) : ""}
+                                                
+                                            </Col>
+                                            <Col md="4">
+                                                <CardHeader>                            
+                                                    <i className="fa fa-history"></i>
+                                                    <strong>Timeline</strong>                                
+                                                </CardHeader>
+                                                <CardBody className="p-0"> 
+                                                    <ListGroup className="list-group-accent" tag={'div'}>
+                                                        {/* // {items.map((value) => { */}
+                                                        {/* <ListGroupItem className="list-group-item-accent-secondary bg-light text-center font-weight-bold text-muted text-uppercase small">Today</ListGroupItem> */}
+                                                        {movimentacaoLogId.map((movimentacaolog) => {
+                                                            return(
+                                                                <CardListaStatus key={movimentacaolog.id} movimentacaolog={movimentacaolog}></CardListaStatus>
+                                                            )
+                                                        })}
+                                                    </ListGroup>                                
+                                                </CardBody>
+                                                <CardFooter>
+                                                    <div className="small text-muted"><strong>Atualizado em:</strong> {dateFormat(now, "dd/mm/yyyy")} às {dateFormat(now, "HH:MM")}</div>                                
+                                                </CardFooter>
+                                            </Col>
+                                        </Row>
+                                    </Tab>
+                                </Tabs>
                             </CardBody>
-                            {/* card Cliente / Filial */}
-                            <CardHeader>
-                                <i className="fa fa-handshake-o"></i>
-                                <strong>Cliente / Filial</strong>
-                                <div className="card-header-actions">
-                                    <IconOpenClose type='clientes' isOpen={collapseMulti[0]}></IconOpenClose>
-                                    {/* <Button className="card-header-action" onClick={()=>{toggleMulti('clientes')}}>
-                                        <i className="fa fa-chevron-up"></i>
-                                    </Button> */}
-                                </div>
-                            </CardHeader>
-                            <Collapse isOpen={collapseMulti[0]}>
-                                <CardBody className="border-bottom">
-                                    <FormGroup row>
-                                        <Col md="4">
-                                            <Label htmlFor="clienteId">Cliente</Label>
-                                            <InputGroup>
-                                                <Input type="select" id="cboCliente"
-                                                    value={clienteid}
-                                                    name="clienteid"
-                                                    onChange={handleInputChange}
-                                                >
-                                                    <option value={undefined} defaultValue>Selecione...</option>
-                                                    {clientes.map(cliente => (
-                                                        <option key={`cliente${cliente.id}`} value={cliente.id}>{cliente.nomecliente}</option>
-                                                    ))}
-                                                </Input>
-                                                <InputGroupAddon addonType="append">
-                                                    <span className="btn btn-secondary disabled fa fa-handshake-o"></span>
-                                                </InputGroupAddon>
-                                            </InputGroup>
-                                        </Col>
-                                        <Col md="4">
-                                            <Label htmlFor="clienteFilialId">Filial do Cliente</Label>
-                                            <InputGroup>
-                                                <Input required type="select" id="cboClienteFilial"
-                                                    value={clientefilialid}
-                                                    name="clientefilialid"
-                                                    onChange={handleInputChange}
-                                                >
-                                                    <option value={undefined} defaultValue>Selecione...</option>
-                                                    {clienteFiliais.map(clienteFilial => (
-                                                        <option key={clienteFilial.id} value={clienteFilial.id}>{clienteFilial.nomefilial}</option>
-                                                    ))}
-                                                </Input>
-                                                <InputGroupAddon addonType="append">
-                                                    <span className="btn btn-secondary disabled fa fa-building-o "></span>
-                                                </InputGroupAddon>
-                                            </InputGroup>
-                                        </Col>
-                                        <Col md="4">
-                                            <Label htmlFor="bandeiraId">Bandeira</Label>
-                                            <InputGroup>
-                                                <Input type="text" id="txtBandeira" readOnly
-                                                    value={dadosFilial.nomebandeira}
-                                                    name="nomebandeira"
-                                                />
-                                            </InputGroup>
-                                        </Col>
-                                    </FormGroup>
-                                    <FormGroup row>
-                                        <Col md="2">
-                                            <Label htmlFor="telefoneFixo">Telefone Fixo</Label>
-                                            <InputGroup>
-                                                <Input type="text" id="txtTelefoneFixo" readOnly
-                                                    value={dadosFilial.telefonefixo}
-                                                    name="telefonefixo"
-                                                />
-                                            </InputGroup>
-                                        </Col>
-                                        <Col md="2">
-                                            <Label htmlFor="telefoneResponsavel">Tel. Responsável</Label>
-                                            <InputGroup>
-                                                <Input type="text" id="txtTelefoneResponsavel" readOnly
-                                                    value={dadosFilial.telefoneresponsavel}
-                                                    name="telefoneresponsavel"
-                                                />
-
-                                            </InputGroup>
-                                        </Col>
-                                        <Col md="2">
-                                            <Label htmlFor="lblCed">CED</Label>
-                                            <Input type="text" readOnly required id="txtCed"
-                                                value={dadosFilial.ced}
-                                                name="ced"
-                                            />
-                                        </Col>
-                                        <Col md="2">
-                                            <Label htmlFor="lblCep">CEP</Label>
-                                            <Input type="text" readOnly required id="txtCep"
-                                                value={dadosFilial.cep}
-                                                name="cep"
-                                            />
-                                        </Col>
-                                        <Col md="4">
-                                            <Label htmlFor="lblLogradouro">Logradouro</Label>
-                                            <InputGroup>
-                                                <Input required type="text" readOnly id="txtLogradouro"
-                                                    value={dadosFilial.logradouro}
-                                                    name="logradouro"
-                                                />
-                                            </InputGroup>
-                                        </Col>
-
-                                    </FormGroup>
-                                    <FormGroup row>
-                                        <Col md="2">
-                                            <Label htmlFor="lblNumero">Nº</Label>
-                                            <InputGroup>
-                                                <Input type="text" id="txtNumero" readOnly
-                                                    value={dadosFilial.numero}
-                                                    name="numero"
-                                                />
-                                            </InputGroup>
-                                        </Col>
-                                        <Col md="2">
-                                            <Label htmlFor="lblComplemento">Complemento</Label>
-                                            <InputGroup>
-                                                <Input type="text" id="txtComplemento" readOnly
-                                                    value={dadosFilial.complemento}
-                                                    name="complemento"
-                                                />
-                                            </InputGroup>
-                                        </Col>
-                                        <Col md="2">
-                                            <Label htmlFor="lblBairro">Bairro</Label>
-                                            <Input type="text" required id="txtBairro" readOnly
-                                                value={dadosFilial.bairro}
-                                                name="bairro"
-                                            />
-                                        </Col>
-                                        <Col md="2">
-                                            <Label htmlFor="lblEstado">Estado</Label>
-                                            <InputGroup>
-                                                <Input required type="text" id="txtEstado" readOnly
-                                                    value={dadosFilial.estado}
-                                                    name="estado"
-                                                />
-                                            </InputGroup>
-                                        </Col>
-                                        <Col md="4">
-                                            <Label htmlFor="lblCidade">Cidade</Label>
-                                            <Input type="text" required id="txtCidade" readOnly
-                                                value={dadosFilial.cidade}
-                                                name="cidade"
-                                            />
-                                        </Col>
-                                    </FormGroup>
-                                    <FormGroup row>
-                                        <Col md="4">
-                                            <Label htmlFor="lblHorarioInicioSemana">Horario Início da semana</Label>
-                                            <InputGroup>
-                                                <Input type="time" required id="txtHorarioInicioSemana" readOnly
-                                                    value={dadosFilial.horarioiniciosemana}
-                                                    name="horarioiniciosemana"
-                                                />
-                                            </InputGroup>
-                                        </Col>
-                                        <Col md="4">
-                                            <Label htmlFor="lblHorarioInicioSabado">Horario Início do Sábado</Label>
-                                            <InputGroup>
-                                                <Input type="time" required id="txtHorarioInicioSabado" readOnly
-                                                    value={dadosFilial.horarioiniciosabado}
-                                                    name="horarioiniciosabado"
-                                                />
-                                            </InputGroup>
-                                        </Col>
-                                        <Col md="4">
-                                            <Label htmlFor="lblHorarioInicioSabado">Horario Início do Domingo</Label>
-                                            <InputGroup>
-                                                <Input type="time" required id="txtHorarioInicioDomingo" readOnly
-                                                    value={dadosFilial.horarioiniciodomingo}
-                                                    name="horarioiniciodomingo"
-                                                />
-                                            </InputGroup>
-                                        </Col>
-                                    </FormGroup>
-                                    <FormGroup row>
-                                        <Col md="4">
-                                            <Label htmlFor="lblHorarioFimSemana">Horario Fim da semana</Label>
-                                            <InputGroup>
-                                                <Input type="time" required id="txtHorarioFimSemana" readOnly
-                                                    value={dadosFilial.horariofimsemana}
-                                                    name="horariofimsemana"
-                                                />
-                                            </InputGroup>
-                                        </Col>
-                                        <Col md="4">
-                                            <Label htmlFor="lblHorarioFimSabado">Horario Fim do Sábado</Label>
-                                            <InputGroup>
-                                                <Input type="time" required id="txtHorarioFimSabado" readOnly
-                                                    value={dadosFilial.horariofimsabado}
-                                                    name="horariofimsabado"
-                                                />
-                                            </InputGroup>
-                                        </Col>
-                                        <Col md="4">
-                                            <Label htmlFor="lblHorarioFimDomingo">Horario Fim do Domingo</Label>
-                                            <InputGroup>
-                                                <Input type="time" required id="txtHorarioFimDomingo" readOnly
-                                                    value={dadosFilial.horariofimdomingo}
-                                                    name="horariofimdomingo"
-                                                />
-                                            </InputGroup>
-                                        </Col>
-                                    </FormGroup>
-                                </CardBody>
-                            </Collapse>
-                            {/* card Informações do Projeto */}
-                            <CardHeader>
-                                <i className="icon-note"></i>
-                                <strong>Informações do Projeto</strong>
-                                <div className="card-header-actions">
-                                    <IconOpenClose type='servicos' isOpen={collapseMulti[1]}></IconOpenClose>                                    
-                                </div>
-                            </CardHeader>
-                            <Collapse isOpen={collapseMulti[1]}>
-                                <CardBody className="border-bottom">
-                                    <FormGroup row>
-                                        <Col md="4">
-                                            <Label htmlFor="tiposervicoid">Tipo de Projeto</Label>
-                                            <InputGroup>
-                                                <Input required type="select" id="cboTipoServico"
-                                                    value={tipoprojetoid}
-                                                    name="tipoprojetoid"
-                                                    onChange={handleInputChange}>
-                                                    <option value={undefined} defaultValue>Selecione...</option>
-                                                    {tipoProjeto.map(tipoProjeto => (
-                                                        <option key={`tipoProjeto${tipoProjeto.id}`} value={tipoProjeto.id}>{tipoProjeto.nometipoprojeto}</option>
-                                                    ))}
-                                                </Input>
-                                                <InputGroupAddon addonType="append">
-                                                    <span className="btn btn-secondary disabled fa icon-wrench"></span>
-                                                </InputGroupAddon>
-                                            </InputGroup>
-                                        </Col>
-                                        <Col md="4">
-                                            <Label htmlFor="tecnicoId">Técnico</Label>
-                                            <InputGroup>
-                                                <Input required type="select" id="cobTecnico"
-                                                    value={tecnicoid}
-                                                    name="tecnicoid"
-                                                    onChange={e => setTecnicoid(e.target.value)} >
-                                                    <option value={undefined} defaultValue>Selecione...</option>
-                                                    {tecnicos.map(tecnico => (
-                                                        <option key={`tecnicoid${tecnico.id}`} value={tecnico.id}>{tecnico.nometecnico}</option>
-                                                    ))}
-                                                </Input>
-                                                <InputGroupAddon addonType="append">
-                                                    <span className="btn btn-secondary disabled fa fa-user-md"></span>
-                                                </InputGroupAddon>
-                                            </InputGroup>
-                                        </Col>
-                                    </FormGroup>
-                                    <FormGroup row>
-                                        <Col md="12">
-                                            <Label htmlFor="descricaoservico">Descrição do Projeto</Label>
-                                            <InputGroup>
-                                                <Input id="txtDescricaoServico" rows="5" required type="textarea" placeholder="Descrição do Serviço"
-                                                    value={descricaoservico}
-                                                    name="descricaoservico"
-                                                    onChange={e => setDescricaoservico(e.target.value)}
-                                                />
-                                            </InputGroup>
-                                        </Col>
-                                    </FormGroup>
-                                    <FormGroup row>
-                                        <Col md="4">
-                                            <Label htmlFor="horaEntrada">Hora de Entrada</Label>
-                                            <InputGroup>
-                                                <Input type="time" required id="txtHoraEntrada"
-                                                    placeholder="00:00:00"
-                                                    value={horaentrada}
-                                                    name="horaentrada"
-                                                    onChange={handleInputChange}
-                                                />
-                                                <InputGroupAddon addonType="append">
-                                                    <span className="btn btn-secondary disabled fa fa-clock-o"></span>
-                                                </InputGroupAddon>
-                                            </InputGroup>
-                                        </Col>
-                                        <Col md="4">
-                                            <Label htmlFor="horaSaida">Hora de Saída</Label>
-                                            <InputGroup>
-                                                <Input type="time" required name="time" id="txtHoraSaida"
-                                                    value={horasaida}
-                                                    name="horasaida"
-                                                    onChange={handleInputChange}
-                                                />
-                                                <InputGroupAddon addonType="append">
-                                                    <span className="btn btn-secondary disabled fa fa-clock-o"></span>
-                                                </InputGroupAddon>
-                                            </InputGroup>
-                                        </Col>
-                                        <Col md="4">
-                                            <Label htmlFor="qtHoras">Quantidade de Horas</Label>
-                                            <InputGroup>
-                                                <Input type="text" id="txtqtdHoras" readOnly
-                                                    value={qtdehoras}
-                                                    name="qtdehoras"
-                                                    placeholder="00:00"
-                                                    // onChange={handleInputChange}
-                                                />
-                                                <InputGroupAddon addonType="append">
-                                                    <span className="btn btn-secondary disabled fa fa-clock-o"></span>
-                                                </InputGroupAddon>
-                                            </InputGroup>
-                                        </Col>
-                                    </FormGroup>
-                                    <FormGroup row>
-                                        <Col md="4">
-                                            <Label htmlFor="valorPpagar">Valor a Pagar</Label>
-                                            <InputGroup>
-                                                {/* <Input type="text" id="txtValorPagar" placeholder="R$00,00"
-                                                    value={valorapagar}
-                                                    name="valorapagar"
-                                                    onChange={e => setValorapagar(e.target.value)}
-                                                /> */}
-                                                <NumberFormat
-                                                    id={'txtValorPagar'}
-                                                    name={'valorapagar'}
-                                                    className={'form-control'}
-                                                    decimalScale={2}
-                                                    fixedDecimalScale={true}
-                                                    thousandSeparator={'.'}
-                                                    decimalSeparator={','}
-                                                    prefix={'R$ '}
-                                                    placeholder={'R$ 0,00'}
-                                                    value={valorapagarFormatado}
-                                                    onValueChange={(values) => {
-                                                        const {formattedValue, value} = values;
-                                                        setValorapagar(values.value);
-                                                        setValorapagarFormatado(values.formattedValue);
-                                                        valorPagarInicial = values.value;
-                                                        TotaisPagarReceber();
-                                                    }}
-                                                />
-                                                <InputGroupAddon addonType="append">
-                                                    <span className="btn btn-secondary disabled fa fa-money"></span>
-                                                </InputGroupAddon>
-                                            </InputGroup>
-                                        </Col>
-                                        <Col md="4">
-                                            <Label htmlFor="valorReceber">Valor a Receber</Label>
-                                            <InputGroup>
-                                                {/* <Input type="text" id="txtValorReceber" placeholder="R$00,00"
-                                                    value={valorareceber}
-                                                    name="valorareceber"
-                                                    onChange={e => setValorareceber(e.target.value)}
-                                                /> */}
-                                                <NumberFormat
-                                                    id={'txtValorReceber'}
-                                                    name={'valorareceber'}
-                                                    className={'form-control'}
-                                                    decimalScale={2}
-                                                    fixedDecimalScale={true}
-                                                    thousandSeparator={'.'}
-                                                    decimalSeparator={','}
-                                                    prefix={'R$ '}
-                                                    placeholder={'R$ 0,00'}
-                                                    value={valorareceberFormatado}
-                                                    onValueChange={(values) => {
-                                                        const {formattedValue, value} = values;
-                                                        setValorareceber(values.value);
-                                                        setValorareceberFormatado(values.formattedValue);
-                                                        valorReceberInicial = values.value;
-                                                        TotaisPagarReceber();
-                                                    }}
-                                                />
-                                                <InputGroupAddon addonType="append">
-                                                    <span className="btn btn-secondary disabled fa fa-money"></span>
-                                                </InputGroupAddon>
-                                            </InputGroup>
-                                        </Col>
-                                        <Col md="4">
-                                            <Label htmlFor="horaextra">Hora Extra</Label>
-                                            <InputGroup>
-                                                <Input type="text" id="txtHoraExtra" placeholder="00:00" readOnly
-                                                    value={horaextra}
-                                                    name="horaextra"
-                                                />
-                                                <InputGroupAddon addonType="append">
-                                                    <span className="btn btn-secondary disabled fa fa-clock-o"></span>
-                                                </InputGroupAddon>
-                                            </InputGroup>
-                                        </Col>
-                                    </FormGroup>
-                                    <FormGroup row>
-                                    <Col md="4">
-                                        <Label htmlFor="totalpagar">Total a pagar</Label>
-                                        <InputGroup>
-                                            <Input type="text" id="txtTotalPagar" readOnly
-                                                value={Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(totalapagar)}
-                                                name="totalapagar"
-                                            />
-                                            <InputGroupAddon addonType="append">
-                                                <Button type="button" color="secondary fa fa-money"></Button>
-                                            </InputGroupAddon>
-                                        </InputGroup>
-                                    </Col>
-                                    <Col md="4">
-                                        <Label htmlFor="totalreceber">Total a Receber</Label>
-                                        <InputGroup>
-                                            <Input type="text" id="txtTotalReceber" readOnly
-                                                value={Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(totalareceber)}
-                                                name="totalareceber"
-                                            />
-                                            <InputGroupAddon addonType="append">
-                                                <Button type="button" color="secondary fa fa-money"></Button>
-                                            </InputGroupAddon>
-                                        </InputGroup>
-                                    </Col>
-                                    <Col md="4">
-                                        <Label htmlFor="custoAdicional">Custo Adicional</Label>
-                                        <InputGroup>
-                                            {/* <Input type="text" id="txtCustoAdicional" placeholder="R$00,00"
-                                                value={custoadicional}
-                                                name="custoadicional"
-                                                onChange={e => setCustoadicional(reaisMask(e.target.value))}
-                                            /> */}
-                                            <NumberFormat
-                                                id={'txtCustoAdicional'}
-                                                name={'custoadicional'}
-                                                className={'form-control'}
-                                                decimalScale={2}
-                                                fixedDecimalScale={true}
-                                                thousandSeparator={'.'}
-                                                decimalSeparator={','}
-                                                prefix={'R$ '}
-                                                value={custoadicionalFormatado}
-                                                onValueChange={(values) => {
-                                                    const {formattedValue, value} = values;
-                                                    setCustoadicional(values.value);
-                                                    setCustoadicionalFormatado(values.formattedValue);
-                                                    custoAdicionalInicial = values.value;
-                                                    TotaisPagarReceber();
-                                                }}
-                                            />
-                                            <InputGroupAddon addonType="append">
-                                                <Button type="button" color="secondary fa fa-money"></Button>
-                                            </InputGroupAddon>
-                                        </InputGroup>
-                                    </Col>
-                                </FormGroup>
-                                </CardBody>
-                            </Collapse>
-                            {/* card Movimentação Ordem Serviço */}
-                            <CardHeader>
-                                <i className="fa fa-arrows"></i>
-                                <strong>Movimentação de OS</strong>
-                                <div className="card-header-actions">
-                                    <IconOpenClose type='movimentacaoos' isOpen={collapseMulti[2]}></IconOpenClose>                                    
-                                </div>
-                            </CardHeader>
-                            <Collapse isOpen={collapseMulti[2]}>
-                                <CardBody>                          
-                                    <Row>
-                                        <Col md="8">
-                                            <FormGroup row>
-                                                <Col md="4">
-                                                    <Label htmlFor="statusAtendimentoId">Status Atendimento</Label>
-                                                    <Input type="select" required name="select" id="cboStatusAtendimentoId" multiple={false}
-                                                        name="statusatendimentoid"
-                                                        value={statusatendimentoid}
-                                                        onChange={e => setStatusAtendimentoid(e.target.value)}>
-                                                        <option value={undefined} defaultValue>Selecione...</option>
-                                                        {statusatendimentosid.map(statusatendimento => (
-                                                            <option key={statusatendimento.id} value={statusatendimento.id}>{statusatendimento.status}</option>
-                                                        ))}
-                                                    </Input>
-                                                </Col>
-                                                <Col md="4">
-                                                    <Label htmlFor="statusCobrancaId">Status Cobrança</Label>
-                                                    <Input type="select" required name="select" id="cboStatusCobrancaId" multiple={false}
-                                                        name="statuscobrancaid"
-                                                        value={statuscobrancaid}
-                                                        onChange={e => setStatusCobrancaid(e.target.value)}>
-                                                        <option value={undefined} defaultValue>Selecione...</option>
-                                                        {statuscobrancasid.map(statuscobranca => (
-                                                            <option key={statuscobranca.id} value={statuscobranca.id}>{statuscobranca.status}</option>
-                                                        ))}
-                                                    </Input>
-                                                </Col>
-                                                <Col md="4">
-                                                    <Label htmlFor="statusPagamentoId">Status Pagamento</Label>
-                                                    <Input type="select" required name="select" id="cboStatuspPagamentoId" multiple={false}
-                                                        name="statuspagamentoid"
-                                                        value={statuspagamentoid}
-                                                        onChange={e => setStatusPagamentoid(e.target.value)}>
-                                                        <option value={undefined} defaultValue>Selecione...</option>
-                                                        {statuspagamentosid.map(statuspagamento => (
-                                                            <option key={statuspagamento.id} value={statuspagamento.id}>{statuspagamento.status}</option>
-                                                        ))}
-                                                    </Input>
-                                                </Col>
-                                            </FormGroup>
-                                            <FormGroup row>
-                                                <Col md="12">
-                                                    <Label>Observação</Label>
-                                                    <Input type="textarea" rows="5" placeholder="Digite a obsevação" required id="txtObservacao"
-                                                        name="observacao"
-                                                        value={observacao}
-                                                        onChange={e => setObservacao(e.target.value)} />
-                                                </Col>
-                                            </FormGroup>
-                                        </Col>
-                                        <Col md="4">
-                                            <CardHeader>                            
-                                                <i className="fa fa-history"></i>
-                                                <strong>Timeline</strong>                                
-                                            </CardHeader>
-                                            <CardBody className="p-0"> 
-                                                <ListGroup className="list-group-accent" tag={'div'}>
-                                                    {/* // {items.map((value) => { */}
-                                                    {/* <ListGroupItem className="list-group-item-accent-secondary bg-light text-center font-weight-bold text-muted text-uppercase small">Today</ListGroupItem> */}
-                                                    {movimentacaoLogId.map((movimentacaolog) => {
-                                                        return(
-                                                            <Fragment>
-                                                                <ListGroupItem className="list-group-item-accent-warning list-group-item-divider text-grey p-2">
-                                                                    <div className="avatar float-right">
-                                                                        <img className="img-avatar" src="assets/img/avatars/7.jpg" alt="Usuário"></img>
-                                                                    </div>
-                                                                    <div>
-                                                                        <small className="text-muted mr-2">
-                                                                            <i className="icon-layers"></i>
-                                                                        </small>
-                                                                        <strong>{movimentacaolog.statusAtendimento}</strong> 
-                                                                    </div>
-                                                                    <div>
-                                                                        <small className="text-muted mr-2">
-                                                                            <i className="icon-user"></i>                                                            
-                                                                        </small>
-                                                                        <small className="text-muted">
-                                                                            {movimentacaolog.nome}&nbsp;{movimentacaolog.sobrenome}
-                                                                        </small>                                        
-                                                                    </div>
-                                                                    <small className="text-muted mr-3">
-                                                                        <i className="icon-calendar"></i>&nbsp; Em: 01/08/2020 às 12:23h
-                                                                    </small>                                        
-                                                                </ListGroupItem>
-                                                            </Fragment>
-                                                        )
-                                                    })}
-                                                </ListGroup>                                
-                                            </CardBody>
-                                            <CardFooter>
-                                                <div className="small text-muted"><strong>Atualizado em:</strong> 13/08/2020 às 13:12</div>                                
-                                            </CardFooter>
-                                        </Col>
-                                    </Row>
-                                </CardBody>
-                            </Collapse>
                             <CardFooter className="text-center">
-                                <Button type="submit" size="sm" color="success" className=" mr-3"><i className="fa fa-check"></i> Salvar</Button>
+                                <Button type="submit" size="sm" color="success" className="mr-3"><i className="fa fa-check"></i> Salvar</Button>
                                 <Button type="reset" size="sm" color="danger" className="ml-3"><i className="fa fa-ban "></i> Cancelar</Button>
                             </CardFooter>
                         </Card>
-                    </Col>
+                    </Col>    
                 </Row>
             </Form>
         </div>
     );
-}
-export default OrdemServico;
+  }
+  
+  export default OrdemServico;

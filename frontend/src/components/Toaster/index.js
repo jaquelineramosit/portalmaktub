@@ -1,20 +1,26 @@
 import React from 'react';
-import { toast } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import '../../global.css';
 
- const Toaster = {
+export const PopUpToaster = () => {
+
+    return (
+        <ToastContainer />
+    )
+}
+
+const Toaster = {
 
     exibeMensagem: (status, msg) => {
 
-        console.log(status);
         switch(status) {
             case 'success':
                 toast.success(                
                     msg,
                     { 
                         position: "top-right",
-                        autoClose: 5000,
+                        autoClose: 10000,
                         hideProgressBar: true,
                         closeOnClick: true,
                         pauseOnHover: true,
@@ -24,11 +30,12 @@ import '../../global.css';
                 )
                 break;
             case 'error': 
+                console.log(msg);
                 toast.error(                
                     msg,
                     { 
                         position: "top-right",
-                        autoClose: 4000,
+                        autoClose: 15000,
                         hideProgressBar: true,
                         closeOnClick: true,
                         pauseOnHover: true,
@@ -42,7 +49,7 @@ import '../../global.css';
                     msg,
                     { 
                         position: "top-right",
-                        autoClose: 4000,
+                        autoClose: 15000,
                         hideProgressBar: true,
                         closeOnClick: true,
                         pauseOnHover: true,
@@ -56,7 +63,7 @@ import '../../global.css';
                     msg,
                     { 
                         position: "top-right",
-                        autoClose: 4000,
+                        autoClose: 15000,
                         hideProgressBar: true,
                         closeOnClick: true,
                         pauseOnHover: true,
@@ -70,7 +77,7 @@ import '../../global.css';
                     msg,
                     { 
                         position: "top-right",
-                        autoClose: 4000,
+                        autoClose: 10000,
                         hideProgressBar: true,
                         closeOnClick: true,
                         pauseOnHover: true,
@@ -84,7 +91,7 @@ import '../../global.css';
                     msg,
                     { 
                         position: "top-right",
-                        autoClose: 4000,
+                        autoClose: 10000,
                         hideProgressBar: true,
                         closeOnClick: true,
                         pauseOnHover: true,

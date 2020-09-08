@@ -18,11 +18,11 @@ export default {
       },
       class: ''             // optional class names space delimited list for title item ex: "text-center"
     },
-    {
-      name: 'Ordem de Serviço Tabs',
-      url: '/teste-mult-tabs/73?action=edit',
-      icon: 'icon-wrench',
-    },
+    // {
+    //   name: 'Mensagens',
+    //   url: '/teste-mensagens',
+    //   icon: 'fa fa-comment',
+    // },
     {
       name: 'Ordem de Serviço',
       url: '/lista-ordem-servico',

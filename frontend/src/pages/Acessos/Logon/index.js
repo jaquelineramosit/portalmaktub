@@ -4,39 +4,77 @@ import { Button, Card, CardBody, CardGroup, Col, Container, Form, Input, InputGr
 import './style.css';
 import ImgLogon from '../../../assets/img/logon.jpg';
 import api from '../../../../src/services/api';
-import toaster from '../../../components/Toaster';
+import Toaster, { PopUpToaster } from '../../../components/Toaster';
+import FormValidator from '../../../components/Validator/FormValidator';
 
 export default function Logon() {
          
         const [login, setLogin] = useState('');
-        const [senhaForm, setSenhaForm] = useState('');
+        const [senha, setSenha] = useState('');
 
         const history = useHistory();
 
         async function handleLogin(e) {
             e.preventDefault();
 
-            const data = {
-                login,
-                senhaForm
-            };
-
             try {
-                const response = await api.post('/logon', data);
-                localStorage.setItem('logado', true);
-                localStorage.setItem('userId', response.data.id);
-                localStorage.setItem('nomeUsuario', response.data.nome);
-                toaster.exibeMensagem('logon-success', `Bem vindo(a) ${response.data.nome}!`) 
-                history.push('/dashboard');
+                //validação de form para login e senha
+                const validador = new FormValidator([    
+                    {
+                        campo: 'login',
+                        metodo: 'isEmpty',
+                        validoQuando: false,
+                        mensagem: 'Digite corretamenteo o login!'
+                    },
+                    {
+                        campo: 'senha',
+                        metodo: 'isEmpty',
+                        validoQuando: false,
+                        mensagem: 'Digite a senha para acessar o portal!'
+                    }
+                ]);
+
+                const data = {
+                    login,
+                    senha
+                };
+
+                const validacao = validador.valida(data);
+
+                if(validacao.isValid) {
+                    const response = await api.post('/logon', data);
+                    if(response.status === 200) {
+                        Toaster.exibeMensagem('logon-success', `Bem vindo(a) ${response.data.nome}!`) 
+                        localStorage.setItem('logado', true);
+                        localStorage.setItem('userId', response.data.id);
+                        localStorage.setItem('nomeUsuario', response.data.nome);
+                        history.push('/dashboard');
+                    } else {
+                        Toaster.exibeMensagem('logon-error', "Ocorreu um erro. Favor contatar o administrador do sistema.");   
+                    }
+                } else {
+
+                    const { login, senha} = validacao;
+                    const campos = [login, senha];
+                    const camposInvalidos = campos.filter(elem => {
+                        
+                        return elem.isInvalid
+                    });
+                    camposInvalidos.forEach(campo => {
+                        Toaster.exibeMensagem('error', campo.message);                    
+                    });
+                }
 
             } catch (err) {
-                toaster.exibeMensagem('logon-error', 'Usuário e/ou senha inválido(s). Tente novamente.')                
+                console.log(err.message)
+                Toaster.exibeMensagem('logon-error', 'Usuário e/ou senha inválido(s). Tente novamente.')                
             }
         }
 
         return (  
             <div className="app flex-row align-items-center">
                 <Container>
+                    <PopUpToaster />
                     <Row className="justify-content-center">
                         <Col md="8">
                             <CardGroup>
@@ -51,7 +89,7 @@ export default function Logon() {
                                                         <i className="icon-user"></i>
                                                     </InputGroupText>
                                                 </InputGroupAddon>
-                                                <Input type="text" placeholder="Usuário"
+                                                <Input type="text" placeholder="Usuário" id="login" name="login" required
                                                 value={login}
                                                 onChange={ e => setLogin(e.target.value)}
                                                 autoComplete="username" />
@@ -62,9 +100,9 @@ export default function Logon() {
                                                         <i className="icon-lock"></i>
                                                     </InputGroupText>
                                                 </InputGroupAddon>
-                                                <Input type="password" placeholder="Senha" 
-                                                value={senhaForm}
-                                                onChange={ e => setSenhaForm(e.target.value)}
+                                                <Input type="password" placeholder="Senha" id="senha" name="senha" required
+                                                value={senha}
+                                                onChange={ e => setSenha(e.target.value)}
                                                 autoComplete="current-password" />
                                             </InputGroup>
                                             <Row>
