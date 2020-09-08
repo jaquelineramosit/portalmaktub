@@ -70,8 +70,8 @@ export default function Usuario(props) {
     }, [estado]);
 
     useEffect(() => {
-        if (action === 'edit' && usuariosIdParam !== '') {
-            api.get(`usuarios/${usuariosIdParam}`).then(response => {
+        if (usuarioId !== '') {
+            api.get(`usuarios/${usuarioId}`).then(response => {
                 setNome(response.data.nome);
                 setSobrenome(response.data.sobrenome);
                 setDatanasc(dateFormat(response.data.datanasc, "yyyy-mm-dd"));
@@ -96,9 +96,10 @@ export default function Usuario(props) {
                 response.data.ativo === 1 ? setAtivo(1) : setAtivo(0);
             });
         } else {
+            
             return;
         }
-    }, [usuariosIdParam]);
+    }, [usuarioId]);
 
     function handleSelectUf(event) {
         const uf = event.target.value;
@@ -131,7 +132,7 @@ export default function Usuario(props) {
             sobrenome,
             contatoemergencia,
             telefonecttoemergencia,
-            datanasc: dataNasc,
+            dataNasc,
             logradouro,
             numero,
             complemento,
@@ -149,41 +150,22 @@ export default function Usuario(props) {
             login,
             perfilacessoid,
             ativo
-
         };
-        console.log(data)
 
-        if (action === 'edit') {
-            try {
-                const response = await api.put(`/usuarios/${usuariosIdParam}`, data, {
-                    headers: {
+        try {
+            const response = await api.put(`/usuarios/${usuarioId}`, data, {
+                headers: {
                         Authorization: 6,
                     }
                 });
                 alert(`Cadastro atualizado com sucesso.`);
                 setRedirect(true);
-            } catch (err) {
-                alert('Erro na atualização, tente novamente.');
-            }
-        } else {
-            if (action === 'novo') {
-                try {
-                    const response = await api.post('usuarios', data, {
-                        headers: {
-                            Authorization: 6,
-                        }
-                    });
-                    alert(`Seu login de acesso: ${response.data.login}`);
-                    setRedirect(true);
-                } catch (err) {
-
-                    alert('Erro no cadastro, tente novamente.');
-                }
-            }
+        } catch (err) {
+            alert('Erro na atualização, tente novamente.');
         }
     }
 
-
+    console.log(usuarioId)
     return (
         <div className="animated fadeIn">
             {redirect && <Redirect to="/lista-usuarios" />}
@@ -194,7 +176,6 @@ export default function Usuario(props) {
                             <CardHeader>
                                 <i className="fa fa-user-circle-o"></i>
                                 <strong>Usuário</strong>
-                                <small> novo</small>
                             </CardHeader>
                             <CardBody>
                                 <FormGroup row>
@@ -217,7 +198,7 @@ export default function Usuario(props) {
                                         <InputGroup>
                                             <Input type="date" required id="txtDataNasc" className="date"
                                                 placeholder="Digite a Data de Nascimento"
-                                                name="datanasc"
+                                                name="dataNasc"
                                                 value={dataNasc}
                                                 onChange={e => setDatanasc(e.target.value)} />
                                             <InputGroupAddon addonType="append">
@@ -413,7 +394,7 @@ export default function Usuario(props) {
                                             onChange={e => setPerfilacessoid(e.target.value)}>
                                             <option value={undefined} defaultValue>Selecione...</option>
                                             {perfilAcessos.map(perfilAcesso => (
-                                                <option value={perfilAcesso.id}>{perfilAcesso.nomeperfil}</option>
+                                                <option key={perfilAcesso.id} value={perfilAcesso.id}>{perfilAcesso.nomeperfil}</option>
                                             ))}
                                         </Input>
                                     </Col>
