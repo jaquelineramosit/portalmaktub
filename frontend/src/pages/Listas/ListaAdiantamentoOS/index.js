@@ -40,8 +40,8 @@ export default function ListaAdiantamentoOS() {
 
     const columns = [
         {
-            name: 'Ordem de Serviço',
-            selector: 'numeroos',
+            name: 'Adiantamento',
+            selector: 'numeroadiantamentoos',
             sortable: true,
             width: '15%'
         },

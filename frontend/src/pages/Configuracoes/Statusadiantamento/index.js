@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, CardFooter, Form } from 'reactstrap';
 import '../../../global.css';
-import { Redirect } from "react-router-dom";
+import { Redirect } from 'react-router-dom';
 import api from '../../../services/api';
 
 export default function StatusAdiantamento(props) {
