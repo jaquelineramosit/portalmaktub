@@ -79,7 +79,7 @@ export default function ListaTecnicos() {
             name: 'Ações',
             sortable: true,
             right: true,
-            cell: row => <Link to={`tecnico/${row.id}?action=edit`} className="btn-sm btn-primary"><i className="fa fa-pencil fa-lg mr-1"></i></Link>
+            cell: row => <Link to={`tecnico/${row.id}?action=edit`} className="btn-sm btn-primary"><i className="fa fa-pencil fa-lg"></i></Link>
         },
     ];
 

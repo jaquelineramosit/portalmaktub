@@ -17,42 +17,56 @@ export default function Logon() {
         async function handleLogin(e) {
             e.preventDefault();
 
-            //validação de form para login e senha
-            // const validador = new FormValidator([    
-            //     {
-            //         campo: 'login',
-            //         metodo: 'isEmpty',
-            //         validoQuando: true,
-            //         mensagem: 'Selecione o campo Status de Cobrança!'
-            //     },
-            //     {
-            //         campo: 'dataOs',
-            //         metodo: 'isEmpty',
-            //         validoQuando: true,
-            //         mensagem: 'Informe uma data válida de serviço!'
-            //     },
-            //     {
-            //         campo: 'descricao',
-            //         metodo: 'isEmpty',
-            //         validoQuando: true,
-            //         mensagem: 'Informe uma descrição para o serviço!'
-            //     }
-            // ]);
-
-            const data = {
-                login,
-                senha
-            };
-
             try {
-                const response = await api.post('/logon', data);
-                localStorage.setItem('logado', true);
-                localStorage.setItem('userId', response.data.id);
-                localStorage.setItem('nomeUsuario', response.data.nome);
-                Toaster.exibeMensagem('logon-success', `Bem vindo(a) ${response.data.nome}!`) 
-                history.push('/dashboard');
+                //validação de form para login e senha
+                const validador = new FormValidator([    
+                    {
+                        campo: 'login',
+                        metodo: 'isEmpty',
+                        validoQuando: false,
+                        mensagem: 'Digite corretamenteo o login!'
+                    },
+                    {
+                        campo: 'senha',
+                        metodo: 'isEmpty',
+                        validoQuando: false,
+                        mensagem: 'Digite a senha para acessar o portal!'
+                    }
+                ]);
+
+                const data = {
+                    login,
+                    senha
+                };
+
+                const validacao = validador.valida(data);
+
+                if(validacao.isValid) {
+                    const response = await api.post('/logon', data);
+                    if(response.status === 200) {
+                        Toaster.exibeMensagem('logon-success', `Bem vindo(a) ${response.data.nome}!`) 
+                        localStorage.setItem('logado', true);
+                        localStorage.setItem('userId', response.data.id);
+                        localStorage.setItem('nomeUsuario', response.data.nome);
+                        history.push('/dashboard');
+                    } else {
+                        Toaster.exibeMensagem('logon-error', "Ocorreu um erro. Favor contatar o administrador do sistema.");   
+                    }
+                } else {
+
+                    const { login, senha} = validacao;
+                    const campos = [login, senha];
+                    const camposInvalidos = campos.filter(elem => {
+                        
+                        return elem.isInvalid
+                    });
+                    camposInvalidos.forEach(campo => {
+                        Toaster.exibeMensagem('error', campo.message);                    
+                    });
+                }
 
             } catch (err) {
+                console.log(err.message)
                 Toaster.exibeMensagem('logon-error', 'Usuário e/ou senha inválido(s). Tente novamente.')                
             }
         }

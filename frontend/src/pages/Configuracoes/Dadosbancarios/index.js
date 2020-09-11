@@ -128,7 +128,7 @@ export default function DadosBancarios(props) {
                     <Col xs="12" md="12">
                         <Card>
                             <CardHeader>
-                                <strong>Conta de Tecnico</strong>
+                                <strong>Dados Bancários</strong>
                                 <small> novo</small>
                             </CardHeader>
                             <CardBody>
@@ -221,7 +221,7 @@ export default function DadosBancarios(props) {
                             </CardBody>
                             <CardFooter className="text-center">
                                 <Button type="submit" size="sm" color="success" className=" mr-3"><i className="fa fa-check"></i> Salvar</Button>
-                                <Button type="reset" size="sm" color="danger" className="ml-3"><i className="fa fa-ban "></i> Cancelar</Button>
+                                <Button type="reset" size="sm" color="danger" className="ml-3"><i className="fa fa-ban"></i> Cancelar</Button>
                             </CardFooter>
                         </Card>
                     </Col>

@@ -41,10 +41,14 @@ class DefaultLayout extends Component {
 
   signOut(e) {
     localStorage.clear(); //limpa todo o local storage
-    console.log("entrou aqui");
     e.preventDefault();
     this.props.history.push('/logon');
     
+  }
+
+  profile(e) {
+    e.preventDefault();
+    this.props.history.push('/profile');
   }
 
   render() {
@@ -56,7 +60,7 @@ class DefaultLayout extends Component {
         <PopUpToaster />
         <AppHeader fixed>
           <Suspense  fallback={this.loading()}>
-            <DefaultHeader onLogout={e=>this.signOut(e)}/>
+            <DefaultHeader onLogout={e=>this.signOut(e)} onProfile={e=>this.profile(e)}/>
           </Suspense>
         </AppHeader>
         <div className="app-body">

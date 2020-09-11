@@ -220,7 +220,7 @@ module.exports = {
                             ativo,
                             usuarioid,
                             dataultmodif
-                        }) .then(function(movimentacaoOsId) {     
+                        }).then(function(movimentacaoOsId) {     
                             console.log("movimentacaoOsId[0]");
                             console.log(movimentacaoOsId[0]);                   
                             if(movimentacaoOsId[0]) {
@@ -243,33 +243,7 @@ module.exports = {
                 console.error(err);
             });
     
-        //FIM ////////////////////////////////////////////////////////////////////////////////////////
-
-
-        await connection('ordemservico').where('id', id).update({
-            
-            datasolicitacao,
-            dataatendimento,
-            clientefilialid,
-            tiposervicoid,
-            descricaoservico,
-            tecnicoid,
-            observacaoos,
-            horaentrada,
-            horasaida,
-            qtdehoras,
-            horaextra,
-            valorapagar,
-            valorareceber,
-            totalapagar,
-            totalareceber,
-            diadasemana,
-            custoadicional,
-            ativo,
-            usuarioid,
-            dataultmodif
-        });           
-
+        //FIM ////////////////////////////////////////////////////////////////////////////////////////        
         return response.status(204).send();
     },
 

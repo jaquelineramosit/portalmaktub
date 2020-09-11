@@ -16,7 +16,7 @@ const PermissaoAcesso = React.lazy(() => import('./pages/Acessos/PermissaoAcesso
 const Register = React.lazy(() => import('./pages/Acessos/Register'));
 const Funcao = React.lazy(() => import('./pages/Acessos/Funcao'));
 const Usuario = React.lazy(() => import('./pages/Acessos/Usuario'));
-
+const Profile = React.lazy(() => import('./pages/Acessos/Profile'));
 
 // Configurações
 const Clientes = React.lazy(() => import('./pages/Configuracoes/Clientes'));
@@ -117,7 +117,7 @@ const routes = [
   { path: '/funcao/:id', name: 'Função', component: Funcao },
   { path: '/usuarios', exact:true, name: 'Usuários', component: Usuario },
   { path: '/usuarios/:id', name: 'Usuários', component: Usuario },
-
+  { path: '/profile', name: 'Minha Conta', component: Profile },
 
 
   //Configuração

@@ -522,7 +522,7 @@ const OrdemServico = (props) => {
                                         </InputGroup>
                                     </Col>
                                     <Col md="4">
-                                        <Label htmlFor="dataatendimento">Data atendimento</Label>
+                                        <Label htmlFor="dataatendimento">Data do Atendimento</Label>
                                         <InputGroup>
                                             <Input type="date" required id="txtDataAtendimento"
                                                 value={dataatendimento}
