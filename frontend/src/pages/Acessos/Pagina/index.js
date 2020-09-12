@@ -117,7 +117,7 @@ export default function Pagina(props) {
                                             name="moduloId"
                                             value={moduloid}
                                             onChange={e => setModuloid(e.target.value)}>
-                                            <option value={undefined} defaultValue>Selecione...</option>
+                                            <option value="" defaultValue>Selecione...</option>
                                             {modulos.map(modulo => (
                                                 <option value={modulo.id}>{modulo.nomemodulo}</option>
                                             ))}

@@ -114,7 +114,7 @@ export default function Subpagina(props) {
                                             name="paginaid"
                                             value={paginaid}
                                             onChange={e => setPaginaid(e.target.value)}>
-                                            <option value={undefined} defaultValue>Selecione...</option>
+                                            <option value="" defaultValue>Selecione...</option>
                                             {paginasid.map(pagina => (
                                                 <option value={pagina.id}>{pagina.nomepagina}</option>
                                             ))}

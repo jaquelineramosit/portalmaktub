@@ -40,8 +40,10 @@ export default function ListaAdiantamentoOS() {
 
     const columns = [
         {
-            name: 'Ordem de Serviço',
+            name: 'OS',
             selector: 'numeroos',
+            name: 'Adiantamento',
+            selector: 'numeroadiantamentoos',
             sortable: true,
             width: '15%'
         },
@@ -50,14 +52,14 @@ export default function ListaAdiantamentoOS() {
             selector: 'valoradiantamento',
             sortable: true,
             center: true,
-            width: '17%'
+            width: '19%'
         },
         {
             name: 'Data Adiantamento',
             selector: 'dataadiantamento',
             sortable: true,
             center: true,
-            width: '16%',
+            width: '19%',
             cell: row => <DateDiv data={row.dataadiantamento} controleId={row.id} isLabel={false} label=""></DateDiv>
         },
         {
@@ -65,7 +67,7 @@ export default function ListaAdiantamentoOS() {
             selector: 'dataquitacao',
             sortable: true,
             center: true,
-            width: '16%',
+            width: '19%',
             cell: row => <DateDiv data={row.dataquitacao} controleId={row.id} isLabel={false} label=""></DateDiv>
         },
         {
@@ -73,15 +75,8 @@ export default function ListaAdiantamentoOS() {
             selector: 'status',
             sortable: true,
             center: true,
-            width: '18%',
+            width: '19%',
             cell: row => <BadgeStatus key={`badge${row.id}`} status={row.statusAdiantamento}></BadgeStatus>,
-        },
-        {
-            name: 'Status',
-            sortable: true,
-            center: true,
-            cell: row => <Badge color="success">Ativo</Badge>,
-            width: '9%',
         },
         {
             name: 'Ações',

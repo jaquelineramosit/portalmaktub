@@ -247,7 +247,7 @@ export default function Filiais(props) {
                                             value={clienteid}
                                             onChange={handleInputChange}
                                         >
-                                            <option value={undefined} defaultValue>Selecione...</option>
+                                            <option value="" defaultValue>Selecione...</option>
                                             {clientesid.map(cliente => (
                                                 <option key={`cliente${cliente.id}`} value={cliente.id}>{cliente.nomecliente}</option>
                                             ))}
@@ -259,7 +259,7 @@ export default function Filiais(props) {
                                             name="bandeiraid"
                                             value={bandeiraid}
                                             onChange={e => setBandeiraid(e.target.value)}>
-                                            <option value={undefined} defaultValue>Selecione...</option>
+                                            <option value="" defaultValue>Selecione...</option>
                                             {bandeirasid.map(bandeira => (
                                                 <option key={`bandeira${bandeira.id}`} value={bandeira.id}>{bandeira.nomebandeira}</option>
                                             ))}

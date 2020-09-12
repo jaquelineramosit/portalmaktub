@@ -139,7 +139,7 @@ export default function DadosBancarios(props) {
                                             name="tecnicoid"
                                             value={tecnicoid}
                                             onChange={e => setTecnicoid(e.target.value)}>
-                                            <option value={undefined} defaultValue>Selecione...</option>
+                                            <option value="" defaultValue>Selecione...</option>
                                             {tecnicosid.map(tecnico => (
                                                 <option value={tecnico.id}>{tecnico.nometecnico}</option>
                                             ))}
@@ -152,7 +152,7 @@ export default function DadosBancarios(props) {
                                             name="bancoid"
                                             value={bancoid}
                                             onChange={e => setBancoid(e.target.value)}>
-                                            <option value={undefined} defaultValue>Selecione...</option>
+                                            <option value="" defaultValue>Selecione...</option>
                                             {bancosid.map(banco => (
                                                 <option value={banco.id}>{banco.nomebanco}</option>
                                             ))}
@@ -164,7 +164,7 @@ export default function DadosBancarios(props) {
                                             name="tipocontaid"
                                             value={tipocontaid}
                                             onChange={e => setTipoContaid(e.target.value)} >
-                                            <option value={undefined} defaultValue>Selecione...</option>
+                                            <option value="" defaultValue>Selecione...</option>
                                             {tipocontasid.map(tipoconta => (
                                                 <option value={tipoconta.id}>{tipoconta.nometipoconta}</option>
                                             ))}

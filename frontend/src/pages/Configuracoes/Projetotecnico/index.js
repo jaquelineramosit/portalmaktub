@@ -232,7 +232,7 @@ export default function ProjetoTecnico(props) {
                                             name="tecnicoid"
                                             value={tecnicoid}
                                             onChange={e => setTecnico(e.target.value)}>
-                                            <option value={undefined} defaultValue>Selecione...</option>
+                                            <option value="" defaultValue>Selecione...</option>
                                             {tecnicosid.map(tecnico => (
                                                 <option value={tecnico.id}>{tecnico.nometecnico}</option>
                                             ))}
@@ -244,7 +244,7 @@ export default function ProjetoTecnico(props) {
                                             name="tipoprojetoid"
                                             value={tipoprojetoid}
                                             onChange={e => setTipoProjeto(e.target.value)}>
-                                            <option value={undefined} defaultValue>Selecione...</option>
+                                            <option value="" defaultValue>Selecione...</option>
                                             {tipoprojetosid.map(tipoProjeto => (
                                                 <option value={tipoProjeto.id}>{tipoProjeto.nometipoprojeto}</option>
                                             ))}

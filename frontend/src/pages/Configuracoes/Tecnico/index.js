@@ -401,7 +401,7 @@ export default function Tecnico(props) {
                                             name="tipotecnicoid"
                                             value={tipotecnicoid}
                                             onChange={e => setTipotecnicoid(e.target.value)}>
-                                            <option value={undefined} defaultValue>Selecione...</option>
+                                            <option value="" defaultValue>Selecione...</option>
                                             {tipoTecnicosid.map(tipoTecnico => (
                                                 <option value={tipoTecnico.id}>{tipoTecnico.nometipotecnico}</option>
                                             ))}

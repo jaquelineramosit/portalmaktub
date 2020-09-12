@@ -6,6 +6,9 @@ function  DataTableGenerica (props) {
     const columns = props.columns;
     const data = props.data;
     const title = props.title;
+    const selectableRows = props.selectableRows;
+    const onSelectedRowsChange = props.onSelectedRowsChange;
+    const clearSelectedRows = props.clearSelectedRows;
 
     const customRowsPerPageText = {
         rowsPerPageText: 'Linhas por página: ', 
@@ -35,7 +38,11 @@ function  DataTableGenerica (props) {
                 responsive={true}
                 pagination={true}
                 customStyles={customStyles}
-                paginationComponentOptions={customRowsPerPageText}                           
+                paginationComponentOptions={customRowsPerPageText}  
+                noDataComponent="Não há registros para exibir"
+                selectableRows={selectableRows}
+                onSelectedRowsChange={onSelectedRowsChange}
+                clearSelectedRows={clearSelectedRows}
             />
         </Fragment>
     )

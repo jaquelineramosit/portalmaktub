@@ -47,6 +47,7 @@ export default function Tipoprojeto(props) {
     const [valorhoraextra, setValorhoraextra] = useState('');
     const [valorhoratecnico, setValorhoratecnico] = useState('');
     const [horadecimal, setHoradecimal] = useState('');
+    const [escopoprojeto, setEscopoprojeto] = useState('');
     const [ativo, setAtivo] = useState(1);
 
     const [checked, setChecked] = React.useState([]);
@@ -148,6 +149,7 @@ export default function Tipoprojeto(props) {
                 setValorhoraextra(response.data.valorhoraextra);
                 setValorhoratecnico(response.data.valorhoratecnico);
                 setHoradecimal(response.data.horadecimal);
+                setEscopoprojeto(response.data.escopoprojeto);
                 response.data.ativo === 1 ? setAtivo(1) : setAtivo(0);
             });
         } else {
@@ -183,6 +185,7 @@ export default function Tipoprojeto(props) {
             valorhoraextra,
             valorhoratecnico,
             horadecimal,
+            escopoprojeto,
             ativo,
             right
         };
@@ -306,6 +309,15 @@ export default function Tipoprojeto(props) {
                                                 <span className="btn btn-secondary disabled fa fa-money"></span>
                                             </InputGroupAddon>
                                         </InputGroup>
+                                    </Col>
+                                </FormGroup>
+                                <FormGroup row>
+                                    <Col md="9">
+                                        <Label>Escopo do Projeto</Label>
+                                        <Input type="textarea" rows="5" placeholder="Descreva o Escopo do Projeto" id="txtDescStatus"
+                                            name="escopoprojeto"
+                                            value={escopoprojeto}
+                                            onChange={e => setEscopoprojeto(e.target.value)} />
                                     </Col>
                                 </FormGroup>
                                 {/* <FormGroup>

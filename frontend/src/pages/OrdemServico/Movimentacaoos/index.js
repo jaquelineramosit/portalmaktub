@@ -150,7 +150,7 @@ export default function Movimentacaoos(props) {
                                             name="ordemservicoid"
                                             value={ordemservicoid}
                                             onChange={e => setOrdemServicoid(e.target.value)}>
-                                            <option value={undefined} defaultValue>Selecione...</option>
+                                            <option value="" defaultValue>Selecione...</option>
                                             {ordemservicosid.map(ordemservico => (
                                                 <option key={ordemservico.id} value={ordemservico.id}>{ordemservico.numeroos}</option>
                                             ))}
@@ -165,7 +165,7 @@ export default function Movimentacaoos(props) {
                                             name="statusatendimentoid"
                                             value={statusatendimentoid}
                                             onChange={e => setStatusAtendimentoid(e.target.value)}>
-                                            <option value={undefined} defaultValue>Selecione...</option>
+                                            <option value="" defaultValue>Selecione...</option>
                                             {statusatendimentosid.map(statusatendimento => (
                                                 <option key={statusatendimento.id} value={statusatendimento.id}>{statusatendimento.status}</option>
                                             ))}
@@ -177,7 +177,7 @@ export default function Movimentacaoos(props) {
                                             name="statuscobrancaid"
                                             value={statuscobrancaid}
                                             onChange={e => setStatusCobrancaid(e.target.value)}>
-                                            <option value={undefined} defaultValue>Selecione...</option>
+                                            <option value=""  defaultValue>Selecione...</option>
                                             {statuscobrancasid.map(statuscobranca => (
                                                 <option key={statuscobranca.id} value={statuscobranca.id}>{statuscobranca.status}</option>
                                             ))}
@@ -189,7 +189,7 @@ export default function Movimentacaoos(props) {
                                             name="statuspagamentoid"
                                             value={statuspagamentoid}
                                             onChange={e => setStatusPagamentoid(e.target.value)}>
-                                            <option value={undefined} defaultValue>Selecione...</option>
+                                            <option value=""  defaultValue>Selecione...</option>
                                             {statuspagamentosid.map(statuspagamento => (
                                                 <option key={statuspagamento.id} value={statuspagamento.id}>{statuspagamento.status}</option>
                                             ))}

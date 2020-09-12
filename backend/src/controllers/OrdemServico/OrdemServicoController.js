@@ -68,7 +68,7 @@ module.exports = {
     
         return response.json(ordemservico);
     },
-
+    
     async create(request, response) {
         const  usuarioid  = request.headers.authorization;
         const  dataultmodif = getDate();
@@ -82,8 +82,8 @@ module.exports = {
         let numeroos = ultimoNumeroOS[0].numeroos + 1;
         //////////////////////////////////////////////////////////////////////////////////////////////
 
-        const { datasolicitacao, dataatendimento, clientefinalid, tipoprojetoid, 
-                descricaoservico, tecnicoid, observacaoos, horaentrada, 
+        const { datasolicitacao, dataatendimento, clientefilialid, tipoprojetoid, 
+            descricaoprojeto, tecnicoid, observacaoos, horaentrada, 
                 horasaida, qtdehoras, horaextra, valorapagar, valorareceber, totalapagar, 
                 totalareceber, diadasemana, custoadicional, ativo, statusatendimentoid, 
                 statuspagamentoid, statuscobrancaid, observacao } = request.body;  
@@ -112,7 +112,7 @@ module.exports = {
                     dataatendimento,
                     clientefinalid,
                     tipoprojetoid,
-                    descricaoservico,
+                    descricaoprojeto,
                     tecnicoid,
                     observacaoos,
                     horaentrada,
@@ -180,8 +180,8 @@ module.exports = {
         let numeroos = ultimoNumeroOS[0].numeroos + 1;
         //////////////////////////////////////////////////////////////////////////////////////////////
 
-        const { datasolicitacao, dataatendimento, clientefinalid, tipoprojetoid, 
-                descricaoservico, tecnicoid, observacaoos, horaentrada, 
+        const { datasolicitacao, dataatendimento, clientefilialid, tipoprojetoid, 
+            descricaoprojeto, tecnicoid, observacaoos, horaentrada, 
                 horasaida, qtdehoras, horaextra, valorapagar, valorareceber, totalapagar, 
                 totalareceber, diadasemana, custoadicional, ativo, statusatendimentoid, 
                 statuspagamentoid, statuscobrancaid, observacao } = request.body;  
@@ -205,7 +205,7 @@ module.exports = {
                     dataatendimento,
                     clientefinalid,
                     tipoprojetoid,
-                    descricaoservico,
+                    descricaoprojeto,
                     tecnicoid,
                     observacaoos,
                     horaentrada,
