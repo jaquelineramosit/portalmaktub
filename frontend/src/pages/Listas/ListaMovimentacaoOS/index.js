@@ -2,11 +2,13 @@ import React, { useState, useEffect, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardBody, CardHeader, Col, Row, Badge } from 'reactstrap';
 import api from '../../../services/api';
+import DateDiv from '../../../components/DateDiv'
 import DataTableGenerica from '../../../components/DataTableGenerica';
 import BadgeStatus from '../../../components/BadgeStatus'
 
 export default function ListaMovimentacaoOS() {
     const [movimentacaoos, setMovimentacaoos] = useState([]);
+    const [ordemservico, setOrdemservico] = useState([]);
     const [total, setTotal] = useState(0);
     const usuarioId = localStorage.getItem('userId');
     //logica para pegar o total
@@ -31,28 +33,34 @@ export default function ListaMovimentacaoOS() {
     }, [usuarioId]);
 
     const data = movimentacaoos;
+    const DivData = (props) => {
+        return (
+            <div>
+                <DateDiv data={props.dataatendimento} controleId={props.id} isLabel={true} label="Atendimento:"></DateDiv>
+            </div>
+        )
+    }
+
     
     const columns = [
         {
-            name: 'Ordem de Serviço',
+            name: 'OS',
             selector: 'numeroos',
             sortable: true,
-            width: '15%'
+            width: '20%',
         },
         {
             name: 'Status de Atendimento',
             selector: 'statusAtendimento',
             sortable: true,
-            center: true,
-            width: '19%',
+            width: '26%',
             cell: row => <BadgeStatus key={`badge${row.id}`} status={row.statusAtendimento}></BadgeStatus>,
         },
         {
             name: 'Status de Pagamento',
             selector: 'statusPagamento',
             sortable: true,
-            center: true,
-            width: '24%',
+            width: '18%',
             cell: row => <BadgeStatus key={`badge${row.id}`} status={row.statusPagamento}></BadgeStatus>,
         },
         {
@@ -60,21 +68,13 @@ export default function ListaMovimentacaoOS() {
             selector: 'statusCobranca',
             sortable: true,
             center: true,
-            width: '25%',
+            width: '26%',
             cell: row => <BadgeStatus key={`badge${row.id}`} status={row.statusCobranca}></BadgeStatus>,
-        },
-        {
-            name: 'Status',
-            sortable: true,
-            center: true,
-            width: '9%',
-            cell: row => <Badge color="success">Ativo</Badge>,
         },
         {
             name: 'Ações',
             sortable: true,
             right: true,
-            width: '9%',
             cell: row => <Link to={`movimentacao-os/${row.id}?action=edit`} className="btn-sm btn-primary"><i className="fa fa-pencil fa-lg"></i></Link>
         },
     ];
@@ -89,7 +89,7 @@ export default function ListaMovimentacaoOS() {
                         </CardHeader>
                         <CardBody>
                             <DataTableGenerica
-                                data={data}
+                                data={data}                               
                                 columns={columns}
                                 title="Movimentação de OS"
                             />

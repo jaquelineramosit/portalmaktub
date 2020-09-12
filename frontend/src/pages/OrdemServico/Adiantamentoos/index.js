@@ -128,7 +128,7 @@ export default function Adiantamentoos(props) {
                                             name="ordemservicoid"
                                             value={ordemservicoid}
                                             onChange={e => setOrdemservicoid(e.target.value)}>
-                                            <option value={undefined} defaultValue>Selecione...</option>
+                                            <option value="" defaultValue>Selecione...</option>
                                             {ordemservicosid.map(ordemservico => (
                                                 <option value={ordemservico.id}>{ordemservico.numeroos}</option>
                                             ))}

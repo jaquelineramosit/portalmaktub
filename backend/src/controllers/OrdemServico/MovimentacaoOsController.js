@@ -7,16 +7,18 @@ module.exports = {
         .join('statusatendimento', 'statusatendimento.id', '=', 'movimentacaoos.statusatendimentoid')
         .join('statuspagamento', 'statuspagamento.id', '=', 'movimentacaoos.statuspagamentoid')
         .join('statuscobranca', 'statuscobranca.id', '=', 'movimentacaoos.statuscobrancaid')
+        .join('cliente', 'cliente.id', '=', 'ordemservico.clienteid')
         .join('usuario', 'usuario.id', '=', 'movimentacaoos.usuarioid')
         .select([
             'movimentacaoos.*',
             'ordemservico.numeroos',
+            'clientefilial.nomefilial',
             'statusatendimento.status',
             'statuspagamento.status ',
             'statuscobranca.status',
             'usuario.nome'
         ]);
-    
+      
         return response.json(movimentacaoos);
     },
 

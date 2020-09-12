@@ -143,7 +143,7 @@ export default function Permissaoacesso(props) {
                                             name="perfilacessoid"
                                             value={perfilacessoid}
                                             onChange={e => setPerfilacessoid(e.target.value)}>
-                                            <option value={undefined} defaultValue>Selecione...</option>
+                                            <option value="" defaultValue>Selecione...</option>
                                             {perfilacessos.map(perfilacesso => (
                                                 <option value={perfilacesso.id}>{perfilacesso.nomeperfil}</option>
                                             ))}
@@ -155,7 +155,7 @@ export default function Permissaoacesso(props) {
                                             name="moduloid"
                                             value={moduloid}
                                             onChange={e => setModuloid(e.target.value)}>
-                                            <option value={undefined} defaultValue>Selecione...</option>
+                                            <option value="" defaultValue>Selecione...</option>
                                             {modulos.map(modulo => (
                                                 <option value={modulo.id}>{modulo.nomemodulo}</option>
                                             ))}
@@ -169,7 +169,7 @@ export default function Permissaoacesso(props) {
                                             name="paginaid"
                                             value={paginaid}
                                             onChange={e => setPaginaid(e.target.value)}>
-                                            <option value={undefined} defaultValue>Selecione...</option>
+                                            <option value="" defaultValue>Selecione...</option>
                                             {paginas.map(pagina => (
                                                 <option value={pagina.id}>{pagina.nomepagina}</option>
                                             ))}
@@ -181,7 +181,7 @@ export default function Permissaoacesso(props) {
                                             name="subpaginaid"
                                             value={subpaginaid}
                                             onChange={e => setSubpaginaid(e.target.value)}>
-                                            <option value={undefined} defaultValue>Selecione...</option>
+                                            <option value="" defaultValue>Selecione...</option>
                                             {subpaginas.map(subpagina => (
                                                 <option value={subpagina.id}>{subpagina.nomesubpagina}</option>
                                             ))}
@@ -195,7 +195,7 @@ export default function Permissaoacesso(props) {
                                             name="funcaoid"
                                             value={funcaoid}
                                             onChange={e => setFuncaoid(e.target.value)}>
-                                            <option value={undefined} defaultValue>Selecione...</option>
+                                            <option value="" defaultValue>Selecione...</option>
                                             {funcaos.map(funcao => (
                                                 <option value={funcao.id}>{funcao.nomefuncao}</option>
                                             ))}

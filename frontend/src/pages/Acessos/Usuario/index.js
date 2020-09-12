@@ -231,7 +231,7 @@ export default function Usuario(props) {
                                             name="genero"
                                             value={genero}
                                             onChange={e => setGenero(e.target.value)}>
-                                            <option value={undefined}>Selecione...</option>
+                                            <option value="">Selecione...</option>
                                             <option value="F">Feminino</option>
                                             <option value="M">Masculino</option>
                                         </Input>
@@ -411,7 +411,7 @@ export default function Usuario(props) {
                                             name="perfilacessoid"
                                             value={perfilacessoid}
                                             onChange={e => setPerfilacessoid(e.target.value)}>
-                                            <option value={undefined} defaultValue>Selecione...</option>
+                                            <option value="" defaultValue>Selecione...</option>
                                             {perfilAcessos.map(perfilAcesso => (
                                                 <option value={perfilAcesso.id}>{perfilAcesso.nomeperfil}</option>
                                             ))}

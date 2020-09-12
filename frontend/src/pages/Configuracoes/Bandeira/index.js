@@ -128,7 +128,7 @@ export default function Bandeira(props) {
                                             name="parceiroid"
                                             value={parceiroid}
                                             onChange={e => setParceiroid(e.target.value)}>
-                                            <option value={undefined} defaultValue>Selecione...</option>
+                                            <option value="" defaultValue>Selecione...</option>
                                             {parceirosid.map(parceiro => (
                                                 <option value={parceiro.id}>{parceiro.nomeparceiro}</option>
                                             ))}

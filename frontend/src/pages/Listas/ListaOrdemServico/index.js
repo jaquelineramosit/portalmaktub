@@ -54,8 +54,7 @@ export default function ListaOrdemServico(props) {
     const DivData = (props) => {
         return (
             <div>
-                <DateDiv data={props.dataatendimento} controleId={props.id} isLabel={true} label="Atendimento:"></DateDiv>
-                <DateDiv data={props.datasolicitacao} controleId={props.id} isLabel={true} label="Solicitação:"></DateDiv>
+                <DateDiv data={props.dataatendimento} controleId={props.id}></DateDiv>
             </div>
         )
     }
@@ -64,7 +63,7 @@ export default function ListaOrdemServico(props) {
 
     const columns = [
         {
-            name: 'Número de OS',
+            name: 'OS',
             selector: 'numeroos',
             sortable: true,
             width: '12%',
@@ -75,7 +74,7 @@ export default function ListaOrdemServico(props) {
             name: 'Cliente / Filial',
             selector: 'nomecliente',
             sortable: true,
-            width: '14%',
+            width: '16%',
             cell: row => <DivClienteFilial key={`divFilial${row.id}`} cliente={row.nomecliente} filial={row.nomefilial} ordemservicoId={row.id}> </DivClienteFilial>,
         },
         {
@@ -83,29 +82,22 @@ export default function ListaOrdemServico(props) {
             selector: 'nometecnico',
             sortable: true,
             center: false,
-            width: '26%',
+            width: '28%',
         },
         {
-            name: 'Data',
+            name: 'Data Atendimeto',
             sortable: true,
             selector: 'dataatendimento',
-            width: '16%',
-            cell: row => <DivData key={`divData${row.id}`} dataatendimento={row.dataatendimento} datasolicitacao={row.datasolicitacao} ordemservicoId={row.id}></DivData>,
+            width: '17%',
+            center:true,
+            cell: row => <DivData key={`divData${row.id}`} dataatendimento={row.dataatendimento} ordemservicoId={row.id}></DivData>,
         },
         {
             name: 'Projeto',
             selector: 'nometipoprojeto',
             sortable: true,
             center: true,
-            width: '14%',
-        },
-        {
-            name: 'Status',
-            selector: 'statusAtendimento',
-            sortable: true,
-            center: true,
-            width: '8%',
-            cell: row => <BadgeStatus key={`badge${row.id}`} status={row.statusAtendimento}></BadgeStatus>,
+            width: '17%',
         },
         {
             name: 'Ações',

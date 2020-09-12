@@ -47,7 +47,6 @@ module.exports = {
             .select([
                 'ordemservico.*',
                 'clientefilial.clienteid',
-                'clientefilial.nomefilial',
                 'tipoprojeto.nometipoprojeto',
                 'tecnico.nometecnico',
                 'usuario.nome'
@@ -71,7 +70,7 @@ module.exports = {
         //////////////////////////////////////////////////////////////////////////////////////////////
 
         const { datasolicitacao, dataatendimento, clientefilialid, tipoprojetoid, 
-                descricaoservico, tecnicoid, observacaoos, horaentrada, 
+            descricaoprojeto, tecnicoid, observacaoos, horaentrada, 
                 horasaida, qtdehoras, horaextra, valorapagar, valorareceber, totalapagar, 
                 totalareceber, diadasemana, custoadicional, ativo, statusatendimentoid, 
                 statuspagamentoid, statuscobrancaid, observacao } = request.body;  
@@ -100,7 +99,7 @@ module.exports = {
                     dataatendimento,
                     clientefilialid,
                     tipoprojetoid,
-                    descricaoservico,
+                    descricaoprojeto,
                     tecnicoid,
                     observacaoos,
                     horaentrada,
@@ -169,7 +168,7 @@ module.exports = {
         //////////////////////////////////////////////////////////////////////////////////////////////
 
         const { datasolicitacao, dataatendimento, clientefilialid, tipoprojetoid, 
-                descricaoservico, tecnicoid, observacaoos, horaentrada, 
+            descricaoprojeto, tecnicoid, observacaoos, horaentrada, 
                 horasaida, qtdehoras, horaextra, valorapagar, valorareceber, totalapagar, 
                 totalareceber, diadasemana, custoadicional, ativo, statusatendimentoid, 
                 statuspagamentoid, statuscobrancaid, observacao } = request.body;  
@@ -193,7 +192,7 @@ module.exports = {
                     dataatendimento,
                     clientefilialid,
                     tipoprojetoid,
-                    descricaoservico,
+                    descricaoprojeto,
                     tecnicoid,
                     observacaoos,
                     horaentrada,

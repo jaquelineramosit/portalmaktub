@@ -22,7 +22,7 @@ module.exports = {
         const  usuarioid  = request.headers.authorization;
         const  dataultmodif = getDate();
 
-        const { nometipoprojeto, receita, despesa, horas, valorhoraextra, valorhoratecnico, horadecimal, ativo, right} = request.body;
+        const { nometipoprojeto, receita, despesa, horas, valorhoraextra,escopoprojeto, valorhoratecnico, horadecimal, ativo, right} = request.body;
         
         const trx = await connection.transaction();
         try {
@@ -34,6 +34,7 @@ module.exports = {
                 valorhoraextra,
                 valorhoratecnico,
                 horadecimal,
+                escopoprojeto,
                 ativo,
                 usuarioid,
                 dataultmodif
@@ -66,7 +67,7 @@ module.exports = {
         const  usuarioid  = request.headers.authorization;
         const  dataultmodif = getDate();
         
-        const { nometipoprojeto, receita, despesa, horas, valorhoraextra, horadecimal, valorhoratecnico, ativo, right, left} = request.body;
+        const { nometipoprojeto, receita, despesa, horas, valorhoraextra, horadecimal, valorhoratecnico,escopoprojeto, ativo, right, left} = request.body;
 
         const trx = await connection.transaction();
         try {
@@ -78,6 +79,7 @@ module.exports = {
                 valorhoraextra,
                 valorhoratecnico,
                 horadecimal,
+                escopoprojeto,
                 ativo,
                 usuarioid,
                 dataultmodif

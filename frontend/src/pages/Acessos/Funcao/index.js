@@ -125,7 +125,7 @@ export default function Funcao(props) {
                                             name="subpaginaid"
                                             value={subpaginaid}
                                             onChange={e => setSubpaginaid(e.target.value)}>
-                                            <option value={undefined} defaultValue> Selecione...</option>
+                                            <option value="" defaultValue> Selecione...</option>
                                             {subpaginasid.map(subPagina => (
                                                 <option value={subPagina.id}>{subPagina.nomesubpagina}</option>
                                             ))}
@@ -137,7 +137,7 @@ export default function Funcao(props) {
                                             name="paginaid"
                                             value={paginaid}
                                             onChange={e => setPaginaid(e.target.value)}>
-                                            <option value={undefined} defaultValue> Selecione...</option>
+                                            <option value="" defaultValue> Selecione...</option>
                                             {paginasid.map(pagina => (
                                                 <option value={pagina.id}>{pagina.nomepagina}</option>
                                             ))}
