@@ -2,70 +2,109 @@ const connection = require('../../database/connection');
 const getDate = require('../../utils/getDate');
 module.exports = {
     async getAll (request, response) {
-        const bandeira = await connection('bandeira')
-        .leftJoin('usuario', 'usuario.id', '=', 'bandeira.usuarioid') 
-        .leftJoin('parceiro', 'parceiro.id', '=', 'bandeira.parceiroid') 
-        .select([
-            'bandeira.*', 
-            'usuario.nome',
-            'parceiro.nomeparceiro'
-        ]);
         
-        return response.json(bandeira);
+        const { grupoempresarialId } = request.query;
+        
+        try {
+            const bandeira = await connection('bandeira')
+            .join('usuario', 'usuario.id', '=', 'bandeira.usuarioid') 
+            .leftJoin('grupoempresarial', 'grupoempresarial.id', '=', 'bandeira.grupoempresarialid')
+            .leftJoin('cliente', 'cliente.id', '=', 'grupoempresarial.clienteid')
+            .modify(function (queryBuilder) {
+                if (grupoempresarialId && grupoempresarialId !== 'Selecione...') {
+                    queryBuilder.where('bandeira.grupoempresarialid', grupoempresarialId);
+                }
+            })
+            .select([
+                'bandeira.*', 
+                'usuario.nome as nomeusuario',
+                'grupoempresarial.nomegrupoempresarial',
+                'cliente.nomecliente',
+            ]);
+        
+            return response.status(200).json(bandeira);
+        } catch (error) {
+            return response.status(404).json(error.message);
+        }
+        
     },
 
     async getById (request, response) {
-        const  { id }  = request.params;
+        try {
+            
+            const  { id }  = request.params;
+            const { grupoempresarialId } = request.query;
 
-        const bandeira = await connection('bandeira')
-            .where('bandeira.id', id)
-            .leftJoin('usuario', 'usuario.id', '=', 'bandeira.usuarioid') 
-            .leftJoin('parceiro', 'parceiro.id', '=', 'bandeira.parceiroid') 
-            .select([
-                'bandeira.*', 
-                'usuario.nome',
-                'parceiro.nomeparceiro'
-            ])
-            .first();
-    
-        return response.json(bandeira);
+            const bandeira = await connection('bandeira')
+                .where('bandeira.id', id)
+                .join('usuario', 'usuario.id', '=', 'bandeira.usuarioid') 
+                .leftJoin('grupoempresarial', 'grupoempresarial.id', '=', 'bandeira.grupoempresarialid')
+                .leftJoin('cliente', 'cliente.id', '=', 'grupoempresarial.clienteid')
+                .modify(function (queryBuilder) {
+                    if (grupoempresarialId && grupoempresarialId !== 'Selecione...') {
+                        queryBuilder.where('bandeira.grupoempresarialid', grupoempresarialId);
+                    }
+                })
+                .select([
+                    'bandeira.*', 
+                    'usuario.nome as nomeusuario',
+                    'grupoempresarial.nomegrupoempresarial',
+                    'cliente.nomecliente',
+                ]);
+        
+            return response.status(200).json(bandeira);
+        } catch (error) {
+            return response.status(404).json(error.message);
+        }
     },
 
     async create(request, response) {
-        const  usuarioid  = request.headers.authorization;
-        const  dataultmodif = getDate();
 
-        const { parceiroid,nomebandeira, descricao, ativo } = request.body;
+        try {
+            const  usuarioid  = request.headers.authorization;
+            const  dataultmodif = getDate();
+
+            const { grupoempresarialid, nomebandeira, descricao, ativo } = request.body;
+            
+            const [id] = await connection('bandeira').insert({
+                grupoempresarialid,
+                nomebandeira, 
+                descricao,
+                ativo,
+                dataultmodif,
+                usuarioid
+            })
+
+            return response.status(200).json({ id });
+        } catch (error) {
+            return response.status(404).json(error.message);
+        }
         
-        const [id] = await connection('bandeira').insert({            
-            parceiroid,
-            nomebandeira, 
-            descricao,
-            ativo,
-            dataultmodif,
-            usuarioid
-        })
-
-        return response.json({ id });
     },
     
     async update (request, response) {
-        const   { id }   = request.params;
-        const  usuarioid  = request.headers.authorization;
-        const  dataultmodif = getDate();
         
-        const { parceiroid,nomebandeira, descricao, ativo } = request.body;
+        try {
+            const   { id }   = request.params;
+            const  usuarioid  = request.headers.authorization;
+            const  dataultmodif = getDate();
+            
+            const { grupoempresarialid, nomebandeira, descricao, ativo } = request.body;
 
-        await connection('bandeira').where('id', id).update({            
-            parceiroid,
-            nomebandeira, 
-            descricao,
-            ativo,
-            dataultmodif,
-            usuarioid
-        });           
+            await connection('bandeira').where('id', id).update({            
+                grupoempresarialid, 
+                nomebandeira, 
+                descricao,
+                ativo,
+                dataultmodif,
+                usuarioid
+            });           
 
-        return response.status(204).send();
+            return response.status(204).send();
+        } catch (error) {
+            return response.status(404).json(error.message);
+        }
+        
     },
     async getCount (request,response) {        
 

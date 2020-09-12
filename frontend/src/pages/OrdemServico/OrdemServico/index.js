@@ -9,7 +9,7 @@ import api from '../../../services/api';
 import moment from 'moment';
 import CardListaStatus from '../../../components/CardListaStatus'
 const dateFormat = require('dateformat');
-let clienteFilialIdInicial = '';
+let clienteFinalIdInicial = '';
 let clienteIdInicial = '';
 let tipoProjetoIdInicial = '';
 let valorFimInicial = 0;
@@ -38,7 +38,9 @@ const OrdemServico = (props) => {
     const [datasolicitacao, setDatasolicitacao] = useState('');
     const [dataatendimento, setDataAtendimento] = useState('');
     const [clienteid, setClienteid] = useState('');
-    const [clientefilialid, setClientefilialid] = useState('');
+    const [grupoempresarialid, setGrupoEmpresarialid] = useState('');
+    const [bandeiraid, setBandeiraid] = useState('');
+    const [clientefinalid, setClienteFinalId] = useState('');
     const [tipoprojetoid, setTipoprojetoid] = useState('');
     const [descricaoservico, setDescricaoservico] = useState('');
     const [tecnicoid, setTecnicoid] = useState('');
@@ -72,8 +74,8 @@ const OrdemServico = (props) => {
     const [statuscobrancasid, setStatusCobrancasid] = useState([]);
     const [movimentacaoLogId, setMovimentacaoLogId] = useState([]);
 
-    // informacoes filial
-    const [dadosFilial, setDadosFilial] = useState({
+    // informacoes final
+    const [dadosFinal, setDadosFinal] = useState({
         nomebandeira: '',
         telefonefixo: '',
         telefoneresponsavel: '',
@@ -94,9 +96,12 @@ const OrdemServico = (props) => {
     });
 
     //combos dinamicos
-    const [clienteFiliais, setClienteFiliais] = useState([]);
     const [clientes, setClientes] = useState([]);
-    const [tipoProjeto, setTipoProjeto] = useState([]);
+    const [gruposEmpresariais, setGruposEmpresariais] = useState([]);
+    const [bandeiras, setBandeiras] = useState([]);
+    const [clientesFinais, setClientesFinais] = useState([]);
+    
+    const [tipoProjetos, setTipoProjetos] = useState([]);
     const [tecnicos, setTecnicos] = useState([]);
 
     useEffect(() => {
@@ -105,9 +110,21 @@ const OrdemServico = (props) => {
         })
     }, [usuarioId]);
 
+    // useEffect(() => {
+    //     api.get('grupo-empresarial').then(response => {
+    //         setGruposEmpresariais(response.data);
+    //     })
+    // }, [usuarioId]);
+
     useEffect(() => {
-        api.get('filiais').then(response => {
-            setClienteFiliais(response.data);
+        api.get('bandeira').then(response => {
+            setBandeiras(response.data);
+        })
+    }, [usuarioId]);
+
+    useEffect(() => {
+        api.get('cliente-final').then(response => {
+            setClientesFinais(response.data);
         })
     }, [usuarioId]);
 
@@ -119,7 +136,7 @@ const OrdemServico = (props) => {
 
     useEffect(() => {
         api.get('tipo-projeto').then(response => {
-            setTipoProjeto(response.data);
+            setTipoProjetos(response.data);
         })
     }, [usuarioId]);
 
@@ -156,8 +173,8 @@ const OrdemServico = (props) => {
                 setNomediasemana(getDateNameOfWeekDay(response.data.dataatendimento));
                 setClienteid(response.data.clienteid);
                 clienteIdInicial = response.data.clienteid;
-                setClientefilialid(response.data.clientefilialid);
-                clienteFilialIdInicial = response.data.clientefilialid;
+                setClienteFinalId(response.data.clientefinalid);
+                clienteFinalIdInicial = response.data.clientefinalid;
                 setTipoprojetoid(response.data.tipoprojetoid);
                 tipoProjetoIdInicial = response.data.tipoprojetoid;
                 setDescricaoservico(response.data.descricaoservico);
@@ -185,15 +202,15 @@ const OrdemServico = (props) => {
                 setValorapagarFormatado(response.data.valorapagar);
                 valorPagarInicial = response.data.valorapagar;
                 setValorareceber(response.data.valorareceber);    
-                setValorareceberFormatado(response.data.valorareceber);    
+                setValorareceberFormatado(response.data.valorareceber);
                 valorReceberInicial = response.data.valorareceber;
                 
-                api.get(`filiais?clienteId=${clienteIdInicial}`).then(response => {
-                    setClienteFiliais(response.data);
+                api.get(`grupo-empresarial?clienteId=${clienteIdInicial}`).then(response => {
+                    setClientesFinais(response.data);
                 });
     
-                api.get(`filiais/${clienteFilialIdInicial}`).then(response => {
-                    setDadosFilial(response.data);
+                api.get(`filiais/${clienteFinalIdInicial}`).then(response => {
+                    setDadosFinal(response.data);
                 });
     
                 api.get(`tecnico?tipoProjetoId=${tipoProjetoIdInicial}`).then(response => {
@@ -277,9 +294,8 @@ const OrdemServico = (props) => {
       return nomeDiaDaSemana;
     }
 
-    function zerarDadosFilial() {
-      setDadosFilial({
-          nomebandeira: '',
+    function zerarDadosClienteFinal() {
+      setDadosFinal({
           telefonefixo: '',
           telefoneresponsavel: '',
           ced: '',
@@ -312,50 +328,80 @@ const OrdemServico = (props) => {
     }
 
     function handleInputChange(event) {
-      event.preventDefault();
+        event.preventDefault();
 
-      const { name, value } = event.target;
-
-      switch (name) {
-          case 'dataatendimento':
+        const { name, value } = event.target;
+        alert(value)
+        switch (name) {
+            case 'dataatendimento':
               if ('dataatendimento' != "") {
                   setDataAtendimento(value);
                   let nomeDiaDaSemana = getDateNameOfWeekDay(value);
                   setNomediasemana(nomeDiaDaSemana);
               }
               break;
-          case 'numeroos':
+            case 'numeroos':
               setNumeroos(numMask(event.target.value));
               break;
-          // case 'custoadicional':
-          //     setCustoadicional(reaisMask(event.target.value));
-          //     break;
-          case 'clientefilialid':
-              if (value !== 'Selecione...') {
-                  setClientefilialid(value);
-                  api.get(`filiais/${value}`).then(response => {
-                      setDadosFilial(response.data);
-                  });
-              } else {
-                  setClientefilialid('');
-                  zerarDadosFilial();
-              }
-              break;
-          case 'clienteid':
-              if (value !== 'Selecione...') {
-                  setClienteid(value);
-                  setClientefilialid('');
-                  api.get(`filiais?clienteId=${value}`).then(response => {
-                      setClienteFiliais(response.data);
-                      zerarDadosFilial();
-                  });
-              } else {
-                  setClienteFiliais([]);
+            case 'clienteid':
+                if (value !== '') {
+                    setClienteid(value);
+                    setGrupoEmpresarialid('');
+                    api.get(`grupo-empresarial?clienteId=${value}`).then(response => {
+                        setGruposEmpresariais(response.data);
+                        setBandeiras([]);
+                        setClientesFinais([]);
+                        zerarDadosClienteFinal();
+                    });
+                } else {
+                    setGruposEmpresariais([]);
+                    setBandeiras([]);
+                    setClientesFinais([]);
+                    setClienteid('');
+                    zerarDadosClienteFinal();
+                }
+                break;
+            case 'grupoempresarialid':
+                if (value !== '') {
+                    setGrupoEmpresarialid(value);
+                    setBandeiraid('');
+                    api.get(`bandeira?grupoempresarialId=${value}`).then(response => {
+                        setBandeiras(response.data);
+                        setClientesFinais([]);
+                    });
+                } else {
+                    setBandeiras([]);
+                    setClientesFinais([]);
+                    setClienteid('');
+                    zerarDadosClienteFinal();
+                }
+            break;
+            case 'bandeiraid':
+              if (value !== '') {
+                  setBandeiraid(value);
                   setClienteid('');
-                  zerarDadosFilial();
+                  api.get(`cliente-final?bandeiraid=${value}`).then(response => {
+                      setDadosFinal(response.data);
+                  });
+              } else {
+                  setClientesFinais([]);
+                  setDadosFinal([]);
+                  setClienteFinalId('');
+                  zerarDadosClienteFinal();
               }
               break;
-          case 'tipoprojetoid':
+            case 'clientefinalid':
+              if (value !== '') {
+                  setClienteFinalId(value);
+                  api.get(`cliente-final/${value}`).then(response => {
+                      setDadosFinal(response.data);
+                  });
+              } else {
+                  setClienteFinalId('');
+                  zerarDadosClienteFinal();
+              }
+              break;         
+            case 'tipoprojetoid':
               if (value !== 'Selecione...') {
                   setTipoprojetoid(value);
                   setTecnicoid('');
@@ -381,12 +427,12 @@ const OrdemServico = (props) => {
                   zeraDadosServico();
               }
               break;
-          case 'horaentrada':
+            case 'horaentrada':
               setHoraentrada(value);
               valorInicioInicial = new Date("2020-08-29 " + value).getHours();
               TotaisPagarReceber();
               break;
-          case 'horasaida':
+            case 'horasaida':
               setHorasaida(value);
               valorFimInicial = new Date("2020-08-29 " + value).getHours();
               TotaisPagarReceber();
@@ -425,7 +471,7 @@ const OrdemServico = (props) => {
       const data = {
           datasolicitacao,
           dataatendimento,
-          clientefilialid,
+          clientefinalid,
           tipoprojetoid,
           descricaoservico,
           tecnicoid,
@@ -481,7 +527,7 @@ const OrdemServico = (props) => {
           }
       }
   }
-    const [key, setKey] = useState('clientefilial');
+    const [key, setKey] = useState('clientefinal');
   
     return (
         <div className="animated fadeIn">
@@ -551,17 +597,17 @@ const OrdemServico = (props) => {
                                     activeKey={key}
                                     onSelect={(k) => setKey(k)}
                                 >
-                                    {/* Tab1. CLiente / Filial */}
+                                    {/* Tab1. CLiente / Final */}
                                     <Tab 
-                                        eventKey="clientefilial" 
+                                        eventKey="clientefinal" 
                                         title={
                                             <Fragment>
-                                                <i className="fa fa-handshake-o"></i><strong><span className="ml-2">Cliente / Filial </span> </strong>                                                                                  
+                                                <i className="fa fa-handshake-o"></i><strong><span className="ml-2">Cliente / Final </span> </strong>                                                                                  
                                             </Fragment>
                                         }                                 
                                     >
                                         <FormGroup row>
-                                            <Col md="4">
+                                            <Col md="6">
                                                 <Label htmlFor="clienteId">Cliente</Label>
                                                 <InputGroup>
                                                     <Input type="select" id="cboCliente"
@@ -569,7 +615,7 @@ const OrdemServico = (props) => {
                                                         name="clienteid"
                                                         onChange={handleInputChange}
                                                     >
-                                                        <option value={undefined} defaultValue>Selecione...</option>
+                                                        <option value={""} defaultValue>Selecione...</option>
                                                         {clientes.map(cliente => (
                                                             <option key={`cliente${cliente.id}`} value={cliente.id}>{cliente.nomecliente}</option>
                                                         ))}
@@ -579,17 +625,17 @@ const OrdemServico = (props) => {
                                                     </InputGroupAddon>
                                                 </InputGroup>
                                             </Col>
-                                            <Col md="4">
-                                                <Label htmlFor="clienteFilialId">Filial do Cliente</Label>
+                                            <Col md="6">
+                                                <Label htmlFor="grupoempresarialid">Grupo Empresarial</Label>
                                                 <InputGroup>
-                                                    <Input required type="select" id="cboClienteFilial"
-                                                        value={clientefilialid}
-                                                        name="clientefilialid"
+                                                    <Input required type="select" id="grupoempresarialid"
+                                                        value={grupoempresarialid}
+                                                        name="grupoempresarialid"
                                                         onChange={handleInputChange}
                                                     >
-                                                        <option value={undefined} defaultValue>Selecione...</option>
-                                                        {clienteFiliais.map(clienteFilial => (
-                                                            <option key={clienteFilial.id} value={clienteFilial.id}>{clienteFilial.nomefilial}</option>
+                                                        <option value={""} defaultValue>Selecione...</option>
+                                                        {gruposEmpresariais.map(grupoempresarial => (
+                                                            <option key={grupoempresarial.id} value={grupoempresarial.id}>{grupoempresarial.nomegrupoempresarial}</option>
                                                         ))}
                                                     </Input>
                                                     <InputGroupAddon addonType="append">
@@ -597,13 +643,40 @@ const OrdemServico = (props) => {
                                                     </InputGroupAddon>
                                                 </InputGroup>
                                             </Col>
-                                            <Col md="4">
-                                                <Label htmlFor="bandeiraId">Bandeira</Label>
+                                            
+                                        </FormGroup>
+                                        <FormGroup row>
+                                            <Col md="6">
+                                                <Label htmlFor="bandeiraid">Bandeira</Label>
                                                 <InputGroup>
-                                                    <Input type="text" id="txtBandeira" readOnly
-                                                        value={dadosFilial.nomebandeira}
-                                                        name="nomebandeira"
-                                                    />
+                                                    <Input required type="select" id="bandeiraid"
+                                                        value={bandeiraid}
+                                                        name="bandeiraid"
+                                                        onChange={handleInputChange}
+                                                    >
+                                                        <option value={""} defaultValue>Selecione...</option>
+                                                        {bandeiras.map(bandeira => (
+                                                            <option key={bandeira.id} value={bandeira.id}>{bandeira.nomebandeira}</option>
+                                                        ))}
+                                                    </Input>
+                                                    <InputGroupAddon addonType="append">
+                                                        <span className="btn btn-secondary disabled fa fa-flag"></span>
+                                                    </InputGroupAddon>
+                                                </InputGroup>
+                                            </Col>
+                                            <Col md="6">
+                                                <Label htmlFor="clientefinalid">Cliente Final</Label>
+                                                <InputGroup>
+                                                    <Input required type="select" id="clientefinalid"
+                                                        value={clientefinalid}
+                                                        name="clientefinalid"
+                                                        onChange={handleInputChange}
+                                                    >
+                                                        <option value={""} defaultValue>Selecione...</option>
+                                                        {clientesFinais.map(clientefinal => (
+                                                            <option key={clientefinal.id} value={clientefinal.id}>{clientefinal.nomeclientefinal}</option>
+                                                        ))}
+                                                    </Input>
                                                 </InputGroup>
                                             </Col>
                                         </FormGroup>
@@ -612,7 +685,7 @@ const OrdemServico = (props) => {
                                                 <Label htmlFor="telefoneFixo">Telefone Fixo</Label>
                                                 <InputGroup>
                                                     <Input type="text" id="txtTelefoneFixo" readOnly
-                                                        value={dadosFilial.telefonefixo}
+                                                        value={dadosFinal.telefonefixo}
                                                         name="telefonefixo"
                                                     />
                                                 </InputGroup>
@@ -621,7 +694,7 @@ const OrdemServico = (props) => {
                                                 <Label htmlFor="telefoneResponsavel">Tel. Responsável</Label>
                                                 <InputGroup>
                                                     <Input type="text" id="txtTelefoneResponsavel" readOnly
-                                                        value={dadosFilial.telefoneresponsavel}
+                                                        value={dadosFinal.telefoneresponsavel}
                                                         name="telefoneresponsavel"
                                                     />
 
@@ -630,14 +703,14 @@ const OrdemServico = (props) => {
                                             <Col md="2">
                                                 <Label htmlFor="lblCed">CED</Label>
                                                 <Input type="text" readOnly required id="txtCed"
-                                                    value={dadosFilial.ced}
+                                                    value={dadosFinal.ced}
                                                     name="ced"
                                                 />
                                             </Col>
                                             <Col md="2">
                                                 <Label htmlFor="lblCep">CEP</Label>
                                                 <Input type="text" readOnly required id="txtCep"
-                                                    value={dadosFilial.cep}
+                                                    value={dadosFinal.cep}
                                                     name="cep"
                                                 />
                                             </Col>
@@ -645,7 +718,7 @@ const OrdemServico = (props) => {
                                                 <Label htmlFor="lblLogradouro">Logradouro</Label>
                                                 <InputGroup>
                                                     <Input required type="text" readOnly id="txtLogradouro"
-                                                        value={dadosFilial.logradouro}
+                                                        value={dadosFinal.logradouro}
                                                         name="logradouro"
                                                     />
                                                 </InputGroup>
@@ -657,7 +730,7 @@ const OrdemServico = (props) => {
                                                 <Label htmlFor="lblNumero">Nº</Label>
                                                 <InputGroup>
                                                     <Input type="text" id="txtNumero" readOnly
-                                                        value={dadosFilial.numero}
+                                                        value={dadosFinal.numero}
                                                         name="numero"
                                                     />
                                                 </InputGroup>
@@ -666,7 +739,7 @@ const OrdemServico = (props) => {
                                                 <Label htmlFor="lblComplemento">Complemento</Label>
                                                 <InputGroup>
                                                     <Input type="text" id="txtComplemento" readOnly
-                                                        value={dadosFilial.complemento}
+                                                        value={dadosFinal.complemento}
                                                         name="complemento"
                                                     />
                                                 </InputGroup>
@@ -674,7 +747,7 @@ const OrdemServico = (props) => {
                                             <Col md="2">
                                                 <Label htmlFor="lblBairro">Bairro</Label>
                                                 <Input type="text" required id="txtBairro" readOnly
-                                                    value={dadosFilial.bairro}
+                                                    value={dadosFinal.bairro}
                                                     name="bairro"
                                                 />
                                             </Col>
@@ -682,7 +755,7 @@ const OrdemServico = (props) => {
                                                 <Label htmlFor="lblEstado">Estado</Label>
                                                 <InputGroup>
                                                     <Input required type="text" id="txtEstado" readOnly
-                                                        value={dadosFilial.estado}
+                                                        value={dadosFinal.estado}
                                                         name="estado"
                                                     />
                                                 </InputGroup>
@@ -690,7 +763,7 @@ const OrdemServico = (props) => {
                                             <Col md="4">
                                                 <Label htmlFor="lblCidade">Cidade</Label>
                                                 <Input type="text" required id="txtCidade" readOnly
-                                                    value={dadosFilial.cidade}
+                                                    value={dadosFinal.cidade}
                                                     name="cidade"
                                                 />
                                             </Col>
@@ -700,7 +773,7 @@ const OrdemServico = (props) => {
                                                 <Label htmlFor="lblHorarioInicioSemana">Horario Início da semana</Label>
                                                 <InputGroup>
                                                     <Input type="time" required id="txtHorarioInicioSemana" readOnly
-                                                        value={dadosFilial.horarioiniciosemana}
+                                                        value={dadosFinal.horarioiniciosemana}
                                                         name="horarioiniciosemana"
                                                     />
                                                 </InputGroup>
@@ -709,7 +782,7 @@ const OrdemServico = (props) => {
                                                 <Label htmlFor="lblHorarioInicioSabado">Horario Início do Sábado</Label>
                                                 <InputGroup>
                                                     <Input type="time" required id="txtHorarioInicioSabado" readOnly
-                                                        value={dadosFilial.horarioiniciosabado}
+                                                        value={dadosFinal.horarioiniciosabado}
                                                         name="horarioiniciosabado"
                                                     />
                                                 </InputGroup>
@@ -718,7 +791,7 @@ const OrdemServico = (props) => {
                                                 <Label htmlFor="lblHorarioInicioSabado">Horario Início do Domingo</Label>
                                                 <InputGroup>
                                                     <Input type="time" required id="txtHorarioInicioDomingo" readOnly
-                                                        value={dadosFilial.horarioiniciodomingo}
+                                                        value={dadosFinal.horarioiniciodomingo}
                                                         name="horarioiniciodomingo"
                                                     />
                                                 </InputGroup>
@@ -729,7 +802,7 @@ const OrdemServico = (props) => {
                                                 <Label htmlFor="lblHorarioFimSemana">Horario Fim da semana</Label>
                                                 <InputGroup>
                                                     <Input type="time" required id="txtHorarioFimSemana" readOnly
-                                                        value={dadosFilial.horariofimsemana}
+                                                        value={dadosFinal.horariofimsemana}
                                                         name="horariofimsemana"
                                                     />
                                                 </InputGroup>
@@ -738,7 +811,7 @@ const OrdemServico = (props) => {
                                                 <Label htmlFor="lblHorarioFimSabado">Horario Fim do Sábado</Label>
                                                 <InputGroup>
                                                     <Input type="time" required id="txtHorarioFimSabado" readOnly
-                                                        value={dadosFilial.horariofimsabado}
+                                                        value={dadosFinal.horariofimsabado}
                                                         name="horariofimsabado"
                                                     />
                                                 </InputGroup>
@@ -747,7 +820,7 @@ const OrdemServico = (props) => {
                                                 <Label htmlFor="lblHorarioFimDomingo">Horario Fim do Domingo</Label>
                                                 <InputGroup>
                                                     <Input type="time" required id="txtHorarioFimDomingo" readOnly
-                                                        value={dadosFilial.horariofimdomingo}
+                                                        value={dadosFinal.horariofimdomingo}
                                                         name="horariofimdomingo"
                                                     />
                                                 </InputGroup>
@@ -772,7 +845,7 @@ const OrdemServico = (props) => {
                                                         name="tipoprojetoid"
                                                         onChange={handleInputChange}>
                                                         <option value={undefined} defaultValue>Selecione...</option>
-                                                        {tipoProjeto.map(tipoProjeto => (
+                                                        {tipoProjetos.map(tipoProjeto => (
                                                             <option key={`tipoProjeto${tipoProjeto.id}`} value={tipoProjeto.id}>{tipoProjeto.nometipoprojeto}</option>
                                                         ))}
                                                     </Input>

@@ -22,13 +22,13 @@ const AdiantamentoOsController = require('./controllers/OrdemServico/Adiantament
 const BancoController = require('./controllers/Configuracao/BancoController');
 const BandeiraController = require('./controllers/Configuracao/BandeiraController');
 const ClienteController = require('./controllers/Configuracao/ClienteController');
-const ClienteBandeiraController = require('./controllers/Configuracao/ClienteBandeiraController');
 const DadosBancariosController = require('./controllers/Configuracao/DadosBancariosController');
 const DisponibilidadeController = require('./controllers/Configuracao/DisponibilidadeController');
 const DisponTecnicoController = require('./controllers/Configuracao/DisponTecnicoController');
 const FerramentaController = require('./controllers/Configuracao/FerramentaController');
 const FerramentaOSController = require('./controllers/Configuracao/FerramentaOSController');
-const FilialController = require('./controllers/Configuracao/FilialController');
+const GrupoEmpresarialController = require('./controllers/Configuracao/GrupoEmpresarialController');
+const ClienteFinalController = require('./controllers/Configuracao/ClienteFinalController');
 const ParceiroController = require('./controllers/Configuracao/ParceiroController');
 const ProjetoTecnicoController = require('./controllers/Configuracao/ProjetoTecnicoController');
 const StatusAdiantamentoController = require('./controllers/Configuracao/StatusAdiantamentoController');
@@ -40,12 +40,10 @@ const TipoContaController = require('./controllers/Configuracao/TipoContaControl
 const TipoProjetoController = require('./controllers/Configuracao/TipoProjetoController');
 const TipoProjetoFerramentaController = require('./controllers/Configuracao/TipoProjetoFerramentaController');
 const TipoTecnicoController = require('./controllers/Configuracao/TipoTecnicoController');
-const ClientebandeiraController = require('./controllers/Configuracao/Clientebandeira');
+
 //Dashboards
 const DashboardController = require('./controllers/Dashboard/DashboardController');
 const UltimoNumeroOs = require('./controllers/OrdemServico/UltimoNumeroOs');
-// const Dashboardv2Controller = require('./controllers/Dashboards/Dashboardv2Controller');
-// const Dashboardv3Controller = require('./controllers/Dashboards/Dashboardv3Controller');
 
 const routes = express.Router();
 
@@ -108,7 +106,6 @@ routes.post('/ordem-servico', OrdemServicoController.create);
 routes.put('/ordem-servico/:id', OrdemServicoController.update);
 routes.get('/ordem-servico-lista/:rows', ListaOrdemServicoController.getAllLimitRows);
 routes.get('/ordem-servico-ultimo', UltimoNumeroOs.getLastNumeroOs);
-//routes.get('/ordem-servico-teste', OrdemServicoController.getTeste);
 
 routes.get('/movimentacaoCount', MovimentacaoOsController.getCount);
 routes.get('/movimentacao-os', MovimentacaoOsController.getAll);
@@ -118,13 +115,10 @@ routes.get('/movimentacao-os-lista/', MovimentacaoOsController.getAllListaOS);
 routes.post('/movimentacao-os', MovimentacaoOsController.create);
 routes.put('/movimentacao-os/:id', MovimentacaoOsController.update);
 
-
 routes.get('/movimentacao-os-log', MovimentacaoOsLogController.getAll);
 routes.get('/movimentacao-os-log/:id', MovimentacaoOsLogController.getById);
 routes.get('/movimentacao-os-log-todos-por-os/:ordemservicoId', MovimentacaoOsLogController.getAllByOsId);
 routes.post('/movimentacao-os-log', MovimentacaoOsLogController.create);
-
-
 
 routes.get('/adiantamentoCount', AdiantamentoOsController.getCount);
 routes.get('/adiantamento-os', AdiantamentoOsController.getAll);
@@ -153,14 +147,6 @@ routes.get('/clientes/:id', ClienteController.getById);
 routes.post('/clientes', ClienteController.create);
 routes.put('/clientes/:id', ClienteController.update);
 
-routes.get('/cliente-bandeira', ClientebandeiraController.getAll);
-routes.get('/cliente-bandeira/:id', ClientebandeiraController.getById);
-routes.get('/cliente-bandeira-id/:clienteId', ClientebandeiraController.getByClienteId);
-routes.get('/cliente-bandeira-disponiveis/:clienteId', ClientebandeiraController.getBybandeirasDisponiveis);
-routes.post('/cliente-bandeira', ClientebandeiraController.create);
-routes.put('/cliente-bandeira/:id', ClientebandeiraController.update);
-routes.get('/cliente-bandeiras/:clienteId', ClienteBandeiraController.getByClientId);
-
 routes.get('/dadosbancariosCount', DadosBancariosController.getCount);
 routes.get('/dados-bancarios', DadosBancariosController.getAll);
 routes.get('/dados-bancarios/:id', DadosBancariosController.getById);
@@ -180,11 +166,11 @@ routes.get('/disponibilidade-tecnico-disponiveis/:tecnicoId', DisponTecnicoContr
 routes.post('/disponibilidade-tecnico', DisponTecnicoController.create);
 routes.put('/disponibilidade-tecnico/:id', DisponTecnicoController.update);
 
-routes.get('/filiaisCount', FilialController.getCount);
-routes.get('/filiais', FilialController.getAll);
-routes.get('/filiais/:id', FilialController.getById);
-routes.post('/filiais', FilialController.create);
-routes.put('/filiais/:id', FilialController.update);
+routes.get('/cliente-final-Count', ClienteFinalController.getCount);
+routes.get('/cliente-final', ClienteFinalController.getAll);
+routes.get('/cliente-final/:id', ClienteFinalController.getById);
+routes.post('/cliente-final', ClienteFinalController.create);
+routes.put('/cliente-final/:id', ClienteFinalController.update);
 
 routes.get('/ferramentasCount', FerramentaController.getCount);
 routes.get('/ferramentas', FerramentaController.getAll);
@@ -195,9 +181,13 @@ routes.put('/ferramentas/:id', FerramentaController.update);
 routes.get('/ferramentasosCount', FerramentaOSController.getCount);
 routes.get('/ferramentas-os', FerramentaOSController.getAll);
 routes.get('/ferramentas-os/:id', FerramentaOSController.getById);
-// routes.get('/ferramentas-os-id/:ordemServicoId', FerramentaOSController.getByOrdemServicoId);
 routes.post('/ferramentas-os', FerramentaOSController.create);
 routes.put('/ferramentas-os/:id', FerramentaOSController.update);
+
+routes.get('/grupo-empresarial', GrupoEmpresarialController.getAll);
+routes.get('/grupo-empresarial/:id', GrupoEmpresarialController.getById);
+routes.post('/grupo-empresarial', GrupoEmpresarialController.create);
+routes.put('/grupo-empresarial/:id', GrupoEmpresarialController.update);
 
 routes.get('/parceiroCount', ParceiroController.getCount);
 routes.get('/parceiro', ParceiroController.getAll);
@@ -211,8 +201,6 @@ routes.get('/projeto-tecnico-id/:tecnicoId', ProjetoTecnicoController.getByTecni
 routes.get('/projeto-tecnico-disponiveis/:tecnicoId', ProjetoTecnicoController.getBytipoprojetosDisponiveis);
 routes.post('/projeto-tecnico', ProjetoTecnicoController.create);
 routes.put('/projeto-tecnico/:id', ProjetoTecnicoController.update);
-
-
 
 routes.get('/statusadiantamentoAtivo', StatusAdiantamentoController.getAtivo);
 routes.get('/statusadiantamentoCount', StatusAdiantamentoController.getCount);
@@ -252,7 +240,6 @@ routes.get('/tipo-conta/:id', TipoContaController.getById);
 routes.post('/tipo-conta', TipoContaController.create);
 routes.put('/tipo-conta/:id', TipoContaController.update);
 
-
 routes.get('/tipoprojetoCount', TipoProjetoController.getCount);
 routes.get('/tipo-projeto', TipoProjetoController.getAll);
 routes.get('/tipo-projeto/:id', TipoProjetoController.getById);
@@ -280,19 +267,4 @@ routes.put('/tipo-tecnico/:id', TipoTecnicoController.update);
  routes.get('/dashboard-card-totalQuinzenal/:statusatendimentoid', DashboardController.getTotalQuinzenal);
  routes.get('/dashboard-card-totalMensal/:statusatendimentoid', DashboardController.getTotalMensal);
  
-// routes.get('/dashboardv1/:id', Dashboardv1Controller.getById);
-// routes.post('/dashboardv1', Dashboardv1Controller.create);
-// routes.put('/dashboardv1/:id', Dashboardv1Controller.update);
-
-// routes.get('/dashboardv2', Dashboardv2Controller.getAll);
-// routes.get('/dashboardv2/:id', Dashboardv2Controller.getById);
-// routes.post('/dashboardv2', Dashboardv2Controller.create);
-// routes.put('/dashboardv2/:id', Dashboardv2Controller.update);
-
-// routes.get('/dashboardv3', Dashboardv3Controller.getAll);
-// routes.get('/dashboardv3/:id', Dashboardv3Controller.getById);
-// routes.post('/dashboardv3', Dashboardv3Controller.create);
-// routes.put('/dashboardv3/:id', Dashboardv3Controller.update);
-
-
 module.exports = routes;

@@ -4,58 +4,63 @@ module.exports = {
     async getAll (request, response) {
         const { clienteId } = request.query;
 
-        const clientefilial = await connection('clientefilial')
-        .join('bandeira', 'bandeira.id', '=', 'clientefilial.bandeiraid')  
-        .join('cliente', 'cliente.id', '=', 'clientefilial.clienteid')  
-        .join('usuario', 'usuario.id', '=', 'clientefilial.usuarioid')
-        .modify(function(queryBuilder) {
-            if ( clienteId && clienteId !== 'Selecione...' ) {
-                queryBuilder.where('clientefilial.clienteid', clienteId);
-            }
-        })
+        const clientefinal = await connection('clientefinal')
+        .leftJoin('bandeira', 'bandeira.id', '=', 'clientefinal.bandeiraid') 
+        .leftJoin('grupoempresarial', 'grupoempresarial.id', '=', 'bandeira.grupoempresarialid')
+        .leftJoin('cliente', 'cliente.id', '=', 'grupoempresarial.clienteid')  
+        .join('usuario', 'usuario.id', '=', 'clientefinal.usuarioid')
+        
+        //@@REFAZER
+        // .modify(function(queryBuilder) {
+        //     if ( clienteId && clienteId !== 'Selecione...' ) {
+        //         queryBuilder.where('clientefinal.clienteid', clienteId);
+        //     }
+        // })
         .select([
-            'clientefilial.*',
+            'clientefinal.*',
             'bandeira.nomebandeira',
+            'grupoempresarial.nomegrupoempresarial',
             'cliente.nomecliente',
             'usuario.nome'
         ]);
     
-        return response.json(clientefilial);
+        return response.json(clientefinal);
     },
 
     async getById (request, response) {
         const  { id }  = request.params;
 
-        const clientefilial = await connection('clientefilial')
-            .where('clientefilial.id', id)
-            .join('bandeira', 'bandeira.id', '=', 'clientefilial.bandeiraid')  
-            .join('cliente', 'cliente.id', '=', 'clientefilial.clienteid')  
-            .join('usuario', 'usuario.id', '=', 'clientefilial.usuarioid')   
+        const clientefinal = await connection('clientefinal')
+            .where('clientefinal.id', id)
+            .leftJoin('bandeira', 'bandeira.id', '=', 'clientefinal.bandeiraid') 
+            .leftJoin('grupoempresarial', 'grupoempresarial.id', '=', 'bandeira.grupoempresarialid')
+            .leftJoin('cliente', 'cliente.id', '=', 'grupoempresarial.clienteid')  
+            .join('usuario', 'usuario.id', '=', 'clientefinal.usuarioid')  
             .select([
-                'clientefilial.*',
+                'clientefinal.*',
                 'bandeira.nomebandeira',
+                'grupoempresarial.nomegrupoempresarial',
                 'cliente.nomecliente',
                 'usuario.nome'
             ])
             .first();
     
-        return response.json(clientefilial);
+        return response.json(clientefinal);
     },
 
     async create(request, response) {
         const  usuarioid  = request.headers.authorization;
         const  dataultmodif = getDate();
 
-        const { bandeiraid, clienteid, ced, nomefilial, cnpj, razaosocial, logradouro, numero, 
+        const { bandeiraid, ced, nomeclientefinal, cnpj, razaosocial, logradouro, numero, 
                 complemento, bairro, cidade, estado, cep, telefonefixo, nomeresponsavel,
                 telefoneresponsavel, horarioiniciosemana, horariofimsemana, horarioiniciosabado,
                 horariofimsabado, horarioiniciodomingo, horariofimdomingo, ativo } = request.body;
         
-        const [id] = await connection('clientefilial').insert({            
+        const [id] = await connection('clientefinal').insert({            
             bandeiraid,
-            clienteid,
             ced,
-            nomefilial,
+            nomeclientefinal,
             cnpj,
             razaosocial,
             logradouro,
@@ -87,16 +92,15 @@ module.exports = {
         const  usuarioid  = request.headers.authorization;
         const  dataultmodif = getDate();
         
-        const { bandeiraid, clienteid, ced, nomefilial, cnpj, razaosocial, logradouro, numero, 
+        const { bandeiraid, ced, nomeclientefinal, cnpj, razaosocial, logradouro, numero, 
             complemento, bairro, cidade, estado, cep, telefonefixo, nomeresponsavel,
             telefoneresponsavel, horarioiniciosemana, horariofimsemana, horarioiniciosabado,
             horariofimsabado, horarioiniciodomingo, horariofimdomingo, ativo } = request.body;
 
-        await connection('clientefilial').where('id', id).update({            
+        await connection('clientefinal').where('id', id).update({            
             bandeiraid,
-            clienteid,
             ced,
-            nomefilial,
+            nomeclientefinal,
             cnpj,
             razaosocial,
             logradouro,
@@ -124,7 +128,7 @@ module.exports = {
     },
     async getCount (request,response) {        
 
-        const [count] = await connection('clientefilial').count()
+        const [count] = await connection('clientefinal').count()
         const { page = 1 } = request.query;
         return response.json(count['count(*)']);        
     }

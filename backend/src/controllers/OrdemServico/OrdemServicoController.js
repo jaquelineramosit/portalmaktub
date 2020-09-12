@@ -11,8 +11,10 @@ module.exports = {
             .whereRaw(
                 `movimentacaoos.id = (SELECT MAX(id) FROM movimentacaoos AS mos WHERE mos.ordemservicoid = movimentacaoos.ordemservicoid)`
             )
-            .join('clientefilial', 'clientefilial.id', '=', 'ordemservico.clientefilialid')
-            .join('cliente', 'cliente.id', '=', 'clientefilial.clienteid')
+            .join('clientefinal', 'clientefinal.id', '=', 'ordemservico.clientefinalid')
+            .join('bandeira', 'bandeira.id', '=', 'clientefinal.bandeiraid')
+            .join('grupoempresarial', 'grupoempresarial.id', '=', 'bandeira.grupoempresarialid')
+            .join('cliente', 'cliente.id', '=', 'grupoempresarial.clienteid')
             .join('tipoprojeto', 'tipoprojeto.id', '=', 'ordemservico.tipoprojetoid')
             .join('tecnico', 'tecnico.id', '=', 'ordemservico.tecnicoid')
             .join('usuario', 'usuario.id', '=', 'ordemservico.usuarioid')
@@ -20,8 +22,10 @@ module.exports = {
             .join('statusatendimento', 'statusatendimento.id', '=', 'movimentacaoos.statusatendimentoid')
             .select([
                 'ordemservico.*',
+                'clientefinal.nomeclientefinal',
+                'bandeira.nomebandeira',
+                'grupoempresarial.nomegrupoempresarial',
                 'cliente.nomecliente',
-                'clientefilial.nomefilial',
                 'tipoprojeto.nometipoprojeto',
                 'tecnico.nometecnico',
                 'usuario.nome',
@@ -40,17 +44,25 @@ module.exports = {
         
         const ordemservico = await connection('ordemservico')
             .where('ordemservico.id', id)
-            .join('clientefilial', 'clientefilial.id', '=', 'ordemservico.clientefilialid')            
+            .join('clientefinal', 'clientefinal.id', '=', 'ordemservico.clientefinalid')
+            .join('bandeira', 'bandeira.id', '=', 'clientefinal.bandeiraid')
+            .join('grupoempresarial', 'grupoempresarial.id', '=', 'bandeira.grupoempresarialid')
+            .join('cliente', 'cliente.id', '=', 'grupoempresarial.clienteid')
             .join('tipoprojeto', 'tipoprojeto.id', '=', 'ordemservico.tipoprojetoid')
             .join('tecnico', 'tecnico.id', '=', 'ordemservico.tecnicoid')
-            .join('usuario', 'usuario.id', '=', 'ordemservico.usuarioid')            
+            .join('usuario', 'usuario.id', '=', 'ordemservico.usuarioid')
+            .join('movimentacaoos', 'movimentacaoos.ordemservicoid', '=', 'ordemservico.id')
+            .join('statusatendimento', 'statusatendimento.id', '=', 'movimentacaoos.statusatendimentoid')          
             .select([
                 'ordemservico.*',
-                'clientefilial.clienteid',
-                'clientefilial.nomefilial',
+                'clientefinal.nomeclientefinal',
+                'bandeira.nomebandeira',
+                'grupoempresarial.nomegrupoempresarial',
+                'cliente.nomecliente',
                 'tipoprojeto.nometipoprojeto',
                 'tecnico.nometecnico',
-                'usuario.nome'
+                'usuario.nome',
+                'statusatendimento.status as statusAtendimento'
             ])
             .first();
     
@@ -70,7 +82,7 @@ module.exports = {
         let numeroos = ultimoNumeroOS[0].numeroos + 1;
         //////////////////////////////////////////////////////////////////////////////////////////////
 
-        const { datasolicitacao, dataatendimento, clientefilialid, tipoprojetoid, 
+        const { datasolicitacao, dataatendimento, clientefinalid, tipoprojetoid, 
                 descricaoservico, tecnicoid, observacaoos, horaentrada, 
                 horasaida, qtdehoras, horaextra, valorapagar, valorareceber, totalapagar, 
                 totalareceber, diadasemana, custoadicional, ativo, statusatendimentoid, 
@@ -98,7 +110,7 @@ module.exports = {
                     numeroos,
                     datasolicitacao,
                     dataatendimento,
-                    clientefilialid,
+                    clientefinalid,
                     tipoprojetoid,
                     descricaoservico,
                     tecnicoid,
@@ -168,7 +180,7 @@ module.exports = {
         let numeroos = ultimoNumeroOS[0].numeroos + 1;
         //////////////////////////////////////////////////////////////////////////////////////////////
 
-        const { datasolicitacao, dataatendimento, clientefilialid, tipoprojetoid, 
+        const { datasolicitacao, dataatendimento, clientefinalid, tipoprojetoid, 
                 descricaoservico, tecnicoid, observacaoos, horaentrada, 
                 horasaida, qtdehoras, horaextra, valorapagar, valorareceber, totalapagar, 
                 totalareceber, diadasemana, custoadicional, ativo, statusatendimentoid, 
@@ -191,7 +203,7 @@ module.exports = {
                     numeroos,
                     datasolicitacao,
                     dataatendimento,
-                    clientefilialid,
+                    clientefinalid,
                     tipoprojetoid,
                     descricaoservico,
                     tecnicoid,

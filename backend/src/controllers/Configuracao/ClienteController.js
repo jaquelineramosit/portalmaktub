@@ -4,13 +4,12 @@ module.exports = {
     async getAll(request, response) {
         const cliente = await connection('cliente')
             .join('usuario', 'usuario.id', '=', 'cliente.usuarioid')
-            .join('parceiro', 'parceiro.id', '=', 'cliente.parceiroid')
+            .leftJoin('grupoempresarial', 'grupoempresarial.clienteid', '=', 'cliente.id')
             .select([
                 'cliente.*',
-                'parceiro.nomeparceiro',
+                'grupoempresarial.nomegrupoempresarial',
                 'usuario.nome'
             ]);
-
 
         return response.json(cliente);
     },
@@ -29,10 +28,8 @@ module.exports = {
         const cliente = await connection('cliente')
             .where('cliente.id', id)
             .join('usuario', 'usuario.id', '=', 'cliente.usuarioid')
-            .join('parceiro', 'parceiro.id', '=', 'cliente.parceiroid')
             .select([
                 'cliente.*',
-                'parceiro.nomeparceiro',
                 'usuario.nome'
             ])
             .first();
@@ -45,14 +42,13 @@ module.exports = {
         const usuarioid = request.headers.authorization;
         const dataultmodif = getDate();
 
-        const { parceiroid, nomecliente, cnpj, razaosocial, logradouro, numero, complemento,
+        const { nomecliente, cnpj, razaosocial, logradouro, numero, complemento,
             bairro, cidade, estado, cep, telefonefixo, telefonecelular, nomeresponsavel,
-            telefoneresponsavel, ativo, right } = request.body;
+            telefoneresponsavel, ativo } = request.body;
 
         const trx = await connection.transaction();
         try {
             const [clienteid] = await trx('cliente').insert({
-                parceiroid,
                 nomecliente,
                 cnpj,
                 razaosocial,
@@ -71,44 +67,27 @@ module.exports = {
                 usuarioid,
                 dataultmodif
             })
-
-            const clienteBandeira = right.map((bandeiraItem) => {
-                return {
-                    bandeiraid: bandeiraItem.id,
-                    clienteid: clienteid,
-                    ativo: 1,
-                    usuarioid: usuarioid,
-                    dataultmodif: dataultmodif
-                }
-            })
-
-
-
-            await trx('clientebandeira').insert(clienteBandeira)
             trx.commit()
-            return response.json({ clienteBandeira });
+            return response.status(200).json({ clienteid });
         } catch (err) {
             trx.rollback()
             console.log(err)
-            return response.send('ocorreu um erro ao salvar')
+            return response.status(400).send('ocorreu um erro ao salvar')
         }
     },
-
-
 
     async update(request, response) {
         const { id } = request.params;
         const usuarioid = request.headers.authorization;
         const dataultmodif = getDate();
 
-        const { parceiroid, nomecliente, cnpj, razaosocial, logradouro, numero, complemento,
+        const { nomecliente, cnpj, razaosocial, logradouro, numero, complemento,
             bairro, cidade, estado, cep, telefonefixo, telefonecelular, nomeresponsavel,
-            telefoneresponsavel, right,left, ativo } = request.body;
+            telefoneresponsavel, ativo } = request.body;
 
         const trx = await connection.transaction();
         try {
             await trx('cliente').where('id', id).update({
-                parceiroid,
                 nomecliente,
                 cnpj,
                 razaosocial,
@@ -128,43 +107,13 @@ module.exports = {
                 dataultmodif
             });
 
-            //cadastra novamente
-            const clienteBandeira = right.map((bandeirasItem) => {
-                return {
-                    bandeiraid: bandeirasItem.id,
-                    clienteid: id,
-                    ativo: 1,
-                    usuarioid: usuarioid,
-                    dataultmodif: dataultmodif
-                }
-            })
-            
-            //deleta os tipos de projeto x ferramenta e cadastra tudo de novo
-            await trx('clientebandeira').where('clienteId', id).delete()
-            await trx('clientebandeira').insert(clienteBandeira)
             trx.commit()
-            return response.json({ clienteBandeira });
+            return response.status(200).json();
         } catch (err) {
             trx.rollback()
             console.log(err)
             return response.send('ocorreu um erro ao salvar')
         }
-
-
-        await connection('tipoprojeto').where('id', id).update({
-            nometipoprojeto,
-            receita,
-            despesa,
-            horas,
-            valorhoraextra,
-            valorhoratecnico,
-            horadecimal,
-            ativo,
-            usuarioid,
-            dataultmodif
-        });
-
-        return response.status(204).send();
     },
 
     async getCount(request, response) {
