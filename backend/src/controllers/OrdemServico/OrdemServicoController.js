@@ -55,7 +55,7 @@ module.exports = {
     
         return response.json(ordemservico);
     },
-
+    
     async create(request, response) {
         const  usuarioid  = request.headers.authorization;
         const  dataultmodif = getDate();

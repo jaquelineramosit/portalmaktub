@@ -42,6 +42,8 @@ export default function ListaAdiantamentoOS() {
         {
             name: 'OS',
             selector: 'numeroos',
+            name: 'Adiantamento',
+            selector: 'numeroadiantamentoos',
             sortable: true,
             width: '15%'
         },
