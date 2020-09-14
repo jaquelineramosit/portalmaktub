@@ -392,6 +392,7 @@ const OrdemServico = (props) => {
                         setDadosTipoProjeto(response.data);
                         TotaisPagarReceber();
                     });
+                    zerarDadosTipoProjeto();
 
                 } else {
                     setTipoprojetoid('');
