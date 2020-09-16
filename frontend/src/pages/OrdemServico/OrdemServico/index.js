@@ -380,6 +380,8 @@ const OrdemServico = (props) => {
                         setBandeiras(response.data);
                         setClientesFinais([]);
                     });
+                    zerarDadosTipoProjeto();
+
                 } else {
                     setBandeiras([]);
                     setClientesFinais([]);
