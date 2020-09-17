@@ -35,14 +35,16 @@ module.exports = {
         const ossDoAdiant = await connection('adiantamentoporos')
             .where('adiantamentoporos.adiantamentoosid', '=', id)
             .join('ordemservico', 'ordemservico.id', '=', 'adiantamentoporos.ordemservicoid')
-            .join('clientefilial', 'clientefilial.id', '=', 'ordemservico.clientefilialid')
+            .join('clientefinal', 'clientefinal.id', '=', 'ordemservico.clientefinalid')
+            .join('bandeira', 'bandeira.id', '=', 'clientefinal.bandeiraid')
+            .join('grupoempresarial', 'grupoempresarial.id', '=', 'bandeira.grupoempresarialid')
+            .join('cliente', 'cliente.id', '=', 'grupoempresarial.clienteid')
             .join('tecnico', 'tecnico.id', '=', 'ordemservico.tecnicoid')
-            .join('tipoprojeto', 'tipoprojeto.id', '=', 'ordemservico.tipoprojetoid')
-            .join('cliente', 'cliente.id', '=', 'clientefilial.clienteid')
+            .join('tipoprojeto', 'tipoprojeto.id', '=', 'ordemservico.tipoprojetoid')            
             .select([
                 'adiantamentoporos.*',
                 'cliente.nomecliente',
-                'clientefilial.nomefilial',
+                'clientefinal.nomeclientefinal',
                 'tecnico.nometecnico',
                 'tipoprojeto.nometipoprojeto',
                 'ordemservico.*'

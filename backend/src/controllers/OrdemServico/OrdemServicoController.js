@@ -23,9 +23,12 @@ module.exports = {
             .select([
                 'ordemservico.*',
                 'clientefinal.nomeclientefinal',
+                'clientefinal.bandeiraid',
                 'bandeira.nomebandeira',
+                'bandeira.grupoempresarialid',
                 'grupoempresarial.nomegrupoempresarial',
-                'cliente.nomecliente',
+                'grupoempresarial.clienteid',
+                'cliente.nomecliente',                
                 'tipoprojeto.nometipoprojeto',
                 'tecnico.nometecnico',
                 'usuario.nome',
@@ -56,9 +59,12 @@ module.exports = {
             .select([
                 'ordemservico.*',
                 'clientefinal.nomeclientefinal',
+                'clientefinal.bandeiraid',
                 'bandeira.nomebandeira',
+                'bandeira.grupoempresarialid',
                 'grupoempresarial.nomegrupoempresarial',
-                'cliente.nomecliente',
+                'grupoempresarial.clienteid',
+                'cliente.nomecliente',                
                 'tipoprojeto.nometipoprojeto',
                 'tecnico.nometecnico',
                 'usuario.nome',
@@ -82,7 +88,7 @@ module.exports = {
         let numeroos = ultimoNumeroOS[0].numeroos + 1;
         //////////////////////////////////////////////////////////////////////////////////////////////
 
-        const { datasolicitacao, dataatendimento, clientefilialid, tipoprojetoid, 
+        const { datasolicitacao, dataatendimento, clientefinalid, tipoprojetoid, 
             descricaoprojeto, tecnicoid, observacaoos, horaentrada, 
                 horasaida, qtdehoras, horaextra, valorapagar, valorareceber, totalapagar, 
                 totalareceber, diadasemana, custoadicional, ativo, statusatendimentoid, 
@@ -167,35 +173,37 @@ module.exports = {
     },
     
     async update (request, response) {
-        const { id }   = request.params;
-        const usuarioid  = request.headers.authorization;
-        const dataultmodif = getDate();
         
-        //////////////////////////////////////////////////////////////////////////////////////////////
-        //SEPARAR EM FUNÇÃO
-        //Regra de negócio:
-        //  Ao cadastrar uma nova ordem de serviço, buscar o último número de OS e incrementar em 1.
-        const ultimoNumeroOS = await connection('ordemservico')
-            .max('ordemservico.numeroos as numeroos');
-        let numeroos = ultimoNumeroOS[0].numeroos + 1;
-        //////////////////////////////////////////////////////////////////////////////////////////////
+        try {
+            const { id }   = request.params;
+            const usuarioid  = request.headers.authorization;
+            const dataultmodif = getDate();
+            
+            //////////////////////////////////////////////////////////////////////////////////////////////
+            //SEPARAR EM FUNÇÃO
+            //Regra de negócio:
+            //  Ao cadastrar uma nova ordem de serviço, buscar o último número de OS e incrementar em 1.
+            const ultimoNumeroOS = await connection('ordemservico')
+                .max('ordemservico.numeroos as numeroos');
+            let numeroos = ultimoNumeroOS[0].numeroos + 1;
+            //////////////////////////////////////////////////////////////////////////////////////////////
 
-        const { datasolicitacao, dataatendimento, clientefilialid, tipoprojetoid, 
-            descricaoprojeto, tecnicoid, observacaoos, horaentrada, 
-                horasaida, qtdehoras, horaextra, valorapagar, valorareceber, totalapagar, 
-                totalareceber, diadasemana, custoadicional, ativo, statusatendimentoid, 
-                statuspagamentoid, statuscobrancaid, observacao } = request.body;  
+            const { datasolicitacao, dataatendimento, clientefinalid, tipoprojetoid, 
+                    descricaoprojeto, tecnicoid, observacaoos, horaentrada, 
+                    horasaida, qtdehoras, horaextra, valorapagar, valorareceber, totalapagar, 
+                    totalareceber, diadasemana, custoadicional, ativo, statusatendimentoid, 
+                    statuspagamentoid, statuscobrancaid, observacao } = request.body;  
 
-        //////////////////////////////////////////////////////////////////////////////////////////////
-        //SEPARAR EM FUNÇÃO
-        //Regra de negócio: {
-        //  Ao criar uma Ordem de Serviço se tudo der certo, cadastra um registro na movimentação
-        //  de OS com a seguinte regra:
-        //      - caso seja informado a data do atendimento e o técnico, 
-        //          { status de atendimento : [2] Agendado
-        //      - caso NÃO seja informado a data do atendimento e/ou técnico
-        //          { status de atendimento: [1] Novo
-        //}
+            //////////////////////////////////////////////////////////////////////////////////////////////
+            //SEPARAR EM FUNÇÃO
+            //Regra de negócio: {
+            //  Ao criar uma Ordem de Serviço se tudo der certo, cadastra um registro na movimentação
+            //  de OS com a seguinte regra:
+            //      - caso seja informado a data do atendimento e o técnico, 
+            //          { status de atendimento : [2] Agendado
+            //      - caso NÃO seja informado a data do atendimento e/ou técnico
+            //          { status de atendimento: [1] Novo
+            //}
 
         const objetoRetorno = 
             knex.transaction(function(trx) {
@@ -246,18 +254,29 @@ module.exports = {
                         trx.rollback;
                     }       
                 })            
-                .catch(trx.rollback);
+                .catch(function(err) {                 
+                    trx.rollback();
+                    return response.status(404).json(err.message);
+                })                    
             })
             .then(function(resp) {
-                return response.json(resp);
+                return response.status(200).json(resp);
             })
             .catch(function(err) {
-                console.error(err);
+                trx.rollback();
+                return response.status(404).json(err.message);
             });
-    
-        //FIM ////////////////////////////////////////////////////////////////////////////////////////        
-        return response.status(204).send();
+            //FIM ////////////////////////////////////////////////////////////////////////////////////////
+        //return response.status(204).send();
+        
+        } catch (error) {
+            trx.rollback();
+            return response.status(404).json(err.message);
+        }
     },
+    
+        
+        
 
     async getCount (request,response) {        
 

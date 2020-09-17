@@ -32,25 +32,7 @@ export default function ListaOrdemServico(props) {
             setOrdemservico(response.data);
         })
     }, [usuarioId]);
-
-    const DivClienteFilial = (props) => {
-        const cliente = props.cliente;
-        const filial = props.filial;
-        const ordemservicoId = props.id;
-        return (
-            <div>
-                <div key={`cliente${ordemservicoId}`}>
-                    <i className="fa fa-handshake-o mr-2" title="Cliente"></i>
-                    {cliente}
-                </div>
-                <div key={`filial${ordemservicoId}`} className="small text-muted">
-                    <i className="fa fa-building mr-1" title="Filial"></i>
-                    {filial}
-                </div>
-            </div>
-        )
-    }
-
+    
     const DivData = (props) => {
         return (
             <div>
@@ -66,38 +48,40 @@ export default function ListaOrdemServico(props) {
             name: 'OS',
             selector: 'numeroos',
             sortable: true,
-            width: '12%',
+            width: '8%',
         },
         {
-            name: 'Filial',
-            selector: 'nomefilial',
-            name: 'Cliente / Filial',
+            name: 'Cliente',
             selector: 'nomecliente',
             sortable: true,
-            width: '16%',
-            cell: row => <DivClienteFilial key={`divFilial${row.id}`} cliente={row.nomecliente} filial={row.nomefilial} ordemservicoId={row.id}> </DivClienteFilial>,
+            width: '15%',            
+        },
+        {
+            name: 'Cliente Final',
+            selector: 'nomeclientefinal',            
+            sortable: true,
+            width: '15%',            
         },
         {
             name: 'Técnico',
             selector: 'nometecnico',
             sortable: true,
             center: false,
-            width: '28%',
+            width: '18%',
         },
         {
             name: 'Data Atendimeto',
             sortable: true,
             selector: 'dataatendimento',
-            width: '17%',
+            width: '16%',
             center:true,
             cell: row => <DivData key={`divData${row.id}`} dataatendimento={row.dataatendimento} ordemservicoId={row.id}></DivData>,
         },
         {
             name: 'Projeto',
             selector: 'nometipoprojeto',
-            sortable: true,
-            center: true,
-            width: '17%',
+            sortable: true,            
+            width: '18%',
         },
         {
             name: 'Ações',

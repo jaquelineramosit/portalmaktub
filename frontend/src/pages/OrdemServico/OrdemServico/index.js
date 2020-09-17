@@ -1,5 +1,5 @@
-import { Tabs, Tab, TabContainer } from 'react-bootstrap'
-import React, { useState, useEffect, Component, Fragment } from 'react';
+import { Tabs, Tab} from 'react-bootstrap'
+import React, { useState, useEffect, Fragment } from 'react';
 import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, InputGroup, InputGroupAddon, CardFooter, Form, ListGroup, ListGroupItem, } from 'reactstrap';
 import { Redirect } from 'react-router-dom';
 import NumberFormat from 'react-number-format';
@@ -9,9 +9,17 @@ import api from '../../../services/api';
 import moment from 'moment';
 import CardListaStatus from '../../../components/CardListaStatus'
 const dateFormat = require('dateformat');
-let clienteFinalIdInicial = '';
+
+// #region 
+// Objetivo dessas variáveis é informar para o sistema as propriedades iniciais ao carregar a página
+// As variáveis abaixo sendo usadas nos campos de seleção
 let clienteIdInicial = '';
+let grupoEmpresarialIdInicial = '';
+let bandeiraIdInicial = '';
 let tipoProjetoIdInicial = '';
+let clienteFinalIdInicial = '';
+
+// As variáveis abaixo estão sendo usadas para informar os valores iniciais dos campos calculados na aba projeto
 let valorFimInicial = 0;
 let valorInicioInicial = 0;
 let valorPagarInicial = 0;
@@ -22,18 +30,27 @@ let custoAdicionalInicial = '';
 let qdeHoras = 0;
 let qdeHorasExtra = 0;
 var now = new Date();
+////#endregion /////////////////////////////////////////////////
 
+
+// Princial metodo desta página
 const OrdemServico = (props) => {
 
+    // constante usada para setar se a página será redirecionada ou não após realizar uma operação de salvar
     const [redirect, setRedirect] = useState(false);
 
+    //#region
+    // Configuração de variáveis obtidas através da própria página
     var search = props.location.search;
     var params = new URLSearchParams(search);
     var action = params.get('action');
     var cadosdIdParam = props.match.params.id;
     const usuarioId = localStorage.getItem('userId');
+    //#endregion
 
-    // informacoes OS
+
+    //#region 
+    // constantes usadas para manipular as propriedades da ordem de serviço
     const [numeroos, setNumeroos] = useState('');
     const [datasolicitacao, setDatasolicitacao] = useState('');
     const [dataatendimento, setDataAtendimento] = useState('');
@@ -55,14 +72,16 @@ const OrdemServico = (props) => {
     const [custoadicional, setCustoadicional] = useState(0);
     const [custoadicionalFormatado, setCustoadicionalFormatado] = useState(0);
     const [ativo, setAtivo] = useState(1);
+    //#endregion
 
-    // informacoes servico
+    // informacoes projeto
     const [qtdehoras, setQtdehoras] = useState(0);
     const [horaextra, setHoraextra] = useState(0);
     const [valorapagar, setValorapagar] = useState(0);
     const [valorapagarFormatado, setValorapagarFormatado] = useState(0);
     const [valorareceber, setValorareceber] = useState(0);
     const [valorareceberFormatado, setValorareceberFormatado] = useState(0);
+    const [escopoprojeto, setEscopoprojeto] = useState('');
 
     //informacoes movimentacao os
     const [statusatendimentoid, setStatusAtendimentoid] = useState('');
@@ -75,60 +94,100 @@ const OrdemServico = (props) => {
     const [movimentacaoLogId, setMovimentacaoLogId] = useState([]);
 
     // informacoes final
-    const [dadosFinal, setDadosFinal] = useState({
-        nomebandeira: '',
-        telefonefixo: '',
-        telefoneresponsavel: '',
-        ced: '',
-        cep: '',
-        logradouro: '',
-        numero: '',
-        complemento: '',
-        bairro: '',
-        estado: '',
-        cidade: '',
-        horarioiniciosemana: '00:00',
-        horarioiniciosabado: '00:00',
-        horarioiniciodomingo: '00:00',
-        horariofimsemana: '00:00',
-        horariofimsabado: '00:00',
-        horariofimdomingo: '00:00'
-    });
+    const [telefonefixo, setTelefonefixo] = useState('');
+    const [telefoneresponsavel, setTelefoneresponsavel] = useState('');
+    const [ced, setCed] = useState('');
+    const [cep, setCep] = useState('');
+    const [logradouro, setLogradouro] = useState('');
+    const [numero, setNumero] = useState('');
+    const [complemento, setComplemento] = useState('');
+    const [bairro, setBairro] = useState('');
+    const [estado, setEstado] = useState('');
+    const [cidade, setCidade] = useState('');
+    const [horarioiniciosemana, setHorarioiniciosemana] = useState('');
+    const [horarioiniciosabado, setHorarioiniciosabado] = useState('');
+    const [horarioiniciodomingo, setHorarioiniciodomingo] = useState('');
+    const [horariofimsemana, setHorariofimsemana] = useState('');
+    const [horariofimsabado, setHorariofimsabado] = useState('');
+    const [horariofimdomingo, setHorariofimdomingo] = useState('');    
 
-    // informacoes do Escopo do Tipo de Projeto
-    const [dadosTipoProjeto, setDadosTipoProjeto] = useState({
-        escopoprojeto: ''
-    });
-    //combos dinamicos
+    // // informacoes do Escopo do Tipo de Projeto
+    // const [dadosTipoProjeto, setDadosTipoProjeto] = useState({
+    //     escopoprojeto: ''
+    // });
+
+    //#region 
+    //Estas constantes manipulam os estados dos combos dinamicos
     const [clientes, setClientes] = useState([]);
     const [gruposEmpresariais, setGruposEmpresariais] = useState([]);
     const [bandeiras, setBandeiras] = useState([]);
     const [clientesFinais, setClientesFinais] = useState([]);
-    
     const [tipoProjetos, setTipoProjetos] = useState([]);
     const [tecnicos, setTecnicos] = useState([]);
+    //#endregion
 
+    //#region 
+    //Funçaão retorna uma string vazia caso o valor seja nulo ou undefined
+    function valorNulo(valor) {
+        if(valor === null || valor === undefined) {
+            return ''
+        } else {
+            return valor;
+        }
+    }
+    //#endregion
+
+    //#region
+    //Esta função altera o valor dos estados das propriedades do Cliente Final
+    const atualizaDadosClienteFinal = (props) => {   
+        console.log(props.horarioiniciosemana);
+        setTelefonefixo(valorNulo(props.telefonefixo));
+        setTelefoneresponsavel(valorNulo(props.telefoneresponsavel));
+        setCed(valorNulo(props.ced));
+        setCep(valorNulo(props.cep));
+        setLogradouro(valorNulo(props.logradouro));
+        setNumero(valorNulo(props.numero));
+        setComplemento(valorNulo(props.complemento));
+        setBairro(valorNulo(props.bairro));
+        setEstado(valorNulo(props.estado));
+        setCidade(valorNulo(props.cidade));
+        setHorarioiniciosemana(valorNulo(props.horarioiniciosemana));
+        setHorarioiniciosabado(valorNulo(props.horarioiniciosabado));
+        setHorarioiniciodomingo(valorNulo(props.horarioiniciodomingo));
+        setHorariofimsemana(valorNulo(props.horariofimsemana));
+        setHorariofimsabado(valorNulo(props.horariofimsabado));
+        setHorariofimdomingo(valorNulo(props.horariofimdomingo));        
+    };
+    //#endregion
+
+    //#region 
+    //Esta função limpa os estados das propriedades do Cliente Final
+    function limparDadosClienteFinal() {       
+        setTelefonefixo('');
+        setTelefoneresponsavel('');
+        setCed('');
+        setCep('');
+        setLogradouro('');
+        setNumero('');
+        setComplemento('');
+        setBairro('');
+        setEstado('');
+        setCidade('');
+        setHorarioiniciosemana('');
+        setHorarioiniciosabado('');
+        setHorarioiniciodomingo('');
+        setHorariofimsemana('');
+        setHorariofimsabado('');
+        setHorariofimdomingo('');        
+    };
+    //#endregion
+
+    //#region 
+    //Atualiza os combos da página
     useEffect(() => {
         api.get('clientes').then(response => {
             setClientes(response.data);
-        })
-    }, [usuarioId]);
-
-    // useEffect(() => {
-    //     api.get('grupo-empresarial').then(response => {
-    //         setGruposEmpresariais(response.data);
-    //     })
-    // }, [usuarioId]);
-
-    useEffect(() => {
-        api.get('bandeira').then(response => {
-            setBandeiras(response.data);
-        })
-    }, [usuarioId]);
-
-    useEffect(() => {
-        api.get('cliente-final').then(response => {
-            setClientesFinais(response.data);
+            console.log(response.data)
         })
     }, [usuarioId]);
 
@@ -167,19 +226,44 @@ const OrdemServico = (props) => {
             setMovimentacaoLogId(response.data);
         })
     }, [usuarioId]);
+    //#endregion
 
+    //#region 
+    //Atualiza os campos do formulário caso seja a ação de EDITAR
+    //Melhorar isso
     useEffect(() => {
         if (action === 'edit' && cadosdIdParam !== '') {
             api.get(`ordem-servico/${cadosdIdParam}`).then(response => {
+                
+                //CABEÇALHO
                 setNumeroos(response.data.numeroos);
                 document.getElementById("txtDataSolicitacao").disabled = true;
                 setDatasolicitacao(dateFormat(response.data.datasolicitacao, "yyyy-mm-dd"));
                 setDataAtendimento(dateFormat(response.data.dataatendimento, "yyyy-mm-dd"));
                 setNomediasemana(getDateNameOfWeekDay(response.data.dataatendimento));
+                //FIM - CABEÇALHO
+
+                // CLIENTE
                 setClienteid(response.data.clienteid);
                 clienteIdInicial = response.data.clienteid;
+                //FIM - CLIENTE
+
+                // GRUPO EMPRESARIAL
+                setGrupoEmpresarialid(response.data.grupoempresarialid);
+                grupoEmpresarialIdInicial = response.data.grupoempresarialid;
+                //FIM - GRUPO EMPRESARIAL
+
+                // BANDEIRA
+                setBandeiraid(response.data.bandeiraid);
+                bandeiraIdInicial = response.data.bandeiraid;
+                //FIM - BANDEIRA
+
+                // CLIENTE FINAL
                 setClienteFinalId(response.data.clientefinalid);
                 clienteFinalIdInicial = response.data.clientefinalid;
+                //FIM - CLIENTE FINAL
+
+                // PROJETO
                 setTipoprojetoid(response.data.tipoprojetoid);
                 tipoProjetoIdInicial = response.data.tipoprojetoid;
                 setTotalapagar(response.data.totalapagar);
@@ -198,8 +282,6 @@ const OrdemServico = (props) => {
                 setDescricaoProjeto(response.data.descricaoprojeto);
                 response.data.ativo === 1 ? setAtivo(1) : setAtivo(0);
                 document.getElementById('txtDataAtendimento').value = dateFormat(response.data.dataatendimento, "yyyy-mm-dd");
-
-                //dados projeto
                 setQtdehoras(response.data.qtdehoras);
                 qtdeHorasInicial = response.data.qtdehoras;
                 setValorapagar(response.data.valorapagar);
@@ -208,31 +290,33 @@ const OrdemServico = (props) => {
                 setValorareceber(response.data.valorareceber);    
                 setValorareceberFormatado(response.data.valorareceber);
                 valorReceberInicial = response.data.valorareceber;
-                
-                api.get(`grupo-empresarial?clienteId=${clienteIdInicial}`).then(response => {
-                    setClientesFinais(response.data);
-                });
-    
-                api.get(`filiais/${clienteFinalIdInicial}`).then(response => {
-                    setDadosFinal(response.data);
-                });
 
-                api.get(`filiais/${clienteFilialIdInicial}`).then(response => {
-                    setDadosFilial(response.data);
-                });
-
-                api.get(`tipo-projeto/${tipoProjetoIdInicial}`).then(response => {
-                    setDadosTipoProjeto(response.data);
-                });
-
-                api.get(`tecnico?tipoProjetoId=${tipoProjetoIdInicial}`).then(response => {
-                    setTecnicos(response.data);
-                });
-
+                //Atualiza a quantidade de horas e horas extra nos dados do projeto
                 qdeHoras = valorFimInicial - valorInicioInicial;
                 qdeHorasExtra = qdeHoras - qtdeHorasInicial;
+                //FIM - PROJETO                                                
+    
+                //#region 
+                //Carrega os combos do formulário a partir dos carregados no edit
+                api.get(`grupo-empresarial?clienteId=${clienteIdInicial}`).then(response => {
+                    setGruposEmpresariais(response.data);
+                });
 
+                console.log(grupoEmpresarialIdInicial);
+                api.get(`bandeira?grupoempresarialId=${grupoEmpresarialIdInicial}`).then(response => {
+                    setBandeiras(response.data);
+                });
+                
+                api.get(`cliente-final?bandeiraId=${bandeiraIdInicial}`).then(response => {                    
+                    setClientesFinais(response.data);                    
+                });      
+                
+                api.get(`cliente-final/${clienteFinalIdInicial}`).then(response => {                    
+                    atualizaDadosClienteFinal(response.data); 
+                }); 
+                
                 api.get(`tipo-projeto/${tipoProjetoIdInicial}`).then(response => {
+                    setEscopoprojeto(response.data.escopoprojeto);
                     setHoraDecimal(response.data.horadecimal);
 
                     if (qdeHorasExtra > 0) {
@@ -245,12 +329,31 @@ const OrdemServico = (props) => {
                         setTotalareceber(valorReceberInicial + custoAdicionalInicial);
                     }
                 });
+
+                api.get(`tecnico?tipoProjetoId=${tipoProjetoIdInicial}`).then(response => {
+                    setTecnicos(response.data);
+                });
+                //#endregion
             });
         } else {
             return;
         }
     }, [cadosdIdParam]);
+    //#endregion
 
+    //#region 
+    //Atualização dos dados puxados do cliente final
+    // useEffect(() => {
+    //     if (action === 'edit' && cadosdIdParam !== '') {
+    //         api.get(`cliente-final?bandeiraId=${bandeiraIdInicial}`).then(response => {
+    //             atualizaDadosClienteFinal(response.data);            
+    //         });
+    //     }
+    // }, [cadosdIdParam]);
+    //#endregion
+
+    //#region 
+    //Atualização dos combos do status de Movimentação
     useEffect(() => {
         if (action === 'edit' && cadosdIdParam !== '') {
             api.get(`movimentacao-os-osid/${cadosdIdParam}`).then(response => {
@@ -264,85 +367,17 @@ const OrdemServico = (props) => {
             return;
         }
     }, [cadosdIdParam]);
+    //#endregion
 
     function handleReset() {
         setRedirect(true);
     };
 
-    function TotaisPagarReceber() {
-        qdeHoras = valorFimInicial - valorInicioInicial;
-        qdeHorasExtra = qdeHoras - qtdehoras;
-
-        if (qdeHorasExtra > 0) {
-            setHoraextra(qdeHorasExtra);
-            setTotalapagar((horadecimal * qdeHorasExtra) + valorPagarInicial + Number(custoAdicionalInicial));
-            setTotalareceber((horadecimal * qdeHorasExtra) + valorReceberInicial + Number(custoAdicionalInicial));
-        } else {
-            setHoraextra(0);
-            setTotalapagar(valorPagarInicial + Number(custoAdicionalInicial));
-            setTotalareceber(valorReceberInicial + Number(custoAdicionalInicial));
-        }
-    }
-    function getDateNameOfWeekDay(data) {
-        var data = String(moment(data));
-
-        var date = new Date(data);
-
-        var diaNumero = date.getDay();
-        setDiadasemana(parseInt(diaNumero));
-
-        var diasDaSemana = new Array(7);
-        diasDaSemana[0] = "Domingo";
-        diasDaSemana[1] = "Segunda-feira";
-        diasDaSemana[2] = "Terça-feira";
-        diasDaSemana[3] = "Quarta-feira";
-        diasDaSemana[4] = "Quinta-feira";
-        diasDaSemana[5] = "Sexta-feira";
-        diasDaSemana[6] = "Sábado";
-
-        var nomeDiaDaSemana = diasDaSemana[date.getDay()];
-
-        return nomeDiaDaSemana;
-    }
-
-    function zerarDadosClienteFinal() {
-      setDadosFinal({
-          telefonefixo: '',
-          telefoneresponsavel: '',
-          ced: '',
-          cep: '',
-          logradouro: '',
-          numero: '',
-          complemento: '',
-          bairro: '',
-          estado: '',
-          cidade: '',
-          horarioiniciosemana: '00:00',
-          horarioiniciosabado: '00:00',
-          horarioiniciodomingo: '00:00',
-          horariofimsemana: '00:00',
-          horariofimsabado: '00:00',
-          horariofimdomingo: '00:00'
-      });
-    }
-
-    function zeraDadosServico() {
-        setQtdehoras('');
-        setHoraextra('');
-        setValorapagar('');
-        setValorapagarFormatado('');
-        setValorareceber('');
-        setValorareceberFormatado('');
-        setTotalareceber('');
-        setTotalapagar('');
-        setCustoadicional('');
-    }
-
     function handleInputChange(event) {
         event.preventDefault();
 
         const { name, value } = event.target;
-        alert(value)
+        
         switch (name) {
             case 'dataatendimento':
               if ('dataatendimento' != "") {
@@ -358,60 +393,70 @@ const OrdemServico = (props) => {
                 if (value !== '') {
                     setClienteid(value);
                     setGrupoEmpresarialid('');
+                    setBandeiraid('');
+                    setClienteFinalId('');
+                    setGruposEmpresariais([]);
+                    setBandeiras([]);
+                    setClientesFinais([]);
                     api.get(`grupo-empresarial?clienteId=${value}`).then(response => {
                         setGruposEmpresariais(response.data);
                         setBandeiras([]);
                         setClientesFinais([]);
-                        zerarDadosClienteFinal();
+                        limparDadosClienteFinal();
                     });
                 } else {
                     setGruposEmpresariais([]);
                     setBandeiras([]);
                     setClientesFinais([]);
                     setClienteid('');
-                    zerarDadosClienteFinal();
+                    limparDadosClienteFinal();
                 }
                 break;
             case 'grupoempresarialid':
+                alert(value);
                 if (value !== '') {
                     setGrupoEmpresarialid(value);
                     setBandeiraid('');
+                    setClienteFinalId('');                    
+                    setBandeiras([]);
+                    setClientesFinais([]);
                     api.get(`bandeira?grupoempresarialId=${value}`).then(response => {
                         setBandeiras(response.data);
                         setClientesFinais([]);
-                    });
-                    zerarDadosTipoProjeto();
+                    });                    
 
-                } else {
+                } else {       
+                    setGrupoEmpresarialid('');         
                     setBandeiras([]);
                     setClientesFinais([]);
-                    setClienteid('');
-                    zerarDadosClienteFinal();
+                    limparDadosClienteFinal();
                 }
             break;
             case 'bandeiraid':
-              if (value !== '') {
-                  setBandeiraid(value);
-                  setClienteid('');
-                  api.get(`cliente-final?bandeiraid=${value}`).then(response => {
-                      setDadosFinal(response.data);
-                  });
-              } else {
-                  setClientesFinais([]);
-                  setDadosFinal([]);
-                  setClienteFinalId('');
-                  zerarDadosClienteFinal();
-              }
-              break;
+                if (value !== '') {
+                    setClienteFinalId('');
+                    setClientesFinais([]);
+                    setBandeiraid(value);                  
+                    api.get(`cliente-final?bandeiraid=${value}`).then(response => {                      
+                        setClientesFinais(response.data)                      
+                    });
+                } else {
+                    setBandeiraid(''); 
+                    setClientesFinais([]);                  
+                    setClienteFinalId('');
+                    limparDadosClienteFinal();
+                }
+                break;
             case 'clientefinalid':
               if (value !== '') {
                   setClienteFinalId(value);
                   api.get(`cliente-final/${value}`).then(response => {
-                      setDadosFinal(response.data);
+                    atualizaDadosClienteFinal(response.data);
+                    //setTelefonefixo(response.data.telefonefixo)
                   });
               } else {
                   setClienteFinalId('');
-                  zerarDadosClienteFinal();
+                  limparDadosClienteFinal();
               }
               break;         
             case 'tipoprojetoid':
@@ -431,6 +476,8 @@ const OrdemServico = (props) => {
                       setValorareceberFormatado(response.data.receita);    
                       valorReceberInicial = response.data.receita;
                       setHoraDecimal(response.data.horadecimal);
+                      
+                      setEscopoprojeto(response.data.escopoprojeto);
                       TotaisPagarReceber();
                   });
               } else {
@@ -452,9 +499,11 @@ const OrdemServico = (props) => {
               break;
         }
     };
+
+    //#region
+    //Função que atualiza a Movimentação de Ordem de Serviço
     async function handleAtualizaMovimentacao(e) {
-        e.preventDefault();
-        alert('oi');
+        e.preventDefault();        
         const dataMovimentacao = {
             statusatendimentoid,
             statuscobrancaid,
@@ -476,14 +525,17 @@ const OrdemServico = (props) => {
             alert('Erro na atualização, tente novamente.');
         }
     }
+    //#endregion
 
+    //#region 
+    //Função que atualiza e salva as Ordens de Serviços
     async function handleOs(e) {
         e.preventDefault();
 
         const data = {
             datasolicitacao,
             dataatendimento,
-            clientefilialid,
+            clientefinalid,
             tipoprojetoid,
             descricaoprojeto,
             tecnicoid,
@@ -504,8 +556,6 @@ const OrdemServico = (props) => {
             statuscobrancaid,
             observacao
         };
-
-        console.log(action)
 
         if (action === 'edit') {
 
@@ -538,7 +588,60 @@ const OrdemServico = (props) => {
               }
           }
       }
-  }
+    }
+    //#endregion
+
+    function TotaisPagarReceber() {
+        qdeHoras = valorFimInicial - valorInicioInicial;
+        qdeHorasExtra = qdeHoras - qtdehoras;
+
+        if (qdeHorasExtra > 0) {
+            setHoraextra(qdeHorasExtra);
+            setTotalapagar((horadecimal * qdeHorasExtra) + valorPagarInicial + Number(custoAdicionalInicial));
+            setTotalareceber((horadecimal * qdeHorasExtra) + valorReceberInicial + Number(custoAdicionalInicial));
+        } else {
+            setHoraextra(0);
+            setTotalapagar(valorPagarInicial + Number(custoAdicionalInicial));
+            setTotalareceber(valorReceberInicial + Number(custoAdicionalInicial));
+        }
+    }
+    
+    function getDateNameOfWeekDay(data) {
+        var data = String(moment(data));
+
+        var date = new Date(data);
+
+        var diaNumero = date.getDay();
+        setDiadasemana(parseInt(diaNumero));
+
+        var diasDaSemana = new Array(7);
+        diasDaSemana[0] = "Domingo";
+        diasDaSemana[1] = "Segunda-feira";
+        diasDaSemana[2] = "Terça-feira";
+        diasDaSemana[3] = "Quarta-feira";
+        diasDaSemana[4] = "Quinta-feira";
+        diasDaSemana[5] = "Sexta-feira";
+        diasDaSemana[6] = "Sábado";
+
+        var nomeDiaDaSemana = diasDaSemana[date.getDay()];
+
+        return nomeDiaDaSemana;
+    }    
+
+    function zeraDadosServico() {
+        setQtdehoras('');
+        setHoraextra('');
+        setValorapagar('');
+        setValorapagarFormatado('');
+        setValorareceber('');
+        setValorareceberFormatado('');
+        setTotalareceber('');
+        setTotalapagar('');
+        setCustoadicional('');
+        setEscopoprojeto('');
+    }
+
+    //Essa constante é utlizada para determinar qual é a tab que será selecionada
     const [key, setKey] = useState('clientefinal');
   
     return (
@@ -614,7 +717,7 @@ const OrdemServico = (props) => {
                                         eventKey="clientefinal" 
                                         title={
                                             <Fragment>
-                                                <i className="fa fa-handshake-o"></i><strong><span className="ml-2">Cliente / Final </span> </strong>                                                                                  
+                                                <i className="fa fa-handshake-o"></i><strong><span className="ml-2">Cliente </span> </strong>                                                                                  
                                             </Fragment>
                                         }
                                     >
@@ -651,11 +754,10 @@ const OrdemServico = (props) => {
                                                         ))}
                                                     </Input>
                                                     <InputGroupAddon addonType="append">
-                                                        <span className="btn btn-secondary disabled fa fa-building-o "></span>
+                                                        <span className="btn btn-secondary disabled fa fa-building-o"></span>
                                                     </InputGroupAddon>
                                                 </InputGroup>
                                             </Col>
-                                            
                                         </FormGroup>
                                         <FormGroup row>
                                             <Col md="6">
@@ -696,8 +798,8 @@ const OrdemServico = (props) => {
                                             <Col md="2">
                                                 <Label htmlFor="telefoneFixo">Telefone Fixo</Label>
                                                 <InputGroup>
-                                                    <Input type="text" id="txtTelefoneFixo" readOnly
-                                                        value={dadosFinal.telefonefixo}
+                                                    <Input type="text" id="telefonefixo" readOnly
+                                                        value={telefonefixo}
                                                         name="telefonefixo"
                                                     />
                                                 </InputGroup>
@@ -706,7 +808,7 @@ const OrdemServico = (props) => {
                                                 <Label htmlFor="telefoneResponsavel">Tel. Responsável</Label>
                                                 <InputGroup>
                                                     <Input type="text" id="txtTelefoneResponsavel" readOnly
-                                                        value={dadosFinal.telefoneresponsavel}
+                                                        value={telefoneresponsavel}
                                                         name="telefoneresponsavel"
                                                     />
 
@@ -715,14 +817,14 @@ const OrdemServico = (props) => {
                                             <Col md="2">
                                                 <Label htmlFor="lblCed">CED</Label>
                                                 <Input type="text" readOnly required id="txtCed"
-                                                    value={dadosFinal.ced}
+                                                    value={ced}
                                                     name="ced"
                                                 />
                                             </Col>
                                             <Col md="2">
                                                 <Label htmlFor="lblCep">CEP</Label>
                                                 <Input type="text" readOnly required id="txtCep"
-                                                    value={dadosFinal.cep}
+                                                    value={cep}
                                                     name="cep"
                                                 />
                                             </Col>
@@ -730,7 +832,7 @@ const OrdemServico = (props) => {
                                                 <Label htmlFor="lblLogradouro">Logradouro</Label>
                                                 <InputGroup>
                                                     <Input required type="text" readOnly id="txtLogradouro"
-                                                        value={dadosFinal.logradouro}
+                                                        value={logradouro}
                                                         name="logradouro"
                                                     />
                                                 </InputGroup>
@@ -742,7 +844,7 @@ const OrdemServico = (props) => {
                                                 <Label htmlFor="lblNumero">Nº</Label>
                                                 <InputGroup>
                                                     <Input type="text" id="txtNumero" readOnly
-                                                        value={dadosFinal.numero}
+                                                        value={numero}
                                                         name="numero"
                                                     />
                                                 </InputGroup>
@@ -751,7 +853,7 @@ const OrdemServico = (props) => {
                                                 <Label htmlFor="lblComplemento">Complemento</Label>
                                                 <InputGroup>
                                                     <Input type="text" id="txtComplemento" readOnly
-                                                        value={dadosFinal.complemento}
+                                                        value={complemento}
                                                         name="complemento"
                                                     />
                                                 </InputGroup>
@@ -759,7 +861,7 @@ const OrdemServico = (props) => {
                                             <Col md="2">
                                                 <Label htmlFor="lblBairro">Bairro</Label>
                                                 <Input type="text" required id="txtBairro" readOnly
-                                                    value={dadosFinal.bairro}
+                                                    value={bairro}
                                                     name="bairro"
                                                 />
                                             </Col>
@@ -767,7 +869,7 @@ const OrdemServico = (props) => {
                                                 <Label htmlFor="lblEstado">Estado</Label>
                                                 <InputGroup>
                                                     <Input required type="text" id="txtEstado" readOnly
-                                                        value={dadosFinal.estado}
+                                                        value={estado}
                                                         name="estado"
                                                     />
                                                 </InputGroup>
@@ -775,7 +877,7 @@ const OrdemServico = (props) => {
                                             <Col md="4">
                                                 <Label htmlFor="lblCidade">Cidade</Label>
                                                 <Input type="text" required id="txtCidade" readOnly
-                                                    value={dadosFinal.cidade}
+                                                    value={cidade}
                                                     name="cidade"
                                                 />
                                             </Col>
@@ -784,8 +886,8 @@ const OrdemServico = (props) => {
                                             <Col md="4">
                                                 <Label htmlFor="lblHorarioInicioSemana">Horario Início da semana</Label>
                                                 <InputGroup>
-                                                    <Input type="time" required id="txtHorarioInicioSemana" readOnly
-                                                        value={dadosFinal.horarioiniciosemana}
+                                                    <Input type="time" required id="horarioiniciosemana" readOnly
+                                                        value={horarioiniciosemana}
                                                         name="horarioiniciosemana"
                                                     />
                                                 </InputGroup>
@@ -794,7 +896,7 @@ const OrdemServico = (props) => {
                                                 <Label htmlFor="lblHorarioInicioSabado">Horario Início do Sábado</Label>
                                                 <InputGroup>
                                                     <Input type="time" required id="txtHorarioInicioSabado" readOnly
-                                                        value={dadosFinal.horarioiniciosabado}
+                                                        value={horarioiniciosabado}
                                                         name="horarioiniciosabado"
                                                     />
                                                 </InputGroup>
@@ -803,7 +905,7 @@ const OrdemServico = (props) => {
                                                 <Label htmlFor="lblHorarioInicioSabado">Horario Início do Domingo</Label>
                                                 <InputGroup>
                                                     <Input type="time" required id="txtHorarioInicioDomingo" readOnly
-                                                        value={dadosFinal.horarioiniciodomingo}
+                                                        value={horarioiniciodomingo}
                                                         name="horarioiniciodomingo"
                                                     />
                                                 </InputGroup>
@@ -814,7 +916,7 @@ const OrdemServico = (props) => {
                                                 <Label htmlFor="lblHorarioFimSemana">Horario Fim da semana</Label>
                                                 <InputGroup>
                                                     <Input type="time" required id="txtHorarioFimSemana" readOnly
-                                                        value={dadosFinal.horariofimsemana}
+                                                        value={horariofimsemana}
                                                         name="horariofimsemana"
                                                     />
                                                 </InputGroup>
@@ -823,7 +925,7 @@ const OrdemServico = (props) => {
                                                 <Label htmlFor="lblHorarioFimSabado">Horario Fim do Sábado</Label>
                                                 <InputGroup>
                                                     <Input type="time" required id="txtHorarioFimSabado" readOnly
-                                                        value={dadosFinal.horariofimsabado}
+                                                        value={horariofimsabado}
                                                         name="horariofimsabado"
                                                     />
                                                 </InputGroup>
@@ -832,7 +934,7 @@ const OrdemServico = (props) => {
                                                 <Label htmlFor="lblHorarioFimDomingo">Horario Fim do Domingo</Label>
                                                 <InputGroup>
                                                     <Input type="time" required id="txtHorarioFimDomingo" readOnly
-                                                        value={dadosFinal.horariofimdomingo}
+                                                        value={horariofimdomingo}
                                                         name="horariofimdomingo"
                                                     />
                                                 </InputGroup>
@@ -889,7 +991,7 @@ const OrdemServico = (props) => {
                                                 <Label htmlFor="escopoprojeto">Escopo do Projeto</Label>
                                                 <InputGroup>
                                                     <Input id="txtEscopoProjeto" required rows="5" required type="textarea" readOnly
-                                                        value={dadosTipoProjeto.escopoprojeto}
+                                                        value={escopoprojeto}
                                                         name="escopoprojeto"
                                                     />
                                                 </InputGroup>

@@ -57,8 +57,10 @@ module.exports = {
         
         const ordemservico = await connection('ordemservico')
             .where('ordemservico.tecnicoid', tecnicoId)
-            .join('clientefilial', 'clientefilial.id', '=', 'ordemservico.clientefilialid')
-            .join('cliente', 'cliente.id', '=', 'clientefilial.clienteid')
+            .join('clientefinal', 'clientefinal.id', '=', 'ordemservico.clientefinalid')
+            .join('bandeira', 'bandeira.id', '=', 'clientefinal.bandeiraid')
+            .join('grupoempresarial', 'grupoempresarial.id', '=', 'bandeira.grupoempresarialid')
+            .join('cliente', 'cliente.id', '=', 'grupoempresarial.clienteid')
             .join('tipoprojeto', 'tipoprojeto.id', '=', 'ordemservico.tipoprojetoid')
             .join('tecnico', 'tecnico.id', '=', 'ordemservico.tecnicoid')
             .join('usuario', 'usuario.id', '=', 'ordemservico.usuarioid')
@@ -67,7 +69,7 @@ module.exports = {
             .select([
                 'ordemservico.*',
                 'cliente.nomecliente',
-                'clientefilial.nomefilial',
+                'clientefinal.nomeclientefinal',
                 'tipoprojeto.nometipoprojeto',
                 'tecnico.nometecnico',
                 'usuario.nome'

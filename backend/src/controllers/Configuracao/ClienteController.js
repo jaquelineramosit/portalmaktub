@@ -2,9 +2,17 @@ const connection = require('../../database/connection');
 const getDate = require('../../utils/getDate');
 module.exports = {
     async getAll(request, response) {
+
+        const { clienteId } = request.query;
+
         const cliente = await connection('cliente')
             .join('usuario', 'usuario.id', '=', 'cliente.usuarioid')
             .leftJoin('grupoempresarial', 'grupoempresarial.clienteid', '=', 'cliente.id')
+            .modify(function (queryBuilder) {
+                if (clienteId && clienteId !== '') {
+                    queryBuilder.where('cliente.id', clienteId);
+                }
+            }) 
             .select([
                 'cliente.*',
                 'grupoempresarial.nomegrupoempresarial',
@@ -23,11 +31,17 @@ module.exports = {
     },
 
     async getById(request, response) {
+        const { clienteId } = request.query;
         const { id } = request.params;
 
         const cliente = await connection('cliente')
             .where('cliente.id', id)
             .join('usuario', 'usuario.id', '=', 'cliente.usuarioid')
+            .modify(function (queryBuilder) {
+                if (clienteId && clienteId !== '') {
+                    queryBuilder.where('cliente.id', clienteId);
+                }
+            }) 
             .select([
                 'cliente.*',
                 'usuario.nome'
@@ -36,7 +50,6 @@ module.exports = {
 
         return response.json(cliente);
     },
-
 
     async create(request, response) {
         const usuarioid = request.headers.authorization;

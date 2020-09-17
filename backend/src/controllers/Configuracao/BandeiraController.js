@@ -11,7 +11,7 @@ module.exports = {
             .leftJoin('grupoempresarial', 'grupoempresarial.id', '=', 'bandeira.grupoempresarialid')
             .leftJoin('cliente', 'cliente.id', '=', 'grupoempresarial.clienteid')
             .modify(function (queryBuilder) {
-                if (grupoempresarialId && grupoempresarialId !== 'Selecione...') {
+                if (grupoempresarialId && grupoempresarialId !== '') {
                     queryBuilder.where('bandeira.grupoempresarialid', grupoempresarialId);
                 }
             })

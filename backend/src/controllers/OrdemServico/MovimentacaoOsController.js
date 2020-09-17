@@ -7,12 +7,15 @@ module.exports = {
         .join('statusatendimento', 'statusatendimento.id', '=', 'movimentacaoos.statusatendimentoid')
         .join('statuspagamento', 'statuspagamento.id', '=', 'movimentacaoos.statuspagamentoid')
         .join('statuscobranca', 'statuscobranca.id', '=', 'movimentacaoos.statuscobrancaid')
-        .join('cliente', 'cliente.id', '=', 'ordemservico.clienteid')
+        .join('clientefinal', 'clientefinal.id', '=', 'ordemservico.clientefinalid')
+        .join('bandeira', 'bandeira.id', '=', 'clientefinal.bandeiraid')
+        .join('grupoempresarial', 'grupoempresarial.id', '=', 'bandeira.grupoempresarialid')
+        .join('cliente', 'cliente.id', '=', 'grupoempresarial.clienteid')
         .join('usuario', 'usuario.id', '=', 'movimentacaoos.usuarioid')
         .select([
             'movimentacaoos.*',
             'ordemservico.numeroos',
-            'clientefilial.nomefilial',
+            'clientefinal.nomeclientefinal',
             'statusatendimento.status',
             'statuspagamento.status ',
             'statuscobranca.status',
@@ -31,12 +34,17 @@ module.exports = {
             .join('statusatendimento', 'statusatendimento.id', '=', 'movimentacaoos.statusatendimentoid')
             .join('statuspagamento', 'statuspagamento.id', '=', 'movimentacaoos.statuspagamentoid')
             .join('statuscobranca', 'statuscobranca.id', '=', 'movimentacaoos.statuscobrancaid')
+            .join('clientefinal', 'clientefinal.id', '=', 'ordemservico.clientefinalid')
+            .join('bandeira', 'bandeira.id', '=', 'clientefinal.bandeiraid')
+            .join('grupoempresarial', 'grupoempresarial.id', '=', 'bandeira.grupoempresarialid')
+            .join('cliente', 'cliente.id', '=', 'grupoempresarial.clienteid')
             .join('usuario', 'usuario.id', '=', 'movimentacaoos.usuarioid')
             .select([
                 'movimentacaoos.*',
                 'ordemservico.numeroos',
+                'clientefinal.nomeclientefinal',
                 'statusatendimento.status',
-                'statuspagamento.status',
+                'statuspagamento.status ',
                 'statuscobranca.status',
                 'usuario.nome'
             ])            

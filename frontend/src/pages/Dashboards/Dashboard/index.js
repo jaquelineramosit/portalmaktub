@@ -15,6 +15,8 @@ import {
     Tooltip,
     OverlayTrigger
 } from 'react-bootstrap';
+import DataTableGenerica from '../../../components/DataTableGenerica';
+import DateDiv from '../../../components/DateDiv'
 import BadgeStatus from '../../../components/BadgeStatus'
 
 const dateFormat = require('dateformat');
@@ -422,7 +424,75 @@ export default function DashBoard() {
             </Fragment>
     
         )
+    }    
+
+    const DivData = (props) => {
+        return (
+            <div>
+                <DateDiv data={props.dataatendimento} controleId={props.id}></DateDiv>
+            </div>
+        )
     }
+
+    const data = listaOrdemServico;
+
+    const columns = [
+        {
+            name: 'OS',
+            selector: 'numeroos',
+            sortable: true,
+            width: '8%',
+        },
+        {
+            name: 'Cliente',
+            selector: 'nomecliente',
+            sortable: true,
+            width: '14%',            
+        },
+        {
+            name: 'Cliente Final',
+            selector: 'nomeclientefinal',            
+            sortable: true,
+            width: '14%',            
+        },
+        {
+            name: 'Técnico',
+            selector: 'nometecnico',
+            sortable: true,
+            center: false,
+            width: '14%',
+        },
+        {
+            name: 'Data Atendimeto',
+            sortable: true,
+            selector: 'dataatendimento',
+            width: '12%',
+            center:true,
+            cell: row => <DivData key={`divData${row.id}`} dataatendimento={row.dataatendimento} ordemservicoId={row.id}></DivData>,           
+        },
+        {
+            name: 'Projeto',
+            selector: 'nometipoprojeto',
+            sortable: true,
+            center: true,
+            width: '14%',
+        },
+        {
+            name: 'Status Atendimento',
+            selector: 'status',
+            sortable: true,
+            center: true,
+            width: '14%',
+            cell: row => <BadgeStatus key={`badge${row.id}`} status={row.status}></BadgeStatus>
+        },
+        {
+            name: 'Ações',
+            sortable: true,
+            right: true,
+            width: '10%',
+            cell: row => <Link to={`ordem-servico/${row.id}?action=edit`} className="btn-sm btn-primary"><i className="fa fa-pencil fa-lg"></i></Link>
+        },
+    ];
     return (        
         <div className="animated fadeIn">
             {/* cards */}
@@ -439,8 +509,14 @@ export default function DashBoard() {
                                 <i className="fa fa-plus-circle fa-lg"></i>
                             </Link>
                         </CardHeader>                       
-                        <CardBody className="p-1">                                
-                            <Table key={`table`} hover responsive className="table-outline mb-0 d-none d-sm-table">
+                        <CardBody  >
+                            <DataTableGenerica
+                                data={data}
+                                columns={columns}
+                                title="Ordem de Serviço"
+                            />
+                        </CardBody>                            
+                            {/* <Table key={`table`} hover responsive className="table-outline mb-0 d-none d-sm-table">
                                 <thead key={`tableheader`} className="thead-light">
                                     <tr>
                                         <th className="text-center">
@@ -497,8 +573,7 @@ export default function DashBoard() {
                                     </tr>
                                     )}                                    
                                 </tbody>
-                            </Table>
-                        </CardBody>
+                            </Table> */}                        
                     </Card>
                 </Col>
             </Row>

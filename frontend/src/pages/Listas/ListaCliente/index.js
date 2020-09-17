@@ -35,25 +35,20 @@ export default function ListaCliente() {
 
     const columns = [
         {
-            name: 'Clientes',
+            name: 'Cliente',
             selector: 'nomecliente',
             sortable: true,
-
-
         },
         {
-            name: 'Parceiros',
-            selector: 'nomeparceiro',
+            name: 'Cidade',
+            selector: 'cidade',
             sortable: true,
-            center: true,
-
-        },
+        },    
         {
             name: 'Estado',
             selector: 'estado',
             sortable: true,
             center: true,
-
         },
         {
             name: 'Status',

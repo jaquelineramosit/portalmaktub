@@ -2,20 +2,18 @@ const connection = require('../../database/connection');
 const getDate = require('../../utils/getDate');
 module.exports = {
     async getAll (request, response) {
-        const { clienteId } = request.query;
+        const { bandeiraId } = request.query;
 
         const clientefinal = await connection('clientefinal')
         .leftJoin('bandeira', 'bandeira.id', '=', 'clientefinal.bandeiraid') 
         .leftJoin('grupoempresarial', 'grupoempresarial.id', '=', 'bandeira.grupoempresarialid')
         .leftJoin('cliente', 'cliente.id', '=', 'grupoempresarial.clienteid')  
         .join('usuario', 'usuario.id', '=', 'clientefinal.usuarioid')
-        
-        //@@REFAZER
-        // .modify(function(queryBuilder) {
-        //     if ( clienteId && clienteId !== 'Selecione...' ) {
-        //         queryBuilder.where('clientefinal.clienteid', clienteId);
-        //     }
-        // })
+        .modify(function (queryBuilder) {
+            if (bandeiraId && bandeiraId !== '') {
+                queryBuilder.where('clientefinal.bandeiraid', bandeiraId);
+            }
+        })
         .select([
             'clientefinal.*',
             'bandeira.nomebandeira',
@@ -28,6 +26,7 @@ module.exports = {
     },
 
     async getById (request, response) {
+        const { bandeiraId } = request.query;
         const  { id }  = request.params;
 
         const clientefinal = await connection('clientefinal')
@@ -35,7 +34,12 @@ module.exports = {
             .leftJoin('bandeira', 'bandeira.id', '=', 'clientefinal.bandeiraid') 
             .leftJoin('grupoempresarial', 'grupoempresarial.id', '=', 'bandeira.grupoempresarialid')
             .leftJoin('cliente', 'cliente.id', '=', 'grupoempresarial.clienteid')  
-            .join('usuario', 'usuario.id', '=', 'clientefinal.usuarioid')  
+            .join('usuario', 'usuario.id', '=', 'clientefinal.usuarioid') 
+            .modify(function (queryBuilder) {
+                if (bandeiraId && bandeiraId !== '') {
+                    queryBuilder.where('clientefinal.bandeiraid', bandeiraId);
+                }
+            }) 
             .select([
                 'clientefinal.*',
                 'bandeira.nomebandeira',

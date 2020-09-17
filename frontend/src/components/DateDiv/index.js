@@ -29,7 +29,6 @@ const DateDiv = (props, index) => {
     const label = props.label;
     const isLabel = props.isLabel;
     const controleId = props.id;
-    console.log(label)
     return (
         <Fragment>
             {isLabel ? (
