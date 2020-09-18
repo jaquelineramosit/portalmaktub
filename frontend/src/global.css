@@ -51,3 +51,11 @@ margin-left: 900px;
 .list-group-item-accent-lightBold {
   border-left: 4px solid #c8ced3;
 }
+
+/*
+Autor: Jaqueline Silva
+Data: 18/09/2020
+Objetivo: A pedido do cliente, necessário aumentar o tamanho da fonte de todos os badges da aplicação*/
+.badge {
+  font-size: 90%
+}
