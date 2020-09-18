@@ -29,8 +29,7 @@ const Toaster = {
                     }
                 )
                 break;
-            case 'error': 
-                console.log(msg);
+            case 'error':                 
                 toast.error(                
                     msg,
                     { 

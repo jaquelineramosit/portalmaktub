@@ -6,16 +6,14 @@ module.exports = {
         const { clienteId } = request.query;
 
         const cliente = await connection('cliente')
-            .join('usuario', 'usuario.id', '=', 'cliente.usuarioid')
-            .leftJoin('grupoempresarial', 'grupoempresarial.clienteid', '=', 'cliente.id')
+            .join('usuario', 'usuario.id', '=', 'cliente.usuarioid')            
             .modify(function (queryBuilder) {
                 if (clienteId && clienteId !== '') {
                     queryBuilder.where('cliente.id', clienteId);
                 }
             }) 
             .select([
-                'cliente.*',
-                'grupoempresarial.nomegrupoempresarial',
+                'cliente.*',                
                 'usuario.nome'
             ]);
 

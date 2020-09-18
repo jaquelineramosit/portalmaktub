@@ -3,6 +3,7 @@ import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, 
 import '../../../global.css';
 import FormValidator from '../../../components/Validator/FormValidator';
 import Toaster from '../../../components/Toaster'
+import { messagePorStatus, message } from '../../../utils/messages';
 import { Redirect } from "react-router-dom";
 import api from '../../../../src/services/api';
 
@@ -102,14 +103,10 @@ export default function Banco(props) {
                                 Authorization: 6,
                             }
                         });
-                        if(response.status === 200) {
-                            Toaster.exibeMensagem('success', "Alterado com sucesso!"); 
-                            setRedirect(true);
-                        } else {
-                            Toaster.exibeMensagem('error', "Ocorreu um erro ao alterar o registro"); 
-                        }
-                    } catch (err) {
-                        Toaster.exibeMensagem('error', "Ocorreu um erro. Favor contatar o administrador do sistema."); 
+
+                        setRedirect(messagePorStatus(response.status));
+                    } catch (err) {                        
+                        message('error', "Ocorreu um erro. Favor contatar o administrador do sistema.");
                     }
                 } else {
                     if (action === 'novo') {
@@ -119,19 +116,13 @@ export default function Banco(props) {
                                     Authorization: 6,
                                 }
                             });
-                            if(response.status === 200) {
-                                Toaster.exibeMensagem('success', "Incluido com sucesso!"); 
-                                setRedirect(true);
-                            } else {
-                                Toaster.exibeMensagem('error', "Ocorreu um erro ao cadastrar um novo registro"); 
-                            }
+                            setRedirect(messagePorStatus(response.status));
+                           
                         } catch (err) {
-                            Toaster.exibeMensagem('error', "Ocorreu um erro. Favor contatar o administrador do sistema.");
+                            message('error', "Ocorreu um erro. Favor contatar o administrador do sistema.");
                         }
                     }
                 }
-                Toaster.exibeMensagem('success', "Módulo adicionado com sucesso!");    
-                //history.push('/consulta-modulos');
             } else {
                 const { codbanco, nomebanco} = validacao;
                 const campos = [codbanco, nomebanco];
@@ -139,16 +130,14 @@ export default function Banco(props) {
                     
                     return elem.isInvalid
                 });
-                camposInvalidos.forEach(campo => {
-                    Toaster.exibeMensagem('error', campo.message);                    
+                camposInvalidos.forEach(campo => {                    
+                    message('error',  campo.message);                 
                 });
             }
         } catch (ex) {
-            Toaster.exibeMensagem('error', "Erro no cadastro, tente novamente.");               
+            message('error', "Ocorreu um erro. Favor contatar o administrador do sistema.");           
         }
     }
-
-
 
     return (
         <div className="animated fadeIn">
@@ -177,15 +166,7 @@ export default function Banco(props) {
                                             value={nomebanco}
                                             onChange={e => setNomebanco(e.target.value)} />
                                     </Col>
-                                </FormGroup>
-                                {/*<FormGroup>    
-                                    <Col md="1">
-                                        <Label check className="form-check-label" htmlFor="ativo1">Ativo</Label>
-                                        <AppSwitch id="rdAtivo" className={'switch-ativo'}  label color={'success'} defaultChecked size={'sm'}
-                                        onChange={handleSwitch}
-                                        />                                    
-                                    </Col>                                
-                                </FormGroup> */}
+                                </FormGroup>                                
                             </CardBody>
                             <CardFooter className="text-center">
                                 <Button type="submit" size="sm" color="success" className=" mr-3"><i className="fa fa-check"></i> Salvar</Button>

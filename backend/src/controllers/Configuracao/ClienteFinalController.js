@@ -17,8 +17,11 @@ module.exports = {
         .select([
             'clientefinal.*',
             'bandeira.nomebandeira',
+            'clientefinal.bandeiraid',
+            'bandeira.grupoempresarialid',
             'grupoempresarial.nomegrupoempresarial',
             'cliente.nomecliente',
+            'grupoempresarial.clienteid',
             'usuario.nome'
         ]);
     
@@ -43,8 +46,11 @@ module.exports = {
             .select([
                 'clientefinal.*',
                 'bandeira.nomebandeira',
+                'clientefinal.bandeiraid',
+                'bandeira.grupoempresarialid',
                 'grupoempresarial.nomegrupoempresarial',
                 'cliente.nomecliente',
+                'grupoempresarial.clienteid',
                 'usuario.nome'
             ])
             .first();

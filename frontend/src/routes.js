@@ -20,7 +20,7 @@ const Profile = React.lazy(() => import('./pages/Acessos/Profile'));
 
 // Configurações
 const Clientes = React.lazy(() => import('./pages/Configuracoes/Clientes'));
-const Filiais = React.lazy(() => import('./pages/Configuracoes/Filiais'));
+const ClienteFinal = React.lazy(() => import('./pages/Configuracoes/ClienteFinal'));
 const Bandeira = React.lazy(() => import('./pages/Configuracoes/Bandeira'));
 const GrupoEmpresarial = React.lazy(() => import('./pages/Configuracoes/GrupoEmpresarial'));
 const Tecnico = React.lazy(() => import('./pages/Configuracoes/Tecnico'));
@@ -47,7 +47,7 @@ const Adiantamentoos = React.lazy(() => import('./pages/OrdemServico/Adiantament
 
 // Tabelas
 const ListaCliente = React.lazy(() => import('./pages/Listas/ListaCliente'));
-const ListaFiliais = React.lazy(() => import('./pages/Listas/ListaFiliais'));
+const ListaClienteFinal = React.lazy(() => import('./pages/Listas/ListaClienteFinal'));
 const ListaBandeira = React.lazy(() => import('./pages/Listas/ListaBandeira'));
 const ListaGrupoEmpresarial= React.lazy(() => import('./pages/Listas/ListaGrupoEmpresarial'));
 const ListaTecnicos = React.lazy(() => import('./pages/Listas/ListaTecnicos'));
@@ -121,8 +121,8 @@ const routes = [
 
 
   //Configuração
-  { path: '/filiais', exact:true, name: 'Filiais', component: Filiais },
-  { path: '/filiais/:id', name: 'Filiais', component: Filiais },
+  { path: '/cliente-final', exact:true, name: 'Cliente Final', component: ClienteFinal },
+  { path: '/cliente-final/:id', name: 'Cliente Final', component: ClienteFinal },
   { path: '/clientes',exact:true, name: 'Clientes', component: Clientes },
   { path: '/clientes/:id', name: 'Clientes', component: Clientes },
   { path: '/bandeira', exact:true, name: 'Bandeira', component: Bandeira },
@@ -170,7 +170,7 @@ const routes = [
   
   //Listas
   { path: '/lista-cliente', name: 'Lista de Clientes', component: ListaCliente },
-  { path: '/lista-filiais', name: 'Lista de Filiais', component: ListaFiliais },
+  { path: '/lista-cliente-final', name: 'Lista de Cliente Final', component: ListaClienteFinal },
   { path: '/lista-bandeira', name: 'Lista de Bandeiras', component: ListaBandeira },
   { path: '/lista-grupo-empresarial', name: 'Lista de Grupos Empresariais', component: ListaGrupoEmpresarial},
   { path: '/lista-tecnicos', name: 'Lista de Técnicos', component: ListaTecnicos},

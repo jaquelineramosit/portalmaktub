@@ -3,25 +3,35 @@ import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, 
 import '../../../global.css';
 import { Redirect } from "react-router-dom";
 import { telMask, cepMask, numMask, cnpjMask } from '../../../mask'
-import api from '../../../../src/services/api';
+import {valorNulo} from '../../../utils/functions'
+import api from '../../../services/api';
 import axios from 'axios';
 
 let clienteIdInicial;
+let grupoEmpresarialIdInicial;
+let bandeiraIdInicial;
 
 export default function Filiais(props) {
+    //Estado que controla o redirecionamento da página
     const [redirect, setRedirect] = useState(false);
+    //Fim
 
-    //parametros
+    //Parametros vindos do formulário
+    //#region 
     var search = props.location.search;
     var params = new URLSearchParams(search);
     var action = params.get('action');
-    var filiaisIdParam = props.match.params.id;
+    var clienteFinalIdParam = props.match.params.id;
     const usuarioId = localStorage.getItem('userId');
+    //#endregion
 
+    //Estados que controlam as propriedades do formulário
+    //#region 
     const [bandeiraid, setBandeiraid] = useState('');
     const [clienteid, setClienteid] = useState('');
+    const [grupoempresarialid, setGrupoEmpresarialid] = useState('');
     const [ced, setCed] = useState('');
-    const [nomefilial, setNomefilial] = useState('');
+    const [nomeclientefinal, setNomefilial] = useState('');
     const [razaosocial, setRazaosocial] = useState('');
     const [logradouro, setLogradouro] = useState('');
     const [complemento, setComplemento] = useState('');
@@ -42,22 +52,28 @@ export default function Filiais(props) {
     const [cep, setCep] = useState('');
     const [numero, setNumero] = useState('');
     const [cnpj, setCnpj] = useState('');
-    const [bandeirasid, setBandeirasid] = useState([]);
-    const [clientesid, setClientesid] = useState([]);
     const [ativo, setAtivo] = useState(1);
+    //#endregion
 
+    //Estados que controlam as propriedades dos combos do formulário
+    //#region 
+    const [bandeiras, setBandeiras] = useState([]);
+    const [clientes, setClientes] = useState([]);
+    const [gruposempresariais, setGruposEmpresariais] = useState([]);
+    //#endregion
+
+    //UseEffect responsável por popular os combos do formulário
+    //#region 
     useEffect(() => {
         api.get('clientes').then(response => {
-            setClientesid(response.data);
+            setClientes(response.data);
         })
     }, [usuarioId]);
-
-    // useEffect(() => {
-    //     api.get('bandeira').then(response => {
-    //         setBandeirasid(response.data);
-    //     })
-    // }, [usuarioId]);
-
+    //#endregion
+    
+    
+    //UseEffect responsável por atualizar os dados do estado usando um api do ibge
+    //#region 
     useEffect(() => {
         axios.get('https://servicodados.ibge.gov.br/api/v1/localidades/estados').then(response => {
             const ufInitials = response.data.map(uf => uf.sigla);
@@ -76,52 +92,79 @@ export default function Filiais(props) {
         });
 
     }, [estado]);
+    //#endregion
 
+    //UseEffect responsável por popular os dados do formulário no action EDITAR
+    //#region
     useEffect(() => {
-        if (action === 'edit' && filiaisIdParam !== '') {
-            api.get(`filiais/${filiaisIdParam}`).then(response => {
+        if (action === 'edit' && clienteFinalIdParam !== '') {
+            api.get(`cliente-final/${clienteFinalIdParam}`).then(response => {
+                
+                //No edit é necessário alterar as propriedades dos estados dos combos
+                //#region 
                 setBandeiraid(response.data.bandeiraid);
+                bandeiraIdInicial = response.data.bandeiraid;
                 setClienteid(response.data.clienteid);
                 clienteIdInicial = response.data.clienteid;
+                setGrupoEmpresarialid(response.data.grupoempresarialid);
+                grupoEmpresarialIdInicial = response.data.grupoempresarialid;
+                //#endregion
+
+                //Este trecho atualiza as os estados das propriedades dos campos do formulário.
+                //#region 
                 setCed(response.data.ced);
-                setNomefilial(response.data.nomefilial);
+                setNomefilial(response.data.nomeclientefinal);
                 setRazaosocial(response.data.razaosocial);
                 setLogradouro(response.data.logradouro);
-                setComplemento(response.data.complemento);
+                setComplemento(valorNulo(response.data.complemento));
                 setBairro(response.data.bairro);
                 setCidade(response.data.cidade);
                 setEstado(response.data.estado);
-                setNomeresponsavel(response.data.nomeresponsavel);
-                setTelefoneresponsavel(response.data.telefoneresponsavel);
+                setNomeresponsavel(valorNulo(response.data.nomeresponsavel));
+                setTelefoneresponsavel(valorNulo(response.data.telefoneresponsavel));
                 setHorarioiniciosemana(response.data.horarioiniciosemana);
                 setHorariofimsemana(response.data.horariofimsemana);
                 setHorarioiniciosabado(response.data.horarioiniciosabado);
                 setHorariofimsabado(response.data.horariofimsabado);
                 setHorarioiniciodomingo(response.data.horarioiniciodomingo);
                 setHorariofimdomingo(response.data.horariofimdomingo);
-                setTelefonefixo(response.data.telefonefixo);
+                setTelefonefixo(valorNulo(response.data.telefonefixo));
                 setCep(response.data.cep);
                 setNumero(response.data.numero);
                 setCnpj(response.data.cnpj)
                 response.data.ativo === 1 ? setAtivo(1) : setAtivo(0);
+                //#endregion
+
+                //#region 
+                //Carrega os combos do formulário a partir dos carregados no edit
+                api.get(`grupo-empresarial?clienteId=${clienteIdInicial}`).then(response => {
+                    setGruposEmpresariais(response.data);
+                });
+
+                api.get(`bandeira?grupoempresarialId=${grupoEmpresarialIdInicial}`).then(response => {
+                    setBandeiras(response.data);
+                });
+                //#endregion
             });
         } else {
             return;
         }
-    }, [filiaisIdParam]);
+    }, [clienteFinalIdParam]);
+    //#endregion
 
+    //Função responsável por atalizar o estado ao ser selecionado
     function handleSelectUf(event) {
         const uf = event.target.value;
-
         setEstado(uf);
-
     }
+    //FIM
 
+    //Função responsável por atualizar os dados do formulário após o algum campo ter o seu valor alterado onChange() ser selecionado
+    //#region 
     function handleInputChange(event) {
         event.preventDefault();
 
-        const { name, value } = event.target;
-
+        const { name, value } = event.target;        
         switch (name) {
             case 'ativo' :
                 if (ativo === 1) {
@@ -131,27 +174,57 @@ export default function Filiais(props) {
                 };
                 break;
             case 'clienteid' :
-                api.get(`cliente-bandeiras/${value}`).then(response => {
-                    clienteIdInicial = value;
+                if(value !== '') {                    
                     setClienteid(value);
-                    setBandeirasid(response.data);
-                });
+                    setGrupoEmpresarialid('')
+                    setGruposEmpresariais([])
+                    api.get(`grupo-empresarial?clienteId=${value}`).then(response => {                       
+                        setGruposEmpresariais(response.data);
+                    });
+                } else {
+                    setClienteid('')
+                    setGrupoEmpresarialid('')
+                    setGruposEmpresariais([])
+                }              
+                break;
+            case 'grupoempresarialid' :                
+                if(value !== '') {
+                    setGrupoEmpresarialid(value);
+                    setBandeiraid('')
+                    api.get(`bandeira?grupoempresarialId=${value}`).then(response => {
+                        grupoEmpresarialIdInicial = value;                        
+                        setBandeiras(response.data);
+                    });
+                } else {
+                    setGrupoEmpresarialid('')
+                }
+                break;
+            case 'bandeiraid' :                
+                if(value !== '') {
+                    setBandeiraid(value)
+                } else {
+                    setBandeiraid('')
+                }
                 break;
         }
     };
+    //#endregion
 
+    //Função responsável por atualizar o estado da propriedade de redirecionamento da página
     function handleReset() {
         setRedirect(true);
     };
+    //FIM
 
+    //Função responsável por atualizar os dados do formulário
+    //#region
     async function handleStatus(e) {
         e.preventDefault();
 
         const data = {
-            bandeiraid,
-            clienteid,
+            bandeiraid,            
             ced,
-            nomefilial,
+            nomeclientefinal,
             cnpj,
             razaosocial,
             logradouro,
@@ -175,7 +248,7 @@ export default function Filiais(props) {
 
         if (action === 'edit') {
             try {
-                const response = await api.put(`/filiais/${filiaisIdParam}`, data, {
+                const response = await api.put(`/cliente-final/${clienteFinalIdParam}`, data, {
                     headers: {
                         Authorization: 6,
                     }
@@ -188,7 +261,7 @@ export default function Filiais(props) {
         } else {
             if (action === 'novo') {
                 try {
-                    const response = await api.post('filiais', data, {
+                    const response = await api.post('cliente-final', data, {
                         headers: {
                             Authorization: 6,
                         }
@@ -202,26 +275,27 @@ export default function Filiais(props) {
             }
         }
     }
+    //#endregion
 
     return (
         <div className="animated fadeIn">
-            {redirect && <Redirect to="/lista-filiais" />}
+            {redirect && <Redirect to="/lista-cliente-final" />}
             <Form onSubmit={handleStatus} onReset={handleReset}>
                 <Row>
                     <Col xs="12" md="12">
                         <Card>
                             <CardHeader>
                                 <i className="fa fa-building"></i>
-                                <strong>Filial</strong>
-                                <small> nova</small>
+                                <strong>Cliente Final</strong>
+                                {action === 'novo' ? <small> nova</small> : <small> editar</small>}
                             </CardHeader>
                             <CardBody>
                                 <FormGroup row>
-                                    <Col md="5">
-                                        <Label htmlFor="nomeFilial">Nome Filial</Label>
-                                        <Input type="text" required id="txtNomeFilial" placeholder="Digite o nome da filial"
-                                            name="nomefilial"
-                                            value={nomefilial}
+                                    <Col md="4">
+                                        <Label htmlFor="nomeclientefinal">Nome Cliente Final</Label>
+                                        <Input type="text" required id="txtNomeClienteFinal" placeholder="Digite o nome do Cliente Final"
+                                            name="nomeclientefinal"
+                                            value={nomeclientefinal}
                                             onChange={e => setNomefilial(e.target.value)} />
                                     </Col>
                                     <Col md="4">
@@ -231,48 +305,7 @@ export default function Filiais(props) {
                                             value={razaosocial}
                                             onChange={e => setRazaosocial(e.target.value)} />
                                     </Col>
-                                    <Col md="3">
-                                        <Label htmlFor="nomeResponsavel">Nome Responsável</Label>
-                                        <Input type="text" required id="txtNomeResponsavel" placeholder="Digite o nome do responsável"
-                                            name="nomeresponsavel"
-                                            value={nomeresponsavel}
-                                            onChange={e => setNomeresponsavel(e.target.value)} />
-                                    </Col>
-                                </FormGroup>
-                                <FormGroup row>
-                                    <Col md="5">
-                                        <Label htmlFor="clienteId">Cliente</Label>
-                                        <Input required type="select" name="select" id="cboClienteid" multiple={false}
-                                            name="clienteid"
-                                            value={clienteid}
-                                            onChange={handleInputChange}
-                                        >
-                                            <option value="" defaultValue>Selecione...</option>
-                                            {clientesid.map(cliente => (
-                                                <option key={`cliente${cliente.id}`} value={cliente.id}>{cliente.nomecliente}</option>
-                                            ))}
-                                        </Input>
-                                    </Col>
-                                    <Col md="2">
-                                        <Label htmlFor="bandeiraId">Bandeira</Label>
-                                        <Input required type="select" name="select" id="cboBandeiraId" multiple={false}
-                                            name="bandeiraid"
-                                            value={bandeiraid}
-                                            onChange={e => setBandeiraid(e.target.value)}>
-                                            <option value="" defaultValue>Selecione...</option>
-                                            {bandeirasid.map(bandeira => (
-                                                <option key={`bandeira${bandeira.id}`} value={bandeira.id}>{bandeira.nomebandeira}</option>
-                                            ))}
-                                        </Input>
-                                    </Col>
-                                    <Col md="2">
-                                        <Label htmlFor="ced">CED</Label>
-                                        <Input type="text" required id="txtCed" placeholder="Insira o CED"
-                                            name="ced"
-                                            value={ced}
-                                            onChange={e => setCed(e.target.value)} />
-                                    </Col>
-                                    <Col md="3">
+                                    <Col md="4">
                                         <Label htmlFor="cnpj">CNPJ</Label>
                                         <InputGroup>
                                             <Input type="text" required id="txtCnpj"
@@ -281,10 +314,58 @@ export default function Filiais(props) {
                                                 name="cnpj"
                                                 onChange={e => setCnpj(cnpjMask(e.target.value))} />
                                         </InputGroup>
-                                    </Col>
+                                    </Col>                                    
                                 </FormGroup>
                                 <FormGroup row>
-                                    <Col md="5">
+                                    <Col md="4">
+                                        <Label htmlFor="clienteId">Cliente</Label>
+                                        <Input required type="select" name="select" id="cboClienteid" multiple={false}
+                                            name="clienteid"
+                                            value={clienteid}
+                                            onChange={handleInputChange}
+                                        >
+                                            <option value="" defaultValue>Selecione...</option>
+                                            {clientes.map(cliente => (
+                                                <option key={`cliente${cliente.id}`} value={cliente.id}>{cliente.nomecliente}</option>
+                                            ))}
+                                        </Input>
+                                    </Col>
+                                    <Col md="4">
+                                        <Label htmlFor="grupoempresarialid">Grupo Empresarial</Label>
+                                        <Input required type="select" name="select" id="cboGrupoEmpresarialId" multiple={false}
+                                            name="grupoempresarialid"
+                                            value={grupoempresarialid}
+                                            onChange={handleInputChange}
+                                        >
+                                            <option value="" defaultValue>Selecione...</option>
+                                            {gruposempresariais.map(grupoempresarial => (
+                                                <option key={`grupoempresarial${grupoempresarial.id}`} value={grupoempresarial.id}>{grupoempresarial.nomegrupoempresarial}</option>
+                                            ))}
+                                        </Input>
+                                    </Col>
+                                    <Col md="4">
+                                        <Label htmlFor="bandeiraId">Bandeira</Label>
+                                        <Input required type="select" name="select" id="cboBandeiraId" multiple={false}
+                                            name="bandeiraid"
+                                            value={bandeiraid}
+                                            onChange={handleInputChange}
+                                        >
+                                            <option value="" defaultValue>Selecione...</option>
+                                            {bandeiras.map(bandeira => (
+                                                <option key={`bandeira${bandeira.id}`} value={bandeira.id}>{bandeira.nomebandeira}</option>
+                                            ))}
+                                        </Input>
+                                    </Col>                                                                        
+                                </FormGroup>
+                                <FormGroup row>
+                                    <Col md="4">
+                                        <Label htmlFor="ced">CED</Label>
+                                        <Input type="text" required id="txtCed" placeholder="Insira o CED"
+                                            name="ced"
+                                            value={ced}
+                                            onChange={e => setCed(e.target.value)} />
+                                    </Col>
+                                    <Col md="2">
                                         <Label htmlFor="telefoneFixo">Telefone Fixo</Label>
                                         <InputGroup>
                                             <Input type="text" id="txtTelefoneFixo" placeholder="(11) 9999-9999"
@@ -296,7 +377,7 @@ export default function Filiais(props) {
                                             </InputGroupAddon>
                                         </InputGroup>
                                     </Col>
-                                    <Col md="4">
+                                    <Col md="2">
                                         <Label htmlFor="telefoneResponsavel">Telefone Responsável</Label>
                                         <InputGroup>
                                             <Input type="text" id="txtTelefoneResponsavel" placeholder="(11) 9999-9999"
@@ -307,6 +388,13 @@ export default function Filiais(props) {
                                                 <span className="btn btn-secondary disabled icon-phone"></span>
                                             </InputGroupAddon>
                                         </InputGroup>
+                                    </Col>
+                                    <Col md="4">
+                                        <Label htmlFor="nomeResponsavel">Nome Responsável</Label>
+                                        <Input type="text" required id="txtNomeResponsavel" placeholder="Digite o nome do responsável"
+                                            name="nomeresponsavel"
+                                            value={nomeresponsavel}
+                                            onChange={e => setNomeresponsavel(e.target.value)} />
                                     </Col>
                                 </FormGroup>
                             </CardBody>
