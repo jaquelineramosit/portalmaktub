@@ -38,6 +38,7 @@ export default function Funcao(props) {
     useEffect(() => {
         if (action === 'edit' && funcaoIdParam !== '') {
             api.get(`funcao/${funcaoIdParam}`).then(response => {
+                document.getElementById("txtSmall").innerHTML = " editar";
                 setSubpaginaid(response.data.subpaginaid);
                 setPaginaid(response.data.paginaid);
                 setNomefuncao(response.data.nomefuncao);
@@ -115,7 +116,7 @@ export default function Funcao(props) {
                         <Card>
                             <CardHeader>
                                 <strong>Função</strong>
-                                <small> nova</small>
+                                <small id="txtSmall"> nova</small>
                             </CardHeader>
                             <CardBody>
                                 <FormGroup row>

@@ -24,6 +24,7 @@ export default function Banco(props) {
     useEffect(() => {
         if (action === 'edit' && bancoIdParam !== '') {
             api.get(`banco/${bancoIdParam}`).then(response => {
+                document.getElementById("txtSmall").innerHTML = " editar";
                 setCodbanco(response.data.codbanco);
                 setNomebanco(response.data.nomebanco);
                 response.data.ativo === 1 ? setAtivo(1) : setAtivo(0);
@@ -158,7 +159,7 @@ export default function Banco(props) {
                         <Card>
                             <CardHeader>
                                 <strong>Banco</strong>
-                                <small> novo</small>
+                                <small id="txtSmall"> novo</small>
                             </CardHeader>
                             <CardBody>
                                 <FormGroup row>

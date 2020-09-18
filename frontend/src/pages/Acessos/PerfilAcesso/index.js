@@ -22,6 +22,7 @@ export default function Perfilacesso(props) {
     useEffect(() => {
         if (action === 'edit' && perfilacessoIdParam !== '') {
             api.get(`perfis-acesso/${perfilacessoIdParam}`).then(response => {
+                document.getElementById("txtSmall").innerHTML = " editar";
                 setNomeperfil(response.data.nomeperfil);
                 setDescricao(response.data.descricao);
                 response.data.ativo === 1 ? setAtivo(1) : setAtivo(0);
@@ -94,7 +95,7 @@ export default function Perfilacesso(props) {
                         <Card>
                             <CardHeader>
                                 <strong>Perfil de Acesso</strong>
-                                <small> novo</small>
+                                <small id="txtSmall"> novo</small>
                             </CardHeader>
                             <CardBody>
                                 <FormGroup row>

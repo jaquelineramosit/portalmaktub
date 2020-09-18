@@ -22,7 +22,7 @@ const Profile = React.lazy(() => import('./pages/Acessos/Profile'));
 const Clientes = React.lazy(() => import('./pages/Configuracoes/Clientes'));
 const Filiais = React.lazy(() => import('./pages/Configuracoes/Filiais'));
 const Bandeira = React.lazy(() => import('./pages/Configuracoes/Bandeira'));
-const Parceiros = React.lazy(() => import('./pages/Configuracoes/Parceiros'));
+const GrupoEmpresarial = React.lazy(() => import('./pages/Configuracoes/GrupoEmpresarial'));
 const Tecnico = React.lazy(() => import('./pages/Configuracoes/Tecnico'));
 const TipoTecnico = React.lazy(() => import('./pages/Configuracoes/TipoTecnico'));
 const Disponibilidade = React.lazy(() => import('./pages/Configuracoes/Disponibilidade'));
@@ -49,7 +49,7 @@ const Adiantamentoos = React.lazy(() => import('./pages/OrdemServico/Adiantament
 const ListaCliente = React.lazy(() => import('./pages/Listas/ListaCliente'));
 const ListaFiliais = React.lazy(() => import('./pages/Listas/ListaFiliais'));
 const ListaBandeira = React.lazy(() => import('./pages/Listas/ListaBandeira'));
-const ListaParceiros = React.lazy(() => import('./pages/Listas/ListaParceiros'));
+const ListaGrupoEmpresarial= React.lazy(() => import('./pages/Listas/ListaGrupoEmpresarial'));
 const ListaTecnicos = React.lazy(() => import('./pages/Listas/ListaTecnicos'));
 const ListaTipoTecnicos = React.lazy(() => import('./pages/Listas/ListaTipoTecnicos'));
 const ListaDisponibilidade = React.lazy(() => import('./pages/Listas/ListaDisponibilidade'));
@@ -127,8 +127,8 @@ const routes = [
   { path: '/clientes/:id', name: 'Clientes', component: Clientes },
   { path: '/bandeira', exact:true, name: 'Bandeira', component: Bandeira },
   { path: '/bandeira/:id', name: 'Bandeira', component: Bandeira },
-  { path: '/parceiros', exact:true, name: 'Parceiros', component: Parceiros },
-  { path: '/parceiros/:id', name: 'Parceiros', component: Parceiros },
+  { path: '/grupo-empresarial', exact:true, name: 'Grupo Empresarial', component: GrupoEmpresarial },
+  { path: '/grupo-empresarial/:id', name: 'Grupo Empresarial', component: GrupoEmpresarial },
   { path: '/tecnico', exact:true, name: 'Tecnico', component: Tecnico },
   { path: '/tecnico/:id', name: 'Tecnico', component: Tecnico },
   { path: '/tipo-tecnico', exact:true, name: 'Tipo do Tecnico', component: TipoTecnico },
@@ -172,7 +172,7 @@ const routes = [
   { path: '/lista-cliente', name: 'Lista de Clientes', component: ListaCliente },
   { path: '/lista-filiais', name: 'Lista de Filiais', component: ListaFiliais },
   { path: '/lista-bandeira', name: 'Lista de Bandeiras', component: ListaBandeira },
-  { path: '/lista-parceiros', name: 'Lista de parceiros', component: ListaParceiros},
+  { path: '/lista-grupo-empresarial', name: 'Lista de Grupos Empresariais', component: ListaGrupoEmpresarial},
   { path: '/lista-tecnicos', name: 'Lista de Técnicos', component: ListaTecnicos},
   { path: '/lista-tipo-tecnicos', name: 'Lista de tipo de Técnicos', component: ListaTipoTecnicos},
   { path: '/lista-disponibilidade', name: 'Lista de Disponibilidade', component: ListaDisponibilidade},

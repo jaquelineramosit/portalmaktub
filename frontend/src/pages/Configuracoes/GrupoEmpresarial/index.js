@@ -4,7 +4,7 @@ import '../../../global.css';
 import { Redirect } from "react-router-dom";
 import api from '../../../../src/services/api';
 
-export default function StatusParceiro(props) {
+export default function StatusGrupoEmpresarial(props) {
     const [redirect, setRedirect] = useState(false);
 
     //parametros
@@ -14,15 +14,24 @@ export default function StatusParceiro(props) {
     var statusIdParam = props.match.params.id;
     const usuarioId = localStorage.getItem('userId');
 
-    const [nomeparceiro, setNomeparceiro] = useState('');
+    const [nomegrupoempresarial, setNomegrupoempresarial] = useState('');
+    const [clienteid, setClienteid] = useState('');
+    const [clientesid, setClientesid] = useState([]);
     const [descricao, setDescricao] = useState('');
     const [ativo, setAtivo] = useState(1);
 
+    useEffect(() => {
+        api.get('clientes').then(response => {
+            setClientesid(response.data);
+        })
+    }, [usuarioId]);
 
     useEffect(() => {
         if (action === 'edit' && statusIdParam !== '') {
-            api.get(`parceiro/${statusIdParam}`).then(response => {
-                setNomeparceiro(response.data.nomeparceiro);
+            api.get(`grupo-empresarial/${statusIdParam}`).then(response => {
+                document.getElementById("txtSmall").innerHTML = " editar";
+                setNomegrupoempresarial(response.data.nomegrupoempresarial);
+                setClienteid(response.data.clienteid);
                 setDescricao(response.data.descricao);
                 response.data.ativo === 1 ? setAtivo(1) : setAtivo(0);
             });
@@ -51,14 +60,15 @@ export default function StatusParceiro(props) {
         e.preventDefault();
 
         const data = {
-            nomeparceiro,
+            nomegrupoempresarial,
+            clienteid,
             descricao,
             ativo
         };
 
         if (action === 'edit') {
             try {
-                const response = await api.put(`/parceiro/${statusIdParam}`, data, {
+                const response = await api.put(`/grupo-empresarial/${statusIdParam}`, data, {
                     headers: {
                         Authorization: 6,
                     }
@@ -71,7 +81,7 @@ export default function StatusParceiro(props) {
         } else {
             if (action === 'novo') {
                 try {
-                    const response = await api.post('parceiro', data, {
+                    const response = await api.post('grupo-empresarial', data, {
                         headers: {
                             Authorization: 6,
                         }
@@ -88,35 +98,47 @@ export default function StatusParceiro(props) {
 
     return (
         <div className="animated fadeIn">
-            {redirect && <Redirect to="/lista-parceiros" />}
+            {redirect && <Redirect to="/lista-grupo-empresarial" />}
             <Form onSubmit={handleParceiro} onReset={handleReset}>
                 <Row>
                     <Col xs="12" md="12">
                         <Card>
                             <CardHeader>
-                                <strong>Parceiro</strong>
-                                <small> novo</small>
+                                <strong>Grupo Empresarial</strong>
+                                <small id="txtSmall"> Novo</small>
                             </CardHeader>
                             <CardBody>
                                 <FormGroup row>
                                     <Col md="6">
-                                        <Label htmlFor="nomeParceiro">Nome do Parceiro</Label>
+                                        <Label htmlFor="nomeParceiro">Grupo Empresarial</Label>
                                         <InputGroup>
-                                            <Input type="text" required id="txtNomeParceiro" placeholder="Digite o nome do Parceiro"
-                                                name="nomeparceiro"
-                                                value={nomeparceiro}
-                                                onChange={e => setNomeparceiro(e.target.value)} >
+                                            <Input type="text" required id="txtNomeParceiro" placeholder="Digite o nome do Grupo Empresarial"
+                                                name="nomegrupoempresarial"
+                                                value={nomegrupoempresarial}
+                                                onChange={e => setNomegrupoempresarial(e.target.value)} >
                                             </Input>
                                             <InputGroupAddon addonType="append">
                                             <span className="btn btn-secondary disabled fa fa-handshake-o"></span>
                                             </InputGroupAddon>
                                         </InputGroup>
                                     </Col>
+                                    <Col md="6">
+                                        <Label htmlFor="clienteId">Cliente</Label>
+                                        <Input required type="select" name="select" id="cboClienteid" multiple={false}
+                                            name="clienteid"
+                                            value={clienteid}
+                                            onChange={e => setClienteid(e.target.value)}>
+                                            <option value="" defaultValue>Selecione o Cliente...</option>
+                                            {clientesid.map(cliente => (
+                                                <option key={`cliente${cliente.id}`} value={cliente.id}>{cliente.nomecliente}</option>
+                                            ))}
+                                        </Input>
+                                    </Col>
                                 </FormGroup>
                                 <FormGroup row>
-                                    <Col md="6">
+                                    <Col md="12">
                                         <Label>Descrição</Label>
-                                        <Input type="textarea" id="txtDescricao" rows="5" placeholder="Descreva o parceiro inserido"
+                                        <Input type="textarea" id="txtDescricao" rows="5" placeholder="Descreva o Grupo Empresarial"
                                             name="descricao"
                                             value={descricao}
                                             onChange={e => setDescricao(e.target.value)} />

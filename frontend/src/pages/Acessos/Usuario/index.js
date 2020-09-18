@@ -72,6 +72,7 @@ export default function Usuario(props) {
     useEffect(() => {
         if (action === 'edit' && usuariosIdParam !== '') {
             api.get(`usuarios/${usuariosIdParam}`).then(response => {
+                document.getElementById("txtSmall").innerHTML = " editar";
                 setNome(response.data.nome);
                 setSobrenome(response.data.sobrenome);
                 setDatanasc(dateFormat(response.data.datanasc, "yyyy-mm-dd"));
@@ -194,7 +195,7 @@ export default function Usuario(props) {
                             <CardHeader>
                                 <i className="fa fa-user-circle-o"></i>
                                 <strong>Usuário</strong>
-                                <small> novo</small>
+                                <small id="txtSmall"> novo</small>
                             </CardHeader>
                             <CardBody>
                                 <FormGroup row>

@@ -21,6 +21,7 @@ export default function StatusCobranca(props) {
     useEffect(() => {
         if (action === 'edit' && statusIdParam !== '') {
             api.get(`status-cobranca/${statusIdParam}`).then(response => {
+                document.getElementById("txtSmall").innerHTML = " editar";
                 setStatusAdi(response.data.status);
                 setDescricao(response.data.descstatus);
                 response.data.ativo === 1 ? setAtivo(1) : setAtivo(0);
@@ -94,7 +95,7 @@ export default function StatusCobranca(props) {
                         <Card>
                             <CardHeader>
                                 <strong>Status de Cobrança</strong>
-                                <small> novo</small>
+                                <small id="txtSmall"> novo</small>
                             </CardHeader>
                             <CardBody>
                                 <FormGroup row>

@@ -29,6 +29,7 @@ export default function Subpagina(props) {
     useEffect(() => {
         if (action === 'edit' && statusIdParam !== '') {
             api.get(`sub-paginas/${statusIdParam}`).then(response => {
+                document.getElementById("txtSmall").innerHTML = " editar";
                 setPaginaid(response.data.paginaid);
                 setNomesubpagina(response.data.nomesubpagina);
                 setDescricao(response.data.descricao);
@@ -104,7 +105,7 @@ export default function Subpagina(props) {
                         <Card>
                             <CardHeader>
                                 <strong>Sub Página</strong>
-                                <small> nova</small>
+                                <small id="txtSmall"> nova</small>
                             </CardHeader>
                             <CardBody>
                                 <FormGroup row>
