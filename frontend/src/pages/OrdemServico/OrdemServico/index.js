@@ -8,6 +8,7 @@ import { numMask } from '../../../mask'
 import api from '../../../services/api';
 import moment from 'moment';
 import CardListaStatus from '../../../components/CardListaStatus'
+import {valorNulo} from '../../../utils/functions'
 const dateFormat = require('dateformat');
 
 // #region 
@@ -125,22 +126,10 @@ const OrdemServico = (props) => {
     const [tipoProjetos, setTipoProjetos] = useState([]);
     const [tecnicos, setTecnicos] = useState([]);
     //#endregion
-
-    //#region 
-    //Funçaão retorna uma string vazia caso o valor seja nulo ou undefined
-    function valorNulo(valor) {
-        if(valor === null || valor === undefined) {
-            return ''
-        } else {
-            return valor;
-        }
-    }
-    //#endregion
-
+    
     //#region
     //Esta função altera o valor dos estados das propriedades do Cliente Final
-    const atualizaDadosClienteFinal = (props) => {   
-        console.log(props.horarioiniciosemana);
+    const atualizaDadosClienteFinal = (props) => {           
         setTelefonefixo(valorNulo(props.telefonefixo));
         setTelefoneresponsavel(valorNulo(props.telefoneresponsavel));
         setCed(valorNulo(props.ced));
@@ -186,8 +175,7 @@ const OrdemServico = (props) => {
     //Atualiza os combos da página
     useEffect(() => {
         api.get('clientes').then(response => {
-            setClientes(response.data);
-            console.log(response.data)
+            setClientes(response.data);            
         })
     }, [usuarioId]);
 
@@ -302,7 +290,6 @@ const OrdemServico = (props) => {
                     setGruposEmpresariais(response.data);
                 });
 
-                console.log(grupoEmpresarialIdInicial);
                 api.get(`bandeira?grupoempresarialId=${grupoEmpresarialIdInicial}`).then(response => {
                     setBandeiras(response.data);
                 });
@@ -310,7 +297,7 @@ const OrdemServico = (props) => {
                 api.get(`cliente-final?bandeiraId=${bandeiraIdInicial}`).then(response => {                    
                     setClientesFinais(response.data);                    
                 });      
-                
+             
                 api.get(`cliente-final/${clienteFinalIdInicial}`).then(response => {                    
                     atualizaDadosClienteFinal(response.data); 
                 }); 
@@ -341,17 +328,7 @@ const OrdemServico = (props) => {
     }, [cadosdIdParam]);
     //#endregion
 
-    //#region 
-    //Atualização dos dados puxados do cliente final
-    // useEffect(() => {
-    //     if (action === 'edit' && cadosdIdParam !== '') {
-    //         api.get(`cliente-final?bandeiraId=${bandeiraIdInicial}`).then(response => {
-    //             atualizaDadosClienteFinal(response.data);            
-    //         });
-    //     }
-    // }, [cadosdIdParam]);
-    //#endregion
-
+   
     //#region 
     //Atualização dos combos do status de Movimentação
     useEffect(() => {
@@ -413,7 +390,6 @@ const OrdemServico = (props) => {
                 }
                 break;
             case 'grupoempresarialid':
-                alert(value);
                 if (value !== '') {
                     setGrupoEmpresarialid(value);
                     setBandeiraid('');

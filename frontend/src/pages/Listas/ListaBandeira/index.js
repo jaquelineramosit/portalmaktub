@@ -26,29 +26,34 @@ export default function ListaBandeira() {
             name: 'Nome Bandeira',
             selector: 'nomebandeira',
             sortable: true,
-            width: '35%',
+            width: '30%',
         },
         {
-            name: 'Parceiros',
-            selector: 'nomeparceiro',
+            name: 'Grupo Empresarial',
+            selector: 'nomegrupoempresarial',
             sortable: true,
-            width: '34%',
-
-
+            width: '25%',
         },
-
+        {
+            name: 'Cliente',
+            selector: 'nomecliente',
+            sortable: true,
+            width: '25%',
+        },
 
         {
             name: 'Status',
             sortable: true,
             left: true,
             cell: row => <Badge color="success">Ativo</Badge>,
+            width: '10%',
         },
         {
             name: 'Ações',
             sortable: true,
             right: true,
-            cell: row => <Link to={`bandeira/${row.id}?action=edit`} className="btn-sm btn-primary"><i className="fa fa-pencil fa-lg"></i></Link>
+            cell: row => <Link to={`bandeira/${row.id}?action=edit`} className="btn-sm btn-primary"><i className="fa fa-pencil fa-lg"></i></Link>,
+            width: '10%',
         },
     ];
 

@@ -1,3 +1,4 @@
+const { first } = require('../../database/connection');
 const connection = require('../../database/connection');
 const getDate = require('../../utils/getDate');
 module.exports = {
@@ -50,7 +51,8 @@ module.exports = {
                     'usuario.nome as nomeusuario',
                     'grupoempresarial.nomegrupoempresarial',
                     'cliente.nomecliente',
-                ]);
+                ])
+                .first();
         
             return response.status(200).json(bandeira);
         } catch (error) {
