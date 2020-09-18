@@ -185,6 +185,7 @@ routes.get('/ferramentas-os/:id', FerramentaOSController.getById);
 routes.post('/ferramentas-os', FerramentaOSController.create);
 routes.put('/ferramentas-os/:id', FerramentaOSController.update);
 
+routes.get('/grupo-empresarial-Count', GrupoEmpresarialController.getCount);
 routes.get('/grupo-empresarial', GrupoEmpresarialController.getAll);
 routes.get('/grupo-empresarial/:id', GrupoEmpresarialController.getById);
 routes.post('/grupo-empresarial', GrupoEmpresarialController.create);

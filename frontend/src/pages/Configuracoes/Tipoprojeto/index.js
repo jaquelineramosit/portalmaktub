@@ -142,6 +142,7 @@ export default function Tipoprojeto(props) {
     useEffect(() => {
         if (action === 'edit' && tipoprojetoIdParam !== '') {
             api.get(`tipo-projeto/${tipoprojetoIdParam}`).then(response => {
+                document.getElementById("txtSmall").innerHTML = " editar";
                 setNometipoprojeto(response.data.nometipoprojeto);
                 setReceita(response.data.receita);
                 setDespesa(response.data.despesa);
@@ -232,7 +233,7 @@ export default function Tipoprojeto(props) {
                         <Card>
                             <CardHeader>
                                 <strong>Tipo de Projeto</strong>
-                                <small> novo</small>
+                                <small id="txtSmall"> novo</small>
                             </CardHeader>
                             <CardBody>
                                 <FormGroup row>

@@ -22,6 +22,7 @@ export default function Disponibilidade(props) {
     useEffect(() => {
         if (action === 'edit' && disponibilidadeIdParam !== '') {
             api.get(`disponibilidade/${disponibilidadeIdParam}`).then(response => {
+                document.getElementById("txtSmall").innerHTML = " editar";
                 setNomedisponibilidade(response.data.nomedisponibilidade);
                 setDescricao(response.data.descricao);
                 response.data.ativo === 1 ? setAtivo(1) : setAtivo(0);
@@ -96,7 +97,7 @@ export default function Disponibilidade(props) {
                         <Card>
                             <CardHeader>
                                 <strong>Disponibilidade</strong>
-                                <small> novo</small>
+                                <small id="txtSmall"> novo</small>
                             </CardHeader>
                             <CardBody>
                                 <FormGroup row>

@@ -22,6 +22,7 @@ export default function Tipoconta(props) {
     useEffect(() => {
         if (action === 'edit' && tipocontaIdParam !== '') {
             api.get(`tipo-conta/${tipocontaIdParam}`).then(response => {
+                document.getElementById("txtSmall").innerHTML = " editar";
                 setNometipoconta(response.data.nometipoconta);
                 response.data.ativo === 1 ? setAtivo(1) : setAtivo(0);
             });
@@ -93,7 +94,7 @@ export default function Tipoconta(props) {
                         <Card>
                             <CardHeader>
                                 <strong>Tipo de Conta</strong>
-                                <small> nova</small>
+                                <small id="txtSmall"> nova</small>
                             </CardHeader>
                             <CardBody>
                                 <FormGroup row>

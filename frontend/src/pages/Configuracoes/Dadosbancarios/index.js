@@ -30,6 +30,7 @@ export default function DadosBancarios(props) {
     useEffect(() => {
         if (action === 'edit' && dadosbancariosIdParam !== '') {
             api.get(`dados-bancarios/${dadosbancariosIdParam}`).then(response => {
+                document.getElementById("txtSmall").innerHTML = " editar";
                 setTecnicoid(response.data.tecnicoid);
                 setBancoid(response.data.bancoid);
                 setTipoContaid(response.data.tipocontaid);
@@ -129,7 +130,7 @@ export default function DadosBancarios(props) {
                         <Card>
                             <CardHeader>
                                 <strong>Dados Bancários</strong>
-                                <small> novo</small>
+                                <small id="txtSmall"> novo</small>
                             </CardHeader>
                             <CardBody>
                                 <FormGroup row>

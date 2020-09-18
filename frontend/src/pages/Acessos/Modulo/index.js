@@ -23,6 +23,7 @@ export default function Modulos(props) {
     useEffect(() => {
         if (action === 'edit' && ModuloIdParam !== '') {
             api.get(`modulos/${ModuloIdParam}`).then(response => {
+                document.getElementById("txtSmall").innerHTML = " editar";
                 setNomemodulo(response.data.nomemodulo);
                 setDescricao(response.data.descricao);
                 response.data.ativo === 1 ? setAtivo(1) : setAtivo(0);
@@ -96,7 +97,7 @@ export default function Modulos(props) {
                         <Card>
                             <CardHeader>
                                 <strong>Módulo</strong>
-                                <small> novo</small>
+                                <small id="txtSmall"> novo</small>
                             </CardHeader>
                             <CardBody>
                                 <FormGroup row>

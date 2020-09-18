@@ -4,13 +4,13 @@ import { Card, CardBody, CardHeader, Col, Row, Badge } from 'reactstrap';
 import api from '../../../services/api';
 import DataTableGenerica from '../../../components/DataTableGenerica';
 
-export default function ListaParceiros() {
-    const [parceiro, setParceiro] = useState([]);
+export default function ListaGrupoEmpresarial() {
+    const [grupoempresarial, setGrupoEmpresarial] = useState([]);
     const [total, setTotal] = useState(0);
     const usuarioId = localStorage.getItem('userId');
     //logica para pegar o total
     useEffect(() => {
-        api.get('parceiroCount', {
+        api.get('grupo-empresarial-Count', {
             headers: {
                 Authorization: 1,
             },
@@ -21,22 +21,30 @@ export default function ListaParceiros() {
     }, [1]);
 
     useEffect(() => {
-        api.get('parceiro', {
+        api.get('grupo-empresarial', {
             headers: {
                 Authorization: 1,
             }
         }).then(response => {
-            setParceiro(response.data);
+            setGrupoEmpresarial(response.data);
         })
     }, [usuarioId]);
-    const data = parceiro;
+    const data = grupoempresarial;
 
     const columns = [
         {
-            name: 'Nome Parceiro',
-            selector: 'nomeparceiro',
+            name: 'Grupo Empresarial',
+            selector: 'nomegrupoempresarial',
             sortable: true,
+            width: '35%',   
 
+
+        },
+        {
+            name: 'Cliente',
+            selector: 'nomecliente',
+            sortable: true,
+            width: '32%',  
 
         },
         {
@@ -49,7 +57,7 @@ export default function ListaParceiros() {
             name: 'Ações',
             sortable: true,
             right: true,
-            cell: row => <Link to={`parceiros/${row.id}?action=edit`} className="btn-sm btn-primary"><i className="fa fa-pencil fa-lg"></i></Link>
+            cell: row => <Link to={`grupo-empresarial/${row.id}?action=edit`} className="btn-sm btn-primary"><i className="fa fa-pencil fa-lg"></i></Link>
         },
     ];
     return (
@@ -59,8 +67,8 @@ export default function ListaParceiros() {
                     <Card>
                         <CardHeader className="links">
 
-                            <i className="fa fa-align-justify"></i>Parceiros
-                        <Link to={`parceiros?action=novo`} className="btn btn-secondary float-right">
+                            <i className="fa fa-align-justify"></i>Grupo Empresarial
+                        <Link to={`grupo-empresarial?action=novo`} className="btn btn-secondary float-right">
                                 <i className="fa fa-plus-circle fa-lg"></i>
                             </Link>
                         </CardHeader>

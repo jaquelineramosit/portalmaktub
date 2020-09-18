@@ -53,6 +53,7 @@ export default function Adiantamentoos(props) {
     useEffect(() => {
         if (action === 'edit' && adiantamentoIdParam !== '') {
             api.get(`adiantamento-os/${adiantamentoIdParam}`).then(response => {
+                document.getElementById("txtSmall").innerHTML = " editar";
                 setValoradiantamento(response.data.adiantamentoos.valoradiantamento);
                 setValoradiantamentoFormatado(response.data.adiantamentoos.valoradiantamento);
                 setDataadiantamento(dateFormat(response.data.adiantamentoos.dataadiantamento, "yyyy-mm-dd"));
@@ -248,7 +249,7 @@ export default function Adiantamentoos(props) {
                         <Card>
                             <CardHeader>
                                 <strong>Adiantamento de OS</strong>
-                                <small> novo</small>
+                                <small id="txtSmall"> novo</small>
                             </CardHeader>
                             <CardBody>
                                 <FormGroup row>

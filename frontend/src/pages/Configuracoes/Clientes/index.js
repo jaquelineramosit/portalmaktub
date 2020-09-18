@@ -72,6 +72,7 @@ export default function Cliente(props) {
     useEffect(() => {
         if (action === 'edit' && clienteIdParam !== '') {
             api.get(`clientes/${clienteIdParam}`).then(response => {
+                document.getElementById("txtSmall").innerHTML = " editar";
                 setNomecliente(response.data.nomecliente);
                 setRazaosocial(response.data.razaosocial);
                 setLogradouro(response.data.logradouro);
@@ -131,6 +132,7 @@ export default function Cliente(props) {
             numero,                    
             ativo
         };
+     
 
         if (action === 'edit') {
             try {
@@ -140,7 +142,7 @@ export default function Cliente(props) {
                     }
                 });
                 alert(`Cadastro atualizado com sucesso.`);
-                setRedirect(true);
+                setRedirect(true)
             } catch (err) {
                 alert('Erro na atualização, tente novamente.');
             }
@@ -173,7 +175,7 @@ export default function Cliente(props) {
                             <CardHeader>
                                 <i className="fa fa-handshake-o"></i>
                                 <strong>Cliente</strong>
-                                <small> novo</small>
+                                <small id="txtSmall" > novo</small>
                             </CardHeader>
                             <CardBody>
                                 <FormGroup row>

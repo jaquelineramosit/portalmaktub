@@ -57,7 +57,7 @@ export default {
           icon: 'fa fa-handshake-o',
         },
         {
-          name: 'Filiais',
+          name: 'Cliente Final',
           url: '/lista-filiais',
           icon: 'fa fa-handshake-o',
         },
@@ -67,8 +67,8 @@ export default {
           icon: 'fa fa-handshake-o',
         },
         {
-          name: 'Parceiros',
-          url: '/lista-parceiros',
+          name: 'Grupo Empresarial',
+          url: '/lista-grupo-empresarial',
           icon: 'fa fa-handshake-o',
         },
       ],

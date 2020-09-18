@@ -35,6 +35,7 @@ module.exports = {
         const { clienteId } = request.query;
 
         const grupoempresarial = await connection('grupoempresarial')
+        .where('grupoempresarial.id', id)
         .join('usuario', 'usuario.id', '=', 'grupoempresarial.usuarioid')
         .leftJoin('cliente', 'cliente.id', '=', 'grupoempresarial.clienteid')
         .modify(function (queryBuilder) {
@@ -48,7 +49,7 @@ module.exports = {
                 'usuario.nome as nomeusuario' 
             ])
             .first();
-
+            
         return response.status(200).json(grupoempresarial);
     },
 

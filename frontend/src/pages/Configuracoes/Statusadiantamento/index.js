@@ -22,6 +22,7 @@ export default function StatusAdiantamento(props) {
     useEffect(() => {
         if (action === 'edit' && statusIdParam !== '') {
             api.get(`status-adiantamento/${statusIdParam}`).then(response => {
+                document.getElementById("txtSmall").innerHTML = " editar";
                 setStatusAdi(response.data.status);
                 setDescricao(response.data.descstatus);
                 response.data.ativo === 1 ? setAtivo(1) : setAtivo(0);
@@ -96,7 +97,7 @@ export default function StatusAdiantamento(props) {
                         <Card>
                             <CardHeader>
                                 <strong>Status de Adiantamento</strong>
-                                <small> novo</small>
+                                <small id="txtSmall"> novo</small>
                             </CardHeader>
                             <CardBody>
                                 <FormGroup row>

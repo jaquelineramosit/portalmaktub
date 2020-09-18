@@ -55,6 +55,7 @@ export default function Permissaoacesso(props) {
     useEffect(() => {
         if (action === 'edit' && statusIdParam !== '') {
             api.get(`permissao-acesso/${statusIdParam}`).then(response => {
+                document.getElementById("txtSmall").innerHTML = " editar";
                 setPerfilacessoid(response.data.perfilacessoid);
                 setModuloid(response.data.moduloid);
                 setPaginaid(response.data.paginaid);
@@ -133,7 +134,7 @@ export default function Permissaoacesso(props) {
                         <Card>
                             <CardHeader>
                                 <strong>Permissão de Acesso</strong>
-                                <small> nova</small>
+                                <small id="txtSmall"> nova</small>
                             </CardHeader>
                             <CardBody>
                                 <FormGroup row>

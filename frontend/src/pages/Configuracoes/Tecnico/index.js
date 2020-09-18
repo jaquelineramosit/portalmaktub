@@ -122,6 +122,7 @@ export default function Tecnico(props) {
     useEffect(() => {
         if (action === 'edit' && IdParam !== '') {
             api.get(`tecnico/${IdParam}`).then(response => {
+                document.getElementById("txtSmall").innerHTML = " editar";
                 setTipotecnicoid(response.data.tipotecnicoid);
                 setNometecnico(response.data.nometecnico);
                 setLogradouro(response.data.logradouro);
@@ -368,7 +369,7 @@ export default function Tecnico(props) {
                             <CardHeader>
                                 <i className="fa fa-user-circle-o"></i>
                                 <strong>Técnico</strong>
-                                <small> novo</small>
+                                <small id="txtSmall"> novo</small>
                             </CardHeader>
                             <CardBody>
                                 <FormGroup row>

@@ -24,6 +24,7 @@ export default function Pagina(props) {
     useEffect(() => {
         if (action === 'edit' && bancoIdParam !== '') {
             api.get(`paginas/${bancoIdParam}`).then(response => {
+                document.getElementById("txtSmall").innerHTML = " editar";
                 setModuloid(response.data.moduloid);
                 setNomepagina(response.data.nomepagina);
                 setDescricao(response.data.descricao);
@@ -107,7 +108,7 @@ export default function Pagina(props) {
                         <Card>
                             <CardHeader>
                                 <strong>Página</strong>
-                                <small> nova</small>
+                                <small id="txtSmall"> nova</small>
                             </CardHeader>
                             <CardBody>
                                 <FormGroup row>
