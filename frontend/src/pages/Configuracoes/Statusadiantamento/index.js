@@ -14,7 +14,8 @@ export default function StatusAdiantamento(props) {
     var statusIdParam = props.match.params.id;
     const usuarioId = localStorage.getItem('userId');
 
-    const [status, setStatusAdi] = useState('');
+    const [codstatus, setCodStatus] = useState('');
+    const [status, setStatus] = useState('');
     const [descstatus, setDescricao] = useState('');
     const [ativo, setAtivo] = useState(1);
 
@@ -23,7 +24,8 @@ export default function StatusAdiantamento(props) {
         if (action === 'edit' && statusIdParam !== '') {
             api.get(`status-adiantamento/${statusIdParam}`).then(response => {
                 document.getElementById("txtSmall").innerHTML = " editar";
-                setStatusAdi(response.data.status);
+                setCodStatus(response.data.codstatus);
+                setStatus(response.data.status);
                 setDescricao(response.data.descstatus);
                 response.data.ativo === 1 ? setAtivo(1) : setAtivo(0);
             });
@@ -31,19 +33,7 @@ export default function StatusAdiantamento(props) {
             return;
         }
     }, [statusIdParam]);
-
-    function handleInputChange(event) {
-        var { name } = event.target;
-
-        if (name === 'ativo') {
-            if (ativo === 1) {
-                setAtivo(0);
-            } else {
-                setAtivo(1);
-            }
-        }
-    };
-
+    
     function handleReset() {
         setRedirect(true);
     };
@@ -52,6 +42,7 @@ export default function StatusAdiantamento(props) {
         e.preventDefault();
 
         const data = {
+            codstatus,
             status,
             descstatus,
             ativo
@@ -87,7 +78,6 @@ export default function StatusAdiantamento(props) {
         }
     }
 
-
     return (
         <div className="animated fadeIn">
             {redirect && <Redirect to="/lista-status-adiantamento" />}
@@ -101,16 +91,23 @@ export default function StatusAdiantamento(props) {
                             </CardHeader>
                             <CardBody>
                                 <FormGroup row>
-                                    <Col md="6">
+                                    <Col md="4">
+                                        <Label htmlFor="codstatus">Código de Adiantamento</Label>
+                                        <Input type="text" required id="txtCodStatus" maxLength="5" placeholder="Inisira o Código Status"
+                                            name="codstatus"
+                                            value={codstatus}
+                                            onChange={e => setCodStatus(e.target.value)} />
+                                    </Col>
+                                    <Col md="4">
                                         <Label htmlFor="status">Status de Adiantamento</Label>
                                         <Input type="text" required id="txtStatus" placeholder="Inisira o Status"
                                             name="status"
                                             value={status}
-                                            onChange={e => setStatusAdi(e.target.value)} />
+                                            onChange={e => setStatus(e.target.value)} />
                                     </Col>
                                 </FormGroup>
                                 <FormGroup row>
-                                    <Col md="6">
+                                    <Col md="8">
                                         <Label>Descrição</Label>
                                         <Input type="textarea" rows="5" placeholder="Descreva o Status inserido" id="txtDescstatus"
                                             name="descstatus"

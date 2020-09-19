@@ -30,7 +30,7 @@ export default function ListaClienteFinal() {
         },
         {
             name: 'Grupo Empresarial',
-            selector: 'grupoempresarial',
+            selector: 'nomegrupoempresarial',
             sortable: true,
             width: '14%'
         },

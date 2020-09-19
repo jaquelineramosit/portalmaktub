@@ -52,6 +52,60 @@ module.exports = {
              
     },
 
+    /*
+    Responsável: Jaqueline Ramos
+    Em: 18/08/2020
+    Objetivo: Lista as Ordens de Serviços limitadas a uma determinada quantidade de linhas, 
+    Parâmetros: -Row-    determina a quantidade de linhas a ser retornada parâmetro row vai determinar qual é esse limite
+                -Status- determina qual é o status de atendimento será feito o filtro
+    */
+   async getAllLimitRowsParametros (request, response) {
+        try {
+            const rows  = request.params.rows; 
+            const status  = request.params.status; 
+            const periodo  = request.params.periodo; 
+            console.log(status)
+            if(rows > 0) {
+                
+                const ordemservico = await connection('ordemservico') 
+                .whereRaw(
+                    `movimentacaoos.id = (SELECT MAX(id) FROM movimentacaoos AS mos WHERE mos.ordemservicoid = movimentacaoos.ordemservicoid)`
+                )
+                .andWhere('statusatendimento.codstatus', '=', status)
+                .join('clientefinal', 'clientefinal.id', '=', 'ordemservico.clientefinalid')
+                .join('bandeira', 'bandeira.id', '=', 'clientefinal.bandeiraid')
+                .join('grupoempresarial', 'grupoempresarial.id', '=', 'bandeira.grupoempresarialid')
+                .join('cliente', 'cliente.id', '=', 'grupoempresarial.clienteid')
+                .join('tipoprojeto', 'tipoprojeto.id', '=', 'ordemservico.tipoprojetoid')
+                .join('tecnico', 'tecnico.id', '=', 'ordemservico.tecnicoid')
+                .join('usuario', 'usuario.id', '=', 'ordemservico.usuarioid')
+                .join('movimentacaoos', 'movimentacaoos.ordemservicoid', '=', 'ordemservico.id')
+                .join('statusatendimento', 'statusatendimento.id', '=', 'movimentacaoos.statusatendimentoid')
+                .select([
+                    'ordemservico.*',
+                    'cliente.nomecliente',
+                    'bandeira.nomebandeira',
+                    'grupoempresarial.nomegrupoempresarial',
+                    'clientefinal.nomeclientefinal',
+                    'tipoprojeto.nometipoprojeto',
+                    'tecnico.nometecnico',
+                    'usuario.nome',
+                    'statusatendimento.status'
+                ])
+                .orderBy('ordemservico.id', 'desc')
+                .distinct()
+                .limit(rows);
+            
+                return response.status(200).json(ordemservico);
+            } else {
+                return response.status(200).json([]);
+            }   
+        } catch (error) {
+            return response.status(404).json(error.message);
+        }
+            
+    },
+
     async getByTecnicoId (request, response) {
         const  { tecnicoId }  = request.params;
         

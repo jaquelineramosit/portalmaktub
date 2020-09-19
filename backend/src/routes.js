@@ -105,6 +105,7 @@ routes.get('/ordem-servico/:id', OrdemServicoController.getById);
 routes.post('/ordem-servico', OrdemServicoController.create);
 routes.put('/ordem-servico/:id', OrdemServicoController.update);
 routes.get('/ordem-servico-lista/:rows', ListaOrdemServicoController.getAllLimitRows);
+routes.get('/ordem-servico-lista/:rows/:status/:periodo', ListaOrdemServicoController.getAllLimitRowsParametros);
 routes.get('/ordem-servico-tecnico/:tecnicoId', ListaOrdemServicoController.getByTecnicoId);
 routes.get('/ordem-servico-ultimo', UltimoNumeroOs.getLastNumeroOs);
 

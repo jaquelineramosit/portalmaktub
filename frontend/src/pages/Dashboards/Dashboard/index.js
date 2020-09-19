@@ -1,12 +1,13 @@
-import React, {Component, Fragment, useEffect, useState} from 'react';
+import React, { Fragment, useEffect, useState} from 'react';
 import api from '../../../../src/services/api';
 import { Link } from 'react-router-dom';
 import { Bar, Line } from 'react-chartjs-2';
 import { getStyle, hexToRgba } from '@coreui/coreui/dist/js/coreui-utilities';
 import { CustomTooltips } from '@coreui/coreui-plugin-chartjs-custom-tooltips';
-import {Badge, CardBody, CardHeader, } from 'reactstrap';
+import {Badge, CardLink, CardBody, CardHeader, } from 'reactstrap';
 import { FaChartLine} from 'react-icons/fa'
-import {        
+import {  
+          
     Card,    
     Col,
     Dropdown,    
@@ -42,15 +43,7 @@ export default function DashBoard() {
     ]
 
     const brandInfo = getStyle('--info')
-    const brandSuccess = getStyle('--success')
-
-    function renderTooltip(props) {
-        return (
-          <Tooltip id="os-tooltip" {...props}>
-            Ordem de Serviço
-          </Tooltip>
-        );
-    }
+    const brandSuccess = getStyle('--success')    
 
     ////INICIO - Resultado Graficos
     const [resultadoCard1, setResultadoCard1] = useState([]);
@@ -125,6 +118,12 @@ export default function DashBoard() {
         })
     }, []);
 
+    function atualizaListaOS(status, periodo) {                
+        
+        api.get(`/ordem-servico-lista/10/${status}/${periodo}`).then(response => {
+            setListaOrdemServico(response.data);                       
+        })    
+    }
 
     ////FIM - Lista OS's
     const dadosCard1 =
@@ -323,8 +322,8 @@ export default function DashBoard() {
             <Fragment>
                 {/* card - Novas */}
                 <Col xs="12" sm="6" lg="3">
-                    <Card className="text-white bg-info">
-                        <CardBody className="pb-0 pt-2">                                                                
+                    <CardLink className="text-white bg-info card cursor-pointer" onClick={() => atualizaListaOS('NOVO', null)}>
+                        <CardBody className="pb-0 pt-2" >                                                                
                             {/* <ButtonGroup className="float-right">
                                 <ButtonDropdown id='card1' isOpen={this.state.card1} toggle={() => { this.setState({ card1: !this.state.card1 }); }}>
                                     <DropdownToggle caret className="p-0" color="transparent">
@@ -343,12 +342,12 @@ export default function DashBoard() {
                         <div className="chart-wrapper mx-3" style={{ height: '70px' }}>
                             <Line data={dadosCard1} options={dadosCardOpt1} height={70} />
                         </div>
-                    </Card>
+                    </CardLink>
                 </Col>
                 
                 {/* card - Concluidas */}
                 <Col xs="12" sm="6" lg="3">
-                    <Card className="text-white bg-success">
+                    <CardLink className="text-white bg-success card cursor-pointer" onClick={() => atualizaListaOS('CONCL', null)}>                    
                         <CardBody className="pb-0 pt-2">
                             {/* <ButtonGroup className="float-right">
                                 <ButtonDropdown id='card2' isOpen={this.state.card2} toggle={() => { this.setState({ card2: !this.state.card2 }); }}>
@@ -368,12 +367,12 @@ export default function DashBoard() {
                         <div className="chart-wrapper mx-3" style={{ height: '70px' }}>
                             <Line data={dadosCard2} options={dadosCardOpt2} height={70} />
                         </div>
-                    </Card>
+                    </CardLink>
                 </Col>
                 
                 {/* card - Em Execucao */}
-                <Col xs="12" sm="6" lg="3">
-                    <Card className="text-white bg-warning">
+                <Col xs="12" sm="6" lg="3">                    
+                    <CardLink className="text-white bg-warning card cursor-pointer" onClick={() => atualizaListaOS('EMAND', null)}>
                         <CardBody className="pb-0 pt-2">
                             {/* <ButtonGroup className="float-right">
                                 <ButtonDropdown id='card3' isOpen={this.state.card3} toggle={() => { this.setState({ card3: !this.state.card3 }); }}>
@@ -393,12 +392,12 @@ export default function DashBoard() {
                         <div className="chart-wrapper" style={{ height: '70px' }}>
                             <Line data={dadosCard3} options={dadosCardOpt3} height={70} />
                         </div>
-                    </Card>
+                    </CardLink>
                 </Col>
                 
                 {/* card - Canceladas */}
                 <Col xs="12" sm="6" lg="3">
-                    <Card className="text-white bg-danger">
+                    <CardLink className="text-white bg-danger card cursor-pointer" onClick={() => atualizaListaOS('CANC', null)}>                    
                         <CardBody className="pb-0 pt-2">
                             {/* <ButtonGroup className="float-right">
                                 <ButtonDropdown id='card4' isOpen={this.state.card4} toggle={() => { this.setState({ card4: !this.state.card4 }); }}>
@@ -418,11 +417,9 @@ export default function DashBoard() {
                         <div className="chart-wrapper mx-3" style={{ height: '70px' }}>
                             <Bar data={dadosCard4} options={dadosCardOpt4} height={70} />
                         </div>
-                    </Card>
-                </Col>
-    
-            </Fragment>
-    
+                    </CardLink>
+                </Col>    
+            </Fragment>    
         )
     }    
 
@@ -515,65 +512,7 @@ export default function DashBoard() {
                                 columns={columns}
                                 title="Ordem de Serviço"
                             />
-                        </CardBody>                            
-                            {/* <Table key={`table`} hover responsive className="table-outline mb-0 d-none d-sm-table">
-                                <thead key={`tableheader`} className="thead-light">
-                                    <tr>
-                                        <th className="text-center">
-                                            <OverlayTrigger
-                                                placement="top"
-                                                delay={{ show: 100, hide: 400 }}
-                                                overlay={renderTooltip}
-                                            >
-                                                <i className="icon-wrench"></i>
-                                            </OverlayTrigger>                                                
-                                        </th>
-                                        <th className="">Cliente / Filial</th>                                        
-                                        <th>Técnico</th>
-                                        <th>Data</th>
-                                        <th>Projeto</th>
-                                        <th className="text-center">Status</th>                                        
-                                    </tr>
-                                </thead>
-                                <tbody key={`tablebody`}>
-                                    {listaOrdemServico.map((ordemServico, index) => 
-                                    <tr key={`tr${ordemServico.id}_${index}`}>
-                                        <td className="text-center">
-                                            <Link key={`link${ordemServico.id}`} to={`/ordem-servico/${ordemServico.id}?action=edit`}>{ordemServico.numeroos}</Link>
-                                        </td>
-                                        <td>
-                                            <div key={`cliente${ordemServico.id}`}>
-                                                <i className="fa fa-handshake-o mr-2" title="Clientes"></i>
-                                                {ordemServico.nomecliente}
-                                            </div>
-                                            <div key={`filial${ordemServico.id}`} className="small text-muted">
-                                                <i className="fa fa-building mr-1" title="Clientes"></i>
-                                                {ordemServico.nomefilial}
-                                            </div>
-                                        </td>
-                                        <td>
-                                            {ordemServico.nometecnico}
-                                        </td>
-                                        <td>
-                                            <div key={`dtAtendimento${ordemServico.id}`} className="small text-muted">                                              
-                                                <strong>Atendimento:</strong> {dateFormat(ordemServico.dataatendimento, "dd/mm/yyyy")}
-                                            </div>
-                                            <div key={`dtCadastro${ordemServico.id}`} className="small text-muted">
-                                            <strong>Solicitação:</strong> {dateFormat(ordemServico.datasolicitacao, "dd/mm/yyyy")}
-                                            </div>
-                                        </td>
-                                        <td>
-                                            {ordemServico.nometipoprojeto}                                        
-                                        </td>
-                                        <td>
-                                            <div key={`status${ordemServico.id}`} className="text-center">
-                                                <BadgeStatus key={`badge${ordemServico.id}`} status={ordemServico.status}></BadgeStatus>
-                                            </div>                                                
-                                        </td>
-                                    </tr>
-                                    )}                                    
-                                </tbody>
-                            </Table> */}                        
+                        </CardBody>                                                                                
                     </Card>
                 </Col>
             </Row>

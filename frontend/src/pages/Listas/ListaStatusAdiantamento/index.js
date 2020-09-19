@@ -37,9 +37,7 @@ export default function ListaStatusAdiantamento() {
             name: 'Status',
             selector: 'status',
             sortable: true,
-
-
-        },
+        },        
         {
             name: 'Status',
             sortable: true,

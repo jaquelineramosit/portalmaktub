@@ -59,3 +59,8 @@ Objetivo: A pedido do cliente, necessário aumentar o tamanho da fonte de todos 
 .badge {
   font-size: 90%
 }
+/* FIM */
+
+.cursor-pointer {
+    cursor: pointer;
+}

@@ -12,6 +12,21 @@ module.exports = {
         return response.json(statuscobranca);
     },
 
+    async getByStatus (request, response) {
+        const  { codstatus }  = request.params;
+
+        const statuscobranca = await connection('statuscobranca')
+            .where('statuscobranca.codstatus,', codstatus)
+            .join('usuario', 'usuario.id', '=', 'statuscobranca.usuarioid')   
+            .select([
+                'statuscobranca.*',            
+                'usuario.nome'
+            ])
+            .first();
+    
+        return response.json(statuscobranca);
+    },
+
     async getById (request, response) {
         const  { id }  = request.params;
 
@@ -31,9 +46,10 @@ module.exports = {
         const  usuarioid  = request.headers.authorization;
         const  dataultmodif = getDate();
 
-        const { status, descstatus, ativo } = request.body;
+        const { codstatus, status, descstatus, ativo } = request.body;
         
         const [id] = await connection('statuscobranca').insert({
+            codstatus,
             status,
             descstatus,            
             ativo,
@@ -49,9 +65,10 @@ module.exports = {
         const  usuarioid  = request.headers.authorization;
         const  dataultmodif = getDate();
         
-        const { status, descstatus, ativo } = request.body;
+        const { codstatus, status, descstatus, ativo } = request.body;
 
         await connection('statuscobranca').where('id', id).update({
+            codstatus,
             status,
             descstatus,             
             ativo,
@@ -61,6 +78,7 @@ module.exports = {
 
         return response.status(204).send();
     },
+    
     async getCount (request,response) {        
 
         const [count] = await connection('statuscobranca').count()

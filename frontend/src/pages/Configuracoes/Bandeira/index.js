@@ -21,7 +21,7 @@ export default function Bandeira(props) {
 
     //Estados que controlam as propriedades do formulário
     //#region 
-    const [nomebandeira, setBandeira] = useState('');
+    const [nomebandeira, setNomeBandeira] = useState('');
     const [descricao, setDescricao] = useState('');
     const [grupoempresarialid, setGrupoEmpresarialId] = useState('');
     const [nomecliente, setNomeCliente] = useState('');
@@ -46,7 +46,7 @@ export default function Bandeira(props) {
     useEffect(() => {
         if (action === 'edit' && BandeiraIdParam !== '') {
             api.get(`bandeira/${BandeiraIdParam}`).then(response => {                
-                setBandeira(response.data.nomebandeira);
+                setNomeBandeira(response.data.nomebandeira);
                 setDescricao(response.data.descricao);
                 setGrupoEmpresarialId(response.data.grupoempresarialid);
                 setNomeCliente(response.data.nomecliente);
@@ -70,9 +70,7 @@ export default function Bandeira(props) {
     function handleInputChange(event) {
         event.preventDefault();
 
-        const { name, value } = event.target;
-        alert(name)
-        alert(value)
+        const { name, value } = event.target;        
         switch (name) {
             case 'grupoempresarialid':
                 if (value != "") {                    
@@ -151,7 +149,7 @@ export default function Bandeira(props) {
                                             <Input type="text" required id="txtNomeBandeira" placeholder="Digite o nome da Bandeira"
                                                 name="nomebandeira"
                                                 value={nomebandeira}
-                                                onChange={e => setBandeira(e.target.value)} >
+                                                onChange={e => setNomeBandeira(e.target.value)} >
                                             </Input>
                                             <InputGroupAddon addonType="append">
                                             <span className="btn btn-secondary disabled fa fa-flag"></span>

@@ -7,6 +7,21 @@ module.exports = {
         return response.json(statuspagamento);
     },
 
+    async getByStatus (request, response) {
+        const  { codstatus }  = request.params;
+
+        const statuspagamento = await connection('statuspagamento')
+            .where('statuspagamento.codstatus,', codstatus)
+            .join('usuario', 'usuario.id', '=', 'statuspagamento.usuarioid')   
+            .select([
+                'statuspagamento.*',            
+                'usuario.nome'
+            ])
+            .first();
+    
+        return response.json(statuspagamento);
+    },
+
     async getById (request, response) {
         const  { id }  = request.params;
 
@@ -22,9 +37,10 @@ module.exports = {
         const  usuarioid  = request.headers.authorization;
         const  dataultmodif = getDate();
 
-        const { status, descstatus, ativo } = request.body;
+        const { codstatus, status, descstatus, ativo } = request.body;
         
         const [id] = await connection('statuspagamento').insert({
+            codstatus,
             status,
             descstatus,            
             ativo,
@@ -40,9 +56,10 @@ module.exports = {
         const  usuarioid  = request.headers.authorization;
         const  dataultmodif = getDate();
         
-        const { status, descstatus, ativo } = request.body;
+        const { codstatus, status, descstatus, ativo } = request.body;
 
         await connection('statuspagamento').where('id', id).update({
+            codstatus,
             status,
             descstatus,             
             ativo,
@@ -52,9 +69,10 @@ module.exports = {
 
         return response.status(204).send();
     },
+    
     async getCount (request,response) {        
 
-        const [count] = await connection('statuscobranca').count()
+        const [count] = await connection('statuspagamento').count()
         const { page = 1 } = request.query;
         return response.json(count['count(*)']);        
     }

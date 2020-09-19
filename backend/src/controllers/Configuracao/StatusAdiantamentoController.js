@@ -11,6 +11,22 @@ module.exports = {
     
         return response.json(statusadiantamento);
     },
+
+    async getByStatus (request, response) {
+        const  { codstatus }  = request.params;
+
+        const statusadiantamento = await connection('statusadiantamento')
+            .where('statusadiantamento.codstatus,', codstatus)
+            .join('usuario', 'usuario.id', '=', 'statusadiantamento.usuarioid')   
+            .select([
+                'statusadiantamento.*',            
+                'usuario.nome'
+            ])
+            .first();
+    
+        return response.json(statusadiantamento);
+    },
+
     async getAtivo (request, response) {
         const clientes = await connection('statusadiantamento')
         .where('ativo', 1)
@@ -38,9 +54,10 @@ module.exports = {
         const  usuarioid  = request.headers.authorization;
         const  dataultmodif = getDate();
 
-        const { status, descstatus, ativo } = request.body;
+        const { codstatus, status, descstatus, ativo } = request.body;
         
         const [id] = await connection('statusadiantamento').insert({
+            codstatus,
             status,
             descstatus, 
             ativo,
@@ -56,9 +73,10 @@ module.exports = {
         const  usuarioid  = request.headers.authorization;
         const  dataultmodif = getDate();
         
-        const { status, descstatus, ativo } = request.body;
+        const { codstatus, status, descstatus, ativo } = request.body;
 
         await connection('statusadiantamento').where('id', id).update({
+            codstatus,
             status,
             descstatus, 
             ativo,

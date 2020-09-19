@@ -58,7 +58,7 @@ export default {
         },
         {
           name: 'Cliente Final',
-          url: '/lista-filiais',
+          url: '/lista-cliente-final',
           icon: 'fa fa-handshake-o',
         },
         {

@@ -13,4 +13,3 @@ export const valorNulo = valor => {
         return valor;
     }
 }
-//#endregion
