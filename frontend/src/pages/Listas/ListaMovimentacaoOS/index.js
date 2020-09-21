@@ -8,7 +8,6 @@ import BadgeStatus from '../../../components/BadgeStatus'
 
 export default function ListaMovimentacaoOS() {
     const [movimentacaoos, setMovimentacaoos] = useState([]);
-    const [ordemservico, setOrdemservico] = useState([]);
     const [total, setTotal] = useState(0);
     const usuarioId = localStorage.getItem('userId');
     //logica para pegar o total
@@ -36,31 +35,51 @@ export default function ListaMovimentacaoOS() {
     const DivData = (props) => {
         return (
             <div>
-                <DateDiv data={props.dataatendimento} controleId={props.id} isLabel={true} label="Atendimento:"></DateDiv>
+                <DateDiv data={props.datasolicitacao} controleId={props.id}></DateDiv>
             </div>
         )
     }
 
-    
+
     const columns = [
         {
             name: 'OS',
             selector: 'numeroos',
             sortable: true,
-            width: '20%',
+            width: '5%',
+        },
+        {
+            name: 'Cliente Final',
+            selector: 'nomeclientefinal',
+            sortable: true,
+            width: '17%',
+        },
+        {
+            name: 'Data Solicitação',
+            selector: 'datasolicitacao',
+            sortable: true,
+            width: '10%',
+            cell: row => <DivData key={`divData${row.id}`} datasolicitacao={row.datasolicitacao} ordemservicoId={row.id}></DivData>,
+
+        },
+        {
+            name: 'Nome do Técnico',
+            selector: 'nometecnico',
+            sortable: true,
+            width: '19%',
         },
         {
             name: 'Status de Atendimento',
             selector: 'statusAtendimento',
             sortable: true,
-            width: '26%',
+            width: '14%',
             cell: row => <BadgeStatus key={`badge${row.id}`} status={row.statusAtendimento}></BadgeStatus>,
         },
         {
             name: 'Status de Pagamento',
             selector: 'statusPagamento',
             sortable: true,
-            width: '18%',
+            width: '15%',
             cell: row => <BadgeStatus key={`badge${row.id}`} status={row.statusPagamento}></BadgeStatus>,
         },
         {
@@ -68,7 +87,7 @@ export default function ListaMovimentacaoOS() {
             selector: 'statusCobranca',
             sortable: true,
             center: true,
-            width: '26%',
+            width: '7%',
             cell: row => <BadgeStatus key={`badge${row.id}`} status={row.statusCobranca}></BadgeStatus>,
         },
         {
@@ -89,7 +108,7 @@ export default function ListaMovimentacaoOS() {
                         </CardHeader>
                         <CardBody>
                             <DataTableGenerica
-                                data={data}                               
+                                data={data}
                                 columns={columns}
                                 title="Movimentação de OS"
                             />

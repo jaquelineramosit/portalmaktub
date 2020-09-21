@@ -12,6 +12,7 @@ module.exports = {
         .join('grupoempresarial', 'grupoempresarial.id', '=', 'bandeira.grupoempresarialid')
         .join('cliente', 'cliente.id', '=', 'grupoempresarial.clienteid')
         .join('usuario', 'usuario.id', '=', 'movimentacaoos.usuarioid')
+        .join('tecnico', 'tecnico.id', '=', 'ordemservico.tecnicoid')
         .select([
             'movimentacaoos.*',
             'ordemservico.numeroos',
@@ -19,7 +20,8 @@ module.exports = {
             'statusatendimento.status',
             'statuspagamento.status ',
             'statuscobranca.status',
-            'usuario.nome'
+            'usuario.nome',
+            'tecnico.nometecnico'
         ]);
       
         return response.json(movimentacaoos);
@@ -39,6 +41,7 @@ module.exports = {
             .join('grupoempresarial', 'grupoempresarial.id', '=', 'bandeira.grupoempresarialid')
             .join('cliente', 'cliente.id', '=', 'grupoempresarial.clienteid')
             .join('usuario', 'usuario.id', '=', 'movimentacaoos.usuarioid')
+            .join('tecnico', 'tecnico.id', '=', 'ordemservico.tecnicoid')
             .select([
                 'movimentacaoos.*',
                 'ordemservico.numeroos',
@@ -46,7 +49,8 @@ module.exports = {
                 'statusatendimento.status',
                 'statuspagamento.status ',
                 'statuscobranca.status',
-                'usuario.nome'
+                'usuario.nome',
+                'tecnico.nometecnico',
             ])            
             .first();
     
@@ -63,13 +67,17 @@ module.exports = {
             .join('statuspagamento', 'statuspagamento.id', '=', 'movimentacaoos.statuspagamentoid')
             .join('statuscobranca', 'statuscobranca.id', '=', 'movimentacaoos.statuscobrancaid')
             .join('usuario', 'usuario.id', '=', 'movimentacaoos.usuarioid')
+            .join('tecnico', 'tecnico.id', '=', 'ordemservico.tecnicoid')
+            .join('clientefinal', 'clientefinal.id', '=', 'ordemservico.clientefinalid')
             .select([
                 'movimentacaoos.*',
                 'ordemservico.numeroos',
                 'statusatendimento.status',
                 'statuspagamento.status',
                 'statuscobranca.status',
-                'usuario.nome'
+                'usuario.nome',
+                'tecnico.nometecnico',
+                'clientefinal.nomeclientefinal',
             ])            
             .first();
     
@@ -88,12 +96,16 @@ module.exports = {
         .join('statuspagamento', 'statuspagamento.id', '=', 'movimentacaoos.statuspagamentoid')
         .join('statuscobranca', 'statuscobranca.id', '=', 'movimentacaoos.statuscobrancaid')
         .join('usuario', 'usuario.id', '=', 'movimentacaoos.usuarioid')
+        .join('tecnico', 'tecnico.id', '=', 'ordemservico.tecnicoid')
+        .join('clientefinal', 'clientefinal.id', '=', 'ordemservico.clientefinalid')
         .select([
             'ordemservico.*',            
             'statusatendimento.status as statusAtendimento',
             'statuspagamento.status as statusPagamento',
             'statuscobranca.status as statusCobranca',
-            'usuario.nome'
+            'usuario.nome',
+            'tecnico.nometecnico',
+            'clientefinal.nomeclientefinal',
         ])
         .orderBy('ordemservico.numeroos', 'desc')
                 
@@ -110,13 +122,17 @@ module.exports = {
         .join('statuspagamento', 'statuspagamento.id', '=', 'movimentacaoos.statuspagamentoid')
         .join('statuscobranca', 'statuscobranca.id', '=', 'movimentacaoos.statuscobrancaid')
         .join('usuario', 'usuario.id', '=', 'movimentacaoos.usuarioid')
+        .join('tecnico', 'tecnico.id', '=', 'ordemservico.tecnicoid')
+        .join('clientefinal', 'clientefinal.id', '=', 'ordemservico.clientefinalid')
         .select([
             'movimentacaoos.*',
             'ordemservico.numeroos',
             'statusatendimento.status',
             'statuspagamento.status ',
             'statuscobranca.status',
-            'usuario.nome'
+            'usuario.nome',
+            'tecnico.nometecnico',
+            'clientefinal.nomeclientefinal',
         ]).orderBy('movimentacaoos.id', 'desc')
         .first();
     
