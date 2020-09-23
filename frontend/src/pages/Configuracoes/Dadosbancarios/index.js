@@ -2,6 +2,7 @@ import React, { useState, useEffect, AppSwitch } from 'react';
 import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, InputGroup, CardFooter, Form } from 'reactstrap';
 import { Redirect } from 'react-router-dom';
 import '../../../global.css';
+import { messagePorStatus, message } from '../../../utils/messages';
 import api from '../../../services/api';
 
 export default function DadosBancarios(props) {
@@ -98,10 +99,9 @@ export default function DadosBancarios(props) {
                         Authorization: 6,
                     }
                 });
-                alert(`Cadastro atualizado com sucesso.`);
-                setRedirect(true);
+                setRedirect(messagePorStatus(response.status));
             } catch (err) {
-                alert('Erro na atualização, tente novamente.');
+                message('error', "Ocorreu um erro. Favor contatar o administrador do sistema.");
             }
         } else {
             if (action === 'novo') {
@@ -111,11 +111,9 @@ export default function DadosBancarios(props) {
                             Authorization: 6,
                         }
                     });
-                    alert('Cadastro realizado com sucesso.');
-                    setRedirect(true);
+                    setRedirect(messagePorStatus(response.status));
                 } catch (err) {
-
-                    alert('Erro no cadastro, tente novamente.');
+                    message('error', "Ocorreu um erro. Favor contatar o administrador do sistema.");
                 }
             }
         }

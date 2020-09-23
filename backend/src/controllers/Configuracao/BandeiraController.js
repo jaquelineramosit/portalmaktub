@@ -3,10 +3,8 @@ const connection = require('../../database/connection');
 const getDate = require('../../utils/getDate');
 module.exports = {
     async getAll (request, response) {
-        
-        const { grupoempresarialId } = request.query;
-        
         try {
+            const { grupoempresarialId } = request.query;
             const bandeira = await connection('bandeira')
             .join('usuario', 'usuario.id', '=', 'bandeira.usuarioid') 
             .leftJoin('grupoempresarial', 'grupoempresarial.id', '=', 'bandeira.grupoempresarialid')
@@ -61,7 +59,6 @@ module.exports = {
     },
 
     async create(request, response) {
-
         try {
             const  usuarioid  = request.headers.authorization;
             const  dataultmodif = getDate();
@@ -102,7 +99,7 @@ module.exports = {
                 usuarioid
             });           
 
-            return response.status(204).send();
+           return response.status(200).json({ id });
         } catch (error) {
             return response.status(404).json(error.message);
         }

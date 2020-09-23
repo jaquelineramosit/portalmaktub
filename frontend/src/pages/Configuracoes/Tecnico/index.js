@@ -9,6 +9,7 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
+import { messagePorStatus, message } from '../../../utils/messages';
 import Checkbox from '@material-ui/core/Checkbox';
 import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
@@ -34,13 +35,13 @@ export default function Tecnico(props) {
     var action = params.get('action');
     var IdParam = props.match.params.id;
     const usuarioId = localStorage.getItem('userId');
- //Projeto Técnico
+    //Projeto Técnico
     const [checked, setChecked] = React.useState([]);
     const [left, setLeft] = React.useState([]);
     const [right, setRight] = React.useState([]);
     const leftChecked = intersection(checked, left);
     const rightChecked = intersection(checked, right);
-//Disponibilidade de Técnico
+    //Disponibilidade de Técnico
     const [checkeds, setCheckeds] = React.useState([]);
     const [lefts, setLefts] = React.useState([]);
     const [rights, setRights] = React.useState([]);
@@ -335,10 +336,9 @@ export default function Tecnico(props) {
                         Authorization: 6,
                     }
                 });
-                alert(`Cadastro atualizado com sucesso.`);
-                setRedirect(true);
+                setRedirect(messagePorStatus(response.status));
             } catch (err) {
-                alert('Erro na atualização, tente novamente.');
+                message('error', "Ocorreu um erro. Favor contatar o administrador do sistema.");
             }
         } else {
             if (action === 'novo') {
@@ -348,11 +348,9 @@ export default function Tecnico(props) {
                             Authorization: 6,
                         }
                     });
-                    alert('Cadastro realizado com sucesso.');
-                    setRedirect(true);
+                    setRedirect(messagePorStatus(response.status));
                 } catch (err) {
-
-                    alert('Erro no cadastro, tente novamente.');
+                    message('error', "Ocorreu um erro. Favor contatar o administrador do sistema.");
                 }
             }
         }

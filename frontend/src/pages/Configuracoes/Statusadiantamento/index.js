@@ -3,6 +3,7 @@ import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, 
 import '../../../global.css';
 import { Redirect } from 'react-router-dom';
 import api from '../../../services/api';
+import { messagePorStatus, message } from '../../../utils/messages';
 
 export default function StatusAdiantamento(props) {
     const [redirect, setRedirect] = useState(false);
@@ -33,7 +34,7 @@ export default function StatusAdiantamento(props) {
             return;
         }
     }, [statusIdParam]);
-    
+
     function handleReset() {
         setRedirect(true);
     };
@@ -55,10 +56,9 @@ export default function StatusAdiantamento(props) {
                         Authorization: 6,
                     }
                 });
-                alert(`Cadastro atualizado com sucesso.`);
-                setRedirect(true);
+                setRedirect(messagePorStatus(response.status));
             } catch (err) {
-                alert('Erro na atualização, tente novamente.');
+                message('error', "Ocorreu um erro. Favor contatar o administrador do sistema.");
             }
         } else {
             if (action === 'novo') {
@@ -68,11 +68,10 @@ export default function StatusAdiantamento(props) {
                             Authorization: 6,
                         }
                     });
-                    alert('Cadastro realizado com sucesso.');
-                    setRedirect(true);
+                    setRedirect(messagePorStatus(response.status));
                 } catch (err) {
 
-                    alert('Erro no cadastro, tente novamente.');
+                    message('error', "Ocorreu um erro. Favor contatar o administrador do sistema.");
                 }
             }
         }

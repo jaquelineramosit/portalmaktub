@@ -6,6 +6,7 @@ import NumberFormat from 'react-number-format';
 import '../../../global.css';
 import { numMask } from '../../../mask'
 import api from '../../../services/api';
+import { messagePorStatus, message } from '../../../utils/messages';
 import moment from 'moment';
 import CardListaStatus from '../../../components/CardListaStatus'
 import {valorNulo} from '../../../utils/functions'
@@ -494,12 +495,10 @@ const OrdemServico = (props) => {
                     Authorization: 1,
                 }
             });
-            alert(`Movimentação atualizada com sucesso.`);
-            setRedirect(true);
-        } catch (err) {
-
-            alert('Erro na atualização, tente novamente.');
-        }
+            setRedirect(messagePorStatus(response.status));
+            } catch (err) {
+                message('error', "Ocorreu um erro. Favor contatar o administrador do sistema.");
+            }
     }
     //#endregion
 
@@ -541,11 +540,9 @@ const OrdemServico = (props) => {
                         Authorization: 1,
                     }
                 });
-                alert(`Cadastro atualizado com sucesso.`);
-                setRedirect(true);
+                setRedirect(messagePorStatus(response.status));
             } catch (err) {
-
-                alert('Erro na atualização, tente novamente.');
+                message('error', "Ocorreu um erro. Favor contatar o administrador do sistema.");
             }
 
         } else {
@@ -557,11 +554,10 @@ const OrdemServico = (props) => {
                           Authorization: 1,
                       }
                   });
-                  alert(`Cadastro realizado com sucesso.`);
-                  setRedirect(true);
-              } catch (err) {
-                  alert('Erro no cadastro, tente novamente.');
-              }
+                  setRedirect(messagePorStatus(response.status));
+            } catch (err) {
+                message('error', "Ocorreu um erro. Favor contatar o administrador do sistema.");
+            }
           }
       }
     }

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Badge, Card, CardBody, CardHeader, Col, Row } from 'reactstrap';
 import api from '../../../services/api';
-import DataTable from 'react-data-table-component';
+import DataTableGenerica from '../../../components/DataTableGenerica';
 
 export default function ListaFuncao() {
     const [funcao, setFuncao] = useState([]);
@@ -29,33 +29,32 @@ export default function ListaFuncao() {
         })
     }, [usuarioId]);
     const data = funcao;
-
     const columns = [
         {
             name: 'Página',
             selector: 'nomepagina',
             sortable: true,
-
-
+            width: '23%'
         },
         {
             name: 'Sub Página',
             selector: 'nomesubpagina',
             sortable: true,
             left: true,
-
+            width: '23%'
         },
         {
             name: 'Função',
             selector: 'nomefuncao',
             sortable: true,
             left: true,
-
+            width: '25%'
         },
         {
             name: 'Status',
             sortable: true,
             left: true,
+            width: '20%',
             cell: row => <Badge color="success">Ativo</Badge>,
         },
         {
@@ -65,32 +64,22 @@ export default function ListaFuncao() {
             cell: row => <Link to={`funcao/${row.id}?action=edit`} className="btn-sm btn-primary"><i className="fa fa-pencil fa-lg"></i></Link>
         },
     ];
-    console.log(columns)
-    console.log(data)
     return (
         <div className="animated-fadeIn">
             <Row>
                 <Col xs="12" lg="12">
                     <Card>
                         <CardHeader className="links">
-
                             <i className="fa fa-align-justify"></i>Função
-
                         <Link to={`funcao?action=novo`} className="btn btn-secondary float-right">
-                                <i className="cui-file icons mr-1"></i>
-                                                Novo
-                                            </Link>
-
+                                <i className="fa fa-plus-circle fa-lg"></i>
+                            </Link>
                         </CardHeader>
                         <CardBody>
-                            <DataTable className="mt-n3"
-                                title="Função"
+                            <DataTableGenerica
                                 columns={columns}
                                 data={data}
-                                striped={true}
-                                highlightOnHover={true}
-                                responsive={true}
-                                pagination={true}
+                                title="Função"
                             />
                         </CardBody>
                     </Card>

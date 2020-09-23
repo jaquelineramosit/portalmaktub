@@ -12,20 +12,21 @@ import { reaisMask } from '../../../mask';
 import { Redirect } from "react-router-dom";
 import '../../../global.css';
 import './styles.css';
+import { messagePorStatus, message } from '../../../utils/messages';
 import api from '../../../services/api';
 import { NativeSelect } from '@material-ui/core';
 const useStyles = makeStyles((theme) => ({
 
-  }));
+}));
 
 
 function not(a, b) {
     return a.filter((value) => b.indexOf(value) === -1);
-  }
-  
-  function intersection(a, b) {
+}
+
+function intersection(a, b) {
     return a.filter((value) => b.indexOf(value) !== -1);
-  }
+}
 
 
 export default function Tipoprojeto(props) {
@@ -62,16 +63,16 @@ export default function Tipoprojeto(props) {
     useEffect(() => {
         if (action === 'edit' && tipoprojetoIdParam !== '') {
             api.get(`tipo-projeto-ferramenta-id/${tipoprojetoIdParam}`).then(response => {
-                setRight(response.data)                              
+                setRight(response.data)
             });
 
             api.get(`tipo-projeto-ferramenta-disponiveis/${tipoprojetoIdParam}`).then(response => {
-                setLeft(response.data)                
+                setLeft(response.data)
             });
 
         } else {
             api.get(`ferramentas`).then(response => {
-                setLeft(response.data)                               
+                setLeft(response.data)
             });
         }
     }, [tipoprojetoIdParam]);
@@ -80,63 +81,63 @@ export default function Tipoprojeto(props) {
     const handleToggle = (value) => () => {
         const currentIndex = checked.indexOf(value);
         const newChecked = [...checked];
-                
+
         if (currentIndex === -1) {
-          newChecked.push(value);
+            newChecked.push(value);
         } else {
-          newChecked.splice(currentIndex, 1);
+            newChecked.splice(currentIndex, 1);
         }
         setChecked(newChecked);
         console.log(newChecked);
-      };
-    
-      const handleAllRight = () => {
+    };
+
+    const handleAllRight = () => {
         console.log("Right")
         console.log(right)
         setRight(right.concat(left));
         setLeft([]);
-      };
-    
-      const handleCheckedRight = () => {
+    };
+
+    const handleCheckedRight = () => {
         setRight(right.concat(leftChecked));
         setLeft(not(left, leftChecked));
         setChecked(not(checked, leftChecked));
-      };
-    
-      const handleCheckedLeft = () => {
+    };
+
+    const handleCheckedLeft = () => {
         setLeft(left.concat(rightChecked));
         setRight(not(right, rightChecked));
         setChecked(not(checked, rightChecked));
-      };
-    
-      const handleAllLeft = () => {
+    };
+
+    const handleAllLeft = () => {
         console.log("left")
         console.log(left)
         setLeft(left.concat(right));
         setRight([]);
-      };
+    };
     const customList = (items, index) => (
         <div className="paper" key={`div-${index}`}>
-          <List dense component="div" role="list" key={`list-${index}`} className="list-border">
-            {items.map((value) => {
-              const labelId = `transfer-list-item-${value['id']}-label`;
-              console.log(labelId)
-              return (
-                <ListItem key={value['id']} role="listitem" button onClick={handleToggle(value)}>
-                  <ListItemIcon>
-                    <Checkbox
-                      checked={checked.indexOf(value) !== -1}
-                      tabIndex={-1}
-                      disableRipple
-                      inputProps={{ 'aria-labelledby': labelId }}
-                    />
-                  </ListItemIcon>
-                  <ListItemText id={labelId} primary={`${value['codferramenta']}`} />
-                </ListItem>
-              );
-            })}
-            <ListItem/>
-          </List>
+            <List dense component="div" role="list" key={`list-${index}`} className="list-border">
+                {items.map((value) => {
+                    const labelId = `transfer-list-item-${value['id']}-label`;
+                    console.log(labelId)
+                    return (
+                        <ListItem key={value['id']} role="listitem" button onClick={handleToggle(value)}>
+                            <ListItemIcon>
+                                <Checkbox
+                                    checked={checked.indexOf(value) !== -1}
+                                    tabIndex={-1}
+                                    disableRipple
+                                    inputProps={{ 'aria-labelledby': labelId }}
+                                />
+                            </ListItemIcon>
+                            <ListItemText id={labelId} primary={`${value['codferramenta']}`} />
+                        </ListItem>
+                    );
+                })}
+                <ListItem />
+            </List>
         </div>
     );
     useEffect(() => {
@@ -201,10 +202,9 @@ export default function Tipoprojeto(props) {
                         Authorization: 6,
                     }
                 });
-                alert(`Cadastro atualizado com sucesso.`);
-                setRedirect(true);
+                setRedirect(messagePorStatus(response.status));
             } catch (err) {
-                alert('Erro na atualização, tente novamente.');
+                message('error', "Ocorreu um erro. Favor contatar o administrador do sistema.");
             }
         } else {
             if (action === 'novo') {
@@ -214,11 +214,9 @@ export default function Tipoprojeto(props) {
                             Authorization: 6,
                         }
                     });
-                    alert('Cadastro realizado com sucesso.');
-                    setRedirect(true);
+                    setRedirect(messagePorStatus(response.status));
                 } catch (err) {
-
-                    alert('Erro no cadastro, tente novamente.');
+                    message('error', "Ocorreu um erro. Favor contatar o administrador do sistema.");
                 }
             }
         }
@@ -331,13 +329,13 @@ export default function Tipoprojeto(props) {
                                 </FormGroup> */}
                             </CardBody>
                             <CardHeader>
-                                <strong>Ferramentas Necessárias</strong>                                
+                                <strong>Ferramentas Necessárias</strong>
                             </CardHeader>
                             <CardBody className="">
                                 <Row className="classeDiv">
                                     <Col md="4">
                                         <strong>Ferramentas disponíveis</strong>
-                                        {customList(left)}                                       
+                                        {customList(left)}
                                     </Col>
                                     <Col md="2" className="classeButton">
                                         <Button
@@ -382,10 +380,10 @@ export default function Tipoprojeto(props) {
                                         </Button>
                                     </Col>
                                     <Col md="4">
-                                    <strong>Ferramentas Necessárias no Projeto</strong>                                       
+                                        <strong>Ferramentas Necessárias no Projeto</strong>
                                         {customList(right)}
                                     </Col>
-                                </Row>                            
+                                </Row>
                             </CardBody>
                             <CardFooter className="text-center">
                                 <Button type="submit" size="sm" color="success" className=" mr-3"><i className="fa fa-check"></i> Salvar</Button>

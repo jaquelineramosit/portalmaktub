@@ -5,13 +5,14 @@ import './styles.css';
 import { Redirect } from "react-router-dom";
 import { telMask, cepMask, numMask, cnpjMask, celMask, cpfMask } from '../../../mask'
 import axios from 'axios';
+import { messagePorStatus, message } from '../../../utils/messages';
 import api from '../../../../src/services/api';
 
 export default function Cliente(props) {
 
     //Estado que controla o redirecionamento da página
     const [redirect, setRedirect] = useState(false);
-    
+
     //Fim
     //Parametros vindos do formulário
     //#region 
@@ -95,12 +96,12 @@ export default function Cliente(props) {
         }
     }, [clienteIdParam]);
     //#endregion
-    
+
     //Função responsável por atalizar o estado ao ser selecionado
     function handleSelectUf(event) {
         const uf = event.target.value;
         setEstado(uf);
-    }    
+    }
     //FIM
 
 
@@ -129,10 +130,10 @@ export default function Cliente(props) {
             telefonecelular,
             cep,
             cnpj,
-            numero,                    
+            numero,
             ativo
         };
-     
+
 
         if (action === 'edit') {
             try {
@@ -141,10 +142,9 @@ export default function Cliente(props) {
                         Authorization: 6,
                     }
                 });
-                alert(`Cadastro atualizado com sucesso.`);
-                setRedirect(true)
+                setRedirect(messagePorStatus(response.status));
             } catch (err) {
-                alert('Erro na atualização, tente novamente.');
+                message('error', "Ocorreu um erro. Favor contatar o administrador do sistema.");
             }
         } else {
             if (action === 'novo') {
@@ -154,11 +154,9 @@ export default function Cliente(props) {
                             Authorization: 6,
                         }
                     });
-                    alert('Cadastro realizado com sucesso.');
-                    setRedirect(true);
+                    setRedirect(messagePorStatus(response.status));
                 } catch (err) {
-
-                    alert('Erro no cadastro, tente novamente.');
+                    message('error', "Ocorreu um erro. Favor contatar o administrador do sistema.");
                 }
             }
         }
@@ -211,7 +209,7 @@ export default function Cliente(props) {
                                                 name="cnpj"
                                                 onChange={e => setCnpj(cnpjMask(e.target.value))} />
                                         </InputGroup>
-                                    </Col>                                   
+                                    </Col>
                                 </FormGroup>
                                 <FormGroup row>
                                     <Col md="6">
@@ -326,8 +324,8 @@ export default function Cliente(props) {
                                             ))}
                                         </Input>
                                     </Col>
-                                </FormGroup>                                
-                            </CardBody>                            
+                                </FormGroup>
+                            </CardBody>
                             <CardFooter className="text-center">
                                 <Button type="submit" size="sm" color="success" className=" mr-3"><i className="fa fa-check"></i> Salvar</Button>
                                 <Button type="reset" size="sm" color="danger" className="ml-3"><i className="fa fa-ban "></i> Cancelar</Button>

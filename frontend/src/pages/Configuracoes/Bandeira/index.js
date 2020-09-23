@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, InputGroup, InputGroupAddon, CardFooter, Form } from 'reactstrap';
 import '../../../global.css';
 import { Redirect } from "react-router-dom";
+import { messagePorStatus, message } from '../../../utils/messages';
 import api from '../../../services/api';
 
 export default function Bandeira(props) {
@@ -40,12 +41,12 @@ export default function Bandeira(props) {
         })
     }, [usuarioId]);
     //#endregion
-    
+
     //UseEffect responsável por popular os campos do formulário quando o action for EDITAR
     //#region 
     useEffect(() => {
         if (action === 'edit' && BandeiraIdParam !== '') {
-            api.get(`bandeira/${BandeiraIdParam}`).then(response => {                
+            api.get(`bandeira/${BandeiraIdParam}`).then(response => {
                 setNomeBandeira(response.data.nomebandeira);
                 setDescricao(response.data.descricao);
                 setGrupoEmpresarialId(response.data.grupoempresarialid);
@@ -57,33 +58,33 @@ export default function Bandeira(props) {
         }
     }, [usuarioId]);
     //#endregion
-    
+
 
     //Função responsável por atualizar o estado da propriedade de redirecionamento da página
     function handleReset() {
         setRedirect(true);
     };
     //FIM
-    
+
     //Função responsável por atualizar os dados do formulário após o algum campo ter o seu valor alterado onChange() ser selecionado
     //#region 
     function handleInputChange(event) {
         event.preventDefault();
 
-        const { name, value } = event.target;        
+        const { name, value } = event.target;
         switch (name) {
             case 'grupoempresarialid':
-                if (value != "") {                    
+                if (value != "") {
                     api.get(`/grupo-empresarial/${value}`).then(response => {
                         console.log(response.data)
                         setNomeCliente(response.data.nomecliente);
-                        setGrupoEmpresarialId(value);                      
+                        setGrupoEmpresarialId(value);
                     });
                 } else {
                     setNomeCliente('');
-                    setGrupoEmpresarialId(''); 
+                    setGrupoEmpresarialId('');
                 }
-                break;            
+                break;
         }
     };
     //#endregion
@@ -107,10 +108,9 @@ export default function Bandeira(props) {
                         Authorization: 6,
                     }
                 });
-                alert(`Cadastro atualizado com sucesso.`);
-                setRedirect(true);
+                setRedirect(messagePorStatus(response.status));
             } catch (err) {
-                alert('Erro na atualização, tente novamente.');
+                message('error', "Ocorreu um erro. Favor contatar o administrador do sistema.");
             }
         } else {
             if (action === 'novo') {
@@ -120,11 +120,9 @@ export default function Bandeira(props) {
                             Authorization: 6,
                         }
                     });
-                    alert('Cadastro realizado com sucesso.');
-                    setRedirect(true);
+                    setRedirect(messagePorStatus(response.status));
                 } catch (err) {
-
-                    alert('Erro no cadastro, tente novamente.');
+                    message('error', "Ocorreu um erro. Favor contatar o administrador do sistema.");
                 }
             }
         }
@@ -152,7 +150,7 @@ export default function Bandeira(props) {
                                                 onChange={e => setNomeBandeira(e.target.value)} >
                                             </Input>
                                             <InputGroupAddon addonType="append">
-                                            <span className="btn btn-secondary disabled fa fa-flag"></span>
+                                                <span className="btn btn-secondary disabled fa fa-flag"></span>
                                             </InputGroupAddon>
                                         </InputGroup>
                                     </Col>
@@ -176,7 +174,7 @@ export default function Bandeira(props) {
                                                 name="nomecliente"
                                                 value={nomecliente}
                                             >
-                                            </Input>                                            
+                                            </Input>
                                         </InputGroup>
                                     </Col>
                                 </FormGroup>
@@ -186,10 +184,10 @@ export default function Bandeira(props) {
                                         <Input type="textarea" rows="5" placeholder="Descrição da Bandeira" id="txtDescrição"
                                             name="descricao"
                                             value={descricao}
-                                            onChange={e => setDescricao(e.target.value)} 
+                                            onChange={e => setDescricao(e.target.value)}
                                         />
                                     </Col>
-                                </FormGroup>                               
+                                </FormGroup>
                             </CardBody>
                             <CardFooter className="text-center">
                                 <Button type="submit" size="sm" color="success" className=" mr-3"><i className="fa fa-check"></i> Salvar</Button>

@@ -1,62 +1,73 @@
 const connection = require('../../database/connection');
 const getDate = require('../../utils/getDate');
 module.exports = {
-    async getAll (request, response) {
-        const tipotecnico = await connection('tipotecnico')
-        .select('*')  
-        return response.json(tipotecnico);
+    async getAll(request, response) {
+        try {
+            const tipotecnico = await connection('tipotecnico')
+                .select('*')
+            return response.status(200).json(tipotecnico);
+        } catch (err) {
+            return response.status(400).json({ error: 'Ocorreu um erro ao acessar os dados.' })
+        }
     },
+    async getById(request, response) {
+        try {
+            const { id } = request.params;
 
-    async getById (request, response) {
-        const  { id }  = request.params;
-
-        const tipotecnico = await connection('tipotecnico')
-            .where('id', id)
-            .select()
-            .first();
-    
-        return response.json(tipotecnico);
+            const tipotecnico = await connection('tipotecnico')
+                .where('id', id)
+                .select()
+                .first();
+            return response.status(200).json(tipotecnico);
+        } catch (err) {
+            return response.status(400).json({ error: 'Ocorreu um erro ao acessar os dados.' })
+        }
     },
 
     async create(request, response) {
-        const  usuarioid  = request.headers.authorization;
-        const  dataultmodif = getDate();
+        try {
+            const usuarioid = request.headers.authorization;
+            const dataultmodif = getDate();
 
-        const { nometipotecnico, desctipotecnico, ativo } = request.body;
-        
-        const [id] = await connection('tipotecnico').insert({
-            nometipotecnico, 
-            desctipotecnico,
-            ativo,
-            dataultmodif,
-            usuarioid
-        })
+            const { nometipotecnico, desctipotecnico, ativo } = request.body;
 
-        return response.json({ id });
+            const [id] = await connection('tipotecnico').insert({
+                nometipotecnico,
+                desctipotecnico,
+                ativo,
+                dataultmodif,
+                usuarioid
+            })
+            return response.status(200).json({ id });
+        } catch (err) {
+            return response.status(400).json({ error: 'Ocorreu um erro ao criar um novo registro.' })
+        }
     },
-    
-    async update (request, response) {
-        const  { id }   = request.params;
-        const  usuarioid  = request.headers.authorization;
-        const  dataultmodif = getDate();
-        
-        const { nometipotecnico, desctipotecnico, ativo } = request.body;
 
-        await connection('tipotecnico').where('id', id).update({            
-            nometipotecnico, 
-            desctipotecnico,
-            ativo,
-            dataultmodif,
-            usuarioid
-        });           
+    async update(request, response) {
+        try {
+            const { id } = request.params;
+            const usuarioid = request.headers.authorization;
+            const dataultmodif = getDate();
 
-        return response.status(204).send();
-        
+            const { nometipotecnico, desctipotecnico, ativo } = request.body;
+
+            await connection('tipotecnico').where('id', id).update({
+                nometipotecnico,
+                desctipotecnico,
+                ativo,
+                dataultmodif,
+                usuarioid
+            });
+            return response.status(200).json({ id });
+        } catch (err) {
+            return response.status(400).json({ error: 'Ocorreu um erro ao criar um novo registro.' })
+        }
     },
-    async getCount (request,response) {        
+    async getCount(request, response) {
 
         const [count] = await connection('tipotecnico').count()
         const { page = 1 } = request.query;
-        return response.json(count['count(*)']);        
+        return response.json(count['count(*)']);
     }
 };

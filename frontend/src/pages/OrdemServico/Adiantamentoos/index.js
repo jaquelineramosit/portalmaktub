@@ -5,6 +5,7 @@ import { reaisMask } from '../../../mask';
 import NumberFormat from 'react-number-format';
 import { Redirect } from "react-router-dom";
 import api from '../../../../src/services/api';
+import { messagePorStatus, message } from '../../../utils/messages';
 import DataTableGenerica from '../../../components/DataTableGenerica';
 import BadgeStatus from '../../../components/BadgeStatus';
 
@@ -100,7 +101,7 @@ export default function Adiantamentoos(props) {
 
     //função para limpar as linhas selecionadas da tabela
     function clearSelectedRows() {
-        if ( toggledClearRows === false ) {
+        if (toggledClearRows === false) {
             setToggledClearRows(true);
         } else {
             setToggledClearRows(false);
@@ -111,7 +112,7 @@ export default function Adiantamentoos(props) {
         SerializedOs = event.selectedRows;
 
         //pega o resultado da selecão das linhas da tabela e mapeia para pegar o valor da OS e o valor do adiantamento
-        SerializedOs = SerializedOs.map (os => {
+        SerializedOs = SerializedOs.map(os => {
             return {
                 id: os.id,
                 valorapagar: os.valorapagar
@@ -128,7 +129,7 @@ export default function Adiantamentoos(props) {
         setOssasalvar(SerializedOs);
 
     }
- 
+
     function handleReset() {
         setRedirect(true);
     };
@@ -158,10 +159,9 @@ export default function Adiantamentoos(props) {
                         Authorization: 6,
                     }
                 });
-                alert(`Cadastro atualizado com sucesso.`);
-                setRedirect(true);
+                setRedirect(messagePorStatus(response.status));
             } catch (err) {
-                alert('Erro na atualização, tente novamente.');
+                message('error', "Ocorreu um erro. Favor contatar o administrador do sistema.");
             }
         } else {
             if (action === 'novo') {
@@ -171,10 +171,9 @@ export default function Adiantamentoos(props) {
                             Authorization: 6,
                         }
                     });
-                    alert('Cadastro realizado com sucesso.');
-                    setRedirect(true);
+                    setRedirect(messagePorStatus(response.status));
                 } catch (err) {
-                    alert('Erro no cadastro, tente novamente.');
+                    message('error', "Ocorreu um erro. Favor contatar o administrador do sistema.");
                 }
             }
         }
@@ -262,9 +261,9 @@ export default function Adiantamentoos(props) {
                                             <option value="" defaultValue>Selecione...</option>
                                             {ordemservicos.map(ordemservico => (
                                                 <option value={ordemservico.id}>{ordemservico.numeroos}</option>
-                                                ))}
-                                                </Input>
-                                                </Col>
+                                            ))}
+                                        </Input>
+                                    </Col>
                                     <Col md="6">
                                         <Label htmlFor="tecnicoId">Técnico</Label>
                                         <Input type="select" required name="select" id="cboTecnicoId" multiple={false}
@@ -295,24 +294,24 @@ export default function Adiantamentoos(props) {
                                     <Col md="3">
                                         <Label htmlFor="valorAdiantamento">Valor do Adiantamento</Label>
                                         <InputGroup>
-                                        <NumberFormat
-                                            id={'txtValorAdiantamento'}
-                                            name={'txtValorAdiantamento'}
-                                            className={'form-control'}
-                                            decimalScale={2}
-                                            fixedDecimalScale={true}
-                                            thousandSeparator={'.'}
-                                            decimalSeparator={','}
-                                            prefix={'R$ '}
-                                            placeholder={'R$ 0,00'}
-                                            readOnly={true}
-                                            value={valoradiantamentoFormatado}
-                                            onValueChange={(values) => {
-                                                const {formattedValue, value} = values;
-                                                setValoradiantamento(values.value);
-                                                setValoradiantamentoFormatado(values.formattedValue);
-                                            }}
-                                        />
+                                            <NumberFormat
+                                                id={'txtValorAdiantamento'}
+                                                name={'txtValorAdiantamento'}
+                                                className={'form-control'}
+                                                decimalScale={2}
+                                                fixedDecimalScale={true}
+                                                thousandSeparator={'.'}
+                                                decimalSeparator={','}
+                                                prefix={'R$ '}
+                                                placeholder={'R$ 0,00'}
+                                                readOnly={true}
+                                                value={valoradiantamentoFormatado}
+                                                onValueChange={(values) => {
+                                                    const { formattedValue, value } = values;
+                                                    setValoradiantamento(values.value);
+                                                    setValoradiantamentoFormatado(values.formattedValue);
+                                                }}
+                                            />
                                             {/* <Input type="text" required id="txtValorAdiantamento" placeholder="00,00"
                                                 value={valoradiantamento}
                                                 readOnly={true}

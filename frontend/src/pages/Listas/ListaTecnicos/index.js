@@ -38,6 +38,7 @@ export default function ListaTecnicos() {
             name: 'Nome Técnico',
             selector: 'nometecnico',
             sortable: true,
+            width: '15%', 
 
 
         },
@@ -46,13 +47,14 @@ export default function ListaTecnicos() {
             selector: 'telefonecelular',
             sortable: true,
             left: true,
-
+            width: '15%', 
         },
         {
             name: 'Cidade',
             selector: 'cidade',
             sortable: true,
             left: true,
+            width: '15%', 
 
         },
         {
@@ -60,6 +62,7 @@ export default function ListaTecnicos() {
             selector: 'estado',
             sortable: true,
             left: true,
+            width: '15%', 
 
         },
         {
@@ -67,6 +70,7 @@ export default function ListaTecnicos() {
             selector: 'desctipotecnico',
             sortable: true,
             left: true,
+            width: '20%',  
 
         },
         {

@@ -2,63 +2,72 @@ const connection = require('../../database/connection');
 const getDate = require('../../utils/getDate');
 module.exports = {
     async getAll(request, response) {
-
-        const { clienteId } = request.query;
-
-        const cliente = await connection('cliente')
-            .join('usuario', 'usuario.id', '=', 'cliente.usuarioid')            
-            .modify(function (queryBuilder) {
-                if (clienteId && clienteId !== '') {
-                    queryBuilder.where('cliente.id', clienteId);
-                }
-            }) 
-            .select([
-                'cliente.*',                
-                'usuario.nome'
-            ]);
-
-        return response.json(cliente);
+        try {
+            const { clienteId } = request.query;
+            const cliente = await connection('cliente')
+                .join('usuario', 'usuario.id', '=', 'cliente.usuarioid')
+                .modify(function (queryBuilder) {
+                    if (clienteId && clienteId !== '') {
+                        queryBuilder.where('cliente.id', clienteId);
+                    }
+                })
+                .select([
+                    'cliente.*',
+                    'usuario.nome'
+                ]);
+            return response.status(200).json(cliente);
+        } catch (err) {
+            return response.status(400).json({ error: 'Ocorreu um erro ao acessar os dados.' })
+        }
     },
 
     async getAtivo(request, response) {
-        const clientes = await connection('cliente')
-            .where('ativo', 1)
-            .select('*');
+        try {
+            const clientes = await connection('cliente')
+                .where('ativo', 1)
+                .select('*');
 
-        return response.json(clientes);
+            return response.status(200).json(clientes);
+        } catch (err) {
+            return response.status(400).json({ error: 'Ocorreu um erro ao acessar os dados.' })
+        }
     },
 
     async getById(request, response) {
-        const { clienteId } = request.query;
-        const { id } = request.params;
+        try {
+            const { clienteId } = request.query;
+            const { id } = request.params;
 
-        const cliente = await connection('cliente')
-            .where('cliente.id', id)
-            .join('usuario', 'usuario.id', '=', 'cliente.usuarioid')
-            .modify(function (queryBuilder) {
-                if (clienteId && clienteId !== '') {
-                    queryBuilder.where('cliente.id', clienteId);
-                }
-            }) 
-            .select([
-                'cliente.*',
-                'usuario.nome'
-            ])
-            .first();
+            const cliente = await connection('cliente')
+                .where('cliente.id', id)
+                .join('usuario', 'usuario.id', '=', 'cliente.usuarioid')
+                .modify(function (queryBuilder) {
+                    if (clienteId && clienteId !== '') {
+                        queryBuilder.where('cliente.id', clienteId);
+                    }
+                })
+                .select([
+                    'cliente.*',
+                    'usuario.nome'
+                ])
+                .first();
 
-        return response.json(cliente);
+            return response.status(200).json(cliente);
+        } catch (err) {
+            return response.status(400).json({ error: 'Ocorreu um erro ao acessar os dados.' })
+        }
     },
 
     async create(request, response) {
-        const usuarioid = request.headers.authorization;
-        const dataultmodif = getDate();
-
-        const { nomecliente, cnpj, razaosocial, logradouro, numero, complemento,
-            bairro, cidade, estado, cep, telefonefixo, telefonecelular, nomeresponsavel,
-            telefoneresponsavel, ativo } = request.body;
-
         const trx = await connection.transaction();
         try {
+            const usuarioid = request.headers.authorization;
+            const dataultmodif = getDate();
+
+            const { nomecliente, cnpj, razaosocial, logradouro, numero, complemento,
+                bairro, cidade, estado, cep, telefonefixo, telefonecelular, nomeresponsavel,
+                telefoneresponsavel, ativo } = request.body;
+
             const [clienteid] = await trx('cliente').insert({
                 nomecliente,
                 cnpj,
@@ -82,12 +91,13 @@ module.exports = {
             return response.status(200).json({ clienteid });
         } catch (err) {
             trx.rollback()
-            console.log(err)
-            return response.status(400).send('ocorreu um erro ao salvar')
+            return response.status(400).json({ error: 'Ocorreu um erro ao acessar os dados.' })
         }
     },
 
     async update(request, response) {
+        const trx = await connection.transaction();
+        try {
         const { id } = request.params;
         const usuarioid = request.headers.authorization;
         const dataultmodif = getDate();
@@ -95,9 +105,7 @@ module.exports = {
         const { nomecliente, cnpj, razaosocial, logradouro, numero, complemento,
             bairro, cidade, estado, cep, telefonefixo, telefonecelular, nomeresponsavel,
             telefoneresponsavel, ativo } = request.body;
-
-        const trx = await connection.transaction();
-        try {
+        
             await trx('cliente').where('id', id).update({
                 nomecliente,
                 cnpj,
@@ -119,11 +127,10 @@ module.exports = {
             });
 
             trx.commit()
-            return response.status(200).json();
+            return response.status(200).json({ id });
         } catch (err) {
             trx.rollback()
-            console.log(err)
-            return response.send('ocorreu um erro ao salvar')
+            return response.status(400).json({ error: 'Ocorreu um erro ao acessar os dados.' })
         }
     },
 

@@ -3,8 +3,9 @@ import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, 
 import '../../../global.css';
 import { Redirect } from "react-router-dom";
 import { telMask, cepMask, numMask, cnpjMask } from '../../../mask'
-import {valorNulo} from '../../../utils/functions'
+import { valorNulo } from '../../../utils/functions'
 import api from '../../../services/api';
+import { messagePorStatus, message } from '../../../utils/messages';
 import axios from 'axios';
 
 let clienteIdInicial;
@@ -70,8 +71,8 @@ export default function Filiais(props) {
         })
     }, [usuarioId]);
     //#endregion
-    
-    
+
+
     //UseEffect responsável por atualizar os dados do estado usando um api do ibge
     //#region 
     useEffect(() => {
@@ -99,7 +100,7 @@ export default function Filiais(props) {
     useEffect(() => {
         if (action === 'edit' && clienteFinalIdParam !== '') {
             api.get(`cliente-final/${clienteFinalIdParam}`).then(response => {
-                
+
                 //No edit é necessário alterar as propriedades dos estados dos combos
                 //#region 
                 setBandeiraid(response.data.bandeiraid);
@@ -164,43 +165,43 @@ export default function Filiais(props) {
     function handleInputChange(event) {
         event.preventDefault();
 
-        const { name, value } = event.target;        
+        const { name, value } = event.target;
         switch (name) {
-            case 'ativo' :
+            case 'ativo':
                 if (ativo === 1) {
                     setAtivo(0);
                 } else {
                     setAtivo(1);
                 };
                 break;
-            case 'clienteid' :
-                if(value !== '') {                    
+            case 'clienteid':
+                if (value !== '') {
                     setClienteid(value);
                     setGrupoEmpresarialid('')
                     setGruposEmpresariais([])
-                    api.get(`grupo-empresarial?clienteId=${value}`).then(response => {                       
+                    api.get(`grupo-empresarial?clienteId=${value}`).then(response => {
                         setGruposEmpresariais(response.data);
                     });
                 } else {
                     setClienteid('')
                     setGrupoEmpresarialid('')
                     setGruposEmpresariais([])
-                }              
+                }
                 break;
-            case 'grupoempresarialid' :                
-                if(value !== '') {
+            case 'grupoempresarialid':
+                if (value !== '') {
                     setGrupoEmpresarialid(value);
                     setBandeiraid('')
                     api.get(`bandeira?grupoempresarialId=${value}`).then(response => {
-                        grupoEmpresarialIdInicial = value;                        
+                        grupoEmpresarialIdInicial = value;
                         setBandeiras(response.data);
                     });
                 } else {
                     setGrupoEmpresarialid('')
                 }
                 break;
-            case 'bandeiraid' :                
-                if(value !== '') {
+            case 'bandeiraid':
+                if (value !== '') {
                     setBandeiraid(value)
                 } else {
                     setBandeiraid('')
@@ -222,7 +223,7 @@ export default function Filiais(props) {
         e.preventDefault();
 
         const data = {
-            bandeiraid,            
+            bandeiraid,
             ced,
             nomeclientefinal,
             cnpj,
@@ -253,10 +254,9 @@ export default function Filiais(props) {
                         Authorization: 6,
                     }
                 });
-                alert(`Cadastro atualizado com sucesso.`);
-                setRedirect(true);
+                setRedirect(messagePorStatus(response.status));
             } catch (err) {
-                alert('Erro na atualização, tente novamente.');
+                message('error', "Ocorreu um erro. Favor contatar o administrador do sistema.");
             }
         } else {
             if (action === 'novo') {
@@ -266,11 +266,9 @@ export default function Filiais(props) {
                             Authorization: 6,
                         }
                     });
-                    alert('Cadastro realizado com sucesso.');
-                    setRedirect(true);
+                    setRedirect(messagePorStatus(response.status));
                 } catch (err) {
-
-                    alert('Erro no cadastro, tente novamente.');
+                    message('error', "Ocorreu um erro. Favor contatar o administrador do sistema.");
                 }
             }
         }
@@ -314,7 +312,7 @@ export default function Filiais(props) {
                                                 name="cnpj"
                                                 onChange={e => setCnpj(cnpjMask(e.target.value))} />
                                         </InputGroup>
-                                    </Col>                                    
+                                    </Col>
                                 </FormGroup>
                                 <FormGroup row>
                                     <Col md="4">
@@ -355,7 +353,7 @@ export default function Filiais(props) {
                                                 <option key={`bandeira${bandeira.id}`} value={bandeira.id}>{bandeira.nomebandeira}</option>
                                             ))}
                                         </Input>
-                                    </Col>                                                                        
+                                    </Col>
                                 </FormGroup>
                                 <FormGroup row>
                                     <Col md="4">
@@ -398,10 +396,10 @@ export default function Filiais(props) {
                                     </Col>
                                 </FormGroup>
                             </CardBody>
-                        <CardHeader>
-                            <i className="fa fa-map-marker"></i>
-                            <strong>Endereço</strong>
-                        </CardHeader>
+                            <CardHeader>
+                                <i className="fa fa-map-marker"></i>
+                                <strong>Endereço</strong>
+                            </CardHeader>
                             <CardBody>
                                 <FormGroup row>
                                     <Col md="3">
@@ -474,11 +472,11 @@ export default function Filiais(props) {
                                         </Input>
                                     </Col>
                                 </FormGroup>
-                            </CardBody>          
-                        <CardHeader>
-                            <i className="fa fa-clock-o"></i>
-                            <strong>Horários</strong>
-                        </CardHeader>                   
+                            </CardBody>
+                            <CardHeader>
+                                <i className="fa fa-clock-o"></i>
+                                <strong>Horários</strong>
+                            </CardHeader>
                             <CardBody>
                                 <FormGroup row>
                                     <Col md="4">
