@@ -13,7 +13,6 @@ export const PopUpToaster = () => {
 const Toaster = {
 
     exibeMensagem: (status, msg) => {
-
         switch(status) {
             case 'success':
                 toast.success(                

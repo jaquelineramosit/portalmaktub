@@ -42,7 +42,7 @@ class DefaultLayout extends Component {
   signOut(e) {
     localStorage.clear(); //limpa todo o local storage
     e.preventDefault();
-    this.props.history.push('/logon');
+    this.props.history.push('/');
     
   }
 

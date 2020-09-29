@@ -4,6 +4,7 @@ Em: 27/08/2020
 Objetivo: Esse controle tem o objetivo criar um objeto do tipo list-grpup-item para exibir o status.
 */
 import React, { Fragment } from 'react';
+import { Popover, OverlayTrigger } from 'react-bootstrap'
 import {  ListGroupItem, } from 'reactstrap';
 const dateFormat = require('dateformat');
 const CardListStatus = (props) => {
@@ -57,7 +58,19 @@ const CardListStatus = (props) => {
             className = "list-group-item-accent-danger "
             break 
         }
-        var classNova = {className, classDefault}        
+        var classNova = {className, classDefault}      
+        
+        const PopOverMovimentacao = (props) => {
+            return (
+                <Popover id={`popover-basic${props.id}`}>
+                    <Popover.Title as="h3">Observações</Popover.Title>
+                    <Popover.Content>
+                        {props.obs}
+                    </Popover.Content>
+                </Popover>
+            )
+        };
+          
     return (
         <Fragment>
             <ListGroupItem className={`${classNova.className}${classNova.classDefault}`}>
@@ -78,9 +91,26 @@ const CardListStatus = (props) => {
                         {movimentacaolog.nome}&nbsp;{movimentacaolog.sobrenome}
                     </small>                                        
                 </div>
-                <small className="text-muted mr-3">
-                   <i className="icon-calendar"></i>&nbsp; Em: {dateFormat(movimentacaolog.dataultmodif, "dd/mm/yyyy")}   {/* às {dateFormat(movimentacaolog.dataultmodif, "yyyy-mm-dd"} */}
-                </small>                                        
+                <div>
+                    <small className="text-muted mr-3">
+                    <i className="icon-calendar"></i>&nbsp; Em: {dateFormat(movimentacaolog.dataultmodif, "dd/mm/yyyy")}   {/* às {dateFormat(movimentacaolog.dataultmodif, "yyyy-mm-dd"} */}
+                    </small>
+                    <small className="text-muted float-right mr-2 mt-1">
+                    <OverlayTrigger trigger="click" placement="bottom" overlay={
+                        <Popover id={`popover-basic${movimentacaolog.id}`}>
+                            <Popover.Title as="h3">Observações</Popover.Title>
+                            <Popover.Content>
+                                {movimentacaolog.observacao}
+                            </Popover.Content>
+                        </Popover>
+                    
+                    // <PopOverMovimentacao id={movimentacaolog.id} obs={movimentacaolog.observacao} />}>
+                    }>
+                        <i className="icon-speech"></i>
+                    </OverlayTrigger>
+                    </small>
+                </div>
+                                                      
             </ListGroupItem>
         </Fragment>
     )

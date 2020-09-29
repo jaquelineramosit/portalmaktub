@@ -115,8 +115,6 @@ module.exports = {
         const { perfilacessoid, nome, sobrenome, datanasc, logradouro, numero, complemento, bairro, cep, cidade, estado,
             telefone, celular, cpf, rg, genero, contatoemergencia, telefonecttoemergencia, email, login, senhaForm, ativo } = request.body;
 
-        console.log(request.body);
-
         const  dataUltModif = getDate();
         const senhaHash = getPassword(senhaForm);          
 

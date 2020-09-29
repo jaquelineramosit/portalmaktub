@@ -70,7 +70,9 @@ export default function Usuario(props) {
     }, [estado]);
 
     useEffect(() => {
-        if (usuarioId !== '') {
+        if (usuarioId === '' || usuarioId === null) {
+            return
+        } else {
             api.get(`usuarios/${usuarioId}`).then(response => {
                 setNome(response.data.nome);
                 setSobrenome(response.data.sobrenome);
@@ -95,9 +97,6 @@ export default function Usuario(props) {
                 setPerfilacessoid(response.data.perfilacessoid);
                 response.data.ativo === 1 ? setAtivo(1) : setAtivo(0);
             });
-        } else {
-            
-            return;
         }
     }, [usuarioId]);
 
@@ -165,7 +164,6 @@ export default function Usuario(props) {
         }
     }
 
-    console.log(usuarioId)
     return (
         <div className="animated fadeIn">
             {redirect && <Redirect to="/lista-usuarios" />}

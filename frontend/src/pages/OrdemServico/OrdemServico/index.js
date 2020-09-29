@@ -617,6 +617,7 @@ const OrdemServico = (props) => {
         setEscopoprojeto('');
     }
 
+    
     //Essa constante é utlizada para determinar qual é a tab que será selecionada
     const [key, setKey] = useState('clientefinal');
   
@@ -626,8 +627,8 @@ const OrdemServico = (props) => {
             <Form onSubmit={handleOs} onReset={handleReset}>
                 <Row>
                     <Col xs="12" md="12">
+                        {/* card Ordem Serviço */}
                         <Card className="mb-0">
-                            {/* card Ordem Serviço */}
                             <CardHeader>
                                 <i className="icon-wrench"></i>
                                 <strong>Ordem de Serviço</strong>
@@ -1222,7 +1223,7 @@ const OrdemServico = (props) => {
                                                             onChange={e => setObservacao(e.target.value)} />
                                                     </Col>
                                                 </FormGroup>
-                                                {action !== 'editar' ? (
+                                                {action !== 'novo' ? (
                                                     <FormGroup className="text-left">
                                                         <Button type="button" size="sm" color="info" className="text-white mr-3" onClick={handleAtualizaMovimentacao}><i className="fa fa-check"></i> Atualizar Movimentação</Button>
                                                     </FormGroup>
