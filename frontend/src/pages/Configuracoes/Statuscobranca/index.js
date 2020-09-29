@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, CardFooter, Form } from 'reactstrap';
 import '../../../global.css';
 import { Redirect } from 'react-router-dom';
+import { messagePorStatus, message } from '../../../utils/messages';
 import api from '../../../services/api';
 
 export default function StatusCobranca(props) {
@@ -32,7 +33,7 @@ export default function StatusCobranca(props) {
             return;
         }
     }, [statusIdParam]);
-    
+
     function handleReset() {
         setRedirect(true);
     };
@@ -46,7 +47,6 @@ export default function StatusCobranca(props) {
             descstatus,
             ativo
         };
-
         if (action === 'edit') {
             try {
                 const response = await api.put(`/status-cobranca/${statusIdParam}`, data, {
@@ -54,10 +54,9 @@ export default function StatusCobranca(props) {
                         Authorization: 6,
                     }
                 });
-                alert(`Cadastro atualizado com sucesso.`);
-                setRedirect(true);
+                setRedirect(messagePorStatus(response.status));
             } catch (err) {
-                alert('Erro na atualização, tente novamente.');
+                message('error', "Ocorreu um erro. Favor contatar o administrador do sistema.");
             }
         } else {
             if (action === 'novo') {
@@ -67,11 +66,9 @@ export default function StatusCobranca(props) {
                             Authorization: 6,
                         }
                     });
-                    alert('Cadastro realizado com sucesso.');
-                    setRedirect(true);
+                    setRedirect(messagePorStatus(response.status));
                 } catch (err) {
-
-                    alert('Erro no cadastro, tente novamente.');
+                    message('error', "Ocorreu um erro. Favor contatar o administrador do sistema.");
                 }
             }
         }
@@ -96,14 +93,14 @@ export default function StatusCobranca(props) {
                                             name="codstatus"
                                             value={codstatus}
                                             onChange={e => setCodStatus(e.target.value)}
-                                         />
+                                        />
                                     </Col>
                                     <Col md="4">
                                         <Label htmlFor="status">Status de Cobrança</Label>
                                         <Input type="text" required id="txtStatus" placeholder="Insira o Status"
                                             name="status"
                                             value={status}
-                                            onChange={e => setStatus(e.target.value)} 
+                                            onChange={e => setStatus(e.target.value)}
                                         />
                                     </Col>
                                 </FormGroup>
@@ -113,7 +110,7 @@ export default function StatusCobranca(props) {
                                         <Input type="textarea" rows="5" placeholder="Descreva o Status inserido" id="txtDescStatus"
                                             name="descstatus"
                                             value={descstatus}
-                                            onChange={e => setDescricao(e.target.value)} 
+                                            onChange={e => setDescricao(e.target.value)}
                                         />
                                     </Col>
                                 </FormGroup>

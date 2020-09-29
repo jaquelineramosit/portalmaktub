@@ -4,6 +4,7 @@ import '../../../global.css';
 import { Redirect } from "react-router-dom";
 import { cpfMask, rgMask, telMask, celMask, cepMask, numMask } from '../../../mask'
 import api from '../../../../src/services/api';
+import { messagePorStatus, message } from '../../../utils/messages';
 import axios from 'axios';
 const dateFormat = require('dateformat');
 
@@ -161,10 +162,9 @@ export default function Usuario(props) {
                         Authorization: 6,
                     }
                 });
-                alert(`Cadastro atualizado com sucesso.`);
-                setRedirect(true);
+                setRedirect(messagePorStatus(response.status));
             } catch (err) {
-                alert('Erro na atualização, tente novamente.');
+                message('error', "Ocorreu um erro. Favor contatar o administrador do sistema.");
             }
         } else {
             if (action === 'novo') {
@@ -174,11 +174,9 @@ export default function Usuario(props) {
                             Authorization: 6,
                         }
                     });
-                    alert(`Seu login de acesso: ${response.data.login}`);
-                    setRedirect(true);
+                    setRedirect(messagePorStatus(response.status));
                 } catch (err) {
-
-                    alert('Erro no cadastro, tente novamente.');
+                    message('error', "Ocorreu um erro. Favor contatar o administrador do sistema.");
                 }
             }
         }

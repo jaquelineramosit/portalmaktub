@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, InputGroup, InputGroupAddon, CardFooter, Form } from 'reactstrap';
 import '../../../global.css';
 import { Redirect } from "react-router-dom";
+import { messagePorStatus, message } from '../../../utils/messages';
 import { cpfMask, rgMask, telMask, celMask, cepMask, numMask } from '../../../mask'
 import api from '../../../../src/services/api';
 import axios from 'axios';
@@ -157,11 +158,10 @@ export default function Usuario(props) {
                         Authorization: 6,
                     }
                 });
-                alert(`Cadastro atualizado com sucesso.`);
-                setRedirect(true);
-        } catch (err) {
-            alert('Erro na atualização, tente novamente.');
-        }
+                setRedirect(messagePorStatus(response.status));
+            } catch (err) {
+                message('error', "Ocorreu um erro. Favor contatar o administrador do sistema.");
+            }
     }
 
     return (

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, CardFooter, Form, } from 'reactstrap';
 import '../../../global.css';
+import { messagePorStatus, message } from '../../../utils/messages';
 import { Redirect } from "react-router-dom";
 import api from '../../../../src/services/api';
 
@@ -73,10 +74,9 @@ export default function Subpagina(props) {
                         Authorization: 6,
                     }
                 });
-                alert(`Cadastro atualizado com sucesso.`);
-                setRedirect(true);
+                setRedirect(messagePorStatus(response.status));
             } catch (err) {
-                alert('Erro na atualização, tente novamente.');
+                message('error', "Ocorreu um erro. Favor contatar o administrador do sistema.");
             }
         } else {
             if (action === 'novo') {
@@ -86,11 +86,9 @@ export default function Subpagina(props) {
                             Authorization: 6,
                         }
                     });
-                    alert('Cadastro realizado com sucesso.');
-                    setRedirect(true);
+                    setRedirect(messagePorStatus(response.status));
                 } catch (err) {
-
-                    alert('Erro no cadastro, tente novamente.');
+                    message('error', "Ocorreu um erro. Favor contatar o administrador do sistema.");
                 }
             }
         }

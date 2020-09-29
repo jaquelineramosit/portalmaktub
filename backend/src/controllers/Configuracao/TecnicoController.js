@@ -2,55 +2,65 @@ const connection = require('../../database/connection');
 const getDate = require('../../utils/getDate');
 module.exports = {
     async getAll(request, response) {
-        const { tipoProjetoId } = request.query;
+        try {
+            const { tipoProjetoId } = request.query;
 
-        const tecnico = await connection('tecnico')
-            .join('usuario', 'usuario.id', '=', 'tecnico.usuarioid')
-            .join('tipotecnico', 'tipotecnico.id', '=', 'tecnico.tipotecnicoid')
-            .join('tipoprojetotecnico', 'tipoprojetotecnico.tecnicoid', '=', 'tecnico.id')
-            .modify(function (queryBuilder) {
-                if (tipoProjetoId && tipoProjetoId !== 'Selecione...') {
-                    queryBuilder.where('tipoprojetotecnico.tipoprojetoid', tipoProjetoId);
-                }
-            })
-            .select([
-                'tecnico.*',
-                'tipotecnico.id as tipotecnicoid',
-                'tipotecnico.nometipotecnico',
-                'tipotecnico.desctipotecnico',
-                'usuario.nome'
-            ])
-            .distinct();
+            const tecnico = await connection('tecnico')
+                .join('usuario', 'usuario.id', '=', 'tecnico.usuarioid')
+                .join('tipotecnico', 'tipotecnico.id', '=', 'tecnico.tipotecnicoid')
+                .join('tipoprojetotecnico', 'tipoprojetotecnico.tecnicoid', '=', 'tecnico.id')
+                .modify(function (queryBuilder) {
+                    if (tipoProjetoId && tipoProjetoId !== 'Selecione...') {
+                        queryBuilder.where('tipoprojetotecnico.tipoprojetoid', tipoProjetoId);
+                    }
+                })
+                .select([
+                    'tecnico.*',
+                    'tipotecnico.id as tipotecnicoid',
+                    'tipotecnico.nometipotecnico',
+                    'tipotecnico.desctipotecnico',
+                    'usuario.nome'
+                ])
+                .distinct();
 
-        return response.json(tecnico);
+            return response.status(200).json(tecnico);
+        } catch (err) {
+            return response.status(400).json({ error: 'Ocorreu um erro ao acessar os dados.' })
+        }
     },
 
     async getById(request, response) {
-        const { id } = request.params;
+        try {
+            const { id } = request.params;
 
-        const tecnico = await connection('tecnico')
-            .where('tecnico.id', id)
-            .join('usuario', 'usuario.id', '=', 'tecnico.usuarioid')
-            .join('tipotecnico', 'tipotecnico.id', '=', 'tecnico.tipotecnicoid')
-            .select([
-                'tecnico.*',
-                'tipotecnico.nometipotecnico',
-                'tipotecnico.desctipotecnico',
-                'usuario.nome'
-            ])
-            .first();
+            const tecnico = await connection('tecnico')
+                .where('tecnico.id', id)
+                .join('usuario', 'usuario.id', '=', 'tecnico.usuarioid')
+                .join('tipotecnico', 'tipotecnico.id', '=', 'tecnico.tipotecnicoid')
+                .select([
+                    'tecnico.*',
+                    'tipotecnico.nometipotecnico',
+                    'tipotecnico.desctipotecnico',
+                    'usuario.nome'
+                ])
+                .first();
 
-        return response.json(tecnico);
+            return response.status(200).json(tecnico);
+        } catch (err) {
+            return response.status(400).json({ error: 'Ocorreu um erro ao acessar os dados.' })
+        }
     },
 
     async create(request, response) {
-        const usuarioid = request.headers.authorization;
-        const dataultmodif = getDate();
-
-        const { tipotecnicoid, telefonecttoemergencial, nomecontatoemergencial, nometecnico, rg, cpf, logradouro, numero, complemento, bairro,
-            cidade, estado, cep, telefonefixo, telefonecelular, ativo, right, rights } = request.body;
         const trx = await connection.transaction();
         try {
+            const usuarioid = request.headers.authorization;
+            const dataultmodif = getDate();
+
+            const { tipotecnicoid, telefonecttoemergencial, nomecontatoemergencial, nometecnico, rg, cpf, logradouro, numero, complemento, bairro,
+                cidade, estado, cep, telefonefixo, telefonecelular, ativo, right, rights } = request.body;
+
+
             const [tecnicoid] = await trx('tecnico').insert({
                 tipotecnicoid,
                 nometecnico,
@@ -96,26 +106,26 @@ module.exports = {
 
             await trx('tipoprojetotecnico').insert(projetoTecnico)
             await trx('disponibilidadetecnico').insert(disponTecnico)
-            console.log("Cadastro com sucesso")
             trx.commit()
-            return response.json({ projetoTecnico }), ({ disponTecnico })
+            return response.status(200).json({ projetoTecnico }), ({ disponTecnico });
         } catch (err) {
             trx.rollback()
-            console.log(err)
-            return response.send(err)
+            return response.status(400).json({ error: 'Ocorreu um erro ao criar um novo registro.' })
         }
 
     },
     async update(request, response) {
-        const { id } = request.params;
-        const usuarioid = request.headers.authorization;
-        const dataultmodif = getDate();
-
-        const { tipotecnicoid, telefonecttoemergencial, nomecontatoemergencial, nometecnico, rg, cpf, logradouro, numero, complemento, bairro,
-            cidade, estado, cep, telefonefixo, telefonecelular, ativo, right, rights } = request.body;
-
         const trx = await connection.transaction();
         try {
+            const { id } = request.params;
+            const usuarioid = request.headers.authorization;
+            const dataultmodif = getDate();
+
+            const { tipotecnicoid, telefonecttoemergencial, nomecontatoemergencial, nometecnico, rg, cpf, logradouro, numero, complemento, bairro,
+                cidade, estado, cep, telefonefixo, telefonecelular, ativo, right, rights } = request.body;
+
+
+
             await trx('tecnico').where('id', id).update({
                 tipotecnicoid,
                 nometecnico,
@@ -167,10 +177,10 @@ module.exports = {
             await trx('tipoprojetotecnico').insert(projetoTecnico)
             await trx('disponibilidadetecnico').insert(disponTecnico)
             trx.commit()
-            return response.json({ projetoTecnico }), ({ disponTecnico })
+            return response.status(200).json({ projetoTecnico }), ({ disponTecnico });
         } catch (err) {
             trx.rollback()
-            return response.send('ocorreu um erro ao salvar')
+            return response.status(400).json({ error: 'Ocorreu um erro ao criar um novo registro.' })
         }
     },
     async getCount(request, response) {
