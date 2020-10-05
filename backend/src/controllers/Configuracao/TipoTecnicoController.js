@@ -5,6 +5,7 @@ module.exports = {
         try {
             const tipotecnico = await connection('tipotecnico')
                 .select('*')
+                .orderBy('tipotecnico.nometipotecnico', 'asc');
             return response.status(200).json(tipotecnico);
         } catch (err) {
             return response.status(400).json({ error: 'Ocorreu um erro ao acessar os dados.' })

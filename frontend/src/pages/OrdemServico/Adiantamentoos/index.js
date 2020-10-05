@@ -23,6 +23,7 @@ export default function Adiantamentoos(props) {
     var params = new URLSearchParams(search);
     var action = params.get('action');
     var adiantamentoIdParam = props.match.params.id;
+    let dadosbancariosInicial = '';
     const usuarioId = localStorage.getItem('userId');
 
     const [ordemservicoid, setOrdemservicoid] = useState(0);
@@ -37,6 +38,25 @@ export default function Adiantamentoos(props) {
     const [statusAdiantamentosid, setStatusAdiantamentosid] = useState([]);
     const [ativo, setAtivo] = useState(1);
     const [ossasalvar, setOssasalvar] = useState([]);
+
+    //Dados Bancários
+
+    const [bancoid, setBancoid] = useState('');
+    const [tipocontaid, setTipoContaid] = useState('');
+    const [agencia, setAgencia] = useState('');
+    const [conta, setConta] = useState('');
+    const [titularconta, setTitularconta] = useState('');
+    const [doctitular, setDoctitular] = useState('');
+
+    function limparDadosdadosbancario() {
+        setBancoid('');
+        setTipoContaid('');
+        setAgencia('');
+        setConta('');
+        setDoctitular('');
+        setTitularconta('');
+
+    };
 
     useEffect(() => {
         api.get('tecnico').then(response => {
@@ -62,7 +82,16 @@ export default function Adiantamentoos(props) {
                 setStatusadiantamentoid(response.data.adiantamentoos.statusadiantamentoid);
                 setTecnicoid(response.data.ossDoAdiant[0].tecnicoid);
                 response.data.ativo === 1 ? setAtivo(1) : setAtivo(0);
-                setOrdemservicos(response.data.ossDoAdiant)
+                setOrdemservicos(response.data.ossDoAdiant);
+                dadosbancariosInicial = response.data.ossDoAdiant[0].tecnicoid;
+                api.get(`dados-bancarios-tecnico/${dadosbancariosInicial}`).then(response => {
+                    setBancoid(response.data.nomebanco);
+                    setAgencia(response.data.agencia);
+                    setConta(response.data.conta);
+                    setTipoContaid(response.data.nometipoconta);
+                    setTitularconta(response.data.titularconta);
+                    setDoctitular(response.data.doctitular);
+                });
             });
         } else {
             return;
@@ -82,6 +111,7 @@ export default function Adiantamentoos(props) {
                 break;
             case 'tecnicoid':
                 setOrdemservicos([]);
+                limparDadosdadosbancario('')
                 if (value !== 'Selecione...') {
                     api.get(`ordem-servico-tecnico/${value}`).then(response => {
                         clearSelectedRows();
@@ -89,11 +119,22 @@ export default function Adiantamentoos(props) {
                         setValoradiantamentoFormatado(0);
                         setOrdemservicos(response.data);
                         setTecnicoid(value);
+                        console.log(value)
+                    });
+                    api.get(`dados-bancarios-tecnico/${value}`).then(response => {
+                        setBancoid(response.data.nomebanco);
+                        setAgencia(response.data.agencia);
+                        setConta(response.data.conta);
+                        setTipoContaid(response.data.nometipoconta);
+                        setTitularconta(response.data.titularconta);
+                        setDoctitular(response.data.doctitular);
+                        console.log(value)
+
                     });
                 } else {
                     clearSelectedRows();
                     setValoradiantamentoFormatado(0);
-                    setTecnicoid(0);
+                    limparDadosdadosbancario('')
                 }
                 break;
         }
@@ -252,19 +293,7 @@ export default function Adiantamentoos(props) {
                             </CardHeader>
                             <CardBody>
                                 <FormGroup row>
-                                    <Col md="4">
-                                        <Label htmlFor="ordemServicoId">Ordem de Serviço</Label>
-                                        <Input type="select" required name="select" id="cboOrdemServicoId" multiple={false}
-                                            name="ordemservicoid"
-                                            value={ordemservicoid}
-                                            onChange={e => setOrdemservicoid(e.target.value)}>
-                                            <option value="" defaultValue>Selecione...</option>
-                                            {ordemservicos.map(ordemservico => (
-                                                <option value={ordemservico.id}>{ordemservico.numeroos}</option>
-                                            ))}
-                                        </Input>
-                                    </Col>
-                                    <Col md="6">
+                                    <Col md="10">
                                         <Label htmlFor="tecnicoId">Técnico</Label>
                                         <Input type="select" required name="select" id="cboTecnicoId" multiple={false}
                                             name="tecnicoid"
@@ -362,6 +391,63 @@ export default function Adiantamentoos(props) {
                                             onSelectedRowsChange={handleTableSelect}
                                             clearSelectedRows={toggledClearRows}
                                         />
+                                    </Col>
+                                </FormGroup>
+                            </CardBody>
+                            <CardHeader>
+                                <strong>Dados Bancários</strong>
+                            </CardHeader>
+                            <CardBody>
+                                <FormGroup row>
+                                    <Col md="4">
+                                        <Label htmlFor="bancoId">Banco</Label>
+                                        <Input required type="text" name="banco" id="cboBancoId" readOnly
+                                            name="bancoid"
+                                            value={bancoid} />
+                                    </Col>
+                                    <Col md="4">
+                                        <Label htmlFor="tipoContaId">Tipo de Conta</Label>
+                                        <Input required type="text" name="tipo de conta" id="cboTipoContaId" readOnly
+                                            name="tipocontaid"
+                                            value={tipocontaid}
+                                        />
+                                    </Col>
+                                </FormGroup>
+                                <FormGroup row>
+                                    <Col md="4">
+                                        <Label htmlFor="agencia">Agência</Label>
+                                        <InputGroup>
+                                            <Input type="text" required id="txtAgencia" readOnly
+                                                name="agencia"
+                                                value={agencia}
+                                            />
+                                        </InputGroup>
+                                    </Col>
+                                    <Col md="4">
+                                        <Label htmlFor="conta">Conta</Label>
+                                        <Input type="text" required id="txtConta" readOnly
+                                            name="conta"
+                                            value={conta}
+                                        />
+                                    </Col>
+                                    <Col md="4">
+                                        <Label htmlFor="titularConta">Titular da Conta</Label>
+                                        <InputGroup>
+                                            <Input id="txtTitularConta" required type="text" readOnly
+                                                name="titularconta"
+                                                value={titularconta}
+                                            />
+                                        </InputGroup>
+                                    </Col>
+                                </FormGroup>
+                                <FormGroup row>
+                                    <Col md="4">
+                                        <Label htmlFor="docTitular">Documento do Titular</Label>
+                                        <InputGroup>
+                                            <Input id="txtDocTitular" required type="text" readOnly
+                                                name="doctitular"
+                                                value={doctitular} />
+                                        </InputGroup>
                                     </Col>
                                 </FormGroup>
                             </CardBody>

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Card, CardBody, CardHeader, Col, Row, Badge } from 'reactstrap';
 import api from '../../../services/api';
 import DataTableGenerica from '../../../components/DataTableGenerica';
+import BadgeAtivo from '../../../components/BadgeAtivo'
 
 export default function ListaTipoProjeto() {
     const [tipoprojeto, setTipoprojeto] = useState([]);
@@ -78,7 +79,7 @@ export default function ListaTipoProjeto() {
             name: 'Status',
             sortable: true,
             left: true,
-            cell: row => <Badge color="success">Ativo</Badge>,
+            cell: row => <BadgeAtivo key={`badge${row.ativo}`} ativo={row.ativo}></BadgeAtivo>,
         },
         {
             name: 'Ações',

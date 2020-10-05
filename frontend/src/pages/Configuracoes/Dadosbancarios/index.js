@@ -1,7 +1,8 @@
 import React, { useState, useEffect, AppSwitch } from 'react';
-import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, InputGroup, CardFooter, Form } from 'reactstrap';
+import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, InputGroup, CardFooter, Form, } from 'reactstrap';
 import { Redirect } from 'react-router-dom';
 import '../../../global.css';
+
 import { messagePorStatus, message } from '../../../utils/messages';
 import api from '../../../services/api';
 
@@ -26,6 +27,7 @@ export default function DadosBancarios(props) {
     const [tipocontasid, setTipoContasid] = useState([]);
     const [tecnicosid, setTecnicosid] = useState([]);
     const [ativo, setAtivo] = useState(1);
+
 
 
     useEffect(() => {
@@ -72,7 +74,6 @@ export default function DadosBancarios(props) {
             }
         }
     };
-
 
     function handleReset() {
         setRedirect(true);
@@ -142,7 +143,6 @@ export default function DadosBancarios(props) {
                                             {tecnicosid.map(tecnico => (
                                                 <option value={tecnico.id}>{tecnico.nometecnico}</option>
                                             ))}
-
                                         </Input>
                                     </Col>
                                     <Col md="4">

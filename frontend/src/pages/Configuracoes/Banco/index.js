@@ -65,36 +65,36 @@ export default function Banco(props) {
                 {
                     campo: 'codbanco',
                     metodo: 'isEmpty',
-                    args: [{ignore_whitespace:true}],
+                    args: [{ ignore_whitespace: true }],
                     validoQuando: false,
                     mensagem: 'Informe o código do banco!'
                 },
                 {
                     campo: 'nomebanco',
                     metodo: 'isEmpty',
-                    args: [{ignore_whitespace:true}],
+                    args: [{ ignore_whitespace: true }],
                     validoQuando: false,
                     mensagem: 'Informe o nome do banco!'
                 },
                 {
                     campo: 'codbanco',
                     metodo: 'isLength',
-                    args: [{min:1, max:3}],
+                    args: [{ min: 1, max: 3 }],
                     validoQuando: true,
                     mensagem: 'Informe o código do banco com 3 caracteres!'
                 },
                 {
                     campo: 'nomebanco',
                     metodo: 'isLength',
-                    args: [{min:5, max:50}],
+                    args: [{ min: 3, max: 50 }],
                     validoQuando: true,
                     mensagem: 'Informe o nome do banco de 5 a no máximo 50 caracteres!'
                 },
             ]);
-                          
+
             const validacao = validador.valida(data);
 
-            if(validacao.isValid) {
+            if (validacao.isValid) {
                 if (action === 'edit') {
                     try {
                         const response = await api.put(`/banco/${bancoIdParam}`, data, {
@@ -104,7 +104,7 @@ export default function Banco(props) {
                         });
 
                         setRedirect(messagePorStatus(response.status));
-                    } catch (err) {                        
+                    } catch (err) {
                         message('error', "Ocorreu um erro. Favor contatar o administrador do sistema.");
                     }
                 } else {
@@ -116,25 +116,25 @@ export default function Banco(props) {
                                 }
                             });
                             setRedirect(messagePorStatus(response.status));
-                           
+
                         } catch (err) {
                             message('error', "Ocorreu um erro. Favor contatar o administrador do sistema.");
                         }
                     }
                 }
             } else {
-                const { codbanco, nomebanco} = validacao;
+                const { codbanco, nomebanco } = validacao;
                 const campos = [codbanco, nomebanco];
                 const camposInvalidos = campos.filter(elem => {
-                    
+
                     return elem.isInvalid
                 });
-                camposInvalidos.forEach(campo => {                    
-                    message('error',  campo.message);                 
+                camposInvalidos.forEach(campo => {
+                    message('error', campo.message);
                 });
             }
         } catch (ex) {
-            message('error', "Ocorreu um erro. Favor contatar o administrador do sistema.");           
+            message('error', "Ocorreu um erro. Favor contatar o administrador do sistema.");
         }
     }
 
@@ -165,7 +165,7 @@ export default function Banco(props) {
                                             value={nomebanco}
                                             onChange={e => setNomebanco(e.target.value)} />
                                     </Col>
-                                </FormGroup>                                
+                                </FormGroup>
                             </CardBody>
                             <CardFooter className="text-center">
                                 <Button type="submit" size="sm" color="success" className=" mr-3"><i className="fa fa-check"></i> Salvar</Button>

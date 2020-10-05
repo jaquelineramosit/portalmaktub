@@ -8,7 +8,8 @@ module.exports = {
                 .select([
                     'statusatendimento.*',
                     'usuario.nome'
-                ]);
+                ])
+                .orderBy('statusatendimento.status', 'asc');
 
             return response.status(200).json(statusatendimento);
         } catch (err) {

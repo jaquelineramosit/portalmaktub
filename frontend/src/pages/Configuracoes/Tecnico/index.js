@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect} from 'react';
 import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, InputGroup, InputGroupAddon, CardFooter, Form } from 'reactstrap';
 import '../../../global.css';
 import './styles.css';
+import { AppSwitch } from '@coreui/react'
 import { Redirect } from "react-router-dom";
 import { cpfMask, rgMask, telMask, celMask, cepMask, numMask } from '../../../mask'
 import api from '../../../../src/services/api';
@@ -451,6 +452,14 @@ export default function Tecnico(props) {
                                             </InputGroupAddon>
                                         </InputGroup>
                                     </Col>
+                                    <Col md="2">
+                                        <Label check className="form-check-label" htmlFor="ativo">Ativo</Label>
+                                        <AppSwitch id="rdAtivo" className={'switch-ativo'} label color={'success'}  size={'sm'}
+                                            onChange={handleInputChange} 
+                                            checked={ativo === 1 ? true : false}
+                                            name="ativo"
+                                           />
+                                    </Col>
                                 </FormGroup>
                             </CardBody>
                             <CardHeader>
@@ -643,13 +652,6 @@ export default function Tecnico(props) {
                                         </Input>
                                     </Col>
                                 </FormGroup>
-                                {/* <FormGroup row>    
-                                    <Col md="2">
-                                        <Label check className="form-check-label" htmlFor="ativo">Ativo</Label>
-                                        <AppSwitch id="rdAtivo" className={'switch-ativo'} label color={'success'} defaultChecked size={'sm'}
-                                            onChange={handleSwitch} />
-                                    </Col>
-                                </FormGroup>*/}
                             </CardBody>
                             <CardFooter className="text-center">
                                 <Button type="submit" size="sm" color="success" className=" mr-3"><i className="fa fa-check"></i> Salvar</Button>

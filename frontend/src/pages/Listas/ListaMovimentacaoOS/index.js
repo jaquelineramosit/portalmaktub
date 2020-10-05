@@ -35,7 +35,7 @@ export default function ListaMovimentacaoOS() {
     const DivData = (props) => {
         return (
             <div>
-                <DateDiv data={props.datasolicitacao} controleId={props.id}></DateDiv>
+                <DateDiv data={props.dataatendimento} controleId={props.id}></DateDiv>
             </div>
         )
     }
@@ -55,11 +55,11 @@ export default function ListaMovimentacaoOS() {
             width: '17%',
         },
         {
-            name: 'Data Solicitação',
-            selector: 'datasolicitacao',
+            name: 'Data Atendimento',
+            selector: 'dataatendimento',
             sortable: true,
             width: '10%',
-            cell: row => <DivData key={`divData${row.id}`} datasolicitacao={row.datasolicitacao} ordemservicoId={row.id}></DivData>,
+            cell: row => <DivData key={`divData${row.id}`} dataatendimento={row.dataatendimento} ordemservicoId={row.id}></DivData>,
 
         },
         {

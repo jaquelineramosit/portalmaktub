@@ -14,7 +14,8 @@ module.exports = {
                 .select([
                     'cliente.*',
                     'usuario.nome'
-                ]);
+                ])
+                .orderBy('cliente.nomecliente', 'asc');
             return response.status(200).json(cliente);
         } catch (err) {
             return response.status(400).json({ error: 'Ocorreu um erro ao acessar os dados.' })
@@ -98,14 +99,14 @@ module.exports = {
     async update(request, response) {
         const trx = await connection.transaction();
         try {
-        const { id } = request.params;
-        const usuarioid = request.headers.authorization;
-        const dataultmodif = getDate();
+            const { id } = request.params;
+            const usuarioid = request.headers.authorization;
+            const dataultmodif = getDate();
 
-        const { nomecliente, cnpj, razaosocial, logradouro, numero, complemento,
-            bairro, cidade, estado, cep, telefonefixo, telefonecelular, nomeresponsavel,
-            telefoneresponsavel, ativo } = request.body;
-        
+            const { nomecliente, cnpj, razaosocial, logradouro, numero, complemento,
+                bairro, cidade, estado, cep, telefonefixo, telefonecelular, nomeresponsavel,
+                telefoneresponsavel, ativo } = request.body;
+
             await trx('cliente').where('id', id).update({
                 nomecliente,
                 cnpj,

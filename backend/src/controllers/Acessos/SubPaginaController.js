@@ -24,6 +24,7 @@ module.exports = {
                 .join('pagina', 'pagina.id', '=', 'subpagina.paginaid')
                 .join('usuario', 'usuario.id', '=', 'subpagina.usuarioid')
                 .select(['subpagina.*', 'pagina.nomepagina', 'usuario.nome'])
+                .orderBy('subpagina.nomesubpagina', 'asc')
                 .first();
 
             return response.status(200).json(subpagina);

@@ -5,7 +5,8 @@ module.exports = {
         try {
             const modulos = await connection('modulo')
                 .join('usuario', 'usuario.id', '=', 'modulo.usuarioid')
-                .select(['modulo.*', 'usuario.nome']);
+                .select(['modulo.*', 'usuario.nome'])
+                .orderBy('modulo.nomemodulo', 'asc');
 
             return response.status(200).json(modulos);
         } catch (err) {

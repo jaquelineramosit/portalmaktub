@@ -154,6 +154,7 @@ routes.get('/dados-bancarios', DadosBancariosController.getAll);
 routes.get('/dados-bancarios/:id', DadosBancariosController.getById);
 routes.post('/dados-bancarios', DadosBancariosController.create);
 routes.put('/dados-bancarios/:id', DadosBancariosController.update);
+routes.get('/dados-bancarios-tecnico/:tecnicoId', DadosBancariosController.getByTecnicoId);
 
 routes.get('/disponibilidadeCount', DisponibilidadeController.getCount);
 routes.get('/disponibilidade', DisponibilidadeController.getAll);
@@ -263,11 +264,11 @@ routes.post('/tipo-tecnico', TipoTecnicoController.create);
 routes.put('/tipo-tecnico/:id', TipoTecnicoController.update);
 
 //Dashboards
- routes.get('/dashboard-card-semanal/:statusatendimentoid', DashboardController.getValoresSemanais);
- routes.get('/dashboard-card-quinzenal/:statusatendimentoid', DashboardController.getValoresQuinzenais);
- routes.get('/dashboard-card-mensal/:statusatendimentoid', DashboardController.getValoresMensais);
- routes.get('/dashboard-card-totalSemanal/:statusatendimentoid', DashboardController.getTotalSemanal);
- routes.get('/dashboard-card-totalQuinzenal/:statusatendimentoid', DashboardController.getTotalQuinzenal);
- routes.get('/dashboard-card-totalMensal/:statusatendimentoid', DashboardController.getTotalMensal);
- 
+routes.get('/dashboard-card-semanal/:statusatendimentoid', DashboardController.getValoresSemanais);
+routes.get('/dashboard-card-quinzenal/:statusatendimentoid', DashboardController.getValoresQuinzenais);
+routes.get('/dashboard-card-mensal/:statusatendimentoid', DashboardController.getValoresMensais);
+routes.get('/dashboard-card-totalSemanal/:statusatendimentoid', DashboardController.getTotalSemanal);
+routes.get('/dashboard-card-totalQuinzenal/:statusatendimentoid', DashboardController.getTotalQuinzenal);
+routes.get('/dashboard-card-totalMensal/:statusatendimentoid', DashboardController.getTotalMensal);
+
 module.exports = routes;

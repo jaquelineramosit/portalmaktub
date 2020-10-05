@@ -4,6 +4,7 @@ import { Card, CardBody, CardHeader, Col, Row, Badge } from 'reactstrap';
 import '../../../global.css';
 import api from '../../../services/api';
 import DataTableGenerica from '../../../components/DataTableGenerica';
+import BadgeAtivo from '../../../components/BadgeAtivo'
 
 
 export default function ListaCliente() {
@@ -43,7 +44,7 @@ export default function ListaCliente() {
             name: 'Cidade',
             selector: 'cidade',
             sortable: true,
-        },    
+        },
         {
             name: 'Estado',
             selector: 'estado',
@@ -54,7 +55,7 @@ export default function ListaCliente() {
             name: 'Status',
             sortable: true,
             center: true,
-            cell: row => <Badge color="success">Ativo</Badge>,
+            cell: row => <BadgeAtivo key={`badge${row.ativo}`} ativo={row.ativo}></BadgeAtivo>,
         },
         {
             name: 'Ações',

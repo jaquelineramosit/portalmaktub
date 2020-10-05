@@ -8,7 +8,8 @@ module.exports = {
             .select([
                 'banco.*', 
                 'usuario.nome'
-            ]);
+            ])
+            .orderBy('banco.nomebanco', 'asc');
         
             return response.status(200).json(banco);
         } catch (err) {

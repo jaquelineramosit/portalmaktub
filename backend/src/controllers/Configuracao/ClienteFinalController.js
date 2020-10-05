@@ -23,7 +23,8 @@ module.exports = {
                     'cliente.nomecliente',
                     'grupoempresarial.clienteid',
                     'usuario.nome'
-                ]);
+                ])
+                .orderBy('clientefinal.nomeclientefinal', 'asc');
 
             return response.status(200).json(clientefinal);
         } catch (err) {
