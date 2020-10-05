@@ -229,7 +229,7 @@ export default function Movimentacaoos(props) {
                                     {/* <ListGroupItem className="list-group-item-accent-secondary bg-light text-center font-weight-bold text-muted text-uppercase small">Today</ListGroupItem> */}
                                     {movimentacaoLogId.map((movimentacaolog) => {
                                         return(
-                                            <Fragment>
+                                            <Fragment key={movimentacaolog.id}>
                                                 <ListGroupItem className="list-group-item-accent-warning list-group-item-divider text-grey p-2">
                                                     <div className="avatar float-right">
                                                         <img className="img-avatar" src="assets/img/avatars/7.jpg" alt="Usuário"></img>
