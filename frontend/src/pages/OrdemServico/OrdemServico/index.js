@@ -1,4 +1,4 @@
-import { Tabs, Tab} from 'react-bootstrap'
+import { Tabs, Tab } from 'react-bootstrap'
 import React, { useState, useEffect, Fragment } from 'react';
 import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, InputGroup, InputGroupAddon, CardFooter, Form, ListGroup, ListGroupItem, } from 'reactstrap';
 import { Redirect } from 'react-router-dom';
@@ -9,7 +9,7 @@ import api from '../../../services/api';
 import { messagePorStatus, message } from '../../../utils/messages';
 import moment from 'moment';
 import CardListaStatus from '../../../components/CardListaStatus'
-import {valorNulo} from '../../../utils/functions'
+import { valorNulo } from '../../../utils/functions'
 const dateFormat = require('dateformat');
 
 // #region 
@@ -111,7 +111,7 @@ const OrdemServico = (props) => {
     const [horarioiniciodomingo, setHorarioiniciodomingo] = useState('');
     const [horariofimsemana, setHorariofimsemana] = useState('');
     const [horariofimsabado, setHorariofimsabado] = useState('');
-    const [horariofimdomingo, setHorariofimdomingo] = useState('');    
+    const [horariofimdomingo, setHorariofimdomingo] = useState('');
 
     // // informacoes do Escopo do Tipo de Projeto
     // const [dadosTipoProjeto, setDadosTipoProjeto] = useState({
@@ -127,10 +127,10 @@ const OrdemServico = (props) => {
     const [tipoProjetos, setTipoProjetos] = useState([]);
     const [tecnicos, setTecnicos] = useState([]);
     //#endregion
-    
+
     //#region
     //Esta função altera o valor dos estados das propriedades do Cliente Final
-    const atualizaDadosClienteFinal = (props) => {           
+    const atualizaDadosClienteFinal = (props) => {
         setTelefonefixo(valorNulo(props.telefonefixo));
         setTelefoneresponsavel(valorNulo(props.telefoneresponsavel));
         setCed(valorNulo(props.ced));
@@ -146,13 +146,13 @@ const OrdemServico = (props) => {
         setHorarioiniciodomingo(valorNulo(props.horarioiniciodomingo));
         setHorariofimsemana(valorNulo(props.horariofimsemana));
         setHorariofimsabado(valorNulo(props.horariofimsabado));
-        setHorariofimdomingo(valorNulo(props.horariofimdomingo));        
+        setHorariofimdomingo(valorNulo(props.horariofimdomingo));
     };
     //#endregion
 
     //#region 
     //Esta função limpa os estados das propriedades do Cliente Final
-    function limparDadosClienteFinal() {       
+    function limparDadosClienteFinal() {
         setTelefonefixo('');
         setTelefoneresponsavel('');
         setCed('');
@@ -168,7 +168,7 @@ const OrdemServico = (props) => {
         setHorarioiniciodomingo('');
         setHorariofimsemana('');
         setHorariofimsabado('');
-        setHorariofimdomingo('');        
+        setHorariofimdomingo('');
     };
     //#endregion
 
@@ -176,7 +176,7 @@ const OrdemServico = (props) => {
     //Atualiza os combos da página
     useEffect(() => {
         api.get('clientes').then(response => {
-            setClientes(response.data);            
+            setClientes(response.data);
         })
     }, [usuarioId]);
 
@@ -223,7 +223,7 @@ const OrdemServico = (props) => {
     useEffect(() => {
         if (action === 'edit' && cadosdIdParam !== '') {
             api.get(`ordem-servico/${cadosdIdParam}`).then(response => {
-                
+
                 //CABEÇALHO
                 setNumeroos(response.data.numeroos);
                 document.getElementById("txtDataSolicitacao").disabled = true;
@@ -276,7 +276,7 @@ const OrdemServico = (props) => {
                 setValorapagar(response.data.valorapagar);
                 setValorapagarFormatado(response.data.valorapagar);
                 valorPagarInicial = response.data.valorapagar;
-                setValorareceber(response.data.valorareceber);    
+                setValorareceber(response.data.valorareceber);
                 setValorareceberFormatado(response.data.valorareceber);
                 valorReceberInicial = response.data.valorareceber;
 
@@ -284,7 +284,7 @@ const OrdemServico = (props) => {
                 qdeHoras = valorFimInicial - valorInicioInicial;
                 qdeHorasExtra = qdeHoras - qtdeHorasInicial;
                 //FIM - PROJETO                                                
-    
+
                 //#region 
                 //Carrega os combos do formulário a partir dos carregados no edit
                 api.get(`grupo-empresarial?clienteId=${clienteIdInicial}`).then(response => {
@@ -294,15 +294,15 @@ const OrdemServico = (props) => {
                 api.get(`bandeira?grupoempresarialId=${grupoEmpresarialIdInicial}`).then(response => {
                     setBandeiras(response.data);
                 });
-                
-                api.get(`cliente-final?bandeiraId=${bandeiraIdInicial}`).then(response => {                    
-                    setClientesFinais(response.data);                    
-                });      
-             
-                api.get(`cliente-final/${clienteFinalIdInicial}`).then(response => {                    
-                    atualizaDadosClienteFinal(response.data); 
-                }); 
-                
+
+                api.get(`cliente-final?bandeiraId=${bandeiraIdInicial}`).then(response => {
+                    setClientesFinais(response.data);
+                });
+
+                api.get(`cliente-final/${clienteFinalIdInicial}`).then(response => {
+                    atualizaDadosClienteFinal(response.data);
+                });
+
                 api.get(`tipo-projeto/${tipoProjetoIdInicial}`).then(response => {
                     setEscopoprojeto(response.data.escopoprojeto);
                     setHoraDecimal(response.data.horadecimal);
@@ -329,7 +329,7 @@ const OrdemServico = (props) => {
     }, [cadosdIdParam]);
     //#endregion
 
-   
+
     //#region 
     //Atualização dos combos do status de Movimentação
     useEffect(() => {
@@ -355,18 +355,18 @@ const OrdemServico = (props) => {
         event.preventDefault();
 
         const { name, value } = event.target;
-        
+
         switch (name) {
             case 'dataatendimento':
-              if ('dataatendimento' != "") {
-                  setDataAtendimento(value);
-                  let nomeDiaDaSemana = getDateNameOfWeekDay(value);
-                  setNomediasemana(nomeDiaDaSemana);
-              }
-              break;
+                if ('dataatendimento' != "") {
+                    setDataAtendimento(value);
+                    let nomeDiaDaSemana = getDateNameOfWeekDay(value);
+                    setNomediasemana(nomeDiaDaSemana);
+                }
+                break;
             case 'numeroos':
-              setNumeroos(numMask(event.target.value));
-              break;
+                setNumeroos(numMask(event.target.value));
+                break;
             case 'clienteid':
                 if (value !== '') {
                     setClienteid(value);
@@ -394,93 +394,95 @@ const OrdemServico = (props) => {
                 if (value !== '') {
                     setGrupoEmpresarialid(value);
                     setBandeiraid('');
-                    setClienteFinalId('');                    
+                    setClienteFinalId('');
                     setBandeiras([]);
                     setClientesFinais([]);
                     api.get(`bandeira?grupoempresarialId=${value}`).then(response => {
                         setBandeiras(response.data);
                         setClientesFinais([]);
-                    });                    
+                    });
 
-                } else {       
-                    setGrupoEmpresarialid('');         
+                } else {
+                    setGrupoEmpresarialid('');
                     setBandeiras([]);
                     setClientesFinais([]);
                     limparDadosClienteFinal();
                 }
-            break;
+                break;
             case 'bandeiraid':
                 if (value !== '') {
                     setClienteFinalId('');
                     setClientesFinais([]);
-                    setBandeiraid(value);                  
-                    api.get(`cliente-final?bandeiraid=${value}`).then(response => {                      
-                        setClientesFinais(response.data)                      
+                    setBandeiraid(value);
+                    api.get(`cliente-final?bandeiraid=${value}`).then(response => {
+                        setClientesFinais(response.data)
                     });
                 } else {
-                    setBandeiraid(''); 
-                    setClientesFinais([]);                  
+                    setBandeiraid('');
+                    setClientesFinais([]);
                     setClienteFinalId('');
                     limparDadosClienteFinal();
                 }
                 break;
             case 'clientefinalid':
-              if (value !== '') {
-                  setClienteFinalId(value);
-                  api.get(`cliente-final/${value}`).then(response => {
-                    atualizaDadosClienteFinal(response.data);
-                    //setTelefonefixo(response.data.telefonefixo)
-                  });
-              } else {
-                  setClienteFinalId('');
-                  limparDadosClienteFinal();
-              }
-              break;         
+                if (value !== '') {
+                    setClienteFinalId(value);
+                    api.get(`cliente-final/${value}`).then(response => {
+                        atualizaDadosClienteFinal(response.data);
+                        //setTelefonefixo(response.data.telefonefixo)
+                    });
+                } else {
+                    setClienteFinalId('');
+                    limparDadosClienteFinal();
+                }
+                break;
             case 'tipoprojetoid':
-              if (value !== 'Selecione...') {
-                  setTipoprojetoid(value);
-                  setTecnicoid('');
-                  api.get(`tecnico?tipoProjetoId=${value}`).then(response => {
-                      setTecnicos(response.data);
-                  });
-                  api.get(`tipo-projeto/${value}`).then(response => {
-                      setQtdehoras(response.data.horas);
-                      horasProjeto = response.data.horas;
-                      setValorapagar(response.data.despesa);
-                      setValorapagarFormatado(response.data.despesa);
-                      valorPagarInicial = response.data.despesa;
-                      setValorareceber(response.data.receita);    
-                      setValorareceberFormatado(response.data.receita);    
-                      valorReceberInicial = response.data.receita;
-                      setHoraDecimal(response.data.horadecimal);
-                      
-                      setEscopoprojeto(response.data.escopoprojeto);
-                      TotaisPagarReceber();
-                  });
-              } else {
-                  setTipoprojetoid('');
-                  setTecnicoid('');
-                  setTecnicos([]);
-                  zeraDadosServico();
-              }
-              break;
+                if (value !== 'Selecione...') {
+                    setTipoprojetoid(value);
+                    setTecnicoid('');
+                    api.get(`tecnico?tipoProjetoId=${value}`).then(response => {
+                        setTecnicos(response.data);
+                    });
+                    api.get(`tipo-projeto/${value}`).then(response => {
+                        setQtdehoras(response.data.horas);
+                        horasProjeto = response.data.horas;
+                        setValorapagar(response.data.despesa);
+                        setValorapagarFormatado(response.data.despesa);
+                        valorPagarInicial = response.data.despesa;
+                        setValorareceber(response.data.receita);
+                        setValorareceberFormatado(response.data.receita);
+                        valorReceberInicial = response.data.receita;
+                        setHoraDecimal(response.data.horadecimal);
+
+                        setEscopoprojeto(response.data.escopoprojeto);
+                        TotaisPagarReceber();
+                    });
+                } else {
+                    setTipoprojetoid('');
+                    setTecnicoid('');
+                    setTecnicos([]);
+                    zeraDadosServico();
+                }
+                break;
             case 'horaentrada':
-              setHoraentrada(value);
-              valorInicioInicial = new Date("2020-08-29 " + value).getHours();
-              TotaisPagarReceber();
-              break;
+                setHoraentrada(value);
+                valorInicioInicial = new Date("2020-08-29 " + value).getHours();
+                TotaisPagarReceber();
+                break;
             case 'horasaida':
-              setHorasaida(value);
-              valorFimInicial = new Date("2020-08-29 " + value).getHours();
-              TotaisPagarReceber();
-              break;
+                setHorasaida(value);
+                valorFimInicial = new Date("2020-08-29 " + value).getHours();
+                TotaisPagarReceber();
+                break;
         }
     };
 
     //#region
     //Função que atualiza a Movimentação de Ordem de Serviço
+
     async function handleAtualizaMovimentacao(e) {
-        e.preventDefault();        
+
+        e.preventDefault();
         const dataMovimentacao = {
             statusatendimentoid,
             statuscobrancaid,
@@ -496,9 +498,10 @@ const OrdemServico = (props) => {
                 }
             });
             setRedirect(messagePorStatus(response.status));
-            } catch (err) {
-                message('error', "Ocorreu um erro. Favor contatar o administrador do sistema.");
-            }
+        } catch (err) {
+            message('error', "Ocorreu um erro. Favor contatar o administrador do sistema.");
+        }
+
     }
     //#endregion
 
@@ -526,10 +529,10 @@ const OrdemServico = (props) => {
             diadasemana,
             custoadicional,
             ativo,
-            statusatendimentoid,
-            statuspagamentoid,
-            statuscobrancaid,
-            observacao
+            statusatendimentoid:1,
+            statuspagamentoid:4,
+            statuscobrancaid:6,
+            observacao:''
         };
 
         if (action === 'edit') {
@@ -547,19 +550,19 @@ const OrdemServico = (props) => {
 
         } else {
 
-          if (action === 'novo') {
-              try {
-                  const response = await api.post('ordem-servico', data, {
-                      headers: {
-                          Authorization: 1,
-                      }
-                  });
-                  setRedirect(messagePorStatus(response.status));
-            } catch (err) {
-                message('error', "Ocorreu um erro. Favor contatar o administrador do sistema.");
+            if (action === 'novo') {
+                try {
+                    const response = await api.post('ordem-servico', data, {
+                        headers: {
+                            Authorization: 1,
+                        }
+                    });
+                    setRedirect(messagePorStatus(response.status));
+                } catch (err) {
+                    message('error', "Ocorreu um erro. Favor contatar o administrador do sistema.");
+                }
             }
-          }
-      }
+        }
     }
     //#endregion
 
@@ -577,7 +580,7 @@ const OrdemServico = (props) => {
             setTotalareceber(valorReceberInicial + Number(custoAdicionalInicial));
         }
     }
-    
+
     function getDateNameOfWeekDay(data) {
         var data = String(moment(data));
 
@@ -598,7 +601,7 @@ const OrdemServico = (props) => {
         var nomeDiaDaSemana = diasDaSemana[date.getDay()];
 
         return nomeDiaDaSemana;
-    }    
+    }
 
     function zeraDadosServico() {
         setQtdehoras('');
@@ -613,10 +616,10 @@ const OrdemServico = (props) => {
         setEscopoprojeto('');
     }
 
-    
+
     //Essa constante é utlizada para determinar qual é a tab que será selecionada
     const [key, setKey] = useState('clientefinal');
-  
+
     return (
         <div className="animated fadeIn">
             {redirect && <Redirect to="/lista-ordem-servico" />}
@@ -686,11 +689,11 @@ const OrdemServico = (props) => {
                                     onSelect={(k) => setKey(k)}
                                 >
                                     {/* Tab1. CLiente / Final */}
-                                    <Tab 
-                                        eventKey="clientefinal" 
+                                    <Tab
+                                        eventKey="clientefinal"
                                         title={
                                             <Fragment>
-                                                <i className="fa fa-handshake-o"></i><strong><span className="ml-2">Cliente </span> </strong>                                                                                  
+                                                <i className="fa fa-handshake-o"></i><strong><span className="ml-2">Cliente </span> </strong>
                                             </Fragment>
                                         }
                                     >
@@ -1162,92 +1165,91 @@ const OrdemServico = (props) => {
                                         </FormGroup>
                                     </Tab>
                                     {/* Tab3. Movimentação de OS */}
-                                    <Tab
-                                        eventKey="movimentacao"
-                                        title={
-                                            <Fragment>
-                                                <i className="fa fa-arrows"></i><strong><span className="ml-2">Movimentação de OS</span></strong>
-                                            </Fragment>
-                                        }
-                                    >
-                                        <Row>
-                                            <Col md="8">
-                                                <FormGroup row>
-                                                    <Col md="4">
-                                                        <Label htmlFor="statusAtendimentoId">Status Atendimento</Label>
-                                                        <Input type="select" required name="select" id="cboStatusAtendimentoId" multiple={false}
-                                                            name="statusatendimentoid"
-                                                            value={statusatendimentoid}
-                                                            onChange={e => setStatusAtendimentoid(e.target.value)}>
-                                                            <option value={""}  defaultValue>Selecione...</option>
-                                                            {statusatendimentosid.map(statusatendimento => (
-                                                                <option key={statusatendimento.id} value={statusatendimento.id}>{statusatendimento.status}</option>
-                                                            ))}
-                                                        </Input>
-                                                    </Col>
-                                                    <Col md="4">
-                                                        <Label htmlFor="statusCobrancaId">Status Cobrança</Label>
-                                                        <Input type="select" required name="select" id="cboStatusCobrancaId" multiple={false}
-                                                            name="statuscobrancaid"
-                                                            value={statuscobrancaid}
-                                                            onChange={e => setStatusCobrancaid(e.target.value)}>
-                                                            <option value={""} defaultValue>Selecione...</option>
-                                                            {statuscobrancasid.map(statuscobranca => (
-                                                                <option key={statuscobranca.id} value={statuscobranca.id}>{statuscobranca.status}</option>
-                                                            ))}
-                                                        </Input>
-                                                    </Col>
-                                                    <Col md="4">
-                                                        <Label htmlFor="statusPagamentoId">Status Pagamento</Label>
-                                                        <Input type="select" required name="select" id="cboStatuspPagamentoId" multiple={false}
-                                                            name="statuspagamentoid"
-                                                            value={statuspagamentoid}
-                                                            onChange={e => setStatusPagamentoid(e.target.value)}>
-                                                            <option value={""} defaultValue>Selecione...</option>
-                                                            {statuspagamentosid.map(statuspagamento => (
-                                                                <option key={statuspagamento.id} value={statuspagamento.id}>{statuspagamento.status}</option>
-                                                            ))}
-                                                        </Input>
-                                                    </Col>
-                                                </FormGroup>
-                                                <FormGroup row>
-                                                    <Col md="12">
-                                                        <Label>Observação</Label>
-                                                        <Input type="textarea" rows="5" placeholder="Digite a obsevação" id="txtObservacaoMovimentacao"
-                                                            name="observacao"
-                                                            value={observacao}
-                                                            onChange={e => setObservacao(e.target.value)} />
-                                                    </Col>
-                                                </FormGroup>
-                                                {action !== 'novo' ? (
+                                    {action !== 'novo' ? (
+                                        <Tab
+                                            eventKey="movimentacao"
+                                            title={
+                                                <Fragment>
+                                                    <i className="fa fa-arrows"></i><strong><span className="ml-2">Movimentação de OS</span></strong>
+                                                </Fragment>
+                                            }
+                                        >
+                                            <Row>
+                                                <Col md="8">
+                                                    <FormGroup row>
+                                                        <Col md="4">
+                                                            <Label htmlFor="statusAtendimentoId">Status Atendimento</Label>
+                                                            <Input type="select" required name="select" id="cboStatusAtendimentoId" multiple={false}
+                                                                name="statusatendimentoid"
+                                                                value={statusatendimentoid}
+                                                                onChange={e => setStatusAtendimentoid(e.target.value)}>
+                                                                <option value={""} defaultValue>Selecione...</option>
+                                                                {statusatendimentosid.map(statusatendimento => (
+                                                                    <option key={statusatendimento.id} value={statusatendimento.id}>{statusatendimento.status}</option>
+                                                                ))}
+                                                            </Input>
+                                                        </Col>
+                                                        <Col md="4">
+                                                            <Label htmlFor="statusCobrancaId">Status Cobrança</Label>
+                                                            <Input type="select" required name="select" id="cboStatusCobrancaId" multiple={false}
+                                                                name="statuscobrancaid"
+                                                                value={statuscobrancaid}
+                                                                onChange={e => setStatusCobrancaid(e.target.value)}>
+                                                                <option value={""} defaultValue>Selecione...</option>
+                                                                {statuscobrancasid.map(statuscobranca => (
+                                                                    <option key={statuscobranca.id} value={statuscobranca.id}>{statuscobranca.status}</option>
+                                                                ))}
+                                                            </Input>
+                                                        </Col>
+                                                        <Col md="4">
+                                                            <Label htmlFor="statusPagamentoId">Status Pagamento</Label>
+                                                            <Input type="select" required name="select" id="cboStatuspPagamentoId" multiple={false}
+                                                                name="statuspagamentoid"
+                                                                value={statuspagamentoid}
+                                                                onChange={e => setStatusPagamentoid(e.target.value)}>
+                                                                <option value={""} defaultValue>Selecione...</option>
+                                                                {statuspagamentosid.map(statuspagamento => (
+                                                                    <option key={statuspagamento.id} value={statuspagamento.id}>{statuspagamento.status}</option>
+                                                                ))}
+                                                            </Input>
+                                                        </Col>
+                                                    </FormGroup>
+                                                    <FormGroup row>
+                                                        <Col md="12">
+                                                            <Label>Observação</Label>
+                                                            <Input type="textarea" rows="5" placeholder="Digite a obsevação" id="txtObservacaoMovimentacao"
+                                                                name="observacao"
+                                                                value={observacao}
+                                                                onChange={e => setObservacao(e.target.value)} />
+                                                        </Col>
+                                                    </FormGroup>
                                                     <FormGroup className="text-left">
                                                         <Button type="button" size="sm" color="info" className="text-white mr-3" onClick={handleAtualizaMovimentacao}><i className="fa fa-check"></i> Atualizar Movimentação</Button>
                                                     </FormGroup>
-                                                ) : ""}
-
-                                            </Col>
-                                            <Col md="4">
-                                                <CardHeader>
-                                                    <i className="fa fa-history"></i>
-                                                    <strong>Timeline</strong>
-                                                </CardHeader>
-                                                <CardBody className="p-0">
-                                                    <ListGroup className="list-group-accent" tag={'div'}>
-                                                        {/* // {items.map((value) => { */}
-                                                        {/* <ListGroupItem className="list-group-item-accent-secondary bg-light text-center font-weight-bold text-muted text-uppercase small">Today</ListGroupItem> */}
-                                                        {movimentacaoLogId.map((movimentacaolog) => {
-                                                            return (
-                                                                <CardListaStatus key={movimentacaolog.id} movimentacaolog={movimentacaolog}></CardListaStatus>
-                                                            )
-                                                        })}
-                                                    </ListGroup>
-                                                </CardBody>
-                                                <CardFooter>
-                                                    <div className="small text-muted"><strong>Atualizado em:</strong> {dateFormat(now, "dd/mm/yyyy")} às {dateFormat(now, "HH:MM")}</div>
-                                                </CardFooter>
-                                            </Col>
-                                        </Row>
-                                    </Tab>
+                                                </Col>
+                                                <Col md="4">
+                                                    <CardHeader>
+                                                        <i className="fa fa-history"></i>
+                                                        <strong>Timeline</strong>
+                                                    </CardHeader>
+                                                    <CardBody className="p-0">
+                                                        <ListGroup className="list-group-accent" tag={'div'}>
+                                                            {/* // {items.map((value) => { */}
+                                                            {/* <ListGroupItem className="list-group-item-accent-secondary bg-light text-center font-weight-bold text-muted text-uppercase small">Today</ListGroupItem> */}
+                                                            {movimentacaoLogId.map((movimentacaolog) => {
+                                                                return (
+                                                                    <CardListaStatus key={movimentacaolog.id} movimentacaolog={movimentacaolog}></CardListaStatus>
+                                                                )
+                                                            })}
+                                                        </ListGroup>
+                                                    </CardBody>
+                                                    <CardFooter>
+                                                        <div className="small text-muted"><strong>Atualizado em:</strong> {dateFormat(now, "dd/mm/yyyy")} às {dateFormat(now, "HH:MM")}</div>
+                                                    </CardFooter>
+                                                </Col>
+                                            </Row>
+                                        </Tab>
+                                    ) : ""}
                                 </Tabs>
                             </CardBody>
                             <CardFooter className="text-center">
