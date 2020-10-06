@@ -101,6 +101,7 @@ routes.put('/register/:id', RegisterController.update);
 // Ordem de Servico
 routes.get('/ordemservicoCount', OrdemServicoController.getCount);
 routes.get('/ordem-servico', OrdemServicoController.getAll);
+routes.get('/ordem-servico/:status', OrdemServicoController.getAllByStatus);
 routes.get('/ordem-servico/:id', OrdemServicoController.getById);
 routes.post('/ordem-servico', OrdemServicoController.create);
 routes.put('/ordem-servico/:id', OrdemServicoController.update);
@@ -263,9 +264,12 @@ routes.post('/tipo-tecnico', TipoTecnicoController.create);
 routes.put('/tipo-tecnico/:id', TipoTecnicoController.update);
 
 //Dashboards
+
+
  routes.get('/dashboard-card-semanal/:statusatendimentoid', DashboardController.getValoresSemanais);
  routes.get('/dashboard-card-quinzenal/:statusatendimentoid', DashboardController.getValoresQuinzenais);
  routes.get('/dashboard-card-mensal/:statusatendimentoid', DashboardController.getValoresMensais);
+ routes.get('/dashboard-card-total/:statusatendimentoid', DashboardController.getTotalGeral);
  routes.get('/dashboard-card-totalSemanal/:statusatendimentoid', DashboardController.getTotalSemanal);
  routes.get('/dashboard-card-totalQuinzenal/:statusatendimentoid', DashboardController.getTotalQuinzenal);
  routes.get('/dashboard-card-totalMensal/:statusatendimentoid', DashboardController.getTotalMensal);

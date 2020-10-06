@@ -45,6 +45,50 @@ module.exports = {
             return response.status(400).json({ error: 'Ocorreu um erro ao acessar os dados.' })
         }
     },
+
+    async getAllByStatus (request, response) {
+        try {
+            
+            const status  = request.params.status; 
+            const periodo  = request.params.periodo; 
+            
+            const ordemservico = await connection('ordemservico') 
+                .whereRaw(
+                    `movimentacaoos.id = (SELECT MAX(id) FROM movimentacaoos AS mos WHERE mos.ordemservicoid = movimentacaoos.ordemservicoid)`
+                )
+                .andWhere('statusatendimento.codstatus', '=', status)
+                .join('clientefinal', 'clientefinal.id', '=', 'ordemservico.clientefinalid')
+                .join('bandeira', 'bandeira.id', '=', 'clientefinal.bandeiraid')
+                .join('grupoempresarial', 'grupoempresarial.id', '=', 'bandeira.grupoempresarialid')
+                .join('cliente', 'cliente.id', '=', 'grupoempresarial.clienteid')
+                .join('tipoprojeto', 'tipoprojeto.id', '=', 'ordemservico.tipoprojetoid')
+                .join('tecnico', 'tecnico.id', '=', 'ordemservico.tecnicoid')
+                .join('usuario', 'usuario.id', '=', 'ordemservico.usuarioid')
+                .join('movimentacaoos', 'movimentacaoos.ordemservicoid', '=', 'ordemservico.id')
+                .join('statusatendimento', 'statusatendimento.id', '=', 'movimentacaoos.statusatendimentoid')
+                .select([
+                    'ordemservico.*',
+                    'cliente.nomecliente',
+                    'bandeira.nomebandeira',
+                    'grupoempresarial.nomegrupoempresarial',
+                    'clientefinal.nomeclientefinal',
+                    'tipoprojeto.nometipoprojeto',
+                    'tecnico.nometecnico',
+                    'usuario.nome',
+                    'statusatendimento.status'
+                ])
+                .orderBy('ordemservico.id', 'desc')
+                .distinct()
+                .limit(rows);
+            
+                return response.status(200).json(ordemservico);
+             
+        } catch (error) {
+            return response.status(404).json(error.message);
+        }
+            
+    },
+
     async getById(request, response) {
         try {
             const { id } = request.params;

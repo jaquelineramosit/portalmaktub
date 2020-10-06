@@ -83,26 +83,50 @@ export default function DashBoard() {
     const [totalCard3, setTotalCard3] = useState([]);
     const [totalCard4, setTotalCard4] = useState([]);
 
+    // useEffect(() => {
+    //     api.get('/dashboard-card-totalMensal/1').then(response => {
+    //         setTotalCard1(response.data);           
+    //     })
+    // }, []);
+
+    // useEffect(() => {
+    //     api.get('/dashboard-card-totalMensal/5').then(response => {
+    //         setTotalCard2(response.data);           
+    //     })
+    // }, []);
+
+    // useEffect(() => {
+    //     api.get('/dashboard-card-totalMensal/3').then(response => {
+    //         setTotalCard3(response.data);           
+    //     })
+    // }, []);
+
+    // useEffect(() => {
+    //     api.get('/dashboard-card-totalMensal/6').then(response => {
+    //         setTotalCard4(response.data);           
+    //     })
+    // }, []);
+
     useEffect(() => {
-        api.get('/dashboard-card-totalMensal/1').then(response => {
+        api.get('/dashboard-card-total/1').then(response => {
             setTotalCard1(response.data);           
         })
     }, []);
 
     useEffect(() => {
-        api.get('/dashboard-card-totalMensal/5').then(response => {
+        api.get('/dashboard-card-total/5').then(response => {
             setTotalCard2(response.data);           
         })
     }, []);
 
     useEffect(() => {
-        api.get('/dashboard-card-totalMensal/3').then(response => {
+        api.get('/dashboard-card-total/3').then(response => {
             setTotalCard3(response.data);           
         })
     }, []);
 
     useEffect(() => {
-        api.get('/dashboard-card-totalMensal/6').then(response => {
+        api.get('/dashboard-card-total/6').then(response => {
             setTotalCard4(response.data);           
         })
     }, []);

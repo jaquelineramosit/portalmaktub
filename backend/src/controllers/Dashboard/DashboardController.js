@@ -5,6 +5,37 @@ const knexfile = require('../../../knexfile');
 
 module.exports = {
 
+    async getTotalGeral (request, response) {
+
+        /*
+        Desenvolvido por: Jaqueline Silva
+        Em: 02/10/2020
+        Parâmetros esperados: 
+                                -statusatendimentoid (status de atendimento: Novo, Concluído, Em Andamento, Cancelado)                                
+        Objetivo: Retornar um objeto json o valor total de OS's de acordo com os parêmetros solicitados.
+        */
+        try {
+            
+            const {statusatendimentoid} = request.params;
+            console.log(statusatendimentoid)
+            const ordemservicoTotal = await connection('ordemservico')
+                .where({
+                    "statusatendimento.id": statusatendimentoid
+                })
+                .join('movimentacaoos', 'movimentacaoos.ordemservicoid', '=', 'ordemservico.id')
+                .join('statusatendimento', 'statusatendimento.id', '=', 'movimentacaoos.statusatendimentoid')            
+                .count('ordemservico.id as total');
+        
+            
+            return response.status(200).json(ordemservicoTotal);
+        } catch (error) {
+            return response.status(404).json(error.message);
+        }
+    },
+
+
+
+
     async getTotalSemanal (request, response) {
 
         /*

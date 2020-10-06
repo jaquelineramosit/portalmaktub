@@ -115,6 +115,8 @@ class App extends Component {
               <PrivateRoute path="/rel-tecnicoxfaturado" name="Relatório de Técnico x Faturado" component={(props) => <DefaultLayout {...props} />}/>
               <PrivateRoute path="/rel-custoxtecnico" name="Relatório de Custo x Técnico" component={(props) => <DefaultLayout {...props} />}/>
         
+              {/* Teste */} 
+              <PrivateRoute path="/teste-react-select" name="Mult Select" component={(props) => <DefaultLayout {...props} />}/>
               <Route path="*" component={() => <h1>Page not found</h1>} />
             </Switch>
           </React.Suspense>
