@@ -4,6 +4,7 @@ import { Card, CardBody, CardHeader, Col, Row, Badge } from 'reactstrap';
 import '../../../global.css';
 import api from '../../../services/api';
 import DataTableGenerica from '../../../components/DataTableGenerica';
+import BadgeAtivo from '../../../components/BadgeAtivo'
 
 export default function ListaTecnicos() {
 
@@ -38,7 +39,7 @@ export default function ListaTecnicos() {
             name: 'Nome Técnico',
             selector: 'nometecnico',
             sortable: true,
-            width: '15%', 
+            width: '15%',
 
 
         },
@@ -47,14 +48,14 @@ export default function ListaTecnicos() {
             selector: 'telefonecelular',
             sortable: true,
             left: true,
-            width: '15%', 
+            width: '15%',
         },
         {
             name: 'Cidade',
             selector: 'cidade',
             sortable: true,
             left: true,
-            width: '15%', 
+            width: '15%',
 
         },
         {
@@ -62,7 +63,7 @@ export default function ListaTecnicos() {
             selector: 'estado',
             sortable: true,
             left: true,
-            width: '15%', 
+            width: '15%',
 
         },
         {
@@ -70,14 +71,15 @@ export default function ListaTecnicos() {
             selector: 'desctipotecnico',
             sortable: true,
             left: true,
-            width: '20%',  
+            width: '20%',
 
         },
         {
             name: 'Status',
+            selector: 'ativo',
             sortable: true,
             left: true,
-            cell: row => <Badge color="success">Ativo</Badge>,
+            cell: row => <BadgeAtivo key={`badge${row.ativo}`} ativo={row.ativo}></BadgeAtivo>,
         },
         {
             name: 'Ações',

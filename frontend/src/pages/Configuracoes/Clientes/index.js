@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, InputGroup, InputGroupAddon, CardFooter, Form } from 'reactstrap';
 import '../../../global.css';
 import './styles.css';
+import { AppSwitch } from '@coreui/react'
 import { Redirect } from "react-router-dom";
 import { telMask, cepMask, numMask, cnpjMask, celMask, cpfMask } from '../../../mask'
 import axios from 'axios';
@@ -103,6 +104,19 @@ export default function Cliente(props) {
         setEstado(uf);
     }
     //FIM
+
+    //Função do Botão ativar e desativar
+    function handleInputChange(event) {
+        var { name } = event.target;
+
+        if (name === 'ativo') {
+            if (ativo === 1) {
+                setAtivo(0);
+            } else {
+                setAtivo(1);
+            }
+        }
+    };
 
 
     //Função responsável por atualizar o estado da propriedade de redirecionamento da página
@@ -236,7 +250,7 @@ export default function Cliente(props) {
                                             </InputGroupAddon>
                                         </InputGroup>
                                     </Col>
-                                    <Col md="3">
+                                    <Col md="2">
                                         <Label htmlFor="telefoneResponsavel">Telefone Responsável</Label>
                                         <InputGroup>
                                             <Input type="text" id="txtTelefoneResponsavel" placeholder="(11) 9999-9999"
@@ -247,6 +261,14 @@ export default function Cliente(props) {
                                                 <span className="btn btn-secondary disabled icon-phone"></span>
                                             </InputGroupAddon>
                                         </InputGroup>
+                                    </Col>
+                                    <Col md="1">
+                                        <Label check className="form-check-label" htmlFor="ativo">Ativo</Label>
+                                        <AppSwitch id="rdAtivo" className={'switch-ativo'} label color={'success'} size={'sm'}
+                                            onChange={handleInputChange}
+                                            checked={ativo === 1 ? true : false}
+                                            name="ativo"
+                                        />
                                     </Col>
                                 </FormGroup>
                             </CardBody>

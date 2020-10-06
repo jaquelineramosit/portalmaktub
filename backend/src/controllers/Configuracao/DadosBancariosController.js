@@ -21,6 +21,25 @@ module.exports = {
         }
     },
 
+    async getByTecnicoId(request, response) {
+        const { tecnicoId } = request.params;
+        const dadosbancarios = await connection('dadosbancarios')
+            .where('dadosbancarios.tecnicoid', tecnicoId)
+            .join('tecnico', 'tecnico.id', '=', 'dadosbancarios.tecnicoid')
+            .join('banco', 'banco.id', '=', 'dadosbancarios.bancoid')
+            .join('tipoconta', 'tipoconta.id', '=', 'dadosbancarios.tipocontaid')
+            .join('usuario', 'usuario.id', '=', 'dadosbancarios.usuarioid')
+            .select([
+                'dadosbancarios.*',
+                'tecnico.nometecnico',
+                'banco.nomebanco',
+                'tipoconta.nometipoconta',
+                'usuario.nome'
+            ])
+            .first();
+        return response.json(dadosbancarios);
+    },
+
     async getById(request, response) {
         try {
             const { id } = request.params;
@@ -43,6 +62,7 @@ module.exports = {
             return response.status(400).json({ error: 'Ocorreu um erro ao acessar os dados.' })
         }
     },
+
 
     async create(request, response) {
         try {

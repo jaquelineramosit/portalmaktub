@@ -17,7 +17,8 @@ module.exports = {
                     'grupoempresarial.*',
                     'cliente.nomecliente',
                     'usuario.nome as nomeusuario'
-                ]);
+                ])
+                .orderBy('grupoempresarial.nomegrupoempresarial', 'asc');
 
             return response.status(200).json(grupoempresarial);
         } catch (err) {
@@ -94,12 +95,12 @@ module.exports = {
     async update(request, response) {
         const trx = await connection.transaction();
         try {
-        const { id } = request.params;
-        const usuarioid = request.headers.authorization;
-        const dataultmodif = getDate();
+            const { id } = request.params;
+            const usuarioid = request.headers.authorization;
+            const dataultmodif = getDate();
 
-        const { clienteid, nomegrupoempresarial, descricao, ativo } = request.body;
-       
+            const { clienteid, nomegrupoempresarial, descricao, ativo } = request.body;
+
             await trx('grupoempresarial').where('id', id).update({
                 clienteid,
                 nomegrupoempresarial,

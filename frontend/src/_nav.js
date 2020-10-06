@@ -57,8 +57,8 @@ export default {
           icon: 'fa fa-handshake-o',
         },
         {
-          name: 'Cliente Final',
-          url: '/lista-cliente-final',
+          name: 'Grupo Empresarial',
+          url: '/lista-grupo-empresarial',
           icon: 'fa fa-handshake-o',
         },
         {
@@ -66,22 +66,19 @@ export default {
           url: '/lista-bandeira',
           icon: 'fa fa-handshake-o',
         },
+
         {
-          name: 'Grupo Empresarial',
-          url: '/lista-grupo-empresarial',
+          name: 'Cliente Final',
+          url: '/lista-cliente-final',
           icon: 'fa fa-handshake-o',
         },
+
       ],
     },
     {
       name: 'Cadastro Técnicos',
       icon: 'icon-support',
       children: [
-        {
-          name: 'Técnicos',
-          url: '/lista-tecnicos',
-          icon: 'icon-support',
-        },
         {
           name: 'Tipos de Técnicos',
           url: '/lista-tipo-tecnicos',
@@ -92,6 +89,13 @@ export default {
           url: '/lista-disponibilidade',
           icon: 'icon-support',
         },
+        {
+          name: 'Técnicos',
+          url: '/lista-tecnicos',
+          icon: 'icon-support',
+        },
+
+
       ],
     },
     {
@@ -115,11 +119,6 @@ export default {
       icon: 'fa fa-credit-card-alt',
       children: [
         {
-          name: 'Dados Bancários',
-          url: '/lista-dados-bancarios',
-          icon: 'fa fa-credit-card-alt',
-        },
-        {
           name: 'Bancos',
           url: '/lista-banco',
           icon: 'fa fa-credit-card-alt',
@@ -129,6 +128,11 @@ export default {
           url: '/lista-tipo-conta',
           icon: 'fa fa-credit-card-alt',
         },
+        {
+          name: 'Dados Bancários',
+          url: '/lista-dados-bancarios',
+          icon: 'fa fa-credit-card-alt',
+        },
       ],
     },
     {
@@ -136,9 +140,9 @@ export default {
       icon: 'fa fa-check-square-o',
       children: [
         {
-        name: 'Status Adiantamento',
-        url: '/lista-status-adiantamento',
-        icon: 'fa fa-check-square-o',
+          name: 'Status Adiantamento',
+          url: '/lista-status-adiantamento',
+          icon: 'fa fa-check-square-o',
         },
         {
           name: 'Status Atendimento',
@@ -171,11 +175,7 @@ export default {
           url: '/lista-perfis-acesso',
           icon: 'fa fa-id-card',
         },
-        {
-          name: 'Permissão de Acesso',
-          url: '/lista-permissao-acesso',
-          icon: 'fa fa-user-secret',
-        },
+
         {
           name: 'Módulos',
           url: '/lista-modulos',
@@ -197,7 +197,12 @@ export default {
           icon: 'fa fa-code',
         },
         {
-         },
+          name: 'Permissão de Acesso',
+          url: '/lista-permissao-acesso',
+          icon: 'fa fa-user-secret',
+        },
+        {
+        },
 
       ],
     },

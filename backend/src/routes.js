@@ -155,6 +155,7 @@ routes.get('/dados-bancarios', DadosBancariosController.getAll);
 routes.get('/dados-bancarios/:id', DadosBancariosController.getById);
 routes.post('/dados-bancarios', DadosBancariosController.create);
 routes.put('/dados-bancarios/:id', DadosBancariosController.update);
+routes.get('/dados-bancarios-tecnico/:tecnicoId', DadosBancariosController.getByTecnicoId);
 
 routes.get('/disponibilidadeCount', DisponibilidadeController.getCount);
 routes.get('/disponibilidade', DisponibilidadeController.getAll);

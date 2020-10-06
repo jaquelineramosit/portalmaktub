@@ -6,6 +6,7 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
+import { AppSwitch } from '@coreui/react'
 import Checkbox from '@material-ui/core/Checkbox';
 import Paper from '@material-ui/core/Paper';
 import { reaisMask } from '../../../mask';
@@ -262,7 +263,7 @@ export default function Tipoprojeto(props) {
                                     <Col md="3">
                                         <Label htmlFor="horas">Carga Horária do Projeto</Label>
                                         <InputGroup>
-                                            <Input type="text" required id="txtHoras" required id="txtHorastotal"
+                                            <Input type="time" required id="txtHoras" required id="txtHorastotal"
                                                 name="horas"
                                                 value={horas}
                                                 onChange={e => setHoras((e.target.value))} />
@@ -308,6 +309,14 @@ export default function Tipoprojeto(props) {
                                                 <span className="btn btn-secondary disabled fa fa-money"></span>
                                             </InputGroupAddon>
                                         </InputGroup>
+                                    </Col>
+                                    <Col md="1">
+                                        <Label check className="form-check-label" htmlFor="ativo">Ativo</Label>
+                                        <AppSwitch id="rdAtivo" className={'switch-ativo'} label color={'success'} size={'sm'}
+                                            onChange={handleInputChange}
+                                            checked={ativo === 1 ? true : false}
+                                            name="ativo"
+                                        />
                                     </Col>
                                 </FormGroup>
                                 <FormGroup row>

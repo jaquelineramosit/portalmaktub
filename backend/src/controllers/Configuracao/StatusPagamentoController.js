@@ -5,6 +5,7 @@ module.exports = {
         try {
             const statuspagamento = await connection('statuspagamento')
                 .select('*')
+                .orderBy('statuspagamento.status', 'asc');
             return response.status(200).json(statuspagamento);
         } catch (err) {
             return response.status(400).json({ error: 'Ocorreu um erro ao acessar os dados.' })

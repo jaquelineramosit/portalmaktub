@@ -21,7 +21,8 @@ module.exports = {
                     'tipotecnico.desctipotecnico',
                     'usuario.nome'
                 ])
-                .distinct();
+                .distinct()
+                .orderBy('tecnico.nometecnico', 'asc');
 
             return response.status(200).json(tecnico);
         } catch (err) {

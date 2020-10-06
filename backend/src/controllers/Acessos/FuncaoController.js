@@ -12,7 +12,8 @@ module.exports = {
                     'subpagina.nomesubpagina',
                     'pagina.nomepagina',
                     'usuario.nome'
-                ]);
+                ])
+                .orderBy('funcao.nomefuncao', 'asc')
             return response.status(200).json(funcao);
         } catch (err) {
             return response.status(400).json({ error: 'Ocorreu um erro ao acessar os dados.' })
