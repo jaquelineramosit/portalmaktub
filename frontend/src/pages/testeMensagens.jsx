@@ -23,6 +23,33 @@ const TesteMensagens = (props) => {
         })
     }, [usuarioId]);
 
+    function exibirMaiorEMenorSoma() {       
+
+        let v = [10, -8, 4, 1, 0, 3, -5]
+        let n = 7;
+
+        let vOrderCresc = v.sort(compararNumeros);        
+        
+        console.log(`O vetor ordenado é: ${vOrderCresc}`)
+
+        let menorSoma = 0;
+        
+        for (let index = 0; index < n - 1; index++) {
+            menorSoma = menorSoma + vOrderCresc[index];            
+        }
+
+        let maiorSoma = 0;
+        for (let index = n - 1; index > 0; index--) {
+            maiorSoma = maiorSoma + vOrderCresc[index];            
+        }
+        
+        console.log(`Resultado: ${menorSoma} ${maiorSoma}`);        
+    }
+
+    function compararNumeros(a, b) {
+        return a - b;
+    }
+
     async function handleOs(e) {
         e.preventDefault();
         const data = {
@@ -122,6 +149,7 @@ const TesteMensagens = (props) => {
                                 </FormGroup>                            
                             </CardBody>
                             <CardFooter className="text-center">
+                                <Button type="button" size="sm" color="success" className="mr-3" onClick={exibirMaiorEMenorSoma}><i className="fa fa-check"></i> TESTE</Button>
                                 <Button type="submit" size="sm" color="success" className="mr-3"><i className="fa fa-check"></i> Salvar</Button>
                                 <Button type="reset" size="sm" color="danger" className="ml-3"><i className="fa fa-ban "></i> Cancelar</Button>
                             </CardFooter>                   

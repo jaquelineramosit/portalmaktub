@@ -3,7 +3,8 @@ const getDate = require('../../utils/getDate');
 module.exports = {
     async getAll(request, response) {
         try {
-            const { tipoProjetoId } = request.query;
+            const { tipoProjetoId } = request.query;            
+            const { tipoProjetoIdOutros } = request.query;     
 
             const tecnico = await connection('tecnico')
                 .join('usuario', 'usuario.id', '=', 'tecnico.usuarioid')
@@ -12,8 +13,14 @@ module.exports = {
                 .modify(function (queryBuilder) {
                     if (tipoProjetoId && tipoProjetoId !== 'Selecione...') {
                         queryBuilder.where('tipoprojetotecnico.tipoprojetoid', tipoProjetoId);
-                    }
-                })
+                    } 
+                    else if (tipoProjetoIdOutros && tipoProjetoIdOutros !== 'Selecione...') {
+                        queryBuilder.whereRaw
+                        (
+                            `tecnico.id NOT IN (SELECT tipoprojetotecnico.tecnicoid FROM tipoprojetotecnico WHERE tipoprojetotecnico.tipoprojetoid = ${tipoProjetoIdOutros})`
+                        );                    
+                    } 
+                })                
                 .select([
                     'tecnico.*',
                     'tipotecnico.id as tipotecnicoid',
@@ -26,10 +33,47 @@ module.exports = {
 
             return response.status(200).json(tecnico);
         } catch (err) {
-            return response.status(400).json({ error: 'Ocorreu um erro ao acessar os dados.' })
+            return response.status(400).json({ error: err })
         }
     },
 
+    /*
+        Autor: Jaqueline Silva
+        Data: 06/10/2020
+        Objetivo: Selecionar todos os técnicos que não estejam relacionados a um projeto
+    
+    async getAllTecnicoNotInProjeto(request, response) {
+        try {
+            const { tipoProjetoId } = request.query;            
+            
+            const tecnico = await connection('tecnico')
+                .join('usuario', 'usuario.id', '=', 'tecnico.usuarioid')
+                .join('tipotecnico', 'tipotecnico.id', '=', 'tecnico.tipotecnicoid')
+                .join('tipoprojetotecnico', 'tipoprojetotecnico.tecnicoid', '=', 'tecnico.id')
+                .modify(function (queryBuilder) {
+                    if (tipoProjetoId && tipoProjetoId !== 'Selecione...') {
+                        queryBuilder.where('tipoprojetotecnico.tipoprojetoid', tipoProjetoId);
+                    } 
+                    else if (tipoProjetoIdOutros && tipoProjetoIdOutros !== 'Selecione...') {
+                        queryBuilder.whereNotIn('tipoprojetotecnico.tipoprojetoid', [tipoProjetoIdOutros]);
+                    } 
+                })                
+                .select([
+                    'tecnico.*',
+                    'tipotecnico.id as tipotecnicoid',
+                    'tipotecnico.nometipotecnico',
+                    'tipotecnico.desctipotecnico',
+                    'usuario.nome'
+                ])
+                .distinct()
+                .orderBy('tecnico.nometecnico', 'asc');
+
+            return response.status(200).json(tecnico);
+        } catch (err) {
+            return response.status(400).json({ error: err })
+        }
+    },
+*/
     async getById(request, response) {
         try {
             const { id } = request.params;

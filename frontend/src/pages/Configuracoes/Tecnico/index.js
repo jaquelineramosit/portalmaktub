@@ -71,11 +71,11 @@ export default function Tecnico(props) {
 
     useEffect(() => {
         if (action === 'edit' && IdParam !== '') {
-            api.get(`projeto-tecnico-id/${IdParam}`).then(response => {
+            api.get(`projeto-tecnico-in/${IdParam}`).then(response => {
                 setRight(response.data)
             });
 
-            api.get(`projeto-tecnico-disponiveis/${IdParam}`).then(response => {
+            api.get(`pprojeto-tecnico-notin/${IdParam}`).then(response => {
                 setLeft(response.data)
             });
             api.get(`disponibilidade-tecnico-id/${IdParam}`).then(response => {
