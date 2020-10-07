@@ -6,71 +6,80 @@ import api from '../../src/services/api';
 
 export default function MultSelTecnico() {
 
-  const [resultadoCard4, setResultadoCard4] = useState([]);
-  const [tecnicoid, setTecnicoId] = useState(1)
+  const [tecnicoPrioridade, setTecnicoPrioridade] = useState([]);
+  const [tecnicoOutros, setTecnicoOutros] = useState([]);
+  const [tecnicoidArray, setTecnicoIdArray] = useState([])
+  const [tipoProjetoId, setTipoProjetoId] = useState(8)
+  const [tecnicoid, setTecnicoId] = useState(8)
+  
+  let tipoProjetoIdInicial = 9;
 
+  //setTecnicoIdArray([{value: 8, label: "Marcos Vinicios Viana Nunes"}]);
+  //setTecnicoId(8)
 
+ 
   useEffect(() => {
-    api.get('/tecnico').then(response => {
-      setResultadoCard4(response.data);           
+    api.get(`ordem-servico/136`).then(response => {
+      setTecnicoId(response.data.tecnicoid);
+      setTecnicoIdArray([{value: response.data.tecnicoid, label: response.data.nometecnico}]);
+      setTipoProjetoId(response.data.tipoprojetoid);      
     })
   }, []);
 
-  const tecnicoPrioritarioOptions = [
-    { value: '1', label: 'Tecnico 1', isFixed: true },
-    { value: '2', label: 'Tecnico 2' },
-    { value: '3', label: 'Tecnico 3' },
-    { value: '4', label: 'Tecnico 4' },
-    { value: '5', label: 'Tecnico 5' },
-    { value: '6', label: 'Tecnico 6' },
-    { value: '7', label: 'Tecnico 7'  },
-    { value: '8', label: 'Tecnico 8' },
-    { value: '9', label: 'Tecnico 9' },
-    { value: '10', label: 'Tecnico 10' },
-  ];
+  console.log(tecnicoidArray)
+  console.log(tipoProjetoId)
+  console.log(tecnicoid)
+
+  tipoProjetoIdInicial = tipoProjetoId;
+
+  useEffect(() => {
+    api.get(`tecnico?tipoProjetoId=${tipoProjetoIdInicial}`).then(response => {
+      setTecnicoPrioridade(response.data);           
+    })
+  }, []);
+
+  useEffect(() => {
+    api.get(`tecnico?tipoProjetoIdOutros=${tipoProjetoIdInicial}`).then(response => {
+      setTecnicoOutros(response.data);           
+    })
+  }, []);
 
 
-  const tecnicoOutrosOptions = [
-    { value: '11', label: 'Tecnico 11' },
-    { value: '22', label: 'Tecnico 22' },
-    { value: '33', label: 'Tecnico 33' },
-    { value: '44', label: 'Tecnico 44' },
-    { value: '55', label: 'Tecnico 55' },
-  ];
 
 
-  const colourOptions = [
-    { value: 'ocean', label: 'Ocean', color: '#00B8D9', isFixed: true },
-    { value: 'blue', label: 'Blue', color: '#0052CC' },
-    { value: 'purple', label: 'Purple', color: '#5243AA' },
-    { value: 'red', label: 'Red', color: '#FF5630', isFixed: true },
-    { value: 'orange', label: 'Orange', color: '#FF8B00' },
-    { value: 'yellow', label: 'Yellow', color: '#FFC400' },
-    { value: 'green', label: 'Green', color: '#36B37E' },
-    { value: 'forest', label: 'Forest', color: '#00875A' },
-    { value: 'slate', label: 'Slate', color: '#253858' },
-    { value: 'silver', label: 'Silver', color: '#666666' },
-  ];
 
-  const flavourOptions = [
-    { value: 'vanilla', label: 'Vanilla', rating: 'safe' },
-    { value: 'chocolate', label: 'Chocolate', rating: 'good' },
-    { value: 'strawberry', label: 'Strawberry', rating: 'wild' },
-    { value: 'salted-caramel', label: 'Salted Caramel', rating: 'crazy' },
-  ];
+  const tecnicoPrioridadeOpt = [
+
+    tecnicoPrioridade.map(tecnico => ({
+      value: tecnico.id,
+      label: tecnico.nometecnico
+    }))
+  ]
+
+  const tecnicoOutrosOpt = [
+
+    tecnicoOutros.map(tecnico => ({
+      value: tecnico.id,
+      label: tecnico.nometecnico
+    }))
+  ]
+
 
   const groupedOptions = [
     {
       label: 'Prioridade',
-      options: resultadoCard4,
+      options: tecnicoPrioridadeOpt[0],
     },
     {
       label: 'Outros',
-      options: resultadoCard4,
+      options: tecnicoOutrosOpt[0],
     },
   ];
 
-
+  // console.log('tecnicoPrioridadeOpt');
+  // console.log(tecnicoPrioridadeOpt);
+  // console.log('tecnicoOutrosOpt');
+  // console.log(tecnicoOutrosOpt);
 
   const groupStyles = {
     display: 'flex',
@@ -90,6 +99,13 @@ export default function MultSelTecnico() {
     textAlign: 'center',
   };
 
+  // const formatGroupLabel = data => (
+  //   <div style={groupStyles}>
+  //     <span>{data.label}</span>
+  //     <span style={groupBadgeStyles}>{data.options.length}</span>
+  //   </div>
+  // );
+
   const formatGroupLabel = data => (
     <div style={groupStyles}>
       <span>{data.label}</span>
@@ -97,24 +113,27 @@ export default function MultSelTecnico() {
     </div>
   );
 
-  console.log(resultadoCard4);
+  //console.log();
+
+  //let obj = groupedOptions.find(v => v.value === 2);
+  //console.log(tecnicoid);
 
   return (
-      // <Select
-      //   defaultValue={resultadoCard4[1]}
-      //   options={groupedOptions}
-      //   formatGroupLabel={formatGroupLabel}
-      // />
+      <Select
+        defaultValue={tecnicoidArray}
+        options={groupedOptions}
+        formatGroupLabel={formatGroupLabel}
+      />
 
-      <Input type="select" id="cboCliente"
-          value={tecnicoid}
-          name="tecnicoid"
-          //onChange={handleInputChange}
-      >
-          <option value={""} defaultValue>Selecione...</option>
-          {resultadoCard4.map(tecnico => (
-              <option key={`cliente${tecnico.id}`} value={tecnico.id}>{tecnico.nometecnico}</option>
-          ))}
-      </Input>
+      // <Input type="select" id="cboCliente"
+      //     value={tecnicoid}
+      //     name="tecnicoid"
+      //     //onChange={handleInputChange}
+      // >
+      //     <option value={""} defaultValue>Selecione...</option>
+      //     {resultadoCard4.map(tecnico => (
+      //         <option key={`cliente${tecnico.id}`} value={tecnico.id}>{tecnico.nometecnico}</option>
+      //     ))}
+      // </Input>
   );
 }

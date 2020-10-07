@@ -101,7 +101,7 @@ routes.put('/register/:id', RegisterController.update);
 // Ordem de Servico
 routes.get('/ordemservicoCount', OrdemServicoController.getCount);
 routes.get('/ordem-servico', OrdemServicoController.getAll);
-routes.get('/ordem-servico/:status', OrdemServicoController.getAllByStatus);
+routes.get('/ordem-servico-status/:status', OrdemServicoController.getAllByStatus);
 routes.get('/ordem-servico/:id', OrdemServicoController.getById);
 routes.post('/ordem-servico', OrdemServicoController.create);
 routes.put('/ordem-servico/:id', OrdemServicoController.update);
@@ -202,8 +202,8 @@ routes.put('/parceiro/:id', ParceiroController.update);
 
 routes.get('/projeto-tecnico', ProjetoTecnicoController.getAll);
 routes.get('/projeto-tecnico/:id', ProjetoTecnicoController.getById);
-routes.get('/projeto-tecnico-id/:tecnicoId', ProjetoTecnicoController.getByTecnicoId);
-routes.get('/projeto-tecnico-disponiveis/:tecnicoId', ProjetoTecnicoController.getBytipoprojetosDisponiveis);
+routes.get('/projeto-tecnico-notin/:tecnicoId', ProjetoTecnicoController.getAllProjetosNotInTecnico);
+routes.get('/projeto-tecnico-in/:tecnicoId', ProjetoTecnicoController.getAllProjetosInTecnico);
 routes.post('/projeto-tecnico', ProjetoTecnicoController.create);
 routes.put('/projeto-tecnico/:id', ProjetoTecnicoController.update);
 

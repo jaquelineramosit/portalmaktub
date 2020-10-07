@@ -25,7 +25,7 @@ module.exports = {
         }
     },
 
-    async getByTecnicoId(request, response) {
+    async getAllProjetosInTecnico(request, response) {
         try {
             const { tecnicoId } = request.params;
             const tipoprojeto = await connection('tipoprojeto')
@@ -41,7 +41,7 @@ module.exports = {
         }
     },
 
-    async getBytipoprojetosDisponiveis(request, response) {
+    async getAllProjetosNotInTecnico(request, response) {
         try {
             const { tecnicoId } = request.params;
             const tipoprojeto = await connection('tipoprojeto')
@@ -56,6 +56,8 @@ module.exports = {
             return response.status(400).json({ error: 'Ocorreu um erro ao acessar os dados.' })
         }
     },
+
+
 
     async create(request, response) {
         try {

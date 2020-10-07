@@ -79,7 +79,7 @@ module.exports = {
                 ])
                 .orderBy('ordemservico.id', 'desc')
                 .distinct()
-                .limit(rows);
+                
             
                 return response.status(200).json(ordemservico);
              
@@ -92,6 +92,9 @@ module.exports = {
     async getById(request, response) {
         try {
             const { id } = request.params;
+            console.log('id');
+            console.log(id);
+
             const ordemservico = await connection('ordemservico')
                 .where('ordemservico.id', id)
                 .join('clientefinal', 'clientefinal.id', '=', 'ordemservico.clientefinalid')

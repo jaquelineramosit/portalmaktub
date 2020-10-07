@@ -1,4 +1,5 @@
-import { Tabs, Tab } from 'react-bootstrap'
+import { Tabs, Tab} from 'react-bootstrap'
+import Select from 'react-select';
 import React, { useState, useEffect, Fragment } from 'react';
 import { Row, Col, Card, CardHeader, CardBody, FormGroup, Label, Input, Button, InputGroup, InputGroupAddon, CardFooter, Form, ListGroup, ListGroupItem, } from 'reactstrap';
 import { Redirect } from 'react-router-dom';
@@ -126,6 +127,9 @@ const OrdemServico = (props) => {
     const [clientesFinais, setClientesFinais] = useState([]);
     const [tipoProjetos, setTipoProjetos] = useState([]);
     const [tecnicos, setTecnicos] = useState([]);
+    const [tecnicoPrioridade, setTecnicoPrioridade] = useState([]);
+    const [tecnicoOutros, setTecnicoOutros] = useState([]);
+    const [tecnicoidArray, setTecnicoIdArray] = useState([])
     //#endregion
 
     //#region
@@ -178,13 +182,7 @@ const OrdemServico = (props) => {
         api.get('clientes').then(response => {
             setClientes(response.data);
         })
-    }, [usuarioId]);
-
-    useEffect(() => {
-        api.get('tecnico').then(response => {
-            setTecnicos(response.data);
-        })
-    }, [usuarioId]);
+    }, [usuarioId]);    
 
     useEffect(() => {
         api.get('tipo-projeto').then(response => {
@@ -222,6 +220,7 @@ const OrdemServico = (props) => {
     //Melhorar isso
     useEffect(() => {
         if (action === 'edit' && cadosdIdParam !== '') {
+
             api.get(`ordem-servico/${cadosdIdParam}`).then(response => {
 
                 //CABEÇALHO
@@ -263,11 +262,11 @@ const OrdemServico = (props) => {
                 setObservacaoos(response.data.observacaoos);
                 setHoraentrada(response.data.horaentrada);
                 valorInicioInicial = new Date("2020-08-29 " + response.data.horaentrada).getHours();
-                setTecnicoid(response.data.tecnicoid);
                 setHorasaida(response.data.horasaida);
                 valorFimInicial = new Date("2020-08-29 " + response.data.horasaida).getHours();
-                setTipoprojetoid(response.data.tipoprojetoid);
                 setTecnicoid(response.data.tecnicoid);
+                
+                setTecnicoIdArray([{value: response.data.tecnicoid, label: response.data.nometecnico}]);
                 setDescricaoProjeto(response.data.descricaoprojeto);
                 response.data.ativo === 1 ? setAtivo(1) : setAtivo(0);
                 document.getElementById('txtDataAtendimento').value = dateFormat(response.data.dataatendimento, "yyyy-mm-dd");
@@ -317,10 +316,18 @@ const OrdemServico = (props) => {
                         setTotalareceber(valorReceberInicial + custoAdicionalInicial);
                     }
                 });
-
+                
                 api.get(`tecnico?tipoProjetoId=${tipoProjetoIdInicial}`).then(response => {
-                    setTecnicos(response.data);
+                    setTecnicoPrioridade(response.data);
                 });
+
+                api.get(`tecnico?tipoProjetoIdOutros=${tipoProjetoIdInicial}`).then(response => {
+                    setTecnicoOutros(response.data);           
+                });
+
+                // api.get(`tecnico?tipoProjetoId=${tipoProjetoIdInicial}`).then(response => {
+                //     setTecnicos(response.data);
+                // });
                 //#endregion
             });
         } else {
@@ -328,7 +335,6 @@ const OrdemServico = (props) => {
         }
     }, [cadosdIdParam]);
     //#endregion
-
 
     //#region 
     //Atualização dos combos do status de Movimentação
@@ -347,9 +353,65 @@ const OrdemServico = (props) => {
     }, [cadosdIdParam]);
     //#endregion
 
+    //#region 
+    //Constantes referentes a campo select Tecnico
+    const groupStyles = {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+      };
+      const groupBadgeStyles = {
+        backgroundColor: '#EBECF0',
+        borderRadius: '2em',
+        color: '#172B4D',
+        display: 'inline-block',
+        fontSize: 12,
+        fontWeight: 'normal',
+        lineHeight: '1',
+        minWidth: 1,
+        padding: '0.16666666666667em 0.5em',
+        textAlign: 'center',
+      };
+    const tecnicoPrioridadeOpt = [
+
+        tecnicoPrioridade.map(tecnico => ({
+          value: tecnico.id,
+          label: tecnico.nometecnico
+        }))
+      ]
+    
+      const tecnicoOutrosOpt = [
+    
+        tecnicoOutros.map(tecnico => ({
+          value: tecnico.id,
+          label: tecnico.nometecnico
+        }))
+      ]                
+    
+      const groupedOptions = [
+        {
+          label: 'Prioridade',
+          options: tecnicoPrioridadeOpt[0],
+        },
+        {
+          label: 'Outros',
+          options: tecnicoOutrosOpt[0],
+        },
+      ];
+
+      const formatGroupLabel = data => (
+        <div style={groupStyles}>
+          <span>{data.label}</span>
+          <span style={groupBadgeStyles}>{data.options.length}</span>
+        </div>
+      );
+    //#endregion
+
     function handleReset() {
         setRedirect(true);
     };
+
+    console.log(groupedOptions);
 
     function handleInputChange(event) {
         event.preventDefault();
@@ -437,33 +499,45 @@ const OrdemServico = (props) => {
                 }
                 break;
             case 'tipoprojetoid':
-                if (value !== 'Selecione...') {
-                    setTipoprojetoid(value);
-                    setTecnicoid('');
-                    api.get(`tecnico?tipoProjetoId=${value}`).then(response => {
-                        setTecnicos(response.data);
-                    });
-                    api.get(`tipo-projeto/${value}`).then(response => {
-                        setQtdehoras(response.data.horas);
-                        horasProjeto = response.data.horas;
-                        setValorapagar(response.data.despesa);
-                        setValorapagarFormatado(response.data.despesa);
-                        valorPagarInicial = response.data.despesa;
-                        setValorareceber(response.data.receita);
-                        setValorareceberFormatado(response.data.receita);
-                        valorReceberInicial = response.data.receita;
-                        setHoraDecimal(response.data.horadecimal);
+              if (value !== 'Selecione...') {
+                  setTipoprojetoid(value);
+                  setTecnicoid('');
+                  
+                  api.get(`tecnico?tipoProjetoId=${value}`).then(response => {
+                    setTecnicoPrioridade(response.data);
+                  });
 
-                        setEscopoprojeto(response.data.escopoprojeto);
-                        TotaisPagarReceber();
-                    });
-                } else {
-                    setTipoprojetoid('');
-                    setTecnicoid('');
-                    setTecnicos([]);
-                    zeraDadosServico();
-                }
-                break;
+                  api.get(`tecnico?tipoProjetoIdOutros=${value}`).then(response => {
+                    setTecnicoOutros(response.data);           
+                  });
+
+                  
+
+
+
+
+
+                  api.get(`tipo-projeto/${value}`).then(response => {
+                      setQtdehoras(response.data.horas);
+                      horasProjeto = response.data.horas;
+                      setValorapagar(response.data.despesa);
+                      setValorapagarFormatado(response.data.despesa);
+                      valorPagarInicial = response.data.despesa;
+                      setValorareceber(response.data.receita);    
+                      setValorareceberFormatado(response.data.receita);    
+                      valorReceberInicial = response.data.receita;
+                      setHoraDecimal(response.data.horadecimal);
+                      
+                      setEscopoprojeto(response.data.escopoprojeto);
+                      TotaisPagarReceber();
+                  });
+              } else {
+                  setTipoprojetoid('');
+                  setTecnicoid('');
+                  setTecnicos([]);
+                  zeraDadosServico();
+              }
+              break;
             case 'horaentrada':
                 setHoraentrada(value);
                 valorInicioInicial = new Date("2020-08-29 " + value).getHours();
@@ -946,7 +1020,12 @@ const OrdemServico = (props) => {
                                             </Col>
                                             <Col md="4">
                                                 <Label htmlFor="tecnicoId">Técnico</Label>
-                                                <InputGroup>
+                                                <Select
+                                                    defaultValue={tecnicoidArray}
+                                                    options={groupedOptions}
+                                                    formatGroupLabel={formatGroupLabel}
+                                                />
+                                                {/* <InputGroup>
                                                     <Input required type="select" id="cobTecnico"
                                                         value={tecnicoid}
                                                         name="tecnicoid"
@@ -959,7 +1038,7 @@ const OrdemServico = (props) => {
                                                     <InputGroupAddon addonType="append">
                                                         <span className="btn btn-secondary disabled fa fa-user-md"></span>
                                                     </InputGroupAddon>
-                                                </InputGroup>
+                                                </InputGroup> */}
                                             </Col>
                                         </FormGroup>
                                         <FormGroup row>
