@@ -12,8 +12,6 @@ const DefaultLayout = React.lazy(() => import('./containers/DefaultLayout'));
 const Logon = React.lazy(() => import('./pages/Acessos/Logon'));
 const Register = React.lazy(() => import('./pages/Acessos/Register'));
 
-
-
 const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route 
     {... rest} 
@@ -33,10 +31,10 @@ class App extends Component {
       <HashRouter>
           <React.Suspense fallback={loading()}>
             <Switch>
-              <Route exact path="/" name="Página de Logon" render={props => <Logon {...props}/>} />
+              <Route exact path="/" name="Página de Logon" component={props => <Logon {...props}/>} />
+              <Route  path="/" name="Home" render={props => <DefaultLayout {...props}/>} />     
               <Route path="/profile" name="Minha Conta" component={props => <DefaultLayout {...props}/>} />
-              <Route path="/register" name="Registre-se" render={props => <Register {...props}/>} />              
-              
+              <Route path="/register" name="Registre-se" render={props => <Register {...props}/>} />                                     
               {/* Ordem Serviço */}
               <PrivateRoute path="/dashboard" name="Home" component={(props) => <DefaultLayout {...props} />}/>
               <PrivateRoute path="/ordem-servico" name="Ordem de Serviço" component={(props) => <DefaultLayout {...props} />}/>
@@ -73,7 +71,7 @@ class App extends Component {
 
               {/* Dados Bancários */}
               <PrivateRoute path="/dados-bancarios" name="Dados Bancários" component={(props) => <DefaultLayout {...props} />}/>
-              <PrivateRoute path="/banco" name="Bancos" component={(props) => <DefaultLayout {...props} />}/>
+              <PrivateRoute path="/banco" name="Bancos" render={(props) => <DefaultLayout {...props} />}/>
               <PrivateRoute path="/tipo-conta" name="Tipo Conta" component={(props) => <DefaultLayout {...props} />}/>
               <PrivateRoute path="/lista-dados-bancarios" name="Lista de Dados Bancários" component={(props) => <DefaultLayout {...props} />}/>
               <PrivateRoute path="/lista-banco" name="Lista de Bancos" component={(props) => <DefaultLayout {...props} />}/>
