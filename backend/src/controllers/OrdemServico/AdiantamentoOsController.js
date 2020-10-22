@@ -109,6 +109,7 @@ module.exports = {
             return response.status(400).json({ error: 'Ocorreu um erro ao criar um novo registro.' })
         }
     },
+
     async update(request, response) {
         try {
             const { id } = request.params;
@@ -118,7 +119,9 @@ module.exports = {
             const { valoradiantamento, dataadiantamento,
                 dataquitacao, statusadiantamentoid, ativo } = request.body;
 
-            await connection('adiantamentoos').where('id', id).update({
+            const trx = await connection.transaction();
+
+            await trx('ordemservico').where('id', id).update({
                 valoradiantamento,
                 dataadiantamento,
                 dataquitacao,
@@ -127,11 +130,29 @@ module.exports = {
                 usuarioid,
                 dataultmodif
             });
+
+            const statusadiantamento = await connection('statusadiantamento')
+            .where('statusadiantamento.id', statusadiantamentoid)
+            .select([
+                'adiantamentoos.*'
+            ])
+            .first();
+
+            if(statusadiantamento.codstatus === 'PAGO') {
+                await trx('movimentacao-os').where('ordemservicoid', id).update({
+                    statusadiantamentoid,
+                    usuarioid,
+                    dataultmodif
+                });
+            }
+
+            await trx.commit();
             return response.status(200).json({ id });
         } catch (err) {
             return response.status(400).json({ error: 'Ocorreu um erro ao criar um novo registro.' })
         }
     },
+
     async getCount(request, response) {
 
         const [count] = await connection('adiantamentoos').count()

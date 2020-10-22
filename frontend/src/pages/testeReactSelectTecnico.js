@@ -2,6 +2,7 @@ import React, { Fragment, useEffect, useState} from 'react';
 import { Input } from 'reactstrap';
 import Select from 'react-select';
 import api from '../../src/services/api';
+import TesteMensagens from './testeMensagens';
 
 
 export default function MultSelTecnico() {
@@ -12,34 +13,29 @@ export default function MultSelTecnico() {
   const [tipoProjetoId, setTipoProjetoId] = useState(8)
   const [tecnicoid, setTecnicoId] = useState(8)
   
-  let tipoProjetoIdInicial = 9;
 
-  //setTecnicoIdArray([{value: 8, label: "Marcos Vinicios Viana Nunes"}]);
-  //setTecnicoId(8)
-
- 
   useEffect(() => {
-    api.get(`ordem-servico/136`).then(response => {
-      setTecnicoId(response.data.tecnicoid);
-      setTecnicoIdArray([{value: response.data.tecnicoid, label: response.data.nometecnico}]);
-      setTipoProjetoId(response.data.tipoprojetoid);      
-    })
+    async function loadProducts() {
+      const response = await api.get("ordem-servico/136");
+      setTecnicoIdArray([{"value": response.data.tecnicoid, "label": response.data.nometecnico}]);
+      setTipoProjetoId(response.data.tipoprojetoid);
+    }
+    loadProducts();
   }, []);
 
-  console.log(tecnicoidArray)
-  console.log(tipoProjetoId)
-  console.log(tecnicoid)
+  let _tecnicoIdArray = tecnicoidArray;
 
-  tipoProjetoIdInicial = tipoProjetoId;
+
+  
 
   useEffect(() => {
-    api.get(`tecnico?tipoProjetoId=${tipoProjetoIdInicial}`).then(response => {
+    api.get(`tecnico?tipoProjetoId=${tipoProjetoId}`).then(response => {
       setTecnicoPrioridade(response.data);           
     })
   }, []);
 
   useEffect(() => {
-    api.get(`tecnico?tipoProjetoIdOutros=${tipoProjetoIdInicial}`).then(response => {
+    api.get(`tecnico?tipoProjetoIdOutros=${tipoProjetoId}`).then(response => {
       setTecnicoOutros(response.data);           
     })
   }, []);
@@ -76,11 +72,6 @@ export default function MultSelTecnico() {
     },
   ];
 
-  // console.log('tecnicoPrioridadeOpt');
-  // console.log(tecnicoPrioridadeOpt);
-  // console.log('tecnicoOutrosOpt');
-  // console.log(tecnicoOutrosOpt);
-
   const groupStyles = {
     display: 'flex',
     alignItems: 'center',
@@ -99,13 +90,6 @@ export default function MultSelTecnico() {
     textAlign: 'center',
   };
 
-  // const formatGroupLabel = data => (
-  //   <div style={groupStyles}>
-  //     <span>{data.label}</span>
-  //     <span style={groupBadgeStyles}>{data.options.length}</span>
-  //   </div>
-  // );
-
   const formatGroupLabel = data => (
     <div style={groupStyles}>
       <span>{data.label}</span>
@@ -113,27 +97,21 @@ export default function MultSelTecnico() {
     </div>
   );
 
-  //console.log();
-
-  //let obj = groupedOptions.find(v => v.value === 2);
-  //console.log(tecnicoid);
+  console.log('tecnicoPrioridadeOpt[1]')
+  console.log(tecnicoPrioridadeOpt[0].find(t => t.value === 36))
+  console.log(tecnicoOutrosOpt[0].find(t => t.value === 36))
 
   return (
+    <Fragment>
       <Select
-        defaultValue={tecnicoidArray}
+        //tecnicoidArray
+        defaultValue={
+          tecnicoidArray
+        }
+        value={tecnicoidArray}
         options={groupedOptions}
         formatGroupLabel={formatGroupLabel}
       />
-
-      // <Input type="select" id="cboCliente"
-      //     value={tecnicoid}
-      //     name="tecnicoid"
-      //     //onChange={handleInputChange}
-      // >
-      //     <option value={""} defaultValue>Selecione...</option>
-      //     {resultadoCard4.map(tecnico => (
-      //         <option key={`cliente${tecnico.id}`} value={tecnico.id}>{tecnico.nometecnico}</option>
-      //     ))}
-      // </Input>
+    </Fragment>
   );
 }

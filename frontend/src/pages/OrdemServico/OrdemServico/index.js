@@ -502,7 +502,7 @@ const OrdemServico = (props) => {
               if (value !== 'Selecione...') {
                   setTipoprojetoid(value);
                   setTecnicoid('');
-                  
+                  setTecnicoIdArray([]);
                   api.get(`tecnico?tipoProjetoId=${value}`).then(response => {
                     setTecnicoPrioridade(response.data);
                   });
@@ -510,12 +510,6 @@ const OrdemServico = (props) => {
                   api.get(`tecnico?tipoProjetoIdOutros=${value}`).then(response => {
                     setTecnicoOutros(response.data);           
                   });
-
-                  
-
-
-
-
 
                   api.get(`tipo-projeto/${value}`).then(response => {
                       setQtdehoras(response.data.horas);
@@ -1021,6 +1015,7 @@ const OrdemServico = (props) => {
                                             <Col md="4">
                                                 <Label htmlFor="tecnicoId">Técnico</Label>
                                                 <Select
+                                                    value={tecnicoidArray}
                                                     defaultValue={tecnicoidArray}
                                                     options={groupedOptions}
                                                     formatGroupLabel={formatGroupLabel}
