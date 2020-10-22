@@ -63,6 +63,27 @@ export default function DadosBancarios(props) {
         })
     }, [usuarioId]);
 
+
+    function cpfcnpj(cpf) {
+        if (cpf.length <= 14) {
+        cpf = cpf.replace(/\D/g, '')
+        cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2')
+        cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2')
+        cpf = cpf.replace(/(\d{3})(\d{1,2})/, '$1-$2')
+        cpf = cpf.replace(/(-\d{2})\d+?$/, '$1')
+        }
+        else if (cpf.length > 14) {
+            cpf = cpf.replace(/\D/g, '')
+            cpf = cpf.replace(/(\d{2})(\d)/, '$1.$2')
+            cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2')
+            cpf = cpf.replace(/(\d{3})(\d)/, '$1/$2')
+            cpf = cpf.replace(/(\d{4})(\d)/, '$1-$2')
+            cpf = cpf.replace(/(-\d{2})\d+?$/, '$1')
+        }
+        return cpf;
+    }
+
+
     function handleInputChange(event) {
         var { name } = event.target;
 
@@ -74,6 +95,8 @@ export default function DadosBancarios(props) {
             }
         }
     };
+
+
 
     function handleReset() {
         setRedirect(true);
@@ -198,16 +221,18 @@ export default function DadosBancarios(props) {
                                         </InputGroup>
                                     </Col>
                                 </FormGroup>
-                                <FormGroup row>
-                                    <Col md="4">
+                                <FormGroup row>                                  
+                                    <Col md="3">
                                         <Label htmlFor="docTitular">Documento do Titular</Label>
                                         <InputGroup>
                                             <Input id="txtDocTitular" required type="text" placeholder="CPF ou CNPJ"
                                                 name="doctitular"
                                                 value={doctitular}
-                                                onChange={e => setDoctitular(e.target.value)} />
+                                                onChange={e => setDoctitular(cpfcnpj(e.target.value))} />
                                         </InputGroup>
+
                                     </Col>
+
                                 </FormGroup>
                                 {/* <FormGroup>    
                                     <Col md="2">
