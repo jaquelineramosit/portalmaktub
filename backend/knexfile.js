@@ -5,10 +5,10 @@ module.exports = {
   development: {
     client: 'mysql',
     connection: {
-      host : 'mysql.codefour.com.br',
-      user : 'codefo06_jaq',
-      password : 'Code123!@#',
-      database : 'codefo06_MKT'
+      host : 'mysql.maktub.tech',
+      user : 'efathaco_mkt',
+      password : 'Andilo271085',
+      database : 'efathaco_mkt'
     },
     // connection: {
     //   host : 'localhost',

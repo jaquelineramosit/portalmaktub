@@ -75,7 +75,7 @@ export default function Tecnico(props) {
                 setRight(response.data)
             });
 
-            api.get(`pprojeto-tecnico-notin/${IdParam}`).then(response => {
+            api.get(`projeto-tecnico-notin/${IdParam}`).then(response => {
                 setLeft(response.data)
             });
             api.get(`disponibilidade-tecnico-id/${IdParam}`).then(response => {
@@ -159,12 +159,9 @@ export default function Tecnico(props) {
             newChecked.splice(currentIndex, 1);
         }
         setChecked(newChecked);
-        console.log(newChecked);
     };
 
     const handleAllRight = () => {
-        console.log("Right")
-        console.log(right)
         setRight(right.concat(left));
         setLeft([]);
     };
@@ -182,8 +179,6 @@ export default function Tecnico(props) {
     };
 
     const handleAllLeft = () => {
-        console.log("left")
-        console.log(left)
         setLeft(left.concat(right));
         setRight([]);
     };
@@ -191,8 +186,7 @@ export default function Tecnico(props) {
         <div className="paper" key={`div-${index}`}>
             <List dense component="div" role="list" key={`list-${index}`} className="list-border">
                 {items.map((value) => {
-                    const labelId = `transfer-list-item-${value['id']}-label`;
-                    console.log(labelId)
+                    const labelId = `transfer-list-item-${value['id']}-label`
                     return (
                         <ListItem key={value['id']} role="listitem" button onClick={handleToggle(value)}>
                             <ListItemIcon>
@@ -227,12 +221,10 @@ export default function Tecnico(props) {
             newChecked.splice(currentIndex, 1);
         }
         setCheckeds(newChecked);
-        console.log(newChecked);
+    
     };
 
     const handleAllRights = () => {
-        console.log("Right")
-        console.log(rights)
         setRights(rights.concat(lefts));
         setLefts([]);
     };

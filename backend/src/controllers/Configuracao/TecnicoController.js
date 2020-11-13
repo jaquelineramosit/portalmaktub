@@ -9,7 +9,6 @@ module.exports = {
             const tecnico = await connection('tecnico')
                 .join('usuario', 'usuario.id', '=', 'tecnico.usuarioid')
                 .join('tipotecnico', 'tipotecnico.id', '=', 'tecnico.tipotecnicoid')
-                .join('tipoprojetotecnico', 'tipoprojetotecnico.tecnicoid', '=', 'tecnico.id')
                 .modify(function (queryBuilder) {
                     if (tipoProjetoId && tipoProjetoId !== 'Selecione...') {
                         queryBuilder.where('tipoprojetotecnico.tipoprojetoid', tipoProjetoId);
@@ -128,7 +127,6 @@ module.exports = {
             })
 
             const projetoTecnico = right.map((tipoProjetoItem) => {
-                console.log(right)
                 return {
                     tipoprojetoid: tipoProjetoItem.id,
                     tecnicoid: tecnicoid,
@@ -139,7 +137,6 @@ module.exports = {
                 }
             })
             const disponTecnico = rights.map((disponTecnicoItem) => {
-                console.log(rights)
                 return {
                     disponibilidadeId: disponTecnicoItem.id,
                     tecnicoId: tecnicoid,
@@ -195,7 +192,7 @@ module.exports = {
 
             //cadastra novamente
             const projetoTecnico = right.map((tipoProjetoItem) => {
-                console.log(right)
+            
                 return {
                     tipoprojetoid: tipoProjetoItem.id,
                     tecnicoid: id,
@@ -206,7 +203,7 @@ module.exports = {
                 }
             })
             const disponTecnico = rights.map((disponTecnicoItem) => {
-                console.log(rights)
+             
                 return {
                     disponibilidadeId: disponTecnicoItem.id,
                     tecnicoId: id,
