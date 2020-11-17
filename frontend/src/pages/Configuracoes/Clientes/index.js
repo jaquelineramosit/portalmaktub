@@ -105,6 +105,23 @@ export default function Cliente(props) {
     }
     //FIM
 
+    function onBlurCep(event) {
+        const { value } = event.target;
+        if (value.length !== 9) {
+            return;
+        }
+        fetch(`http://viacep.com.br/ws/${value}/json/`)
+            .then((res) => res.json())
+            .then((data) => {
+                setBairro(data.bairro)
+                setLogradouro(data.logradouro)
+                setEstado(data.uf)
+                setCidade(data.localidade)
+            });
+
+    }
+
+
     //Função do Botão ativar e desativar
     function handleInputChange(event) {
         var { name } = event.target;
@@ -283,7 +300,7 @@ export default function Cliente(props) {
                                         <InputGroup>
                                             <Input id="txtCep" size="16" required type="text" placeholder="00000-000"
                                                 value={cep}
-                                                name="cep"
+                                                onBlur={onBlurCep}
                                                 onChange={e => setCep(cepMask(e.target.value))} />
                                             <InputGroupAddon addonType="append">
                                                 <span className="btn btn-secondary disabled fa fa-truck"></span>
@@ -293,10 +310,10 @@ export default function Cliente(props) {
 
                                     <Col md="6">
                                         <Label htmlFor="logradouro">Endereço</Label>
-                                        <Input type="text" required id="txtLogradouro"
-                                            placeholder="Digite o endereço"
+                                        <Input type="text" required readOnly id="txtLogradouro"
                                             name="logradouro"
                                             value={logradouro}
+
                                             onChange={e => setLogradouro(e.target.value)} />
                                     </Col>
                                     <Col md="3">
@@ -310,8 +327,8 @@ export default function Cliente(props) {
                                 <FormGroup row>
                                     <Col md="3">
                                         <Label htmlFor="bairro">Bairro</Label>
-                                        <Input type="text" required id="txtBairro" placeholder="Digite o Bairro"
-                                            name="bairro"
+                                        <Input type="text" required id="txtBairro" readOnly placeholder="Digite o Bairro"
+
                                             value={bairro}
                                             onChange={e => setBairro(e.target.value)} />
                                     </Col>
@@ -324,7 +341,7 @@ export default function Cliente(props) {
                                     </Col>
                                     <Col md="3">
                                         <Label htmlFor="estado">UF</Label>
-                                        <Input type="select" required name="select" id="cboEstado"
+                                        <Input type="select" required readOnly name="select" id="cboEstado"
                                             name="estado"
                                             value={estado}
                                             onChange={handleSelectUf} >
@@ -336,7 +353,7 @@ export default function Cliente(props) {
                                     </Col>
                                     <Col md="3">
                                         <Label htmlFor="cidade">Cidade</Label>
-                                        <Input type="select" required id="txtCidade" placeholder="Digite a Cidade"
+                                        <Input type="select" required id="txtCidade" readOnly placeholder="Digite a Cidade"
                                             name="cidade"
                                             value={cidade}
                                             onChange={e => setCidade(e.target.value)}>

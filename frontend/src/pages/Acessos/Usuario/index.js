@@ -109,6 +109,22 @@ export default function Usuario(props) {
 
     }
 
+    function onBlurCep (event){
+        const {value} = event.target;
+        if(value.length !== 9){
+          return;
+        }
+        fetch(`http://viacep.com.br/ws/${value}/json/`)
+        .then((res) => res.json())
+        .then((data)=>{
+        setBairro(data.bairro)
+        setLogradouro( data.logradouro)
+        setEstado(data.uf)
+        setCidade(data.localidade)
+        });
+
+    }
+
     function handleInputChange(event) {
         var { name } = event.target;
 
@@ -313,7 +329,7 @@ export default function Usuario(props) {
                                         <InputGroup>
                                             <Input id="txtCep" size="16" required type="text" placeholder="00000-000"
                                                 value={cep}
-                                                name="cep"
+                                                onBlur={onBlurCep}
                                                 onChange={e => setCep(cepMask(e.target.value))} />
                                             <InputGroupAddon addonType="append">
                                                 <span className="btn btn-secondary disabled fa fa-truck"></span>
@@ -322,7 +338,7 @@ export default function Usuario(props) {
                                     </Col>
                                     <Col md="6">
                                         <Label htmlFor="Logradouro">Endereço</Label>
-                                        <Input type="text" required id="txtLogradouro" placeholder="Digite o Endereço"
+                                        <Input type="text" required id="txtLogradouro" readOnly
                                             name="logradouro"
                                             value={logradouro}
                                             onChange={e => setLogradouro(e.target.value)} />
@@ -339,25 +355,25 @@ export default function Usuario(props) {
                                 <FormGroup row>
                                     <Col md="3">
                                         <Label htmlFor="Bairro">Bairro</Label>
-                                        <Input type="text" required id="txtBairro" placeholder="Digite o Bairro"
+                                        <Input type="text" required id="txtBairro" readOnly
                                             name="bairro"
                                             value={bairro}
                                             onChange={e => setBairro(e.target.value)} />
                                     </Col>
                                     <Col md="3">
                                         <Label htmlFor="Complemento">Complemento</Label>
-                                        <Input type="text" id="txtComplemento" placeholder="Digite o Complemento"
+                                        <Input type="text" id="txtComplemento" 
                                             name="complemento"
                                             value={complemento}
                                             onChange={e => setComplemento(e.target.value)} />
                                     </Col>
                                     <Col md="3">
                                         <Label htmlFor="estado">UF</Label>
-                                        <Input type="select" required name="select" id="cboEstado"
+                                        <Input type="select" required name="select" id="cboEstado" readOnly
                                             name="estado"
                                             value={estado}
                                             onChange={handleSelectUf} >
-                                            <option value="0">Selecione</option>
+                                            <option value="0"></option>
                                             {estados.map(uf => (
                                                 <option key={uf} value={uf}>{uf}</option>
                                             ))}
@@ -365,11 +381,11 @@ export default function Usuario(props) {
                                     </Col>
                                     <Col md="3">
                                         <Label htmlFor="cidade">Cidade</Label>
-                                        <Input type="select" required id="txtCidade" placeholder="Digite a Cidade"
+                                        <Input type="select" required id="txtCidade" readOnly
                                             name="cidade"
                                             value={cidade}
                                             onChange={e => setCidade(e.target.value)}>
-                                            <option value="0">Selecione</option>
+                                            <option value="0"></option>
                                             {cities.map(city => (
                                                 <option key={city} value={city}>{city}</option>
                                             ))}

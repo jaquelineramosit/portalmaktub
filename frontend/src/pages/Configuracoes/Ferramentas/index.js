@@ -109,7 +109,7 @@ export default function Ferramenta(props) {
                                 <FormGroup row>
                                     <Col md="6">
                                         <Label>Descrição</Label>
-                                        <Input type="textarea" rows="5" placeholder="Descreva o Tipo de Técnico inserido" id="txtDescrição"
+                                        <Input type="textarea" rows="5" placeholder="Descreva o Ferramenta" id="txtDescrição"
                                             name="descferramenta"
                                             value={descferramenta}
                                             onChange={e => setDesferramenta(e.target.value)} />

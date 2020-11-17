@@ -109,7 +109,7 @@ export default function Tipotecnico(props) {
                                 <FormGroup row>
                                     <Col md="6">
                                         <Label>Descrição</Label>
-                                        <Input type="textarea" rows="5" placeholder="Descreva o Tipo de Técnico inserido" required id="txtDescricao"
+                                        <Input type="textarea" rows="5" placeholder="Descreva o Tipo de Técnico inserido"  id="txtDescricao"
                                             name="desctipotecnico"
                                             value={desctipotecnico}
                                             onChange={e => setDesctipotecnico(e.target.value)} />

@@ -3,12 +3,7 @@
   align-items: center;
   justify-content: center;
 }
-.switch-ativo {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;   
-  margin-top: 8px; 
-}
+
 
 .breadcrumb-item a {
   color:#f86c6b;
@@ -41,15 +36,21 @@ margin-left: 900px;
   cursor: pointer;
 }
 
-.nav-tabs .nav-link.active {
-  color: #000;
-  border: 1px solid #c8ced3;
-  border-bottom: none;
+.app-body .nav-link.active {
+  border: 1px solid #662985;
+  background : #ec6726;
+
   border-radius: calc(0.25rem - 1px) calc(0.25rem - 1px) 0 0;
 }
 
+
+.app-body button.sidebar-minimizer.mt-auto{
+
+  background: #662985;
+}
+
 .list-group-item-accent-lightBold {
-  border-left: 4px solid #c8ced3;
+  border-left: 4px solid #372A54;
 }
 
 /*
@@ -63,4 +64,24 @@ Objetivo: A pedido do cliente, necessário aumentar o tamanho da fonte de todos 
 
 .cursor-pointer {
     cursor: pointer;
+}
+
+.sidebar .nav{
+
+  background:#662985;
+}
+
+.sidebar{
+
+  background:#662985;
+}
+
+.sidebar .sidebar-minimizer{
+
+  background:#662985
+
+}.sidebar .sidebar-minimizer:hover{
+
+  background:#662985
+
 }

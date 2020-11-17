@@ -201,8 +201,7 @@ export default {
           url: '/lista-permissao-acesso',
           icon: 'fa fa-user-secret',
         },
-        {
-        },
+       
 
       ],
     },

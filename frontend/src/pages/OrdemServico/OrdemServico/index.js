@@ -470,21 +470,26 @@ const OrdemServico = (props) => {
                     setClientesFinais([]);
                     limparDadosClienteFinal();
                 }
+
                 break;
+            
             case 'bandeiraid':
+
                 if (value !== '') {
                     setClienteFinalId('');
                     setClientesFinais([]);
                     setBandeiraid(value);
-                    api.get(`cliente-final?bandeiraid=${value}`).then(response => {
+                    api.get(`cliente-final?bandeiraId=${value}`).then(response => {
                         setClientesFinais(response.data)
                     });
+                  
                 } else {
                     setBandeiraid('');
                     setClientesFinais([]);
                     setClienteFinalId('');
                     limparDadosClienteFinal();
                 }
+                
                 break;
             case 'clientefinalid':
                 if (value !== '') {
@@ -492,7 +497,7 @@ const OrdemServico = (props) => {
                     api.get(`cliente-final/${value}`).then(response => {
                         atualizaDadosClienteFinal(response.data);
                         //setTelefonefixo(response.data.telefonefixo)
-                    });
+                    });   console.log(value)
                 } else {
                     setClienteFinalId('');
                     limparDadosClienteFinal();
@@ -510,7 +515,6 @@ const OrdemServico = (props) => {
                   api.get(`tecnico?tipoProjetoIdOutros=${value}`).then(response => {
                     setTecnicoOutros(response.data);           
                   });
-
                   api.get(`tipo-projeto/${value}`).then(response => {
                       setQtdehoras(response.data.horas);
                       horasProjeto = response.data.horas;

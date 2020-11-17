@@ -1,14 +1,14 @@
 .nav-tabs {
-    border-color: #f86c6b;
+    border-color: #662985;
     .nav-link {
       padding: $aside-menu-nav-padding-y $aside-menu-nav-padding-x;
-      color: #f86c6b;
+      color: #662985;
       border-top: 0;
       @include border-radius(0);
       &.active {
         color: #000;
-        border-right-color: #f86c6b;
-        border-left-color: #f86c6b;
+        border-right-color: #662985;
+        border-left-color: #662985;
       }
     }
     .nav-item:first-child {
